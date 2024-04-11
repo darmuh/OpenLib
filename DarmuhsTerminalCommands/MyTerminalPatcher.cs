@@ -43,7 +43,9 @@ namespace TerminalStuff
         {
             static void Postfix(Terminal __instance)
             {
+                MirrorStuff.QuitTerminalMirrorStuff();
                 TerminalStartPatch.isTermInUse = __instance.terminalInUse;
+
                 //Plugin.Log.LogInfo($"terminuse set to {__instance.terminalInUse}");
                 if (TerminalStartPatch.alwaysOnDisplay)
                 {
@@ -402,6 +404,8 @@ namespace TerminalStuff
             static void Postfix(Terminal __instance)
             {
                 Plugin.MoreLogs("Start Using Terminal Postfix");
+                MirrorStuff.StartUsingTerminalMirrorStuff();
+
                 if (__instance != null)
                 {
                     TerminalStartPatch.isTermInUse = __instance.terminalInUse;

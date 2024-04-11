@@ -173,6 +173,11 @@ namespace TerminalStuff
                 Plugin.MoreLogs("Lategame Upgrades by malco detected!");
                 Plugin.instance.LateGameUpgrades = true;
             }
+            if (Chainloader.PluginInfos.ContainsKey("darmuh.suitsTerminal"))
+            {
+                Plugin.MoreLogs("suitsTerminal detected!");
+                Plugin.instance.suitsTerminal = true;
+            }
         }
     }
 }

@@ -32,6 +32,7 @@ namespace TerminalStuff
         public static ConfigEntry<bool> terminalDanger; //Danger command
         public static ConfigEntry<bool> terminalVitals; //Vitals command
         public static ConfigEntry<bool> terminalBioScan; //BioScan command
+        public static ConfigEntry<bool> terminalBioScanPatch; //BioScan Upgrade command
         public static ConfigEntry<bool> terminalVitalsUpgrade; //Vitals Upgrade command
         public static ConfigEntry<bool> terminalTP; //Teleporter command
         public static ConfigEntry<bool> terminalITP; //Inverse Teleporter command
@@ -191,6 +192,7 @@ namespace TerminalStuff
             ConfigSettings.terminalDanger = Plugin.instance.Config.Bind<bool>("Controls Commands (On/Off)", "terminalDanger", true, "Check moon danger level <Danger>");
             ConfigSettings.terminalVitals = Plugin.instance.Config.Bind<bool>("Extras Commands (On/Off)", "terminalVitals", true, "Scan player being tracked by monitor for their Health/Weight. <Vitals>");
             ConfigSettings.terminalBioScan = Plugin.instance.Config.Bind<bool>("Extras Commands (On/Off)", "terminalBioScan", true, "Scan for \"non-employee\" lifeforms. <BioScan>");
+            ConfigSettings.terminalBioScanPatch = Plugin.instance.Config.Bind<bool>("Extras Commands (On/Off)", "terminalBioScanPatch", true, "Purchase-able upgrade patch to bioscan for more precise information. <BioScan>");
             ConfigSettings.terminalVitalsUpgrade = Plugin.instance.Config.Bind<bool>("Extras Commands (On/Off)", "terminalVitalsUpgrade", true, "Purchase-able upgrade to vitals to not cost anything each scan. <Vitals>");
             ConfigSettings.terminalTP = Plugin.instance.Config.Bind<bool>("Controls Commands (On/Off)", "terminalTP", true, "Command to Activate Teleporter <TP>");
             ConfigSettings.terminalITP = Plugin.instance.Config.Bind<bool>("Controls Commands (On/Off)", "terminalITP", true, "Command to Activate Inverse Teleporter <ITP>");

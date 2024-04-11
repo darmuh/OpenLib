@@ -95,7 +95,7 @@ namespace TerminalStuff
             {
                 foreach (Transform child in imageContainer.transform)
                 {
-                    if (child.gameObject.name.Contains("(Clone)"))
+                    if (child.gameObject.name.Contains("Terminal Full Screen (Clone)") || child.gameObject.name.Contains("Terminal Small Screen (Clone)"))
                     {
                         child.gameObject.SetActive(false);
                     }

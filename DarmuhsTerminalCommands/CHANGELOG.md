@@ -5,7 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project does NOT adhere to Semantic Versioning at this time. Mostly because I don't have the time to learn it.
 
-## [3.0.3] **CURRENT VERSION**
+## [3.0.4] **CURRENT VERSION**
+
+ ### Fixed
+ - Added bioscanpatch config option to disable the patch but not bioscan itself.
+	- Fixed bioscanpatch always being enabled.
+ - Added compatibility for latest update of suitsTerminal
+ - Added fix for this mod's commands that was found while working on suitsTerminal.
+ - Added culling mask fix for mirror command that was found during suitsTerminal development.
+
+## [3.0.3]
 
  ### Fixed
  - Fixed an issue when using OpenBodyCams to create a camera and having AlwaysOn disabled, the camera would freeze after exiting the terminal.

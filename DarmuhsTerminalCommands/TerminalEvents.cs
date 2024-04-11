@@ -133,26 +133,26 @@ namespace TerminalStuff
         //AddCommand(string textFail, bool clearText, string displayText, string keyWord, bool isVerb, string nodeName, string category, string description, Delegate methodName)
         public static void AddMiniMap()
         {
-            AddCommand("minimap command\n", true, ViewCommands.termViewNodes, ConfigSettings.minimapKeyword.Value, true, "ViewInsideShipCam 1", "", "", ViewCommands.MiniMapTermEvent);
+            AddCommand("minimap command\n", true, ViewCommands.termViewNodes, ConfigSettings.minimapKeyword.Value, false, "ViewInsideShipCam 1", "", "", ViewCommands.MiniMapTermEvent);
         }
 
         public static void AddMiniCams()
         {
-            AddCommand("minicams command\n", true, ViewCommands.termViewNodes, ConfigSettings.minicamsKeyword.Value, true, "ViewInsideShipCam 1", "", "", ViewCommands.MiniCamsTermEvent);
+            AddCommand("minicams command\n", true, ViewCommands.termViewNodes, ConfigSettings.minicamsKeyword.Value, false, "ViewInsideShipCam 1", "", "", ViewCommands.MiniCamsTermEvent);
         }
 
         public static void AddOverlayView()
         {
-            AddCommand("overlay command\n", true, ViewCommands.termViewNodes, ConfigSettings.overlayKeyword.Value, true, "ViewInsideShipCam 1", "", "", ViewCommands.OverlayTermEvent);
+            AddCommand("overlay command\n", true, ViewCommands.termViewNodes, ConfigSettings.overlayKeyword.Value, false, "ViewInsideShipCam 1", "", "", ViewCommands.OverlayTermEvent);
         }
         public static void AddDoor()
         {
-            AddCommand("door terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.doorKeyword.Value, true, "Toggle Doors", "", "", ShipControls.BasicDoorCommand);
+            AddCommand("door terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.doorKeyword.Value, false, "Toggle Doors", "", "", ShipControls.BasicDoorCommand);
         }
 
         public static void AddLights()
         {
-            AddCommand("lights terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.lightsKeyword.Value, true, "Toggle Lights", "controls", "Toggle Shipboard Lights On/Off", ShipControls.BasicLightsCommand);
+            AddCommand("lights terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.lightsKeyword.Value, false, "Toggle Lights", "controls", "Toggle Shipboard Lights On/Off", ShipControls.BasicLightsCommand);
         }
 
         public static void AddTest()
@@ -165,70 +165,70 @@ namespace TerminalStuff
 
         public static void AddRandomSuit()
         {
-            AddCommand("randomsuit terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.randomSuitKeyword.Value, true, "RandomSuit", "", "", RandomSuit);
+            AddCommand("randomsuit terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.randomSuitKeyword.Value, false, "RandomSuit", "", "", RandomSuit);
         }
 
         public static void AddAlwaysOnKeywords()
         {
-            AddCommand("alwayson terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.alwaysOnKeyword.Value, true, "Always-On Display", "", "", MoreCommands.AlwaysOnDisplay);
+            AddCommand("alwayson terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.alwaysOnKeyword.Value, false, "Always-On Display", "", "", MoreCommands.AlwaysOnDisplay);
         }
 
         public static void AddModListKeywords()
         {
-            AddCommand("modlist terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.modsKeyword2.Value, true, "ModList", "mods", "", "", MoreCommands.ModListCommand);
+            AddCommand("modlist terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.modsKeyword2.Value, false, "ModList", "mods", "", "", MoreCommands.ModListCommand);
         }
 
         public static void AddTeleportKeywords()
         {
-            AddCommand("teleporter terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.tpKeyword2.Value, true, "Use Teleporter", ConfigSettings.tpKeyword.Value, "", "", ShipControls.RegularTeleporterCommand);
+            AddCommand("teleporter terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.tpKeyword2.Value, false, "Use Teleporter", ConfigSettings.tpKeyword.Value, "", "", ShipControls.RegularTeleporterCommand);
         }
 
         public static void AddInverseTeleportKeywords()
         {
-            AddCommand("inverseteleporter terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.itpKeyword2.Value, true, "Use Inverse Teleporter", ConfigSettings.itpKeyword.Value, "", "", ShipControls.InverseTeleporterCommand);
+            AddCommand("inverseteleporter terminalEvent\n", true, ShipControls.shipControlNodes, ConfigSettings.itpKeyword2.Value, false, "Use Inverse Teleporter", ConfigSettings.itpKeyword.Value, "", "", ShipControls.InverseTeleporterCommand);
         }
 
         public static void AddQuitKeywords()
         {
-            AddCommand("leaving\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.quitKeyword2.Value, true, "Quit Terminal", "quit", "", "", QuitTerminalCommand);
+            AddCommand("leaving\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.quitKeyword2.Value, false, "Quit Terminal", "quit", "", "", QuitTerminalCommand);
         }
 
         public static void AddClockKeywords()
         {
-            AddCommand("timetoggle event\n", false, MoreCommands.infoOnlyNodes, ConfigSettings.clockKeyword2.Value, true, "Terminal Clock", "clock", "", "", ClockToggle);
+            AddCommand("timetoggle event\n", false, MoreCommands.infoOnlyNodes, ConfigSettings.clockKeyword2.Value, false, "Terminal Clock", "clock", "", "", ClockToggle);
         }
 
         public static void VideoKeywords()
         {
-            AddCommand("lol terminalEvent\n", false, ViewCommands.termViewNodes, ConfigSettings.lolKeyword.Value, true, "darmuh's videoPlayer", "", "", ViewCommands.LolVideoPlayerEvent);
+            AddCommand("lol terminalEvent\n", false, ViewCommands.termViewNodes, ConfigSettings.lolKeyword.Value, false, "darmuh's videoPlayer", "", "", ViewCommands.LolVideoPlayerEvent);
         }
         public static void ClearKeywords()
         {
-            AddCommand("\r\n", true, MoreCommands.otherActionNodes, ConfigSettings.clearKeyword2.Value, true, "Clear Terminal Screen", "clear", "", "", ClearText);
+            AddCommand("\r\n", true, MoreCommands.otherActionNodes, ConfigSettings.clearKeyword2.Value, false, "Clear Terminal Screen", "clear", "", "", ClearText);
         }
         public static void dangerKeywords()
         {
-            AddCommand("danger terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.dangerKeyword.Value, true, "Check Danger Level", "", "", MoreCommands.DangerCommand);
+            AddCommand("danger terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.dangerKeyword.Value, false, "Check Danger Level", "", "", MoreCommands.DangerCommand);
         }
         public static void vitalsKeywords()
         {
-            AddCommand("vitals terminalEvent\n", true, MoreCommands.infoOnlyNodes, "vitals", true, "Check Vitals", "", "", CostCommands.VitalsCommand);
+            AddCommand("vitals terminalEvent\n", true, MoreCommands.infoOnlyNodes, "vitals", false, "Check Vitals", "", "", CostCommands.VitalsCommand);
         }
         public static void healKeywords()
         {
-            AddCommand("heal terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.healKeyword2.Value, true, "HealFromTerminal", "heal", "", "", MoreCommands.HealCommand);
+            AddCommand("heal terminalEvent\n", true, MoreCommands.infoOnlyNodes, ConfigSettings.healKeyword2.Value, false, "HealFromTerminal", "heal", "", "", MoreCommands.HealCommand);
         }
         public static void lootKeywords()
         {
-            AddCommand("loot terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.lootKeyword2.Value, true, "Check Loot Value", "loot", "", "", AllTheLootStuff.GetLootSimple);
+            AddCommand("loot terminalEvent\n", true, MoreCommands.otherActionNodes, ConfigSettings.lootKeyword2.Value, false, "Check Loot Value", "loot", "", "", AllTheLootStuff.GetLootSimple);
         }
         public static void camsKeywords()
         {
-            AddCommand("cams terminalEvent\n", true, ViewCommands.termViewNodes, ConfigSettings.camsKeyword2.Value, true, "ViewInsideShipCam 1", "cams", "", "", ViewCommands.TermCamsEvent);
+            AddCommand("cams terminalEvent\n", true, ViewCommands.termViewNodes, ConfigSettings.camsKeyword2.Value, false, "ViewInsideShipCam 1", "cams", "", "", ViewCommands.TermCamsEvent);
         }
         public static void mapKeywords()
         {
-            AddCommand("map terminalEvent\n", true, ViewCommands.termViewNodes, ConfigSettings.mapKeyword2.Value, true, "ViewInsideShipCam 1", "map", "", "", ViewCommands.TermMapEvent);
+            AddCommand("map terminalEvent\n", true, ViewCommands.termViewNodes, ConfigSettings.mapKeyword2.Value, false, "ViewInsideShipCam 1", "map", "", "", ViewCommands.TermMapEvent);
         }
 
         private static void RandomSuit(out string displayText)

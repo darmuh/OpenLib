@@ -10,7 +10,7 @@ namespace TerminalStuff
     internal class SpecialConfirmationLogic
     {
         internal static List<TerminalNode> confCheckNodes = new List<TerminalNode>();
-        internal static List<string> confKeywords = new List<string> { "bioscanpatch" };
+        internal static List<string> confKeywords = new List<string> { };
 
         //restart
         public static TerminalNode restartAsk = CreateConfirmationNode("Restart Lobby?\n\n\n\n\n\n\n\n\n\n\n\nPlease CONFIRM or DENY.\n", $"{Restart}.ask");
@@ -67,6 +67,8 @@ namespace TerminalStuff
                 confKeywords.Add(Gamble);
             if(ConfigSettings.terminalLever.Value)
                 confKeywords.Add(Lever);
+            if (ConfigSettings.terminalBioScanPatch.Value)
+                confKeywords.Add("bioscanpatch");
             if (ConfigSettings.terminalVitalsUpgrade.Value && ConfigSettings.ModNetworking.Value)
                 confKeywords.Add("vitalspatch");
             if(ConfigSettings.terminalLink.Value)

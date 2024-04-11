@@ -16,6 +16,7 @@ namespace TerminalStuff
         // Define a dictionary to map keys to actions
         internal static Dictionary<Key, string> keyActions = new Dictionary<Key, string>();
         internal static Key keyBeingPressed;
+        public static bool stopForAnyReason;
 
         internal static void InitSavedShortcuts()
         {
@@ -324,7 +325,10 @@ namespace TerminalStuff
             Plugin.MoreLogs("Listening for shortcuts");
             while (Plugin.Terminal.terminalInUse && ConfigSettings.terminalShortcuts.Value)
             {
-                if (AnyKeyIsPressed())
+                if (Plugin.instance.suitsTerminal)
+                    SuitsTerminalCompatibility.CheckForSuitsMenu();
+
+                if (AnyKeyIsPressed() && !stopForAnyReason)
                 {
                     HandleKeyPress(keyBeingPressed);
                     yield return new WaitForSeconds(0.1f);

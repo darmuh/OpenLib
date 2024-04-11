@@ -275,7 +275,7 @@ namespace TerminalStuff
             if (ConfigSettings.terminalBioScan.Value && ConfigSettings.ModNetworking.Value)
                 extrasStringBuilder.AppendLine($"> bioscan\r\n Use Ship BioScanner to search for non-employee lifeforms.\r\n");
 
-            if (ConfigSettings.terminalBioScan.Value && ConfigSettings.ModNetworking.Value)
+            if (ConfigSettings.terminalBioScanPatch.Value && ConfigSettings.ModNetworking.Value)
                 extrasStringBuilder.AppendLine($"> bioscanpatch\r\n Purchase upgrade to BioScanner Software Patch 2.0\r\n");
 
             if (ConfigSettings.terminalRefund.Value && ConfigSettings.ModNetworking.Value)

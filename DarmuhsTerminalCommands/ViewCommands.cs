@@ -472,7 +472,7 @@ namespace TerminalStuff
             playerCam.transform.rotation = newRotation;
             playerCam.transform.position = playerTransform.position - oppositeDirection * distanceBehind + playerTransform.up * 2.2f;
 
-            playerCam.cullingMask = 557520731; //grabbed from OpenBodyCam's camera cullingmask during testing
+            playerCam.cullingMask = 565909343; //creds to MirrorDecor for this mask
             playerCam.orthographic = true;
             playerCam.orthographicSize = 3.4f;
             playerCam.usePhysicalProperties = false;
