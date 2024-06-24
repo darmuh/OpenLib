@@ -1,0 +1,9 @@
+{
+  "name": "darmuhsTerminalStuff",
+  "version_number": "3.1.0",
+  "website_url": "https://github.com/darmuh/TerminalStuff",
+  "description": "Completely configurable Terminal expansion mod that adds more than 40 different useful & fun commands to the terminal",
+  "dependencies": [
+
+  ]
+}

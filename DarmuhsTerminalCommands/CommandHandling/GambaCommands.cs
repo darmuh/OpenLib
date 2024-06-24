@@ -1,0 +1,155 @@
+﻿using UnityEngine;
+using static TerminalStuff.DynamicCommands;
+using static TerminalStuff.StringStuff;
+
+namespace TerminalStuff
+{
+    internal class GambaCommands
+    {
+        internal static bool validGambleValue = false;
+
+        internal static string Ask2Gamble()
+        {
+            string[] words = GetWords();
+
+            if (words.Length < 2 || words.Length > 2)
+            {
+                validGambleValue = false;
+                string displayText = "Unable to gamble at this time...\r\n\tInvalid input detected, no digits were provided!\r\n\r\n";
+                Plugin.ERROR("not enough words for the gamble command!");
+                return displayText;
+            }
+
+            if (int.TryParse(words[1], out int parsedValue))
+            {
+                newParsedValue = true;
+                validGambleValue = true;
+                Plugin.MoreLogs("))))))))))))))))))Integer Established");
+                ParsedValue = parsedValue;
+                string displayText = $"Gamble {ParsedValue}% of your credits?\n\n\n\n\n\n\n\n\n\n\n\nPlease CONFIRM or DENY.\n";
+                return displayText;
+            }
+            else
+            {
+                validGambleValue = false;
+                string displayText = "Unable to gamble at this time...\r\n\tInvalid input detected, digits were provided!\r\n\r\n";
+                Plugin.ERROR("there are no digits for the gamble command!");
+                return displayText;
+            }
+        }
+
+        internal static string GambleConfirm()
+        {
+            if (validGambleValue)
+            {
+                Plugin.MoreLogs("Valid gamble value detected, returning gamble command action");
+                BasicGambleCommand(out string displayText);
+                return displayText;
+            }
+            else
+            {
+                Plugin.MoreLogs("attempting to confirm invalid gamble. Returning error");
+                string displayText = Plugin.instance.Terminal.terminalNodes.specialNodes[5].displayText;
+                return displayText;
+            }
+        }
+
+        internal static string GambleDeny()
+        {
+            if (validGambleValue)
+            {
+                Plugin.MoreLogs("Valid gamble value detected, but gamble has been canceled");
+                string displayText = $"Gamble for {ParsedValue}% of your credits has been canceled.\r\n\r\n\r\n";
+                return displayText;
+            }
+            else
+            {
+                Plugin.MoreLogs("attempting to confirm invalid gamble. Returning error");
+                string displayText = Plugin.instance.Terminal.terminalNodes.specialNodes[5].displayText;
+                return displayText;
+            }
+        }
+
+        internal static void BasicGambleCommand(out string displayText)
+        {
+            // Example: Get the percentage from the ParsedValue
+            float percentage = ParsedValue;
+
+            // Check if the percentage is within the valid range (0-100)
+            if (!newParsedValue || (percentage < 0 || percentage > 100))
+            {
+                // Handle the case when percentage is outside the valid range
+                Plugin.MoreLogs("Invalid percentage value. Telling user.");
+                displayText = "Invalid gamble percentage, please input a value between 0 and 100.\n\n";
+                return;
+            }
+            if (Plugin.instance.Terminal.groupCredits <= ConfigSettings.gambleMinimum.Value)
+            {
+                // Handle the case when groupCredits is lower than minimum required
+                Plugin.MoreLogs("Invalid percentage value. Telling user.");
+                displayText = $"{ConfigSettings.gamblePoorString.Value}\n\n";
+                return;
+            }
+            else
+            {
+                // Make the gamble and get the result
+                var gambleResult = Gamble(Plugin.instance.Terminal.groupCredits, percentage);
+
+                // Assign the result values to appropriate variables
+                Plugin.instance.Terminal.groupCredits = gambleResult.newGroupCredits;
+                NetHandler.Instance.SyncCreditsServerRpc(gambleResult.newGroupCredits, Plugin.instance.Terminal.numberOfItemsInDropship);
+                newParsedValue = false;
+                displayText = gambleResult.displayText;
+                return;
+            }
+
+        }
+
+        private static (int newGroupCredits, string displayText) Gamble(int currentGroupCredits, float percentage)
+        {
+            // Ensure the percentage is within a valid range (0-100)
+            percentage = Mathf.Clamp(percentage, 0, 100);
+
+            // Calculate the gamble amount as a percentage of the total credits
+            int gambleAmount = (int)(currentGroupCredits * (percentage / 100.0f));
+
+            // Generate two separate random floats
+            float randomValue1 = UnityEngine.Random.value;
+            float randomValue2 = UnityEngine.Random.value;
+
+            // Determine the outcome based on a fair comparison of the two random values
+            bool isWinner = randomValue1 < randomValue2;
+
+            if (isWinner)
+            {
+                // Code for winning scenario
+                string displayText = $"Congratulations! You won ■{gambleAmount} credits!\r\n\r\nYour new balance is ■{currentGroupCredits + gambleAmount} Credits.\r\n";
+                return (currentGroupCredits + gambleAmount, displayText);
+            }
+            else
+            {
+                // Code for losing scenario
+                int localResult = currentGroupCredits - gambleAmount;
+                if (ConfigSettings.gamblePityMode.Value && localResult == 0) //checks for pity mode and 0 credits
+                {
+                    if (ConfigSettings.gamblePityCredits.Value <= 60) //capping pity credits to 60 to avoid abuses of this system.
+                    {
+                        string displayText = $"Sorry, you lost ■{gambleAmount} credits.\n\nHowever, you've received {ConfigSettings.gamblePityCredits.Value} Pity Credits.\r\n\r\nYour new balance is ■{ConfigSettings.gamblePityCredits.Value} Credits.\r\n";
+                        return (ConfigSettings.gamblePityCredits.Value, displayText);
+                    }
+                    else
+                    {
+                        string displayText = $"Sorry, you lost ■{gambleAmount} credits.\n\nUnfortunately we're also fresh out of Pity Credits due to malicious actors.\r\n\r\nYour new balance is ■{localResult} Credits.\r\n";
+                        return (currentGroupCredits - gambleAmount, displayText);
+                    }
+
+                }
+                else
+                {
+                    string displayText = $"Sorry, you lost ■{gambleAmount} credits.\r\n\r\nYour new balance is ■{localResult} Credits.\r\n";
+                    return (currentGroupCredits - gambleAmount, displayText);
+                }
+            }
+        }
+    }
+}

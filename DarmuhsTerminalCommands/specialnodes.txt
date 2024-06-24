@@ -26,6 +26,21 @@
 23 - FinishedRadarBooster
 
 
+- dont hide cams nodes -
+5 - GeneralError
+10 - ParserError1
+11 - ParserError2
+12 - ParserError3
+20 - SwitchedCam
+21 - PingedRadarBooster
+22 - SendSignalTranslator
+23 - FinishedRadarBooster
+        SwitchRadarCamPlayer 1
+        switchDummy
+         EnteredCode
+         FlashedRadarBooster
+         SendSignalTranslator
+
 
 Plugin.instance.confirmationNodeNum List:
 0 - No confirm action at this time
@@ -35,39 +50,6 @@ Plugin.instance.confirmationNodeNum List:
 4 - Buy Bioscanner Upgrade
 5 - Custom Link
 
-
-ViewNodes:
-1 - cams
-2 - overlay
-3 - minimap
-4 - minicams
-5 - map
-
-
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-0) Quit Terminal
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-1) HealFromTerminal
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-2) Check Vitals
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-3) Always-On Display
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-4) RandomSuit
-[Info   :darmuhsTerminalStuff] infoOnlyNodes:
-5) Terminal Clock
-[Info   :darmuhsTerminalStuff] otherActionNodes:
-0) Check Loot Value
-[Info   :darmuhsTerminalStuff] otherActionNodes:
-1) Clear Terminal Screen
-[Info   :darmuhsTerminalStuff] otherActionNodes:
-2) Check Danger Level
-[Info   :darmuhsTerminalStuff] otherActionNodes:
-3) ModList
-[Info   :darmuhsTerminalStuff] shipControlNodes:
-0) Toggle Doors
-[Info   :darmuhsTerminalStuff] shipControlNodes:
-1) Toggle Lights
 
 Regular switch command:
 if (node.terminalEvent == "switchCamera")
@@ -84,3 +66,10 @@ terminalNodes.specialNodes[20] <-
 Z:\games\modding\LC\networkpatcher\
 
 netcode-patch plugins\darmuh-darmuhsTerminalStuff deps
+
+1. lol command is not synced between players
+-could add this capability in the future after network checks
+
+2. AOD wasnt working for a player who hadnt interacted with the terminal
+-looks like coroutine was ONLY starting when quitting the terminal
+-there was also no limit to how many times this coroutine would run (yikes performance)
