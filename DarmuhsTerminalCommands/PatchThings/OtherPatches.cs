@@ -45,6 +45,7 @@ namespace TerminalStuff
 
     }
 
+        [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]
     [HarmonyPatch(typeof(ShipTeleporter), "Awake")]
     public class TeleporterInit : ShipTeleporter
     {
