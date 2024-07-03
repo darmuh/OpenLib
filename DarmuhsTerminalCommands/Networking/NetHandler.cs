@@ -639,15 +639,22 @@ namespace TerminalStuff
             Instance = this;
             base.OnNetworkSpawn();
             Plugin.Log.LogInfo("Nethandler Spawned!");
+            if (Plugin.instance.OpenBodyCamsMod)
+                OpenBodyCamsCompatibility.ResidualCamsCheck();
+
+            Plugin.ClearLists();
 
             if (GameNetworkManager.Instance.isHostingGame)
                 return;
+        }
 
-            if (ConfigSettings.terminalBioScan.Value && ConfigSettings.ModNetworking.Value)
-                Instance.GetItemStatusServerRpc("BioScanner 2.0 Upgrade Patch (bioscanpatch)", CostCommands.enemyScanUpgradeEnabled);
+        internal static void UpgradeStatusCheck()
+        {
+            if (ConfigSettings.terminalBioScan.Value && ConfigSettings.terminalBioScanPatch.Value && ConfigSettings.ModNetworking.Value)
+                Instance.GetItemStatusServerRpc("BioscanPatch", CostCommands.enemyScanUpgradeEnabled);
 
-            if (ConfigSettings.terminalVitals.Value && ConfigSettings.ModNetworking.Value)
-                Instance.GetItemStatusServerRpc("Vitals Scanner Upgrade (vitalspatch)", CostCommands.vitalsUpgradeEnabled);
+            if (ConfigSettings.terminalVitals.Value && ConfigSettings.terminalVitalsUpgrade.Value && ConfigSettings.ModNetworking.Value)
+                Instance.GetItemStatusServerRpc("VitalsPatch", CostCommands.vitalsUpgradeEnabled);
         }
 
 

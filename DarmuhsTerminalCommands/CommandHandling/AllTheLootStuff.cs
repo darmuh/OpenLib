@@ -12,11 +12,11 @@ namespace TerminalStuff
         internal static string GetLootSimple()
         {
             string displayText;
-            Plugin.MoreLogs("calculating loot value next");
+            Plugin.Spam("calculating loot value next");
             float lootValue = CalculateLootValue();
             string totalvalue = string.Format("Total Value on Ship: ${0:F0}", (object)lootValue);
             TerminalEvents.TotalValueFormat = totalvalue;
-            Plugin.MoreLogs("loot calculated");
+            Plugin.Spam("loot calculated");
             displayText = $"{TerminalEvents.TotalValueFormat}\n\n";
             return displayText;
         }
@@ -39,7 +39,7 @@ namespace TerminalStuff
                 {
                     // Concatenate the itemName and scrapWorth to form the line
                     string line = $"{itemName} ({scrapWorth} credits)";
-                    Plugin.MoreLogs(line + "added to output");
+                    Plugin.Spam(line + "added to output");
                     totalCredsWorth += scrapWorth;
 
                     lineOccurrences[line] = lineOccurrences.TryGetValue(line, out int count) ? count + 1 : 1;

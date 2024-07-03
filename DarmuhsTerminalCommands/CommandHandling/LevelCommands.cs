@@ -13,6 +13,13 @@ namespace TerminalStuff
         internal static string RouteRandomCommand()
         {
             string displayText;
+
+            if (Plugin.instance.Terminal.groupCredits < ConfigSettings.routeRandomCost.Value)
+            {
+                displayText = $"You cannot afford to run the 'route random' command.\r\n\r\n\tRoute Random Cost: [{ConfigSettings.routeRandomCost.Value}]\r\n\tYour credits: <color=#BD3131>[{Plugin.instance.Terminal.groupCredits}]</color>\r\n\r\n\r\n";
+                return displayText;
+            }
+                
             bannedWeatherConfig = GetKeywordsPerConfigItem(ConfigSettings.routeRandomBannedWeather.Value);
             bannedWeather = GetListToLower(bannedWeatherConfig);
 

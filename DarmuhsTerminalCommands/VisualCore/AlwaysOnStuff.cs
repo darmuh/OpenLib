@@ -14,7 +14,7 @@ namespace TerminalStuff
             Plugin.MoreLogs("Starting AlwaysOnDynamic Coroutine");
             dynamicStatus = true;
 
-            while (!StartOfRound.Instance.localPlayerController.isPlayerDead && !MoreCommands.keepAlwaysOnDisabled)
+            while (DisableScreenOnDeath() && !MoreCommands.keepAlwaysOnDisabled)
             {
                 if (!StartOfRound.Instance.localPlayerController.isInHangarShipRoom && instance.terminalUIScreen.gameObject.activeSelf)
                 {
@@ -23,7 +23,7 @@ namespace TerminalStuff
                     if (ViewCommands.externalcamsmod && Plugin.instance.OpenBodyCamsMod && ViewCommands.AnyActiveMonitoring())
                         QuitPatch.TerminalCameraStatus(false);
 
-                    Plugin.MoreLogs("Disabling terminal screen.");
+                    Plugin.Spam("Disabling terminal screen.");
                 }
                 else if (StartOfRound.Instance.localPlayerController.isInHangarShipRoom && !instance.terminalUIScreen.gameObject.activeSelf)
                 {
@@ -32,22 +32,22 @@ namespace TerminalStuff
                     if (ViewCommands.externalcamsmod && Plugin.instance.OpenBodyCamsMod && ViewCommands.AnyActiveMonitoring())
                         QuitPatch.TerminalCameraStatus(true);
 
-                    Plugin.MoreLogs("Enabling terminal screen.");
+                    Plugin.Spam("Enabling terminal screen.");
                 }
 
                 yield return new WaitForSeconds(0.5f);
             }
 
-            if (DisableScreenOnDeath()) //config item for this? disableScreenOnDeath?
+            if (DisableScreenOnDeath()) 
             {
                 instance.terminalUIScreen.gameObject.SetActive(false);
                 if (ViewCommands.externalcamsmod && Plugin.instance.OpenBodyCamsMod && ViewCommands.AnyActiveMonitoring())
                 {
                     QuitPatch.TerminalCameraStatus(false);
-                    Plugin.MoreLogs("Cams disabled on player death");
+                    Plugin.Spam("Cams disabled on player death");
                 }
 
-                Plugin.MoreLogs("Player detected dead, disabling terminal screen.");
+                Plugin.Spam("Player detected dead, disabling terminal screen.");
             }
 
             dynamicStatus = false; //end of coroutine, opening this up again for another run

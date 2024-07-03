@@ -1,9 +1,9 @@
 ﻿using BepInEx.Bootstrap;
+using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
 using static TerminalStuff.AlwaysOnStuff;
-
 
 namespace TerminalStuff
 {
@@ -16,6 +16,7 @@ namespace TerminalStuff
             SplitViewChecks.InitSplitViewObjects(); //addSplitViewObjects
             BoolStuff.ResetEnumBools(); // resets all enum bools
             TerminalClockStuff.showTime = false; // disable clock on game restart
+            ViewCommands.ResetPluginInstanceBools(); //reset view command bools
         }
     }
 
@@ -30,8 +31,8 @@ namespace TerminalStuff
                 if (!TerminalEvents.clockDisabledByCommand)
                     TerminalClockStuff.showTime = true;
 
-                if (ConfigSettings.alwaysOnDynamic.Value)
-                    Plugin.instance.Terminal.StartCoroutine(AlwaysOnDynamic(Plugin.instance.Terminal));
+                /* if (ConfigSettings.alwaysOnDynamic.Value)
+                    Plugin.instance.Terminal.StartCoroutine(AlwaysOnDynamic(Plugin.instance.Terminal)); */
             }
             else
             {
@@ -45,7 +46,19 @@ namespace TerminalStuff
 
     }
 
+    public class SpawnPatch
+    {
         [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]
+        public class PlayerSpawnPatch : MonoBehaviour
+        {
+            static void Postfix()
+            {
+                if (ConfigSettings.alwaysOnDynamic.Value)
+                    Plugin.instance.Terminal.StartCoroutine(AlwaysOnDynamic(Plugin.instance.Terminal));
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(ShipTeleporter), "Awake")]
     public class TeleporterInit : ShipTeleporter
     {
@@ -226,6 +239,11 @@ namespace TerminalStuff
             {
                 Plugin.MoreLogs("suitsTerminal detected!");
                 Plugin.instance.suitsTerminal = true;
+            }
+            if (Chainloader.PluginInfos.ContainsKey("TerminalFormatter"))
+            {
+                Plugin.MoreLogs("Terminal Formatter by mrov detected!");
+                Plugin.instance.TerminalFormatter = true;
             }
         }
     }

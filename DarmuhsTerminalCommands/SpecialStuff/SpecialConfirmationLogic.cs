@@ -22,7 +22,7 @@ namespace TerminalStuff
                     foreach (string keyword in leverKW)
                     {
                         MakeCommand($"{keyword}_node", keyword, "lever prompt", false, true, ShipControls.LeverControlCommand, darmuhsTerminalStuff);
-                        Plugin.MoreLogs($"Added lever command without confirmation required - keyword {keyword}");
+                        Plugin.Spam($"Added lever command without confirmation required - keyword {keyword}");
                     }
 
                 }
@@ -31,30 +31,30 @@ namespace TerminalStuff
                     foreach (string keyword in leverKW)
                     {
                         MakeCommand($"{keyword}_node", keyword, "lever prompt", false, true, true, false, $"{keyword}_confirm_node", $"{keyword}_deny_node", $"{keyword} confirm", $"{keyword} deny", 0, ShipControls.AskLever, ShipControls.LeverControlCommand, ShipControls.DenyLever, darmuhsTerminalStuff);
-                        Plugin.MoreLogs("Added lever command WITH confirmation required - keyword {keyword}");
+                        Plugin.Spam($"Added lever command WITH confirmation required - keyword {keyword}");
                     }
                 }
             }
             if (ConfigSettings.terminalLink.Value)
             {
                 MakeCommand($"{Link}_node", Link, "link prompt", false, true, true, false, $"{Link}_confirm_node", $"{Link}_deny_node", "link confirm", "link deny", 0, MoreCommands.FirstLinkAsk, MoreCommands.FirstLinkDo, MoreCommands.FirstLinkDeny, darmuhsTerminalStuff);
-                Plugin.MoreLogs("Added link command WITH confirmation required");
+                Plugin.Spam("Added link command WITH confirmation required");
             }
             if (ConfigSettings.terminalLink2.Value)
             {
                 MakeCommand($"{Link2}_node", Link2, "link2 prompt", false, true, true, false, $"{Link2}_confirm_node", $"{Link2}_deny_node", "link confirm", "link deny", 0, MoreCommands.SecondLinkAsk, MoreCommands.SecondLinkDo, MoreCommands.SecondLinkDeny, darmuhsTerminalStuff);
-                Plugin.MoreLogs("Added link command WITH confirmation required");
+                Plugin.Spam("Added link command WITH confirmation required");
             }
             if (ConfigSettings.terminalRestart.Value)
                 if (ConfigSettings.restartConfirmOverride.Value)
                 {
                     MakeCommand($"{Restart}_node", Restart, "restart prompt", false, true, RestartAction, darmuhsTerminalStuff);
-                    Plugin.MoreLogs("Added lever command without confirmation required");
+                    Plugin.Spam("Added lever command without confirmation required");
                 }
                 else
                 {
                     MakeCommand($"{Restart}_node", Restart, "restart prompt", false, true, true, false, $"{Restart}_confirm_node", $"{Restart}_deny_node", "restart confirm", "restart deny", 0, RestartAsk, RestartAction, RestartDeny, darmuhsTerminalStuff);
-                    Plugin.MoreLogs("Added lever command WITH confirmation required");
+                    Plugin.Spam("Added lever command WITH confirmation required");
                 }
 
         }

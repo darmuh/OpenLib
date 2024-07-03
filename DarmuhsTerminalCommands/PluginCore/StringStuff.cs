@@ -100,10 +100,60 @@ namespace TerminalStuff
 
         internal static List<string> GetKeywordsPerConfigItem(string configItem)
         {
-            List<string> keywordsInConfig = configItem.Split(';')
+            List<string> keywordsInConfig = [];
+            if (configItem.Length > 0)
+            {
+                keywordsInConfig = configItem.Split(';')
                                       .Select(item => item.TrimStart())
                                       .ToList();
+                //Plugin.MoreLogs("GetKeywordsPerConfigItem split complete");
+            }
+                
             return keywordsInConfig;
+        }
+
+        internal static List<int> GetNumberListFromStringList(List<string> stringList)
+        {
+            List<int> numbersList = [];
+            foreach (string item in stringList)
+            {
+                if (int.TryParse(item, out int number))
+                {
+                    numbersList.Add(number);
+                }
+                else
+                    Plugin.ERROR($"Could not parse {item} to integer");
+            }
+
+            return numbersList;
+        }
+
+        internal static List<string> GetItemList(string rawList)
+        {
+            List<string> itemList = [];
+            if (rawList.Length > 0)
+            {
+                itemList = rawList.Split(',')
+                                      .Select(item => item.TrimStart())
+                                      .ToList();
+            }
+            
+            return itemList;
+        }
+
+        internal static Dictionary<string,string> GetKeywordAndItemNames(string configItem)
+        {
+            Dictionary<string, string> KeywordAndNames = [];
+            if (configItem.Length > 0)
+            {
+                 KeywordAndNames = configItem
+                    .Split(';')
+                    .Select(item => item.Trim())
+                    .Select(item => item.Split(':'))
+                    .ToDictionary(pair => pair[0].Trim(), pair => pair[1].Trim());
+            }
+             
+            return KeywordAndNames;
         }
 
         internal static List<string> GetListToLower(List<string> stringList)

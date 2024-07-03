@@ -3,7 +3,62 @@
 All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
-This project does NOT adhere to Semantic Versioning at this time. Mostly because I don't have the time to learn it.
+This project does NOT adhere to perfect Semantic Versioning. Mostly because I don't have the time to learn how to use it.
+
+## [3.2.0] **CURRENT VERSION**
+ ### Added
+ - Added new feature called Purchase Packs (enabled via the [terminalPurchasePacks] configuration item)
+	- With this you can add customized purchase packs to the store.
+	- Purchase packs and their keywords are set in the [purchasePackCommands] configuration item.
+	- Syntax for this configuration item is "command:item1,item2,etc.;next command:item1,item2"
+		- The ":" separates the command from the items being purchased.
+		- Each item is separated by a "," just type what you would type in the terminal to buy it (ie. shov for shovel)
+		- Ship Upgrades can also be added to purchase packs, like my example "PortalPack"
+			- These are matched differently from standard items and will match to an upgrade that starts the same
+			- so in my example "inverse" matches with "inverse teleporter" and "teleporter" matches with "teleporter"
+		- Then each purchase pack is separated by a ";"
+		- Failure to adhere to this syntax can result in errors
+	- If you list more than 12 items in one purchase pack, the terminal will tell you the dropship can only hold 12 items.
+		- From my own testing, I've been able to get 24 items from a dropship, however I do suggest keeping this warning in mind.
+ - Added new configuration option [developerLogging] for my more spammy log messages.
+	- This is a retroactive change following the development of the purchase packs feature having a LOT of logs.
+	- If you find any log messages that show in extensiveLogging that should probably be in developerLogging please let me know :)
+ - Added configurable keywords for the [terminalLobby] command to avoid conflicts with the LobbyControl mod by mattymatty
+	- This will be set via the [lobbyKeywords] configuration option
+ - Added the ability to configure the resolution for both potential cameras created with OpenBodyCams via this mod
+	- see [obcResolutionMirror] and [obcResolutionBodyCam]
+ - Added soft dependency for TerminalFormatter to detect if this mod is present and avoid double adding stuff to the store
+
+ ### Fixed/Changed
+ - Added some more null reference handling, especially when handling configuration items that can have incorrect format
+ - Added "SpawnPlayerAnimation" patch for AlwaysOnDynamic coroutine rather than attempting to run it every time the ship is landed.
+	- This may resolve some issues of the monitor not being on for someone who died on the last moon.
+ - Fixed error being thrown when buying something quickly and this mod is paired with TerminalFormatter
+ - Fixed Route Random being able to send you into debt with negative credits
+	- Now if you dont have enough credits you will be told lol
+ - Changed store names for VitalsPatch and BioscanPatch as they were much too long.
+	- I may make this configurable in the future but for now they are the above names in the store.
+ - Fixed some issues with the cameras created via OpenBodyCams for this mod.
+	- This was practically a complete rework of how OpenBodyCams is utilized in this mod.
+	- Added a function to remove persisting cameras between lobbys.
+ - Fixed some issues with the home-brew cameras created with this mod.
+ - Adjusted refund command to be more accurate, including trying to get current sales price for each item.
+ - Fixed issue with StoreRotation that caused anything I added to the store to break the store with this mod enabled.
+ - Fixed visual bug with Vitals Upgrade displaying wrong credits after performing the upgrade (the correct credits amount was being deducted still)
+ - Updated configuration items for more consistency/clarity
+	- extensiveLogging has been moved to "__Debug" section
+	- Moved alwayson config options [alwaysOnAtStart], [alwaysOnDynamic], and [alwaysOnWhileDead] to new section "Always On"
+	- updated [canOpenDoorInSpace] description to explain that this setting does not change actual game logic for the door in space
+	- Clamped [routeRandomCost] so that you can't set it to a negative value and give yourself credits...
+ - Added the rest of the home page as configuration options to allow full configuration of the home page.
+	- The new configuration option is [homeHelpLines]
+ - Changed some core functions in how this mod adds command to the terminal.
+	- This mod will now delete any pre-existing keywords/nodes if you have closed and opened another lobby.
+		- This will now make it possible to enable/disable commands between sessions without having to close the game to remove a command's functionality.
+		- This will also fix an issue I noticed where multiple keywords/nodes for the same command were being created due to hosting a new lobby.
+	- For multiple keywords, I am now reusing the same node rather than making a node for each keyword.
+	- While I don't expect a performance difference from this optimization, it was bothering me once I noticed the issue which delayed this update a bit.
+
 
 ## [3.1.0]
  ### Added

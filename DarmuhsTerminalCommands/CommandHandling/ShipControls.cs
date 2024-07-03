@@ -14,7 +14,6 @@ namespace TerminalStuff
 {
     internal class ShipControls
     {
-        internal static List<TerminalNode> shipControlNodes = [];
 
         internal static bool leverEnum = false;
         internal static bool DoorSpaceCheck()

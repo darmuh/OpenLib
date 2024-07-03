@@ -13,11 +13,14 @@ namespace TerminalStuff
 
         //cams special
         public static ConfigEntry<bool> camsUseDetectedMods { get; internal set; }
+        public static ConfigEntry<string> obcResolutionMirror {  get; internal set; }
+        public static ConfigEntry<string> obcResolutionBodyCam { get; internal set; }
 
         //establish commands that can be turned on or off here
         public static ConfigEntry<bool> ModNetworking { get; internal set; }
         public static ConfigEntry<bool> terminalClock { get; internal set; } //Clock object itself
         public static ConfigEntry<bool> extensiveLogging { get; internal set; }
+        public static ConfigEntry<bool> developerLogging { get; internal set; }
         public static ConfigEntry<bool> walkieTerm { get; internal set; } //Use walkie at terminal function
         public static ConfigEntry<bool> terminalShortcuts { get; internal set; } //adds the bind keyword and the enumerator checking for shortcuts
         public static ConfigEntry<bool> terminalLobby { get; internal set; } //lobby name command
@@ -59,6 +62,8 @@ namespace TerminalStuff
         public static ConfigEntry<bool> terminalRestart { get; internal set; } //restart command
         public static ConfigEntry<bool> terminalPrevious { get; internal set; } //previous switch command
         public static ConfigEntry<bool> terminalRouteRandom { get; internal set; } // route random command
+        public static ConfigEntry<bool> terminalPurchasePacks { get; internal set; } // purchase packs feature
+
 
 
         //Strings for display messages
@@ -114,12 +119,14 @@ namespace TerminalStuff
         public static ConfigEntry<string> homeLine1 { get; internal set; }
         public static ConfigEntry<string> homeLine2 { get; internal set; }
         public static ConfigEntry<string> homeLine3 { get; internal set; }
+        public static ConfigEntry<string> homeHelpLines { get; internal set; }
         public static ConfigEntry<string> homeTextArt { get; internal set; }
         public static ConfigEntry<bool> alwaysOnAtStart { get; internal set; }
         public static ConfigEntry<bool> alwaysOnDynamic { get; internal set; }
         public static ConfigEntry<bool> alwaysOnWhileDead { get; internal set; }
         public static ConfigEntry<string> routeRandomBannedWeather { get; internal set; }
         public static ConfigEntry<int> routeRandomCost { get; internal set; }
+        public static ConfigEntry<string> purchasePackCommands { get; internal set; }
 
         //keyword strings (terminalapi)
         public static ConfigEntry<string> alwaysOnKeywords { get; internal set; } //string to match keyword
@@ -145,6 +152,8 @@ namespace TerminalStuff
         public static ConfigEntry<string> ListItemsKeywords { get; internal set; } //List Items Command
         public static ConfigEntry<string> ListScrapKeywords { get; internal set; } //List Scrap Command
         public static ConfigEntry<string> randomRouteKeywords { get; internal set; }
+        public static ConfigEntry<string> lobbyKeywords { get; internal set; } //show lobby name keywords
+
 
         //terminal patcher keywords
         public static ConfigEntry<string> fcolorKeyword { get; internal set; }
@@ -171,8 +180,10 @@ namespace TerminalStuff
             terminalClock = MakeBool("__General", "terminalClock", true, "Enable or Disable the terminalClock");
             walkieTerm = MakeBool("__General", "walkieTerm", true, "Enable or Disable the ability to use a walkie from your inventory at the terminal (vanilla method still works)");
             terminalShortcuts = MakeBool("__General", "terminalShortcuts", true, "Enable this for the ability to bind commands to any valid key (also enables the \"bind\" keyword.");
-            extensiveLogging = MakeBool("__General", "extensiveLogging", false, "Enable or Disable extensive logging for this mod.");
+            extensiveLogging = MakeBool("__Debug", "extensiveLogging", false, "Enable or Disable extensive logging for this mod.");
+            developerLogging = MakeBool("__Debug", "developerLogging", false, "Enable or Disable developer logging for this mod. (this will fill your log file FAST)");
             keyActionsConfig = MakeString("Terminal Shortcuts", "keyActionsConfig", "", "Stored keybinds, don't modify this unless you know what you're doing!");
+            purchasePackCommands = MakeString("Purchase packs", "purchasePackCommands", "Essentials:pro,shov,walkie;PortalPack:teleporter,inverse", "List of purchase pack commands to create. Format is command:item1,item2,etc.;next command:item1,item2");
 
 
             //keybinds
@@ -222,15 +233,16 @@ namespace TerminalStuff
             terminalRestart = MakeBool("Controls Commands (On/Off)", "terminalRestart", true, "Command to restart the lobby (skips firing sequence) <Restart>");
             terminalPrevious = MakeBool("Extras Commands (On/Off)", "terminalPrevious", true, "Command to switch back to previous radar target <Previous>");
             terminalRouteRandom = MakeBool("Fun Commands (On/Off)", "terminalRouteRandom", true, "Command to route to a random planet, configurable <Previous>");
+            terminalPurchasePacks = MakeBool("Comfort Commands (On/Off)", "terminalPurchasePacks", true, "Use [purchasePackCommands] to create purchase packs that contain multiple store items in one run of the command");
             
             routeRandomBannedWeather = MakeString("Route Random", "routeRandomBannedWeather", "Eclipsed;Flooded;Foggy", "This semi-colon separated list is all keywords that can be used in terminal to return <alwayson> command");
-            routeRandomCost = MakeInt("Route Random", "routeRandomCost", 100, "Flat rate for running the route random command to get a random moon...");
+            routeRandomCost = MakeClampedInt("Route Random", "routeRandomCost", 100, "Flat rate for running the route random command to get a random moon...", 0, 99999);
 
             //String Configs
             doorOpenString = MakeString("Door", "doorOpenString", "Opening door.", "Message returned on door (open) command.");
             doorCloseString = MakeString("Door", "doorCloseString", "Closing door.", "Message returned on door (close) command.");
             doorSpaceString = MakeString("Door", "doorSpaceString", "Can't open doors in space.", "Message returned on door (inSpace) command.");
-            canOpenDoorInSpace = MakeBool("Door", "canOpenDoorInSpace", false, "Set this to true to allow for opening the door in space.");
+            canOpenDoorInSpace = MakeBool("Door", "canOpenDoorInSpace", false, "Set this to true to allow for pressing the button to open the door in space. (does not change whether the door can actually be opened)");
             quitString = MakeString("Quit", "quitString", "goodbye!", "Message returned on quit command.");
             leverString = MakeString("Lever", "leverString", "PULLING THE LEVER!!!", "Message returned on lever pull command.");
             videoStartString = MakeString("Video", "videoStartString", "lol.", "Message displayed when first playing a video.");
@@ -272,12 +284,14 @@ namespace TerminalStuff
             videoSync = MakeBool("Video", "videoSync", true, "When networking is enabled, this setting will sync videos being played on the terminal for all players whose terminal screen is on.");
             leverConfirmOverride = MakeBool("Lever", "leverConfirmOverride", false, "Setting this to true will disable the confirmation check for the <lever> command.");
             restartConfirmOverride = MakeBool("Restart", "restartConfirmOverride", false, "Setting this to true will disable the confirmation check for the <restart> command.");
+            obcResolutionMirror = MakeString("Cams", "obcResolutionMirror", "1000; 700", "Set the resolution of the Mirror Camera created with OpenBodyCams for darmuhsTerminalStuff");
+            obcResolutionBodyCam = MakeString("Cams", "obcResolutionBodyCam", "1000; 700", "Set the resolution of the Body Camera created with OpenBodyCams for darmuhsTerminalStuff");
             camsNeverHide = MakeBool("Cams", "camsNeverHide", false, "Setting this to true will make it so no command will ever auto-hide any cams command.");
-            defaultCamsView = Plugin.instance.Config.Bind("Cams", "defaultCamsView", "map", new ConfigDescription("Set the default view switch commands will use when nothing is active.", new AcceptableValueList<string>("map", "cams", "minimap", "minicams", "overlay")));
+            defaultCamsView = Plugin.instance.Config.Bind("Cams", "defaultCamsView", "cams", new ConfigDescription("Set the default view switch commands will use when nothing is active.", new AcceptableValueList<string>("map", "cams", "minimap", "minicams", "overlay")));
             ovOpacity = Plugin.instance.Config.Bind("Cams", "ovOpacity", 10, new ConfigDescription("Opacity percentage for Overlay View.", new AcceptableValueRange<int>(0, 100)));
-            alwaysOnAtStart = MakeBool("__General", "alwaysOnAtStart", false, "Setting this to true will set <alwayson> to enabled at launch.");
-            alwaysOnDynamic = MakeBool("__General", "alwaysOnDynamic", true, "Setting this to true will disable the terminal screen whenever you are not on the ship when alwayson is enabled.");
-            alwaysOnWhileDead = MakeBool("__General", "alwaysOnWhileDead", false, "Set this to true if you wish to keep the screen on after death.");
+            alwaysOnAtStart = MakeBool("AlwaysOn", "alwaysOnAtStart", true, "Setting this to true will set <alwayson> to enabled at launch.");
+            alwaysOnDynamic = MakeBool("AlwaysOn", "alwaysOnDynamic", true, "Setting this to true will disable the terminal screen whenever you are not on the ship when alwayson is enabled.");
+            alwaysOnWhileDead = MakeBool("AlwaysOn", "alwaysOnWhileDead", false, "Set this to true if you wish to keep the screen on after death.");
 
 
             //Keyword configs (multiple per config item)
@@ -304,6 +318,7 @@ namespace TerminalStuff
             ListItemsKeywords = MakeString("Custom Keywords", "ListItemsKeywords", "show items; get items; listitem", "This semi-colon separated list is all keywords that can be used in terminal to return <itemlist> command");
             ListScrapKeywords = MakeString("Custom Keywords", "ListScrapKeywords", "loot detail; listloost", "This semi-colon separated list is all keywords that can be used in terminal to return <lootlist> command");
             randomRouteKeywords = MakeString("Custom Keywords", "randomRouteKeywords", "route random; random moon", "This semi-colon separated list is all keywords that can be used in terminal to return <lootlist> command");
+            lobbyKeywords = MakeString("Custom Keywords", "lobbyKeywords", "lobby; show lobby; lobby name; show lobby name", "This semi-colon separated list is all keywords that can be used in terminal to return <lobby> command");
 
 
             //terminal patcher keywords
@@ -319,6 +334,8 @@ namespace TerminalStuff
             homeLine1 = MakeString("Home Page", "homeline1", "Welcome to the FORTUNE-9 OS PLUS", "First line of the home command (startup screen)");
             homeLine2 = MakeString("Home Page", "homeline2", "\tUpgraded by Employee: <color=#e6b800>darmuh</color>", "Second line of the home command (startup screen)");
             homeLine3 = MakeString("Home Page", "homeline3", "Have a wonderful [currentDay]!", "Last line of the home command (startup screen)");
+            homeHelpLines = MakeString("Home Page", "homeHelpLines", ">>Type \"Help\" for a list of commands.\r\n>>Type <color=#b300b3>\"More\"</color> for a menu of darmuh's commands.\r\n", "these two lines should generally be used to point to menus of other usable commands. Can also be expanded to more than two lines by using \"\\r\\n\" to indicate a new line");
+            
             homeTextArt = MakeString("Home Page", "homeTextArt", "[leadingSpacex4][leadingSpace]<color=#e6b800>^^      .-=-=-=-.  ^^\r\n ^^        (`-=-=-=-=-`)         ^^\r\n         (`-=-=-=-=-=-=-`)  ^^         ^^\r\n   ^^   (`-=-=-=-=-=-=-=-`)   ^^          \r\n       ( `-=-=-=-(@)-=-=-` )      ^^\r\n       (`-=-=-=-=-=-=-=-=-`)  ^^          \r\n       (`-=-=-=-=-=-=-=-=-`)  ^^\r\n        (`-=-=-=-=-=-=-=-`)          ^^\r\n         (`-=-=-=-=-=-=-`)  ^^            \r\n           (`-=-=-=-=-`)\r\n            `-=-=-=-=-`</color>", "ASCII Art goes here");
 
             RemoveOrphanedEntries();

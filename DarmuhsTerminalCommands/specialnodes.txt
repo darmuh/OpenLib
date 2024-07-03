@@ -25,6 +25,11 @@
 22 - SendSignalTranslator
 23 - FinishedRadarBooster
 
+syncedAudios:
+[Info   :darmuhsTerminalStuff] i = 0 - PurchaseSFX
+[Info   :darmuhsTerminalStuff] i = 1 - TerminalTypoError
+[Info   :darmuhsTerminalStuff] i = 2 - TerminalLoadImage
+
 
 - dont hide cams nodes -
 5 - GeneralError
@@ -67,9 +72,3 @@ Z:\games\modding\LC\networkpatcher\
 
 netcode-patch plugins\darmuh-darmuhsTerminalStuff deps
 
-1. lol command is not synced between players
--could add this capability in the future after network checks
-
-2. AOD wasnt working for a player who hadnt interacted with the terminal
--looks like coroutine was ONLY starting when quitting the terminal
--there was also no limit to how many times this coroutine would run (yikes performance)

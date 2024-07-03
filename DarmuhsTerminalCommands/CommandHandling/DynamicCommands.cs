@@ -67,27 +67,27 @@ namespace TerminalStuff
 
         internal static void InitDynamicCommands()
         {
-            Plugin.MoreLogs("fov init");
+            Plugin.Spam("fov init");
             if (ConfigSettings.terminalFov.Value)
                 MakeCommand($"fov_node", "fov", "fov prompt (this shouldnt show)", false, true, true, false, $"fov_confirm_node", $"fov_deny_node", "fov accepted", "fov denied", 0, FovPrompt, FovConfirm, FovDeny, nodesThatAcceptNum, darmuhsTerminalStuff);
 
-            Plugin.MoreLogs("scolor init");
+            Plugin.Spam("scolor init");
             if (ConfigSettings.terminalScolor.Value && ConfigSettings.ModNetworking.Value)
             {
                 MakeDynamicCommand("scolor_node", sColor, "scolor command", true, false, ShipColorBase, nodesThatAcceptAnyString, darmuhsTerminalStuff);
             }
 
-            Plugin.MoreLogs("fcolor init");
+            Plugin.Spam("fcolor init");
             if (ConfigSettings.terminalFcolor.Value && ConfigSettings.ModNetworking.Value)
             {
                 MakeDynamicCommand("fcolor_node", fColor, "fcolor command", true, false, FlashColorBase, nodesThatAcceptAnyString, darmuhsTerminalStuff);
             }
 
-            Plugin.MoreLogs("kick init");
+            Plugin.Spam("kick init");
             if (ConfigSettings.terminalKick.Value)
                 MakeCommand("kick", "kick", "kick command failed\r\n", false, true, true, false, "kickYes", "kickNo", "kicking player", "not kicking player", 0, AdminCommands.KickPlayersAsk, AdminCommands.KickPlayerConfirm, AdminCommands.KickPlayerDeny, nodesThatAcceptAnyString, darmuhsTerminalStuff);
 
-            Plugin.MoreLogs("shortcuts init");
+            Plugin.Spam("shortcuts init");
             if (ConfigSettings.terminalShortcuts.Value)
             {
                 MakeDynamicCommand("bind", "bind", "bind failed", true, false, BindKeyToCommand, nodesThatAcceptAnyString, darmuhsTerminalStuff);
@@ -95,7 +95,7 @@ namespace TerminalStuff
 
             }
 
-            Plugin.MoreLogs("home");
+            Plugin.Spam("home");
             AddKeywordToExistingNode("home", Plugin.instance.Terminal.terminalNodes.specialNodes[1]);
         }
 
@@ -136,7 +136,7 @@ namespace TerminalStuff
             {
                 newParsedValue = true;
                 validFovNum = true;
-                Plugin.MoreLogs("))))))))))))))))))Integer Established");
+                Plugin.Spam("))))))))))))))))))Integer Established");
                 ParsedValue = parsedValue;
                 string displayText = $"Set your FOV to {ParsedValue}?\n\n\n\n\n\n\n\n\n\n\n\nPlease CONFIRM or DENY.\n";
                 return displayText;

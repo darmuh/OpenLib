@@ -109,7 +109,7 @@ namespace TerminalStuff
 
         internal static TerminalNode FindViewNode(int givenInt)
         {
-            if (givenInt < 0 || givenInt > ViewCommands.termViewNodes.Count - 1)
+            if (givenInt < 0 || givenInt >= ViewCommands.termViewNodes.Count)
                 return null;
             foreach (KeyValuePair<TerminalNode, int> pairValue in ViewCommands.termViewNodes)
             {
@@ -257,13 +257,16 @@ namespace TerminalStuff
 
         }
 
-        internal static void FirstCheck(ref TerminalNode initialResult)
+        internal static void FirstCheck(TerminalNode initialResult)
         {
+            if (initialResult == null)
+                return;
+
             MoreCamStuff.VideoPersist(initialResult.name);
 
             MoreCamStuff.CamPersistance(initialResult.name);
 
-            if (initialResult != null && !MenuBuild.allMenuNodes.ContainsKey(initialResult))
+            if (initialResult != null && !MenuBuild.allMenuNodes.ContainsValue(initialResult))
             {
                 MenuBuild.CheckAndResetMenuVariables();
             }

@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Video;
 using static TerminalStuff.NoMoreAPI.TerminalHook;
+using static TerminalStuff.NoMoreAPI.CommandStuff;
 using static TerminalStuff.StringStuff;
 using static TerminalStuff.TerminalEvents;
 using static TerminalStuff.AlwaysOnStuff;
@@ -26,6 +27,7 @@ namespace TerminalStuff
                 Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
                 Plugin.AddKeywords();
                 TerminalStartPatch.firstload = false;
+                Plugin.Allnodes = GetAllNodes();
             }
         }
 
@@ -34,7 +36,9 @@ namespace TerminalStuff
         {
             static void Postfix()
             {
-                Plugin.MoreLogs($"LoadNewNode patch, nNS: {NetHandler.netNodeSet}");
+                Plugin.Spam($"LoadNewNode patch, nNS: {NetHandler.netNodeSet}");
+                if (Plugin.instance.Terminal.currentNode != null)
+                    Plugin.Spam($"node: {Plugin.instance.Terminal.currentNode.name}");
             }
         }
 
@@ -85,7 +89,7 @@ namespace TerminalStuff
             private static void HandleAlwaysOnQuit(Terminal instance)
             {
                 instance.StartCoroutine(instance.waitUntilFrameEndToSetActive(active: true));
-                Plugin.MoreLogs("Screen set to active");
+                Plugin.Spam("Screen set to active");
                 if (ViewCommands.isVideoPlaying)
                 {
                     instance.videoPlayer.Pause();
@@ -147,15 +151,42 @@ namespace TerminalStuff
 
                 yield return new WaitForSeconds(1);
                 Plugin.MoreLogs("1 Second delay methods starting.");
+                StoreCommands(); //adding after delay for storerotation mod
                 SplitViewChecks.CheckForSplitView("neither");
                 Plugin.MoreLogs("disabling cams views");
                 ViewCommands.isVideoPlaying = false;
                 StartOfRound.Instance.mapScreen.SwitchRadarTargetAndSync(0); //fix vanilla bug where you need to switch map target at start
+                NetHandler.UpgradeStatusCheck(); // sync upgrades status for this save
                 TerminalClockStuff.StartClockCoroutine();
                 AlwaysOnStart(Plugin.instance.Terminal, startNode);
                 yield return new WaitForSeconds(0.1f);
                 StartCheck(Plugin.instance.Terminal, startNode);
+                DebugShowInfo();
                 delayStartEnum = false;
+            }
+
+            private static void DebugShowInfo()
+            {
+                /* Plugin.MoreLogs("------------------------ all nodes in darmuhsTerminalStuff dictionary ------------------------");
+                foreach(KeyValuePair<TerminalNode, Func<string>> item in darmuhsTerminalStuff)
+                {
+                    Plugin.MoreLogs($"{item.Key.name}");
+                } */
+                Plugin.Spam($"darmuhsTerminalStuff Count: {darmuhsTerminalStuff.Count}");
+                /* Plugin.MoreLogs("------------------------ all keywords in darmuhsTerminalStuff dictionary ------------------------");
+                foreach(TerminalKeyword keyword in darmuhsKeywords)
+                {
+                    Plugin.MoreLogs($"{keyword.word}");
+                } */
+                Plugin.Spam($"darmuhsKeywords Count: {darmuhsKeywords.Count}");
+                Plugin.Spam($"allMenuNodes Count: {MenuBuild.allMenuNodes.Count}");
+                Plugin.Spam($"comfortEnabledCommands Count: {MenuBuild.comfortEnabledCommands.Count}");
+                Plugin.Spam($"isNextEnabled: {MenuBuild.isNextEnabled}");
+                Plugin.Spam($"Terminal Keywords Count: {Plugin.instance.Terminal.terminalNodes.allKeywords.Length}");
+                Plugin.Spam($"Plugin.Allnodes: {Plugin.Allnodes.Count}");
+                
+                Plugin.Spam("------------------------ end of darmuh's debug info ------------------------");
+
             }
 
             private static void OverWriteTextNodes()
@@ -166,19 +197,19 @@ namespace TerminalStuff
                     startNode = Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[1];
                     helpNode = Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[13];
                     string original = helpNode.displayText;
-                    Plugin.MoreLogs(original);
+                    Plugin.Spam(original);
                     string replacement = original.Replace("To see the list of moons the autopilot can route to.", "List of moons the autopilot can route to.").Replace("To see the company store's selection of useful items.", "Company store's selection of useful items.").Replace("[numberOfItemsOnRoute]", ">MORE\r\nTo see a list of commands added via darmuhsTerminalStuff\r\n\r\n[numberOfItemsOnRoute]");
-                    Plugin.MoreLogs($"{replacement}");
+                    Plugin.Spam($"{replacement}");
 
                     Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[13].displayText = replacement;
-                    Plugin.MoreLogs("~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HELP MODIFIED ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    Plugin.Spam("~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HELP MODIFIED ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                     //string maskasciiart = "     ._______.\r\n     | \\   / |\r\n  .--|.O.|.O.|______.\r\n__).-| = | = |/   \\ |\r\np__) (.'---`.)Q.|.Q.|--.\r\n      \\\\___// = | = |-.(__\r\n       `---'( .---. ) (__&lt;\r\n             \\\\.-.//\r\n              `---'\r\n\t\t\t  ";
                     string asciiArt = ConfigSettings.homeTextArt.Value;
                     asciiArt = asciiArt.Replace("[leadingSpace]", " ");
                     asciiArt = asciiArt.Replace("[leadingSpacex4]", "    ");
                     //no known compatibility issues with home screen
-                    startNode.displayText = $"{ConfigSettings.homeLine1.Value}\r\n{ConfigSettings.homeLine2.Value}\r\n\r\n>>Type \"Help\" for a list of commands.\r\n>>Type \"More\" for a list of darmuh's commands.\r\n\r\n{asciiArt}\r\n\r\n{ConfigSettings.homeLine3.Value}\r\n\r\n";
+                    startNode.displayText = $"{ConfigSettings.homeLine1.Value}\r\n{ConfigSettings.homeLine2.Value}\r\n\r\n{ConfigSettings.homeHelpLines.Value}\r\n{asciiArt}\r\n\r\n{ConfigSettings.homeLine3.Value}\r\n\r\n";
                     GameStartPatch.oneTimeOnly = true;
                 }
 
@@ -198,7 +229,7 @@ namespace TerminalStuff
             public static void ToggleScreen(bool status)
             {
                 Plugin.instance.Terminal.StartCoroutine(Plugin.instance.Terminal.waitUntilFrameEndToSetActive(status));
-                Plugin.MoreLogs($"Screen set to {status}");
+                Plugin.Spam($"Screen set to {status}");
             }
 
             private static void AlwaysOnStart(Terminal thisterm, TerminalNode startNode)
@@ -206,10 +237,10 @@ namespace TerminalStuff
 
                 if (ConfigSettings.alwaysOnAtStart.Value && !firstload)
                 {
-                    Plugin.MoreLogs("Setting AlwaysOn Display.");
+                    Plugin.Spam("Setting AlwaysOn Display.");
                     if (ConfigSettings.networkedNodes.Value && ConfigSettings.ModNetworking.Value)
                     {
-                        Plugin.MoreLogs("network nodes enabled, syncing alwayson status");
+                        Plugin.Spam("network nodes enabled, syncing alwayson status");
                         NetHandler.Instance.StartAoDServerRpc(true);
                         firstload = true;
                     }
@@ -228,7 +259,7 @@ namespace TerminalStuff
             {
                 if (!ConfigSettings.ModNetworking.Value || !ConfigSettings.networkedNodes.Value)
                 {
-                    Plugin.MoreLogs("Networking disabled, returning...");
+                    Plugin.Spam("Networking disabled, returning...");
                     thisterm.LoadNewNode(startNode);
                     return;
                 }
@@ -241,9 +272,9 @@ namespace TerminalStuff
                 }
                 else
                 {
-                    Plugin.MoreLogs("------------ CLIENT JUST LOADED --------------");
-                    Plugin.MoreLogs("grabbing node from host");
-                    Plugin.MoreLogs("------------ CLIENT JUST LOADED --------------");
+                    Plugin.Spam("------------ CLIENT JUST LOADED --------------");
+                    Plugin.Spam("grabbing node from host");
+                    Plugin.Spam("------------ CLIENT JUST LOADED --------------");
 
                     int hostClient = Misc.HostClientID();
                     NetHandler.Instance.GetCurrentNodeServerRpc(((int)StartOfRound.Instance.localPlayerController.playerClientId), hostClient);
@@ -261,7 +292,7 @@ namespace TerminalStuff
 
                     foreach (string keyword in getKeywords)
                     {
-                        CheckForAndDeleteKeyWord(keyword);
+                        CheckForAndDeleteKeyWord(keyword.ToLower());;
                     }
                 }
                 if (ConfigSettings.terminalITP.Value && Plugin.InverseTP == null)
@@ -270,7 +301,7 @@ namespace TerminalStuff
 
                     foreach (string keyword in getKeywords)
                     {
-                        CheckForAndDeleteKeyWord(keyword);
+                        CheckForAndDeleteKeyWord(keyword.ToLower());
                     }
                 }
 
@@ -281,7 +312,7 @@ namespace TerminalStuff
                 //deletes keywords at game start if they exist from previous plays
 
                 CheckForAndDeleteKeyWord("view monitor");
-                MakeCommand("ViewInsideShipCam 1", "view monitor", "", false, true, ViewCommands.TermMapEvent, darmuhsTerminalStuff);
+                MakeCommand("ViewInsideShipCam 1", "view monitor", "view monitor", false, true, ViewCommands.TermMapEvent, darmuhsTerminalStuff, 5, "map", ViewCommands.termViewNodes, ViewCommands.termViewNodeNums);
                 //AddCommand(string textFail, bool clearText, List<TerminalNode> nodeGroup, string keyWord, bool isVerb, string nodeName, string category, string description, CommandDelegate methodName)
             }
         }
@@ -301,13 +332,13 @@ namespace TerminalStuff
                 //walkie functions
                 if (ConfigSettings.walkieTerm.Value)
                 {
-                    Plugin.MoreLogs("Starting TalkinTerm Coroutine");
+                    Plugin.Spam("Starting TalkinTerm Coroutine");
                     instance.StartCoroutine(WalkieTerm.TalkinTerm());
                 }
 
                 if (ConfigSettings.terminalShortcuts.Value && ShortcutBindings.keyActions.Count > 0)
                 {
-                    Plugin.MoreLogs("Listening for shortcuts");
+                    Plugin.Spam("Listening for shortcuts");
                     instance.StartCoroutine(ShortcutBindings.TerminalShortCuts());
                 }
 
@@ -379,7 +410,7 @@ namespace TerminalStuff
                 Terminal instanceCopy = __instance;
                 if (node.name == "darmuh's videoPlayer" && sanityCheckLOL)
                 {
-                    Plugin.MoreLogs("testing patch");
+                    Plugin.Spam("testing patch");
                     if (!ViewCommands.isVideoPlaying)
                     {
                         __instance.videoPlayer.enabled = true;
@@ -427,7 +458,7 @@ namespace TerminalStuff
 
                 Plugin.instance.Terminal = __instance;
 
-                StartofHandling.FirstCheck(ref __result);
+                StartofHandling.FirstCheck(__result);
 
                 string cleanedText = GetCleanedScreenText(__instance);
                 string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -462,7 +493,7 @@ namespace TerminalStuff
                     return;
 
                 NetHandler.Instance.SyncDropShipServerRpc();
-                Plugin.MoreLogs($"items: {Plugin.instance.Terminal.orderedItemsFromTerminal.Count}");
+                Plugin.Spam($"items: {Plugin.instance.Terminal.orderedItemsFromTerminal.Count}");
             }
         }
 

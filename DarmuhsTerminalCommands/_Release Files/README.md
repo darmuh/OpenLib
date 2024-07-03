@@ -12,6 +12,7 @@
  - Configurable Terminal Clock feature that will always be displayed alongside credits!
  - Configurable Use-Walkie at Terminal feature that will allow you to bind one key and one mousebutton to use any powered walkie from your inventory!
  - Terminal Shortcuts can be set using the bind command and removed using the unbind command! These binds will be saved in the config for continued use.
+ - [**NEW IN 3.2.0**] Configurable "Purchase Packs" that let you buy multiple items from the store with one command!
  - Cams commands can now show player povs even without a separate bodycam mod present.
 	- Still compatibile with every major bodycam mod; OpenBodyCams, Helmet Cameras, and Solos Bodycams are all compatible!
  - Expanded compatibility with LethalLevelLoader, OpenBodyCams, and TwoRadarMaps!

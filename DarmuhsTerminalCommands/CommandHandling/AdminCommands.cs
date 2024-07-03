@@ -44,7 +44,7 @@ namespace TerminalStuff
             }
             else
             {
-                Plugin.MoreLogs("ulong failed parse");
+                Plugin.Spam("ulong failed parse");
                 string targetPlayerName = words[1].ToLower();
                 foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
                 {
@@ -125,13 +125,13 @@ namespace TerminalStuff
 
             kickEnum = true;
 
-            Plugin.MoreLogs("We made it to the kick event!!");
-            Plugin.MoreLogs("playerObjIdForTerminal = " + playerNum.ToString());
+            Plugin.Spam("We made it to the kick event!!");
+            Plugin.Spam("playerObjIdForTerminal = " + playerNum.ToString());
 
             Plugin.instance.Terminal.QuitTerminal();
             yield return new WaitForSeconds(0.1f);
             StartOfRound.Instance.KickPlayer(playerNum);
-            Plugin.MoreLogs("kicked");
+            Plugin.Spam("kicked");
 
             kickEnum = false;
         }

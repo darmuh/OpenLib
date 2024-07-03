@@ -2,15 +2,18 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using static TerminalStuff.GetFromConfig;
+using static TerminalStuff.NoMoreAPI.TerminalHook;
+using static TerminalStuff.NoMoreAPI.RemoveThings;
 
 
 namespace TerminalStuff
 {
-    [BepInPlugin("darmuh.TerminalStuff", "darmuhsTerminalStuff", "3.1.0")]
+    [BepInPlugin("darmuh.TerminalStuff", "darmuhsTerminalStuff", "3.2.0")]
     //[BepInDependency("atomic.terminalapi")]
     //[BepInDependency("Rozebud.FovAdjust")]
 
@@ -21,7 +24,7 @@ namespace TerminalStuff
         {
             public const string PLUGIN_GUID = "darmuh.TerminalStuff";
             public const string PLUGIN_NAME = "darmuhsTerminalStuff";
-            public const string PLUGIN_VERSION = "3.1.0";
+            public const string PLUGIN_VERSION = "3.2.0";
         }
 
         internal static ManualLogSource Log;
@@ -35,6 +38,7 @@ namespace TerminalStuff
         public bool OpenBodyCamsMod = false;
         public bool TwoRadarMapsMod = false;
         public bool suitsTerminal = false;
+        public bool TerminalFormatter = false;
 
         //public stuff for instance
         public bool radarNonPlayer = false;
@@ -52,6 +56,7 @@ namespace TerminalStuff
         public bool hSuccess = false;
 
         internal Terminal Terminal;
+        internal static List<TerminalNode> Allnodes = [];
         internal static ShipTeleporter NormalTP;
         internal static ShipTeleporter InverseTP;
         //internal ManualCameraRenderer MapScreen;
@@ -107,15 +112,39 @@ namespace TerminalStuff
                 return;
         }
 
+        internal static void Spam(string message)
+        {
+            if (ConfigSettings.developerLogging.Value)
+                Log.LogInfo(message);
+            else
+                return;
+        }
+
         internal static void ERROR(string message)
         {
             Log.LogError(message);
         }
 
+        internal static void ClearLists()
+        {
+            //decided to let commands persist between different saves while game is still launched...
+            //if someone wants to disable a command, currently they will need to relaunch
+
+            //trying to recreate commands
+            darmuhsUnlockableNodes.Clear(); //not a good idea to clear unless commands get re-created
+            darmuhsStorePacks.Clear();
+            DeleteAllNodes(ref TerminalEvents.darmuhsTerminalStuff);
+            DeleteAllKeywords(ref TerminalEvents.darmuhsKeywords);
+            ViewCommands.termViewNodes.Clear(); //clearing causes issues, so does trying to re-use nodes
+            ViewCommands.termViewNodeNums.Clear();
+            DynamicCommands.nodesThatAcceptAnyString.Clear();
+            DynamicCommands.nodesThatAcceptNum.Clear();
+            CostCommands.itemsIndexed.Clear();
+        }
+
         internal static void AddKeywords()
         {
             DynamicCommands.GetConfigKeywordsToUse();
-            TerminalEvents.StoreCommands();
             AddKeywordIfEnabled(ConfigSettings.terminalQuit.Value, TerminalEvents.AddQuitKeywords);
             AddKeywordIfEnabled(ConfigSettings.terminalVideo.Value, TerminalEvents.VideoKeywords);
             AddKeywordIfEnabled(ConfigSettings.terminalLoot.Value, TerminalEvents.LootKeywords);
@@ -143,7 +172,6 @@ namespace TerminalStuff
             AddKeywordIfEnabled(ConfigSettings.terminalRefund.Value, TerminalEvents.RefundKeywords, ConfigSettings.ModNetworking.Value); //unable to sync between clients without netpatch
             AddKeywordIfEnabled(ConfigSettings.terminalVitals.Value, TerminalEvents.VitalsKeywords, ConfigSettings.ModNetworking.Value);
             AddKeywordIfEnabled(ConfigSettings.terminalRouteRandom.Value, TerminalEvents.RouteRandomKeywords, ConfigSettings.ModNetworking.Value);
-
         }
 
         private static void AddKeywordIfEnabled(bool isEnabled, Action keywordAction)

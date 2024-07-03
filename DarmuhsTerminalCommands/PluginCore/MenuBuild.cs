@@ -18,7 +18,7 @@ namespace TerminalStuff
         internal static List<string> extrasEnabledCommands = [];
         internal static List<string> controlsEnabledCommands = [];
         internal static List<string> funEnabledCommands = [];
-        internal static Dictionary<TerminalNode, int> allMenuNodes = [];
+        internal static Dictionary<int, TerminalNode> allMenuNodes = [];
 
         internal static void CheckAndResetMenuVariables()
         {
@@ -130,6 +130,12 @@ namespace TerminalStuff
 
         internal static void CreateMenus()
         {
+            allMenuNodes.Clear();
+            comfortEnabledCommands.Clear();
+            extrasEnabledCommands.Clear();
+            controlsEnabledCommands.Clear();
+            funEnabledCommands.Clear();
+
             AddComfortCommands();
             AddExtrasCommands();
             AddControlsCommands();
@@ -139,15 +145,23 @@ namespace TerminalStuff
 
             if (extrasEnabledCommands.Count > 0)
                 CreateExtrasCommand();
+            else
+                Plugin.MoreLogs($"extrasEnabledCommands count: {extrasEnabledCommands.Count}");
 
             if (controlsEnabledCommands.Count > 0)
                 CreateControlsCommand();
+            else
+                Plugin.MoreLogs($"controlsEnabledCommands count: {controlsEnabledCommands.Count}");
 
             if (funEnabledCommands.Count > 0)
                 CreateFunListCommand();
+            else
+                Plugin.MoreLogs($"funEnabledCommands count: {funEnabledCommands.Count}");
 
             if (comfortEnabledCommands.Count > 0)
                 CreateComfortCommand();
+            else
+                Plugin.MoreLogs($"comfortEnabledCommands count: {comfortEnabledCommands.Count}");
 
 
         }
@@ -170,7 +184,7 @@ namespace TerminalStuff
             if (ConfigSettings.terminalKick.Value && (GameNetworkManager.Instance != null && GameNetworkManager.Instance.isHostingGame))
                 comfortEnabledCommands.Add($"> kick\r\nKick another employee from your group.\r\n");
             if (ConfigSettings.terminalLobby.Value)
-                comfortEnabledCommands.Add($"> lobby\r\nDisplay current lobby name.\r\n");
+                comfortEnabledCommands.Add($"> {GetKeywordsForMenuItem(lobbyKW)}\r\nDisplay current lobby name.\r\n");
             if (ConfigSettings.terminalMods.Value)
                 comfortEnabledCommands.Add($"> {GetKeywordsForMenuItem(modsKW)}\r\nDisplay your currently loaded Mods.\r\n");
             if (ConfigSettings.terminalQuit.Value)

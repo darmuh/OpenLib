@@ -166,6 +166,7 @@
     <Compile Include="Compatibility\FovAdjustStuff.cs" />
     <Compile Include="CommandHandling\GambaCommands.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="NoMoreAPI\RemoveThings.cs" />
     <Compile Include="NoMoreAPI\TerminalHook.cs" />
     <Compile Include="NoMoreAPI\CommandStuff.cs" />
     <Compile Include="PluginCore\BoolStuff.cs" />

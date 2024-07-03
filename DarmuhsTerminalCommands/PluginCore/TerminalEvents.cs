@@ -13,14 +13,17 @@ namespace TerminalStuff
     public static class TerminalEvents
     {
         public static Dictionary<TerminalNode, Func<string>> darmuhsTerminalStuff = [];
+        internal static List<TerminalKeyword> darmuhsKeywords = [];
         internal static string TotalValueFormat = "";
         internal static string VideoErrorMessage = "";
         public static bool clockDisabledByCommand = false;
 
+
         internal static bool quitTerminalEnum = false;
 
+
+        internal static GameObject dummyObject;
         internal static TerminalNode switchNode = CreateDummyNode("switchDummy", true, "this should not display, switch command");
-        //internal static TerminalNode returnCams = CreateDummyNode("returnCamsDummy", true, "this should not display, returnCams node");
 
         internal static Func<string> GetCommandDisplayTextSupplier(TerminalNode query)
         {
@@ -48,24 +51,58 @@ namespace TerminalStuff
 
         internal static void StoreCommands()
         {
+            //dummyObject = new("darmuh's dummy item (Clone)");
             if (ConfigSettings.terminalBioScan.Value && ConfigSettings.terminalBioScanPatch.Value && ConfigSettings.ModNetworking.Value)
             {
                 string patchDeny = $"You have opted out of purchasing the BioScanner 2.0 Upgrade Patch.\n\n";
-                MakeStoreCommand($"bioscanpatch_node", "bioscanpatch", "BioScanner 2.0 Upgrade Patch (bioscanpatch)", false, true, false, $"bioscanpatch_confirm_node", $"bioscanpatch_deny_node", "bioscanpatch.do", patchDeny, ConfigSettings.bioScanUpgradeCost.Value, CostCommands.AskBioscanUpgrade, CostCommands.PerformBioscanUpgrade, darmuhsTerminalStuff);
+                MakeStoreCommand($"bioscanpatch_node", "bioscanpatch", "BioscanPatch", false, true, false, "bioscanpatch.do", patchDeny, ConfigSettings.bioScanUpgradeCost.Value, CostCommands.AskBioscanUpgrade, CostCommands.PerformBioscanUpgrade, darmuhsTerminalStuff);
             }
 
             if (ConfigSettings.terminalVitals.Value && ConfigSettings.terminalVitalsUpgrade.Value && ConfigSettings.ModNetworking.Value)
             {
                 string patchDeny = $"You have opted out of purchasing the Vitals Scanner Upgrade.\n\n";
-                MakeStoreCommand($"vitalspatch_node", "vitalspatch", "Vitals Scanner Upgrade (vitalspatch)", false, true, false, $"vitalspatch_confirm_node", $"vitalspatch_deny_node", "vitalspatch.do", patchDeny, ConfigSettings.vitalsUpgradeCost.Value, CostCommands.AskVitalsUpgrade, CostCommands.PerformVitalsUpgrade, darmuhsTerminalStuff);
+                MakeStoreCommand($"vitalspatch_node", "vitalspatch", "VitalsPatch", false, true, false, "vitalspatch.do", patchDeny, ConfigSettings.vitalsUpgradeCost.Value, CostCommands.AskVitalsUpgrade, CostCommands.PerformVitalsUpgrade, darmuhsTerminalStuff);
             }
 
+            StorePacks();
 
+
+
+            if (Plugin.instance.TerminalFormatter)
+                return;
+
+            AddShopItemsToFurnitureList();
+        }
+
+        private static void AddShopItemsToFurnitureList()
+        {
+            foreach (TerminalNode shopNode in darmuhsUnlockableNodes)
+            {
+
+                if (!Plugin.instance.Terminal.ShipDecorSelection.Contains(shopNode))
+                {
+                    Plugin.instance.Terminal.ShipDecorSelection.Add(shopNode);
+                    Plugin.Spam($"adding {shopNode.creatureName} to shipdecorselection");
+                }
+                else
+                {
+                    Plugin.Spam($"{shopNode.creatureName} already in shipdecorselection");
+                }
+            }
+
+            Plugin.Spam("nodes have been added");
         }
 
         internal static void LobbyKeywords()
         {
-            MakeCommand("Lobby Name", "lobby", "lobby command\n", false, true, MoreCommands.GetLobbyName, darmuhsTerminalStuff);
+            List<string> getKeywords = GetKeywordsPerConfigItem(ConfigSettings.lobbyKeywords.Value);
+
+            foreach (string keyword in getKeywords)
+            {
+                MakeCommand("Lobby Name", keyword, "lobby command\n", false, true, MoreCommands.GetLobbyName, darmuhsTerminalStuff);
+            }
+
+            //MakeCommand("Lobby Name", "lobby", "lobby command\n", false, true, MoreCommands.GetLobbyName, darmuhsTerminalStuff);
         }
 
         internal static void ListItemsKeywords()
@@ -98,7 +135,7 @@ namespace TerminalStuff
 
             foreach (string keyword in getKeywords)
             {
-                MakeCommand("terminalStuff Mirror", keyword, "", false, true, ViewCommands.MirrorEvent, darmuhsTerminalStuff, 6, "mirror", ViewCommands.termViewNodes, ViewCommands.termViewNodeNums);
+                MakeCommand("TerminalStuff Mirror", keyword, "", false, true, ViewCommands.MirrorEvent, darmuhsTerminalStuff, 6, "mirror", ViewCommands.termViewNodes, ViewCommands.termViewNodeNums);
             }
 
         }
@@ -114,6 +151,26 @@ namespace TerminalStuff
         {
             MakeCommand("Switch to Previous", "previous", "switch back\n", false, true, ViewCommands.HandlePreviousSwitchEvent, darmuhsTerminalStuff);
 
+        }
+
+        internal static void StorePacks()
+        {
+            if (!ConfigSettings.terminalPurchasePacks.Value)
+                return;
+
+            if (ConfigSettings.purchasePackCommands.Value == "")
+                return;
+
+            Dictionary<string, string> keywordAndItems = GetKeywordAndItemNames(ConfigSettings.purchasePackCommands.Value);
+
+            if (keywordAndItems.Count == 0)
+                return;
+
+            foreach(KeyValuePair<string, string> item in keywordAndItems)
+            {
+                Plugin.Spam($"setting {item.Key} keyword to purchase pack with items: {item.Value}");
+                MakeStoreCommand($"{item.Key}", $"{item.Key}", $"{item.Key}", false, true, false, "", $"You have cancelled the purchase of Purchase Pack [{item.Key}.]\r\n\r\n", 0, CostCommands.AskPurchasePack, CostCommands.CompletePurchasePack, $"{item.Value}", darmuhsTerminalStuff);
+            }
         }
 
         //view commands
@@ -372,7 +429,7 @@ namespace TerminalStuff
         private static string ClearText()
         {
             string displayText = "\n";
-            Plugin.MoreLogs("display text cleared for real this time!!!");
+            Plugin.Spam("display text cleared for real this time!!!");
             return displayText;
         }
     }

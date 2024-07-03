@@ -29,6 +29,7 @@ namespace TerminalStuff
         internal static List<string> leverKW;
         internal static List<string> mirrorKW;
         internal static List<string> rrKW;
+        internal static List<string> lobbyKW;
 
         internal static void CreateKeywordLists()
         {
@@ -56,6 +57,7 @@ namespace TerminalStuff
             leverKW = GetKeywordsPerConfigItem(ConfigSettings.leverKeywords.Value);
             mirrorKW = GetKeywordsPerConfigItem(ConfigSettings.mirrorKeywords.Value);
             rrKW = GetKeywordsPerConfigItem(ConfigSettings.randomRouteKeywords.Value);
+            lobbyKW = GetKeywordsPerConfigItem(ConfigSettings.lobbyKeywords.Value);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using GameNetcodeStuff;
 using OpenBodyCams;
 using OpenBodyCams.API;
+using suitsTerminal;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using static TerminalStuff.Misc;
@@ -19,74 +21,191 @@ namespace TerminalStuff
         internal static float defFarClip;
         internal static float defaultFov;
 
-        internal static bool usingMirror;
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         internal static void UpdateCamsTarget()
         {
-            Plugin.MoreLogs("Getting ZaggyCam texture");
+            Plugin.MoreLogs("OBC - Getting ZaggyCam texture");
             if (TerminalBodyCam == null || TerminalBodyCam.gameObject == null || ((BodyCamComponent)TerminalBodyCam) == null)
+            {
                 CreateTerminalBodyCam();
-
-            TerminalCameraStatus(true);
-            Plugin.MoreLogs($"Attempting to grab targetTexture");
-            usingMirror = false;
-            SetBodyCamTexture(((BodyCamComponent)TerminalBodyCam).GetCamera().targetTexture);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static void OpenBodyCamsMirror()
-        {
-            Plugin.MoreLogs("Getting ZaggyCam texture");
-            if (TerminalMirrorCam == null || TerminalMirrorCam.gameObject == null || ((BodyCamComponent)TerminalMirrorCam) == null)
-                CreateTerminalMirror();
-
-            TerminalMirrorStatus(true);
-            Plugin.MoreLogs($"Attempting to grab targetTexture");
-            usingMirror = true;
-            SetBodyCamTexture(((BodyCamComponent)TerminalMirrorCam).GetCamera().targetTexture);
+                return;
+            }
+            else
+            {
+                ToggleOpenCams(true, false);
+                Plugin.MoreLogs($"OBC - camera already created, assigning targetTexture and enabling camera");
+            }
+                
+            
         }
 
         private static void CameraEvent(Camera cam)
         {
-            Plugin.MoreLogs($"Camera created, Updating target.");
-            UpdateCamsTarget();
+            Plugin.MoreLogs($"OBC - Camera {cam.name} created.");
+            //UpdateCamsTarget();
         }
 
-        private static void SetBodyCamTexture(RenderTexture texture)
+        private static void SetMirrorCamTexture(RenderTexture texture)
         {
-            Plugin.MoreLogs("RenderTexture Created, updating values");
             ViewCommands.camsTexture = texture;
+            Plugin.MoreLogs("OBC - Setting mirror texture stuff");
+            TerminalMirrorStatus(true);
+        }
 
-            if (!usingMirror)
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void CreateTerminalBodyCam()
+        {
+            Plugin.MoreLogs("OBC - CreateTerminalBodyCam()");
+
+            if (!Plugin.instance.OpenBodyCamsMod)
+                return;
+
+            ToggleOpenCams(true, false);
+
+            if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
-                if (ViewCommands.AnyActiveMonitoring() && (Plugin.instance.Terminal.terminalInUse || AllMyTerminalPatches.TerminalStartPatch.alwaysOnDisplay))
-                {
-                    Plugin.MoreLogs("Active Cams mode detected on terminal");
-                    TerminalCameraStatus(true);
-                    ViewCommands.ReInitCurrentMode(texture);
-                    ReturnToBodyCam(texture);
-                    return;
-                }
-            }
-            else
-            {
-                Plugin.MoreLogs("Setting mirror texture stuff");
-                TerminalMirrorStatus(true);
-                ChangeTerminalCameraView(usingMirror);
+                Plugin.MoreLogs("OBC - bodycam already created and should be enabled, returning");
                 return;
             }
 
+            if (Plugin.instance.TwoRadarMapsMod)
+            {
+                TwoRadarMapsCamCreate();
+            }
+            else
+            {
+                Plugin.MoreLogs("OBC - Creating bodycam synced to mapScreen");
+                var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, StartOfRound.Instance.mapScreen);
+
+                TerminalBodyCam = terminalBodyCam;
+                terminalBodyCam.Resolution = GetResolutionForOBC(ConfigSettings.obcResolutionBodyCam.Value);
+                terminalBodyCam.OnRenderTextureCreated += ViewCommands.SetBodyCamTexture;
+                terminalBodyCam.OnCameraCreated += CameraEvent;
+                terminalBodyCam.OnBlankedSet += CamIsBlanked;
+                terminalBodyCam.ForceEnableCamera = true;
+                Camera cam = terminalBodyCam.GetCamera();
+                cam.gameObject.name = "TerminalStuff OBC bodycam";
+                ViewCommands.SetBodyCamTexture(cam.targetTexture);
+                terminalBodyCam.SetTargetToPlayer(GetPlayerUsingTerminal());
+            }
+
+            Plugin.MoreLogs("OBC - darmuhsTerminalStuff OBC termcam updated!");
         }
 
-        private static void ReturnToBodyCam(RenderTexture texture)
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void ResidualCamsCheck()
         {
-            if (ViewCommands.AnyActiveMonitoring() && (Plugin.instance.Terminal.terminalInUse || AllMyTerminalPatches.TerminalStartPatch.alwaysOnDisplay))
+            if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
-                Plugin.MoreLogs("Active Cams mode detected on terminal");
-                TerminalCameraStatus(true);
-                ViewCommands.ReInitCurrentMode(texture);
+                Object.Destroy(((BodyCamComponent)TerminalBodyCam));
+                TerminalBodyCam = null;
+                Plugin.MoreLogs("Attempting to destroy residual TerminalBodyCam");
             }
+
+            if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
+            {
+                Object.Destroy(((BodyCamComponent)TerminalMirrorCam));
+                TerminalMirrorCam = null;
+                Plugin.MoreLogs("Attempting to destroy residual TerminalMirrorCam");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void TwoRadarMapsCamCreate()
+        {
+            if (!Plugin.instance.OpenBodyCamsMod || !Plugin.instance.TwoRadarMapsMod)
+                return;
+
+            ToggleOpenCams(true, false);
+
+            if(TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
+            {
+                Plugin.MoreLogs("OBC - bodycam already created and should be enabled, returning");
+                return;
+            }
+
+            Plugin.MoreLogs("OBC - Tying bodycam to tworadarmaps radarview");
+            var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, TwoRadarMaps.Plugin.TerminalMapRenderer);
+
+            TerminalBodyCam = terminalBodyCam;
+            terminalBodyCam.Resolution = GetResolutionForOBC(ConfigSettings.obcResolutionBodyCam.Value);
+            terminalBodyCam.OnRenderTextureCreated += ViewCommands.SetBodyCamTexture;
+            terminalBodyCam.OnCameraCreated += CameraEvent;
+            terminalBodyCam.OnBlankedSet += CamIsBlanked;
+            terminalBodyCam.ForceEnableCamera = true;
+            Camera cam = terminalBodyCam.GetCamera();
+            cam.gameObject.name = "TerminalStuff 2RadarCompat OBC bodycam";
+            cam.gameObject.SetActive(true);
+            ViewCommands.SetBodyCamTexture(cam.targetTexture);
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void TerminalCameraStatus(bool enabled)
+        {
+            if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
+            {
+                Plugin.MoreLogs($"OBC - BodyCam Screen Enabled: [{enabled}]");
+                MoreCamStuff.ToggleCamState(((BodyCamComponent)TerminalBodyCam).GetCamera(), enabled);
+                showingBodyCam = enabled;
+            }
+
+        }
+
+        private static void ToggleOpenCams(bool bodyCam, bool mirrorCam)
+        {
+            if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
+            {
+                ((BodyCamComponent)TerminalBodyCam).ForceEnableCamera = bodyCam;
+                MoreCamStuff.ToggleCamState(((BodyCamComponent)TerminalBodyCam).GetCamera(), bodyCam);
+                Plugin.MoreLogs($"OBC - BodyCam detected and set to [{bodyCam}]");
+                showingBodyCam = bodyCam;
+            }
+
+            if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
+            {
+                ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = mirrorCam;
+                MoreCamStuff.ToggleCamState(((BodyCamComponent)TerminalMirrorCam).GetCamera(), mirrorCam);
+                Plugin.MoreLogs($"OBC - MirrorCam detected and set to [{mirrorCam}]");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void TerminalMirrorStatus(bool enabled)
+        {
+            if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
+            {
+                MoreCamStuff.ToggleCamState(((BodyCamComponent)TerminalMirrorCam).GetCamera(), enabled);
+                Plugin.MoreLogs($"OBC - Setting Mirror Status: [{enabled}]");
+            }
+                
+        }
+
+
+        // from suitsTerminal
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void OpenBodyCamsMirror()
+        {
+            Plugin.MoreLogs("OBC - Getting ZaggyCam texture OpenBodyCamsMirror()");
+            if ((TerminalMirrorCam == null || TerminalMirrorCam.gameObject == null || ((BodyCamComponent)TerminalMirrorCam) == null))
+                CreateTerminalMirror();
+
+            Plugin.MoreLogs($"OBC - Attempting to grab targetTexture");
+            SetMirrorCamTexture(((BodyCamComponent)TerminalMirrorCam).GetCamera().targetTexture);
+            ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = true;
+
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        internal static void OpenBodyCamsMirrorStatus(bool state)
+        {
+            Plugin.MoreLogs($"OBC - OpenBodyCamsMirrorStatus() state: {state}");
+            if (state)
+                OpenBodyCamsMirror();
+            else
+                TerminalCameraStatus(state);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -95,154 +214,96 @@ namespace TerminalStuff
             if (!Plugin.instance.OpenBodyCamsMod)
                 return;
 
-            if (TerminalBodyCam != null && TerminalBodyCam.gameObject != null)
-                Object.Destroy(TerminalBodyCam);
+            ToggleOpenCams(false, true);
 
-            if (TerminalMirrorCam != null && TerminalMirrorCam.gameObject != null)
-                Object.Destroy(TerminalMirrorCam);
+            if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
+            {
+                Plugin.MoreLogs("OBC - MirrorCam already created and should be enabled, returning");
+                return;
+            }
 
-            Plugin.MoreLogs("CreateTerminalMirror called");
-            var terminalMirrorCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, null);
+            Plugin.MoreLogs("OBC - CreateTerminalMirror called");
+            var terminalMirrorCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null);
 
             TerminalMirrorCam = terminalMirrorCam;
-            terminalMirrorCam.OnRenderTextureCreated += ViewCommands.SetBodyCamTexture;
-            Camera cam = terminalMirrorCam.GetCamera();
-            cam.gameObject.name = "darmuh's OBC mirrorcam";
-            terminalMirrorCam.Resolution = defaultRes;
-            ViewCommands.SetBodyCamTexture(cam.targetTexture);
+            terminalMirrorCam.OnRenderTextureCreated += SetMirrorCamTexture;
+            Renderer[] termStuffToHide = GetStuffToHide();
+            terminalMirrorCam.OnRenderersToHideChanged += originalRenderers => [.. termStuffToHide];
+            terminalMirrorCam.OnCameraCreated += ResetTransform;
+            terminalMirrorCam.OnBlankedSet += CamIsBlanked;
 
-            Plugin.MoreLogs("darmuh's OBC mirrorcam updated!");
+            terminalMirrorCam.Resolution = GetResolutionForOBC(ConfigSettings.obcResolutionMirror.Value);
+            terminalMirrorCam.SetTargetToTransform(Plugin.instance.Terminal.transform);
+            Camera cam = terminalMirrorCam.GetCamera();
+            cam.gameObject.name = "TerminalStuff obc mirrorcam";
+            SetMirrorCamTexture(cam.targetTexture);
+
+            cam.orthographic = true;
+            cam.orthographicSize = 3.4f;
+            cam.usePhysicalProperties = false;
+            cam.farClipPlane = 30f;
+            cam.nearClipPlane = 0.05f;
+            cam.fieldOfView = 130f;
+            MoreCamStuff.CamInitMirror(cam);
+            Plugin.MoreLogs("OBC - TerminalStuff obc mirrorcam created!");
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static void CreateTerminalBodyCam()
+        private static Renderer[] GetStuffToHide()
         {
-            if (!Plugin.instance.OpenBodyCamsMod)
-                return;
+            Plugin.MoreLogs("OBC - Getting renderers (stuff) to hide from mirrorcam!");
 
-            if (TerminalBodyCam != null && TerminalBodyCam.gameObject != null)
-                Object.Destroy(TerminalBodyCam);
-
-            if (TerminalMirrorCam != null && TerminalMirrorCam.gameObject != null)
-                Object.Destroy(TerminalMirrorCam);
-
-            Plugin.MoreLogs("CreateTerminalBodyCam called");
-
-            if (Plugin.instance.TwoRadarMapsMod)
+            Renderer termGameObject = Plugin.instance.Terminal.gameObject.GetComponent<MeshRenderer>();
+            Renderer[] allRenderers = [termGameObject];
+            if (GetTermObjects(out GameObject termCable, out GameObject termKeyboard))
             {
-                TwoRadarMapsCamCreate();
+                Renderer termCableRender = termCable.GetComponent<MeshRenderer>();
+                Renderer termKeyboardRender = termKeyboard.GetComponent<MeshRenderer>();
+                allRenderers = [termGameObject, termCableRender, termKeyboardRender];
+            }
+
+            return allRenderers;
+        }
+
+        private static bool GetTermObjects(out GameObject termCable, out GameObject termKeyboard)
+        {
+            termCable = GameObject.Find("Environment/HangarShip/Terminal/BezierCurve.001");
+            termKeyboard = GameObject.Find("Environment/HangarShip/Terminal/Terminal.003");
+            if (termCable && termKeyboard != null)
+                return true;
+            else
+                return false;
+        }
+
+        private static void CamIsBlanked(bool isBlanked)
+        {
+            Plugin.MoreLogs($"OBC - CamIsBlanked: {isBlanked}");
+            ResidualCamsCheck();
+        }
+
+        private static void ResetTransform(Camera cam)
+        {
+            Plugin.MoreLogs("OBC - ResetTransform Called!");
+            MoreCamStuff.CamInitMirror(cam);
+        }
+
+        private static Vector2Int GetResolutionForOBC(string configItem)
+        {
+            Vector2Int resolution;
+            List<string> resolutionStrings = StringStuff.GetKeywordsPerConfigItem(configItem);
+            List<int> resolutionList = StringStuff.GetNumberListFromStringList(resolutionStrings);
+            if (resolutionList.Count == 2)
+            {
+                resolution = new Vector2Int(resolutionList[0], resolutionList[1]);
+                Plugin.Log.LogInfo($"OBC - Resolution set to {resolutionList[0]}x{resolutionList[1]}");
+                return resolution;
             }
             else
             {
-                Plugin.MoreLogs("Creating bodycam with no obc syncing");
-                var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, StartOfRound.Instance.mapScreen);
-
-                TerminalBodyCam = terminalBodyCam;
-                terminalBodyCam.Resolution = defaultRes;
-                terminalBodyCam.OnRenderTextureCreated += ViewCommands.SetBodyCamTexture;
-                Camera cam = terminalBodyCam.GetCamera();
-                cam.gameObject.name = "darmuh's OBC bodycam";
-                ViewCommands.SetBodyCamTexture(cam.targetTexture);
-                GetCameraDefaults(cam.farClipPlane, cam.nearClipPlane, cam.fieldOfView);
+                resolution = new Vector2Int(1000, 700);
+                Plugin.Log.LogInfo($"OBC - Unable to set resolution to values provided in config: {configItem}\nUsing default of 1000x700");
+                return resolution;
             }
-
-            Plugin.MoreLogs("darmuh's OBC termcam updated!");
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void TwoRadarMapsCamCreate()
-        {
-            Plugin.MoreLogs("Tying bodycam to tworadarmaps radarview");
-            var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, TwoRadarMaps.Plugin.TerminalMapRenderer);
-
-            TerminalBodyCam = terminalBodyCam;
-            terminalBodyCam.Resolution = defaultRes;
-            terminalBodyCam.OnRenderTextureCreated += SetBodyCamTexture;
-            terminalBodyCam.OnCameraCreated += CameraEvent;
-            Camera cam = terminalBodyCam.GetCamera();
-            cam.gameObject.name = "darmuh's OBC bodycam";
-            SetBodyCamTexture(cam.targetTexture);
-            GetCameraDefaults(cam.farClipPlane, cam.nearClipPlane, cam.fieldOfView);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static void TerminalCameraStatus(bool enabled)
-        {
-            if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
-            {
-                Plugin.MoreLogs($"Screen Enabled: [{enabled}]");
-                ((BodyCamComponent)TerminalBodyCam).ForceEnableCamera = enabled;
-                showingBodyCam = enabled;
-            }
-
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static void TerminalMirrorStatus(bool enabled)
-        {
-            if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
-            {
-                Plugin.MoreLogs($"Screen Enabled: [{enabled}]");
-                ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = enabled;
-                showingBodyCam = enabled;
-            }
-
-        }
-
-        private static void GetCameraDefaults(float farClipPlane, float nearClipPlane, float fieldOfView)
-        {
-            Plugin.MoreLogs("getting default values");
-            defFarClip = farClipPlane;
-            defNearClip = nearClipPlane;
-            defaultFov = fieldOfView;
-        }
-
-        internal static void ChangeTerminalCameraView(bool isMirror)
-        {
-            Camera terminalCam = ((BodyCamComponent)TerminalMirrorCam).GetCamera();
-
-            if (isMirror)
-            {
-                Plugin.MoreLogs("Setting OBC terminal camera to mirror mode");
-                PlayerControllerB playerUsingTerminal = GetPlayerUsingTerminal();
-                if (playerUsingTerminal == null)
-                {
-                    Plugin.ERROR("Unable to determine player using temrinal for mirror command");
-                    return;
-                }
-
-                Transform termTransform = Plugin.instance.Terminal.transform;
-                Transform playerTransform = playerUsingTerminal.transform;
-                Plugin.MoreLogs("camTransform assigned to terminal");
-
-                // Calculate the opposite direction directly in local space
-                Vector3 oppositeDirection = -playerTransform.forward;
-
-                // Calculate the new rotation to look behind
-                Quaternion newRotation = Quaternion.LookRotation(oppositeDirection, playerTransform.up);
-
-                // Define the distance to back up the camera
-                float distanceBehind = 1f;
-
-                // Set camera's rotation and position
-                terminalCam.transform.rotation = newRotation;
-                terminalCam.transform.position = playerTransform.position - oppositeDirection * distanceBehind + playerTransform.up * 2.2f;
-
-                terminalCam.orthographic = true;
-                terminalCam.orthographicSize = 3.4f;
-                terminalCam.farClipPlane = 30f;
-                terminalCam.nearClipPlane = 0.25f;
-                terminalCam.fieldOfView = 130f;
-                terminalCam.transform.SetParent(termTransform);
-            }
-            /*       else
-                   {
-                       terminalCam.orthographic = false;
-                       terminalCam.nearClipPlane = defNearClip;
-                       terminalCam.farClipPlane = defFarClip;
-                       terminalCam.fieldOfView = defaultFov;
-                       ((BodyCamComponent)TerminalBodyCam).UpdateTargetStatus();
-                   } */
-        }
     }
 }
