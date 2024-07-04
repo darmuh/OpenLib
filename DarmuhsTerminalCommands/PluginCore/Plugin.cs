@@ -13,9 +13,14 @@ using static TerminalStuff.NoMoreAPI.RemoveThings;
 
 namespace TerminalStuff
 {
-    [BepInPlugin("darmuh.TerminalStuff", "darmuhsTerminalStuff", "3.2.0")]
-    //[BepInDependency("atomic.terminalapi")]
-    //[BepInDependency("Rozebud.FovAdjust")]
+    [BepInPlugin("darmuh.TerminalStuff", "darmuhsTerminalStuff", (PluginInfo.PLUGIN_VERSION))]
+    [BepInDependency("Rozebud.FovAdjust", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("Zaggy1024.OpenBodyCams", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("Zaggy1024.TwoRadarMaps", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("darmuh.suitsTerminal", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("TerminalFormatter", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency("BMX.LobbyCompatibility", BepInDependency.DependencyFlags.SoftDependency)]
+
 
     public class Plugin : BaseUnityPlugin
     {
@@ -24,12 +29,13 @@ namespace TerminalStuff
         {
             public const string PLUGIN_GUID = "darmuh.TerminalStuff";
             public const string PLUGIN_NAME = "darmuhsTerminalStuff";
-            public const string PLUGIN_VERSION = "3.2.0";
+            public const string PLUGIN_VERSION = "3.2.3";
         }
 
         internal static ManualLogSource Log;
 
         //Compatibility
+        public bool LobbyCompat = false;
         public bool CompatibilityAC = false;
         public bool LateGameUpgrades = false;
         public bool FovAdjust = false;
@@ -77,7 +83,7 @@ namespace TerminalStuff
             instance = this;
             Log = base.Logger;
             Log.LogInfo((object)$"{PluginInfo.PLUGIN_NAME} is loaded with version {PluginInfo.PLUGIN_VERSION}!");
-            Log.LogInfo((object)"--------[Now without any hard dependenices!]---------");
+            Log.LogInfo((object)"--------[Now with lobby compatibility set!]---------");
             ConfigSettings.BindConfigSettings();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             //LeaveTerminal.AddTest(); //this command is only for devtesting

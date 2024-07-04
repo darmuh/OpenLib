@@ -198,6 +198,12 @@ namespace TerminalStuff
 
         private static void CompatibilityCheck()
         {
+            if(Chainloader.PluginInfos.ContainsKey("BMX.LobbyCompatibility"))
+            {
+                Plugin.MoreLogs("LobbyCompatibility detected, setting appropriate Lobby Compatibility Level depending on networking status");
+                Plugin.instance.LobbyCompat = true;
+                BMX_LobbyCompat.SetCompat(ConfigSettings.ModNetworking.Value);
+            }
             if (Chainloader.PluginInfos.ContainsKey("com.potatoepet.AdvancedCompany"))
             {
                 Plugin.MoreLogs("Advanced Company detected, setting Advanced Company Compatibility options");

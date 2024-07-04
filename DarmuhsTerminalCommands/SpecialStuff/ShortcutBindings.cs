@@ -311,7 +311,7 @@ namespace TerminalStuff
 
             shortcutListenEnum = true;
 
-            Plugin.MoreLogs("Listening for shortcuts");
+            //Plugin.MoreLogs("Listening for shortcuts");
             while (Plugin.instance.Terminal.terminalInUse && ConfigSettings.terminalShortcuts.Value)
             {
                 if (AnyKeyIsPressed() && ListenForShortCuts())

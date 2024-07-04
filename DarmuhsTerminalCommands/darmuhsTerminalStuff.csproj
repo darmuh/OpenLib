@@ -66,6 +66,9 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BMX.LobbyCompatibility">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\LobbyCompatibility\BMX.LobbyCompatibility.dll</HintPath>
+    </Reference>
     <Reference Include="Facepunch.Steamworks.Win64, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Facepunch.Steamworks.Win64.dll</HintPath>
@@ -163,6 +166,7 @@
     <Compile Include="CommandHandling\ColorCommands.cs" />
     <Compile Include="CommandHandling\CostCommands.cs" />
     <Compile Include="CommandHandling\DynamicCommands.cs" />
+    <Compile Include="Compatibility\BMX-LobbyCompat.cs" />
     <Compile Include="Compatibility\FovAdjustStuff.cs" />
     <Compile Include="CommandHandling\GambaCommands.cs" />
     <Compile Include="GlobalSuppressions.cs" />

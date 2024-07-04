@@ -163,6 +163,18 @@ namespace TerminalStuff
         public static ConfigEntry<string> linkKeyword { get; internal set; }
         public static ConfigEntry<string> link2Keyword { get; internal set; }
 
+        //Quality of Life features
+        public static ConfigEntry<bool> LockCameraInTerminal { get; internal set; }
+        public static ConfigEntry<bool> DisableTerminalLight { get; internal set; }
+        public static ConfigEntry<bool> TerminalAutoComplete { get; internal set; }
+
+        //Terminal Customization
+        public static ConfigEntry<bool> TerminalCustomization { get; internal set; }
+        public static ConfigEntry<string> TerminalColor { get; internal set; }
+        public static ConfigEntry<string> TerminalTextColor { get; internal set; }
+        public static ConfigEntry<string> TerminalMoneyColor { get; internal set; }
+        public static ConfigEntry<string> TerminalCaretColor { get; internal set; }
+
 
 
         //terminal patcher words 
@@ -337,6 +349,18 @@ namespace TerminalStuff
             homeHelpLines = MakeString("Home Page", "homeHelpLines", ">>Type \"Help\" for a list of commands.\r\n>>Type <color=#b300b3>\"More\"</color> for a menu of darmuh's commands.\r\n", "these two lines should generally be used to point to menus of other usable commands. Can also be expanded to more than two lines by using \"\\r\\n\" to indicate a new line");
             
             homeTextArt = MakeString("Home Page", "homeTextArt", "[leadingSpacex4][leadingSpace]<color=#e6b800>^^      .-=-=-=-.  ^^\r\n ^^        (`-=-=-=-=-`)         ^^\r\n         (`-=-=-=-=-=-=-`)  ^^         ^^\r\n   ^^   (`-=-=-=-=-=-=-=-`)   ^^          \r\n       ( `-=-=-=-(@)-=-=-` )      ^^\r\n       (`-=-=-=-=-=-=-=-=-`)  ^^          \r\n       (`-=-=-=-=-=-=-=-=-`)  ^^\r\n        (`-=-=-=-=-=-=-=-`)          ^^\r\n         (`-=-=-=-=-=-=-`)  ^^            \r\n           (`-=-=-=-=-`)\r\n            `-=-=-=-=-`</color>", "ASCII Art goes here");
+
+            //Quality of Life Stuff
+            LockCameraInTerminal = MakeBool("Quality of Life", "LockCameraInTerminal", false, "Enable this to lock the player camera to the terminal when it is in use.");
+            DisableTerminalLight = MakeBool("Quality of Life", "DisableTerminalLight", false, "Enable this config item to disable the light that turns on when you start using the terminal.");
+
+            //Terminal Customization
+            TerminalCustomization = MakeBool("Terminal Customization", "TerminalCustomization", false, "Enable or Disable this section (all terminal customizations)");
+            TerminalColor = MakeString("Terminal Customization", "TerminalColor", "#666633", "This changes the color of the physical terminal");
+            TerminalTextColor = MakeString("Terminal Customization", "TerminalTextColor", "#ffffb3", "This changes the color of the main text in the terminal");
+            TerminalMoneyColor = MakeString("Terminal Customization", "TerminalMoneyColor", "#ccffcc", "This changes the color of the current credits text in the top left of the terminal");
+            TerminalCaretColor = MakeString("Terminal Customization", "TerminalCaretColor", "#9900ff", "This changes the color of the text caret in the terminal");
+
 
             RemoveOrphanedEntries();
             NetworkingCheck();

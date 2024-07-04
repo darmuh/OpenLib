@@ -5,7 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project does NOT adhere to perfect Semantic Versioning. Mostly because I don't have the time to learn how to use it.
 
-## [3.2.0] **CURRENT VERSION**
+## [3.2.2]
+ ### Added
+ - Added support for LobbyCompatibility mod.
+	- Will set flags on load-in based on whether network is enabled or disabled.
+		- These flags do not refresh if the networking config item is changed after loading.
+ - New Section "Quality of Life"
+	- This section will have simple client-side changes to the terminal.
+	- Currently the two new configuration items for this section are [LockCameraInTerminal] and [DisableTerminalLight]
+ - New Section "Terminal Customization"
+	- This section will have client-side customization of the Terminal.
+	- [TerminalCustomization] will enable or disable this entire section of customizations.
+	- [TerminalColor] changes the color of the actual physical Terminal Object.
+	- [TerminalTextColor] changes the color of the main text in the terminal.
+	- [TerminalMoneyColor] changes the color of the current credits text in the top left of the terminal
+	- [TerminalCaretColor] changes the color of the text caret in the terminal
+	- Currently, the defaults are set as examples of some fun colors to change things to.
+	- Host and client can have different customization settings depending on config settings.
+
+ ### Fixed/Changed
+ - Updated project to utilize plugin version number wherever possible, including compiling the assembly with the version number.
+	- Now when I update the version number in one spot, it'll update it everywhere (except the changelog, keeping that manual)
+
+## [3.2.1]
+ ### Fixed
+ - Clients were having their commands deleted when joining. This made the mod basically un-usable for any clients.
+	- Fixed this by moving the command deletion method so that commands are only deleted when you leave a game, not when you are first loading in.
+	- Thank you to @_rafael_barreto_ for the report on the discord thread for this mod.
+
+ ### Known issues/bugs
+ - (1) If another mod has a function that keeps the terminal screen enabled, alwayson will not always work as expected.
+	- It is generally preferred to use this mod's Always-On function compared to another mod keeping the terminal screen on.
+ - (2) Picking up eachother's flashlights with modified colors will not automatically change any colors for the player picking it up. 
+	- So your helmetlight will stay as-is and the flashlight you pick up will keep whatever color it was before you picked it up.
+ - (3) If another mod dev wishes to access any of my commands, I suggest taking a look at "GetCommandDisplayTextSupplier(TerminalNode query)" in TerminalEvents.cs and how it is used in ShortcutBindings.cs
+	- If you have any specific ideas I am always willing to collaborate on that effort.
+
+## [3.2.0] 
  ### Added
  - Added new feature called Purchase Packs (enabled via the [terminalPurchasePacks] configuration item)
 	- With this you can add customized purchase packs to the store.
@@ -124,13 +160,6 @@ This project does NOT adhere to perfect Semantic Versioning. Mostly because I do
 	- Have updated the list of commands that will not hide cams views after being run
  - Reorganized Code into sectional folders for my own sanity...
 
- ### Known issues/bugs
- - (1) If another mod has a function that keeps the terminal screen enabled, alwayson will not always work as expected.
-	- It is generally preferred to use this mod's Always-On function compared to another mod keeping the terminal screen on.
- - (2) Picking up eachother's flashlights with modified colors will not automatically change any colors for the player picking it up. 
-	- So your helmetlight will stay as-is and the flashlight you pick up will keep whatever color it was before you picked it up.
- - (3) If another mod dev wishes to access any of my commands, I suggest taking a look at "GetCommandDisplayTextSupplier(TerminalNode query)" in TerminalEvents.cs and how it is used in ShortcutBindings.cs
-	- If you have any specific ideas I am always willing to collaborate on that effort.
 	
 ## [3.0.4]
 

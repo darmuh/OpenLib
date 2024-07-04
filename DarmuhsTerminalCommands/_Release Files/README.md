@@ -1,6 +1,6 @@
 # darmuhsTerminalStuff
 
-## Completely configurable Terminal expansion mod that adds more than 40 different useful & fun commands to the terminal
+## Completely configurable Terminal expansion mod! 40+ new commands, 5+ new terminal features, Quality of Life fixes, and many different ways to customize
 
 ## **For client-side only use, disable ModNetworking in config**
 
@@ -13,6 +13,8 @@
  - Configurable Use-Walkie at Terminal feature that will allow you to bind one key and one mousebutton to use any powered walkie from your inventory!
  - Terminal Shortcuts can be set using the bind command and removed using the unbind command! These binds will be saved in the config for continued use.
  - [**NEW IN 3.2.0**] Configurable "Purchase Packs" that let you buy multiple items from the store with one command!
+ - [**NEW IN 3.2.2**] Client-side Terminal Customization, change the color of the terminal and the different text types!
+ - [**NEW IN 3.2.2**] Client-side Quality of Life features, make the terminal experience how you want it to be!
  - Cams commands can now show player povs even without a separate bodycam mod present.
 	- Still compatibile with every major bodycam mod; OpenBodyCams, Helmet Cameras, and Solos Bodycams are all compatible!
  - Expanded compatibility with LethalLevelLoader, OpenBodyCams, and TwoRadarMaps!

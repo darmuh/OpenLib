@@ -639,10 +639,6 @@ namespace TerminalStuff
             Instance = this;
             base.OnNetworkSpawn();
             Plugin.Log.LogInfo("Nethandler Spawned!");
-            if (Plugin.instance.OpenBodyCamsMod)
-                OpenBodyCamsCompatibility.ResidualCamsCheck();
-
-            Plugin.ClearLists();
 
             if (GameNetworkManager.Instance.isHostingGame)
                 return;

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using GameNetcodeStuff;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using static TerminalStuff.DynamicCommands;
 using static TerminalStuff.GetFromConfig;
@@ -431,6 +433,50 @@ namespace TerminalStuff
             string displayText = "\n";
             Plugin.Spam("display text cleared for real this time!!!");
             return displayText;
+        }
+
+        internal static void ShouldLockPlayerCamera(bool value, PlayerControllerB localPlayer)
+        {
+            if (!ConfigSettings.LockCameraInTerminal.Value)
+                return;
+
+            if (localPlayer != null)
+            {
+                localPlayer.disableLookInput = !value;
+                Plugin.MoreLogs($"ShouldLockPlayerCamera set to: {!value}");
+            }
+        }
+
+        internal static void ShouldDisableTerminalLight(bool value)
+        {
+            if(!ConfigSettings.DisableTerminalLight.Value)
+                return;
+
+            if(Plugin.instance.Terminal.terminalLight.enabled == value)
+            {
+                Plugin.instance.Terminal.terminalLight.enabled = !value;
+                Plugin.MoreLogs($"terminalLight set to {!value}");
+            }
+        }
+
+        internal static void TerminalCustomization()
+        {
+            if (!ConfigSettings.TerminalCustomization.Value)
+                return;
+
+            MeshRenderer termMesh = GameObject.Find("Environment/HangarShip/Terminal").GetComponent<MeshRenderer>();
+
+            if (termMesh != null)
+            {
+                termMesh.material.color = ColorCommands.HexToColor(ConfigSettings.TerminalColor.Value);
+            }
+            else
+                Plugin.MoreLogs("termMesh is null");
+                
+            
+            Plugin.instance.Terminal.screenText.textComponent.color = ColorCommands.HexToColor(ConfigSettings.TerminalTextColor.Value);
+            Plugin.instance.Terminal.topRightText.color = ColorCommands.HexToColor(ConfigSettings.TerminalMoneyColor.Value);
+            Plugin.instance.Terminal.screenText.caretColor = ColorCommands.HexToColor(ConfigSettings.TerminalCaretColor.Value);
         }
     }
 }

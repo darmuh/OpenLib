@@ -10,6 +10,7 @@ using static TerminalStuff.NoMoreAPI.CommandStuff;
 using static TerminalStuff.StringStuff;
 using static TerminalStuff.TerminalEvents;
 using static TerminalStuff.AlwaysOnStuff;
+using GameNetcodeStuff;
 
 
 namespace TerminalStuff
@@ -31,6 +32,19 @@ namespace TerminalStuff
             }
         }
 
+        //Terminal disabled, disabling ESC key listener OnDisable
+        [HarmonyPatch(typeof(Terminal), "OnDisable")]
+        public class DisableTermPatch : Terminal
+        {
+            static void Postfix()
+            {
+                if (Plugin.instance.OpenBodyCamsMod)
+                    OpenBodyCamsCompatibility.ResidualCamsCheck();
+
+                Plugin.ClearLists();
+            }
+        }
+
         [HarmonyPatch(typeof(Terminal), "LoadNewNode")]
         public class LoadNewNodePatch : Terminal
         {
@@ -49,6 +63,9 @@ namespace TerminalStuff
             static void Postfix(Terminal __instance)
             {
                 TerminalStartPatch.isTermInUse = __instance.terminalInUse;
+
+                if (StartOfRound.Instance.localPlayerController != null)
+                    ShouldLockPlayerCamera(true, StartOfRound.Instance.localPlayerController);
 
                 //Plugin.Log.LogInfo($"terminuse set to {__instance.terminalInUse}");
                 if (TerminalStartPatch.alwaysOnDisplay)
@@ -134,6 +151,7 @@ namespace TerminalStuff
                 TerminalClockStuff.MakeClock();
                 ViewCommands.DetermineCamsTargets();
                 ShortcutBindings.InitSavedShortcuts();
+                TerminalCustomization();
             }
 
             internal static void TerminalStartGroupDelay()
@@ -322,6 +340,7 @@ namespace TerminalStuff
         {
             internal static void StartUsingTerminalCheck(Terminal instance)
             {
+
                 //refund init
                 if (ConfigSettings.terminalRefund.Value && ConfigSettings.ModNetworking.Value)
                 {
@@ -393,6 +412,10 @@ namespace TerminalStuff
                 }
 
                 StartUsingTerminalCheck(Plugin.instance.Terminal);
+
+                if (StartOfRound.Instance.localPlayerController != null)
+                    ShouldLockPlayerCamera(false, StartOfRound.Instance.localPlayerController);
+
                 if (ViewCommands.termViewNodes.ContainsKey(Plugin.instance.Terminal.currentNode))
                     return;
 
@@ -481,6 +504,15 @@ namespace TerminalStuff
             {
                 string s = __instance.screenText.text.Substring(__instance.screenText.text.Length - __instance.textAdded);
                 return RemovePunctuation(s);
+            }
+        }
+
+        [HarmonyPatch(typeof(Terminal), "SetTerminalInUseClientRpc")]
+        public class TerminalInUseRpcPatch
+        {
+            static void Postfix()
+            {
+                ShouldDisableTerminalLight(ConfigSettings.DisableTerminalLight.Value);
             }
         }
 
