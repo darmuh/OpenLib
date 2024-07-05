@@ -23,6 +23,9 @@ namespace TerminalStuff
 
         internal static void InitSavedShortcuts()
         {
+            if (!ConfigSettings.terminalShortcuts.Value)
+                return;
+
             Plugin.MoreLogs("Loading shortcuts from config");
             invalidKeys = [
             Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G, Key.H, Key.I, Key.J,
@@ -30,6 +33,62 @@ namespace TerminalStuff
             Key.U, Key.V, Key.W, Key.X, Key.Y, Key.Z, Key.Space
             ];
             DeserializeKeyActions(ConfigSettings.keyActionsConfig.Value);
+            InitTerminalHistoryBinds();
+            InitTerminalAutoCompleteBinds();
+
+        }
+
+        private static void InitTerminalHistoryBinds()
+        {
+            if (!ConfigSettings.TerminalHistory.Value)
+                return;
+
+            if (keyActions.ContainsKey(Key.UpArrow))
+            {
+                Plugin.ERROR($"TerminalHistory Enabled. Removing shortcut for Up Arrow");
+                keyActions.Remove(Key.UpArrow);
+            }
+            if (keyActions.ContainsKey(Key.DownArrow))
+            {
+                Plugin.ERROR($"TerminalHistory Enabled. Removing shortcut for Down Arrow");
+                keyActions.Remove(Key.DownArrow);
+            }
+
+            keyActions.Add(Key.UpArrow, "[historyPrevious]");
+            keyActions.Add(Key.DownArrow, "[historyNext]");
+        }
+
+        private static void InitTerminalAutoCompleteBinds()
+        {
+            if (!ConfigSettings.TerminalAutoComplete.Value)
+                return;
+
+            keyActions.Add(GetAutoCompleteKey(), "[autocomplete]");
+        }
+
+        private static Key GetAutoCompleteKey()
+        {
+            if (Enum.TryParse(ConfigSettings.TerminalAutoCompleteKey.Value, out Key keyFromString))
+            {
+                if (keyFromString.Equals(Key.Tab))
+                    Plugin.instance.removeTab = true;
+                else
+                    Plugin.instance.removeTab = false;
+
+                if (keyActions.ContainsKey(keyFromString))
+                {
+                    keyActions.Remove(keyFromString);
+                    Plugin.ERROR($"Key {ConfigSettings.TerminalAutoCompleteKey.Value} had an active shortcut bind that has now been removed!");
+                }
+                    
+
+                return keyFromString;
+            }
+            else
+            {
+                Plugin.instance.removeTab = true;
+                return Key.Tab;
+            }
         }
 
         private static void DeserializeKeyActions(string serializedData)
@@ -294,6 +353,35 @@ namespace TerminalStuff
                     Plugin.instance.Terminal.OnSubmit();
                     return;
                 }
+                else if (value.Equals("[historyPrevious]") && ConfigSettings.TerminalHistory.Value)
+                {
+                    Plugin.Spam("terminalhistory [previous] bind detected and feature is enabled");
+                    TerminalHistory.historyIndex = TerminalHistory.PreviousIndex();
+                    SetTerminalInput(TerminalHistory.GetFromCommandHistory(ref TerminalHistory.historyIndex));
+                    return;
+
+                }
+                else if (value.Equals("[historyNext]") && ConfigSettings.TerminalHistory.Value)
+                {
+                    Plugin.Spam("terminalhistory [next] bind detected and feature is enabled");
+                    TerminalHistory.historyIndex = TerminalHistory.NextIndex();
+                    SetTerminalInput(TerminalHistory.GetFromCommandHistory(ref TerminalHistory.historyIndex));
+                    return;
+                }
+                else if(value.Equals("[autocomplete]") && ConfigSettings.TerminalAutoComplete.Value)
+                {
+                    Plugin.Spam("autocomplete key detected");
+
+                    if(AutoComplete.CheckCurrentInput(AutoComplete.AutoCompleteResults, TerminalEvents.GetCleanedScreenText(Plugin.instance.Terminal)))
+                        SetTerminalInput(AutoComplete.ShowMatchingKeywords(AutoComplete.AutoCompleteResults, ref AutoComplete.AutoCompleteIndex));
+                    else
+                    {
+                        AutoComplete.AutoCompleteResults = AutoComplete.GetMatchingKeywords(TerminalEvents.GetCleanedScreenText(Plugin.instance.Terminal));
+                        Plugin.Spam("setting AutoCompleteResults");
+                        SetTerminalInput(AutoComplete.ShowMatchingKeywords(AutoComplete.AutoCompleteResults, ref AutoComplete.AutoCompleteIndex));
+                    }
+                    return;
+                }
                 // Execute the action corresponding to the key
                 Plugin.MoreLogs($"Attempting to match given word to keyword: {value}");
                 MatchToBind(value);
@@ -317,7 +405,7 @@ namespace TerminalStuff
                 if (AnyKeyIsPressed() && ListenForShortCuts())
                 {
                     HandleKeyPress(keyBeingPressed);
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(0.15f);
                 }
                 else
                     yield return new WaitForSeconds(0.1f);

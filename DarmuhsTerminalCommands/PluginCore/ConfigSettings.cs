@@ -18,6 +18,7 @@ namespace TerminalStuff
 
         //establish commands that can be turned on or off here
         public static ConfigEntry<bool> ModNetworking { get; internal set; }
+        public static ConfigEntry<bool> networkedNodes { get; internal set; } //enable or disable networked terminal nodes (beta)
         public static ConfigEntry<bool> terminalClock { get; internal set; } //Clock object itself
         public static ConfigEntry<bool> extensiveLogging { get; internal set; }
         public static ConfigEntry<bool> developerLogging { get; internal set; }
@@ -109,7 +110,6 @@ namespace TerminalStuff
         public static ConfigEntry<bool> leverConfirmOverride { get; internal set; } //disable confirmation check for lever
         public static ConfigEntry<bool> restartConfirmOverride { get; internal set; } //disable confirmation check for lever
         public static ConfigEntry<bool> camsNeverHide { get; internal set; }
-        public static ConfigEntry<bool> networkedNodes { get; internal set; } //enable or disable networked terminal nodes (beta)
         public static ConfigEntry<string> defaultCamsView { get; internal set; }
         public static ConfigEntry<int> ovOpacity { get; internal set; } //Opacity Percentage for Overlay Cams View
         public static ConfigEntry<string> customLink { get; internal set; }
@@ -167,6 +167,10 @@ namespace TerminalStuff
         public static ConfigEntry<bool> LockCameraInTerminal { get; internal set; }
         public static ConfigEntry<bool> DisableTerminalLight { get; internal set; }
         public static ConfigEntry<bool> TerminalAutoComplete { get; internal set; }
+        public static ConfigEntry<string> TerminalAutoCompleteKey { get; internal set; }
+        public static ConfigEntry<int> TerminalAutoCompleteMaxCount { get; internal set; }
+        public static ConfigEntry<bool> TerminalHistory {  get; internal set; }
+        public static ConfigEntry<int> TerminalHistoryMaxCount { get; internal set; }
 
         //Terminal Customization
         public static ConfigEntry<bool> TerminalCustomization { get; internal set; }
@@ -188,22 +192,22 @@ namespace TerminalStuff
 
             //Network Configs
             networkedNodes = MakeBool("Networked Things", "networkedNodes", false, "Enable networked Always-On Display & displaying synced terminal nodes (BETA)");
-            ModNetworking = MakeBool("__General", "ModNetworking", true, "Disable this if you want to disable networking and use this mod as a Client-sided mod");
-            terminalClock = MakeBool("__General", "terminalClock", true, "Enable or Disable the terminalClock");
-            walkieTerm = MakeBool("__General", "walkieTerm", true, "Enable or Disable the ability to use a walkie from your inventory at the terminal (vanilla method still works)");
-            terminalShortcuts = MakeBool("__General", "terminalShortcuts", true, "Enable this for the ability to bind commands to any valid key (also enables the \"bind\" keyword.");
-            extensiveLogging = MakeBool("__Debug", "extensiveLogging", false, "Enable or Disable extensive logging for this mod.");
-            developerLogging = MakeBool("__Debug", "developerLogging", false, "Enable or Disable developer logging for this mod. (this will fill your log file FAST)");
+            ModNetworking = MakeBool("General", "ModNetworking", true, "Disable this if you want to disable networking and use this mod as a Client-sided mod");
+            terminalClock = MakeBool("General", "terminalClock", true, "Enable or Disable the terminalClock");
+            walkieTerm = MakeBool("Quality of Life", "walkieTerm", true, "Enable or Disable the ability to use a walkie from your inventory at the terminal (vanilla method still works)");
+            terminalShortcuts = MakeBool("General", "terminalShortcuts", true, "Enable this for the ability to bind commands to any valid key (also enables the \"bind\" keyword.");
+            extensiveLogging = MakeBool("Debug", "extensiveLogging", false, "Enable or Disable extensive logging for this mod.");
+            developerLogging = MakeBool("Debug", "developerLogging", false, "Enable or Disable developer logging for this mod. (this will fill your log file FAST)");
             keyActionsConfig = MakeString("Terminal Shortcuts", "keyActionsConfig", "", "Stored keybinds, don't modify this unless you know what you're doing!");
             purchasePackCommands = MakeString("Purchase packs", "purchasePackCommands", "Essentials:pro,shov,walkie;PortalPack:teleporter,inverse", "List of purchase pack commands to create. Format is command:item1,item2,etc.;next command:item1,item2");
 
 
             //keybinds
-            walkieTermKey = MakeString("__General", "walkieTermKey", "LeftAlt", "Key used to activate your walkie while at the terminal, see here for valid key names https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.Key.html");
-            walkieTermMB = MakeString("__General", "walkieTermMB", "Left", "Mousebutton used to activate your walkie while at the terminal, see here for valid button names https://docs.unity3d.com/Packages/com.unity.inputsystem@1.3/api/UnityEngine.InputSystem.LowLevel.MouseButton.html");
+            walkieTermKey = MakeString("Quality of Life", "walkieTermKey", "LeftAlt", "Key used to activate your walkie while at the terminal, see here for valid key names https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.Key.html");
+            walkieTermMB = MakeString("Quality of Life", "walkieTermMB", "Left", "Mousebutton used to activate your walkie while at the terminal, see here for valid button names https://docs.unity3d.com/Packages/com.unity.inputsystem@1.3/api/UnityEngine.InputSystem.LowLevel.MouseButton.html");
 
             //Cams Mod Config
-            camsUseDetectedMods = MakeBool("__General", "camsUseDetectedMods", true, "With this enabled, this mod will detect if another mod that adds player cams is enabled and use the mod's camera for all cams commands. Currently detects the following: Helmet Cameras by Rick Arg, Body Cameras by Solo, OpenBodyCams by ");
+            camsUseDetectedMods = MakeBool("General", "camsUseDetectedMods", true, "With this enabled, this mod will detect if another mod that adds player cams is enabled and use the mod's camera for all cams commands. Currently detects the following: Helmet Cameras by Rick Arg, Body Cameras by Solo, OpenBodyCams by ");
 
             //enable or disable
             terminalLobby = MakeBool("Comfort Commands (On/Off)", "terminalLobby", true, "Shows the current lobby name <Lobby Name>");
@@ -353,6 +357,12 @@ namespace TerminalStuff
             //Quality of Life Stuff
             LockCameraInTerminal = MakeBool("Quality of Life", "LockCameraInTerminal", false, "Enable this to lock the player camera to the terminal when it is in use.");
             DisableTerminalLight = MakeBool("Quality of Life", "DisableTerminalLight", false, "Enable this config item to disable the light that turns on when you start using the terminal.");
+            TerminalHistory = MakeBool("Quality of Life", "TerminalHistory", false, "(Requires terminalShortcuts feature to function) With this feature enabled, uparrow and downarrow will cycle through a list of previously used commands.");
+            TerminalHistoryMaxCount = MakeClampedInt("Quality of Life", "TerminalHistoryMaxCount", 9, "Max amount of previous commands to save in TerminalHistory list.", 3, 50);
+            TerminalAutoComplete = MakeBool("Quality of Life", "TerminalAutoComplete", false, "(Requires terminalShortcuts feature to function) With this feature enabled, tab key will cycle through a list of matching commands to the current input.");
+            TerminalAutoCompleteKey = MakeString("Quality of Life", "TerminalAutoCompleteKey", "Tab", "Key used to activate TerminalAutoComplete feature https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.Key.html");
+            TerminalAutoCompleteMaxCount = MakeClampedInt("Quality of Life", "TerminalAutoCompleteMaxCount", 5, "Max amount of matching commands to store before disabling autocomplete.", 3, 50);
+
 
             //Terminal Customization
             TerminalCustomization = MakeBool("Terminal Customization", "TerminalCustomization", false, "Enable or Disable this section (all terminal customizations)");

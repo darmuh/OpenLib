@@ -11,6 +11,7 @@ using static TerminalStuff.StringStuff;
 using static TerminalStuff.TerminalEvents;
 using static TerminalStuff.AlwaysOnStuff;
 using GameNetcodeStuff;
+using UnityEngine.InputSystem;
 
 
 namespace TerminalStuff
@@ -341,6 +342,19 @@ namespace TerminalStuff
             internal static void StartUsingTerminalCheck(Terminal instance)
             {
 
+                if(ConfigSettings.TerminalAutoComplete.Value)
+                {
+                    if(Plugin.instance.removeTab)
+                    {
+                        Plugin.Spam("tab is disabled to quit terminal");
+                        instance.playerActions.m_Movement_OpenMenu.Disable();
+                        instance.playerActions.m_Movement_OpenMenu.ApplyBindingOverride(new InputBinding { path = "<Keyboard>/tab", overridePath = "" });
+                        instance.playerActions.m_Movement_OpenMenu.Enable();
+                        HUDManager.Instance.ChangeControlTip(0, "Quit terminal : [Esc]", true);
+                    }
+
+                }
+
                 //refund init
                 if (ConfigSettings.terminalRefund.Value && ConfigSettings.ModNetworking.Value)
                 {
@@ -499,12 +513,6 @@ namespace TerminalStuff
                 }
 
             }
-
-            private static string GetCleanedScreenText(Terminal __instance)
-            {
-                string s = __instance.screenText.text.Substring(__instance.screenText.text.Length - __instance.textAdded);
-                return RemovePunctuation(s);
-            }
         }
 
         [HarmonyPatch(typeof(Terminal), "SetTerminalInUseClientRpc")]
@@ -527,20 +535,6 @@ namespace TerminalStuff
                 NetHandler.Instance.SyncDropShipServerRpc();
                 Plugin.Spam($"items: {Plugin.instance.Terminal.orderedItemsFromTerminal.Count}");
             }
-        }
-
-        private static string RemovePunctuation(string s) //copied from game files
-        {
-            StringBuilder stringBuilder = new();
-            foreach (char c in s)
-            {
-                if (!char.IsPunctuation(c))
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-
-            return stringBuilder.ToString().ToLower();
         }
 
     }

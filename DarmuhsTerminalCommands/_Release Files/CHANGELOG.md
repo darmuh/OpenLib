@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 This project does NOT adhere to perfect Semantic Versioning. Mostly because I don't have the time to learn how to use it.
 
+## [3.2.3]
+ ### Added
+ - Added new Quality of Life features
+	- [TerminalHistory], will store up to [TerminalHistoryMaxCount] commands that can be accessed with the up/down arrows.
+		- Requires [terminalShortcuts] to function.
+		- [TerminalHistoryMaxCount] is the max amount of historical commands remembered by the terminal.
+	- [TerminalAutoComplete], will allow you to auto-complete to a matching keyword in the terminal by pressing [TerminalAutoCompleteKey]
+		- Requires [terminalShortcuts] to function.
+		- If more than one command matches the input, you can press tab to cycle through all matching commands
+		- If [TerminalAutoCompleteKey] is set to Tab, will disable the Tab key quitting the terminal and update the HUD hint.
+		- [TerminalAutoCompleteMaxCount] is the max amount of matching commands that autocomplete will cycle through
+			- if more commands match than this number, auto-complete will not change your input to any other command.
+ ### Fixed/Changed
+ - Moved some config options around.
+ - Updated key detection press delays to be more in-line with the new suitsTerminal defaults
+
 ## [3.2.2]
  ### Added
  - Added support for LobbyCompatibility mod.

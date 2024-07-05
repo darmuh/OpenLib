@@ -1,6 +1,6 @@
 # darmuhsTerminalStuff
 
-## Completely configurable Terminal expansion mod! 40+ new commands, 5+ new terminal features, Quality of Life fixes, and many different ways to customize
+## Completely configurable Terminal expansion mod! 40+ new commands, 5+ new features, QoL fixes, and much more
 
 ## **For client-side only use, disable ModNetworking in config**
 
@@ -15,6 +15,7 @@
  - [**NEW IN 3.2.0**] Configurable "Purchase Packs" that let you buy multiple items from the store with one command!
  - [**NEW IN 3.2.2**] Client-side Terminal Customization, change the color of the terminal and the different text types!
  - [**NEW IN 3.2.2**] Client-side Quality of Life features, make the terminal experience how you want it to be!
+ - [**NEW IN 3.2.3**] Terminal Autocomplete and History features to make typing in the terminal feel more like a real terminal!
  - Cams commands can now show player povs even without a separate bodycam mod present.
 	- Still compatibile with every major bodycam mod; OpenBodyCams, Helmet Cameras, and Solos Bodycams are all compatible!
  - Expanded compatibility with LethalLevelLoader, OpenBodyCams, and TwoRadarMaps!
@@ -79,7 +80,6 @@
 ## FYI Section
 
 ### NOTES:
- - When updating this mod DELETE THE OLD CONFIG FILE and let it generate a new one on first launch with the update.
  - Please feel free to request changes or new features at my github [here](https://github.com/darmuh/TerminalStuff)
  - Also please report any bugs you find there (or on the modding discord) as well.
  - If you're not a fan of GitHub, I'm also fairly active on the LethalCompany Modding Discord managed by Thunderstore. I post updates on WIP features there whenever i'm messing with something new.

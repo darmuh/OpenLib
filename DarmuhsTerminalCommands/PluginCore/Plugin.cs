@@ -61,6 +61,9 @@ namespace TerminalStuff
         public bool fSuccess = false;
         public bool hSuccess = false;
 
+        //AutoComplete
+        internal bool removeTab = false;
+
         internal Terminal Terminal;
         internal static List<TerminalNode> Allnodes = [];
         internal static ShipTeleporter NormalTP;
@@ -83,7 +86,7 @@ namespace TerminalStuff
             instance = this;
             Log = base.Logger;
             Log.LogInfo((object)$"{PluginInfo.PLUGIN_NAME} is loaded with version {PluginInfo.PLUGIN_VERSION}!");
-            Log.LogInfo((object)"--------[Now with lobby compatibility set!]---------");
+            Log.LogInfo((object)"--------[Now with more Quality of Life!]---------");
             ConfigSettings.BindConfigSettings();
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             //LeaveTerminal.AddTest(); //this command is only for devtesting

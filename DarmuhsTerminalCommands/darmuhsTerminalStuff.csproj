@@ -177,6 +177,8 @@
     <Compile Include="PluginCore\GetFromConfig.cs" />
     <Compile Include="PluginCore\Misc.cs" />
     <Compile Include="PluginCore\StringStuff.cs" />
+    <Compile Include="SpecialStuff\AutoComplete.cs" />
+    <Compile Include="SpecialStuff\TerminalHistory.cs" />
     <Compile Include="VisualCore\AlwaysOnStuff.cs" />
     <Compile Include="Compatibility\PlayerCamsCompatibility.cs" />
     <Compile Include="PluginCore\MenuBuild.cs" />

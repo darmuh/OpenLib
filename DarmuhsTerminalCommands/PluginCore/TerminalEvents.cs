@@ -2,8 +2,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static TerminalStuff.DynamicCommands;
 using static TerminalStuff.GetFromConfig;
 using static TerminalStuff.NoMoreAPI.TerminalHook;
@@ -435,6 +437,30 @@ namespace TerminalStuff
             return displayText;
         }
 
+        internal static string GetCleanedScreenText(Terminal __instance)
+        {
+            string s = __instance.screenText.text.Substring(__instance.screenText.text.Length - __instance.textAdded);
+
+            if (ConfigSettings.TerminalHistory.Value)
+                TerminalHistory.AddToCommandHistory(RemovePunctuation(s));
+
+            return RemovePunctuation(s);
+        }
+
+        private static string RemovePunctuation(string s) //copied from game files
+        {
+            StringBuilder stringBuilder = new();
+            foreach (char c in s)
+            {
+                if (!char.IsPunctuation(c))
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().ToLower();
+        }
+
         internal static void ShouldLockPlayerCamera(bool value, PlayerControllerB localPlayer)
         {
             if (!ConfigSettings.LockCameraInTerminal.Value)
@@ -457,6 +483,7 @@ namespace TerminalStuff
                 Plugin.instance.Terminal.terminalLight.enabled = !value;
                 Plugin.MoreLogs($"terminalLight set to {!value}");
             }
+
         }
 
         internal static void TerminalCustomization()

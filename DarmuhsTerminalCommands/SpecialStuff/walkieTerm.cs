@@ -95,7 +95,7 @@ namespace TerminalStuff
                         getmywalkie.UseItemOnClient(true);
                         usingWalkFromTerm = true;
                         Plugin.MoreLogs("push to use walkie key was pressed");
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(0.15f);
                     }
                     else if (!ActivateWalkie() && usingWalkFromTerm)
                     {
@@ -103,7 +103,7 @@ namespace TerminalStuff
                         Plugin.MoreLogs("ending walkie use");
                         usingWalkFromTerm = false;
                         getmywalkie.UseItemOnClient(false);
-                        yield return new WaitForSeconds(0.1f);
+                        yield return new WaitForSeconds(0.15f);
                     }
                     else
                         yield return new WaitForSeconds(0.1f);
