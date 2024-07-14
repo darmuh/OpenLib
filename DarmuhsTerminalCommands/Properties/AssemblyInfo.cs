@@ -1,16 +1,16 @@
 ﻿using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
-using static TerminalStuff.Plugin;
+using static OpenLib.Plugin;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("darmuhsTerminalStuff")]
-[assembly: AssemblyDescription("https://github.com/darmuh/TerminalStuff")]
+[assembly: AssemblyTitle("OpenLib")]
+[assembly: AssemblyDescription("https://github.com/darmuh/OpenLib")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("darmuhsTerminalStuff")]
+[assembly: AssemblyProduct("OpenLib")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

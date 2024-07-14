@@ -1,9 +1,0 @@
-{
-  "name": "darmuhsTerminalStuff",
-  "version_number": "3.2.3",
-  "website_url": "https://github.com/darmuh/TerminalStuff",
-  "description": "Completely configurable Terminal expansion mod! 40+ new commands, 5+ new features, QoL fixes, and much more",
-  "dependencies": [
-    "BepInEx-BepInExPack-5.4.2100"
-  ]
-}

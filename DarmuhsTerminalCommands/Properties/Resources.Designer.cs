@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TerminalStuff.Properties {
+namespace OpenLib.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace TerminalStuff.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TerminalStuff.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OpenLib.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,25 +57,6 @@ namespace TerminalStuff.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to darmuhngo.
-        /// </summary>
-        internal static string darmuhgno {
-            get {
-                return ResourceManager.GetString("darmuhgno", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] darmuhngo {
-            get {
-                object obj = ResourceManager.GetObject("darmuhngo", resourceCulture);
-                return ((byte[])(obj));
             }
         }
     }
