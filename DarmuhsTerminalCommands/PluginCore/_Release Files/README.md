@@ -1,4 +1,4 @@
-# publicDevLibrary
+# OpenLib
 
 ### Initially ported from darmuhsTerminalStuff, this is a library of commonly used methods from darmuh's mods.
 
