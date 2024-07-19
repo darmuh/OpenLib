@@ -173,7 +173,6 @@
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Events\EventUsage.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CoreMethods\DynamicBools.cs" />
     <Compile Include="CoreMethods\RemoveThings.cs" />
     <Compile Include="CoreMethods\LogicHandling.cs" />

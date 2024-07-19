@@ -43,31 +43,7 @@ terminalNodes.specialNodes[20] <-
 
 TODO:
 
--figure out why upgrade nodes are throwing NRE below
-(needed to set managedBool.TerminalNode = terminalNode;)
-*done i think
-
--add NRE for next command when terminalMenu.isActive is considered inactive
-*done
-
 terminalStuff:
 -fix view command syncing with tworadarmaps
 -switch command is fully broken
 -previous is not synced between clients at all (with tworadarmaps)
-
-[Info   :publicDevLibrary] node found: terminalVitalsUpgrade
-[Info   :darmuhsTerminalStuff] disabling ANY cams views
-[Debug  :publicDevLibrary] listing count: 26
-[Debug  :publicDevLibrary] terminalVitalsUpgrade has been loaded
-[Error  : Unity Log] NullReferenceException: Object reference not set to an instance of an object
-Stack trace:
-Terminal.OnSubmit () (at <0b5b829887344817a21214132ea92eef>:0)
-UnityEngine.Events.InvokableCall.Invoke () (at <e27997765c1848b09d8073e5d642717a>:0)
-UnityEngine.Events.UnityEvent`1[T0].Invoke (T0 arg0) (at <e27997765c1848b09d8073e5d642717a>:0)
-TMPro.TMP_InputField.SendOnEndEdit () (at <9baa8119dbcd498f902c1a92f10843c1>:0)
-TMPro.TMP_InputField.ReleaseSelection () (at <9baa8119dbcd498f902c1a92f10843c1>:0)
-TMPro.TMP_InputField.DeactivateInputField (System.Boolean clearSelection) (at <9baa8119dbcd498f902c1a92f10843c1>:0)
-TMPro.TMP_InputField.OnUpdateSelected (UnityEngine.EventSystems.BaseEventData eventData) (at <9baa8119dbcd498f902c1a92f10843c1>:0)
-UnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IUpdateSelectedHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at <17de86d66286445fa95af59fa8fa644d>:0)
-UnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at <17de86d66286445fa95af59fa8fa644d>:0)
-UnityEngine.EventSystems.EventSystem:Update()
