@@ -165,7 +165,7 @@
   <ItemGroup>
     <Compile Include="Compat\BMX_LobbyCompat.cs" />
     <Compile Include="ConfigManager\ConfigMisc.cs" />
-    <Compile Include="ConfigManager\ManagedBool.cs" />
+    <Compile Include="ConfigManager\ManagedConfig.cs" />
     <Compile Include="CoreMethods\AddingThings.cs" />
     <Compile Include="CoreMethods\CommonThings.cs" />
     <Compile Include="CoreMethods\ListManagement.cs" />

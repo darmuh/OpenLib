@@ -40,10 +40,10 @@ namespace OpenLib.Menus
             return myCategories;
         }
 
-        public static List<TerminalMenuItem> TerminalMenuItems(List<ManagedBool> managedBools)
+        public static List<TerminalMenuItem> TerminalMenuItems(List<ManagedConfig> managedBools)
         {
             List<TerminalMenuItem> myMenuItems = [];
-            foreach(ManagedBool m in managedBools)
+            foreach(ManagedConfig m in managedBools)
             {
                 if(m.menuItem != null)
                 {
@@ -56,7 +56,7 @@ namespace OpenLib.Menus
             return myMenuItems;
         }
 
-        public static TerminalMenu AssembleMainMenu(string menuName, string keyword, string mainMenuText, List<TerminalMenuCategory> categoryList, List<TerminalMenuItem> menuItems)
+        public static TerminalMenu AssembleMainMenu(string menuName, string keyword, string mainMenuText, List<TerminalMenuCategory> categoryList, List<TerminalMenuItem> menuItems, bool addToOther = false, string menuDescription = "")
         {
             TerminalMenu thisMenu = new()
             {   
@@ -70,7 +70,16 @@ namespace OpenLib.Menus
                 isNextEnabled = false
             };
             string displayText = AssembleMainMenuText(thisMenu);
-            AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true);
+            
+            if (addToOther)
+            {
+                AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true, "other", menuDescription);
+            }
+            else
+            {
+                AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true);
+            }
+            
             allMenus.Add(thisMenu);
             return thisMenu; 
         }
@@ -116,7 +125,7 @@ namespace OpenLib.Menus
         public static void CreateCategoryCommands(TerminalMenu terminalMenu, MainListing yourModListing)
         {
             //Plugin.Spam("CreateCategoryCommands START");
-            List<Dictionary<string, List<string>>> categoryLists = new();
+            List<Dictionary<string, List<string>>> categoryLists = [];
 
             foreach (TerminalMenuCategory category in terminalMenu.Categories)
             {
@@ -223,6 +232,7 @@ namespace OpenLib.Menus
                 menuName.nextCount = nextCount;
                 menuName.currentCategory = currentCategory;
                 string displayText = GetNextPage(currentList, currentCategory, 4, nextCount, out isNextEnabled);
+                Plugin.Spam($"currentCategory:{currentCategory} nextCount: {nextCount} isNextEnabled: {isNextEnabled}");
                 menuName.isNextEnabled = isNextEnabled;
                 return displayText;
             }
@@ -280,7 +290,7 @@ namespace OpenLib.Menus
             return "";
         }
 
-        public static TerminalMenuItem MakeMenuItem(ManagedBool managedBool)
+        public static TerminalMenuItem MakeMenuItem(ManagedConfig managedBool)
         {
             if (managedBool.categoryText != "")
             {

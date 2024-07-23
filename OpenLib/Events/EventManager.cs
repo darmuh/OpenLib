@@ -1,7 +1,9 @@
 ﻿//https://github.com/AndreyMrovol/LethalMrovLib/blob/main/MrovLib/EventManager.cs
 //used above from mrov as inspiration
 
+using BepInEx.Configuration;
 using GameNetcodeStuff;
+using System.Collections.Generic;
 
 namespace OpenLib.Events
 {

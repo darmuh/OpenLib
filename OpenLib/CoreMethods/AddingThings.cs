@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using BepInEx.Configuration;
 using static OpenLib.CoreMethods.DynamicBools;
 using static OpenLib.CoreMethods.CommonThings;
-using static OpenLib.Common.CommonStringStuff;
 using OpenLib.Menus;
 using OpenLib.ConfigManager;
+using OpenLib.Common;
 using UnityEngine.InputSystem;
-using System.Data.SqlTypes;
 
 namespace OpenLib.CoreMethods
 {
     public class AddingThings
     {
+        private static readonly char[] NewLineChars = Environment.NewLine.ToCharArray();
         public static void AddKeywordToExistingNode(string keyWord, TerminalNode existingNode, bool addToList = false)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -46,6 +47,25 @@ namespace OpenLib.CoreMethods
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
         }
 
+        public static void AddToExistingNodeText(string textToAdd, ref TerminalNode existingNode)
+        {
+            if (existingNode.displayText.Contains(textToAdd))
+            {
+                Plugin.Log.LogWarning($"Unable to add below text to {existingNode.name}, it already has this text in it");
+                Plugin.Log.LogWarning($"text: {textToAdd}");
+            }
+            else
+            {
+                Plugin.Spam($"oldtext length {existingNode.displayText.Length}");
+                Plugin.Spam(existingNode.displayText);
+                string newText = existingNode.displayText.TrimEnd(NewLineChars);
+                newText += $"\n{textToAdd}\r\n\r\n";
+                existingNode.displayText = newText;
+                Plugin.Spam($"{existingNode.name} text updated!!!");
+
+            }
+        }
+
         public static TerminalNode CreateDummyNode(string nodeName, bool clearPrevious, string displayText)
         {
             if (UseMatchingNode(nodeName, out TerminalNode terminalNode))
@@ -64,8 +84,9 @@ namespace OpenLib.CoreMethods
             return terminalNode;
         }
 
-        public static void AddBasicCommand(string nodeName, string keyWord, string displayText, bool isVerb, bool clearText) //more command
+        public static void AddBasicCommand(string nodeName, string keyWord, string displayText, bool isVerb, bool clearText, string category = "", string keywordDescription = "") //menus
         {
+            TerminalNode otherNode = LogicHandling.GetFromAllNodes("OtherCommands");
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
 
             if (IsCommandCreatedAlready(keyWord, displayText, allKeywordsList))
@@ -92,11 +113,28 @@ namespace OpenLib.CoreMethods
 
             allKeywordsList.Add(terminalKeyword);
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
+            
+            if (!Plugin.nodesAdded.Contains(terminalNode))
+                Plugin.nodesAdded.Add(terminalNode);
+
+            if(!Plugin.keywordsAdded.Contains(terminalKeyword))
+                Plugin.keywordsAdded.Add(terminalKeyword);
+
+            if(category.ToLower() == "other")
+            {
+                AddToExistingNodeText($"{keywordDescription}", ref otherNode);
+                Plugin.Spam("adding node to other listing");
+            }
         }
 
-        public static TerminalNode AddNodeManual(string nodeName, List<string>keywords, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedBool> managedBools, string category = "", string description = "", int price = 0, Func<string>ConfirmAction = null, Func<string>DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false)
+        //for use without referring to specific config items
+        public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "") 
         {
             TerminalNode returnNode = null;
+
+            List<string> keywords = [];
+            if (stringValue != null)
+                keywords = CommonStringStuff.GetKeywordsPerConfigItem(stringValue);
 
             foreach (string keyWord in keywords) //added this to handle the full list in one method run to add list to menu item
             {
@@ -139,7 +177,17 @@ namespace OpenLib.CoreMethods
                 {
                     AddStoreCommand(nodeName, storeName, ref terminalKeyword, ref terminalNode, price, ConfirmAction, DenyAction, confirmText, denyText, yourModListing, alwaysInStock, maxStock, out confirm, out deny);
                     Plugin.Spam("command type 2 detected, adding store logic");
-                    terminalNode.acceptAnything = true;
+                    terminalNode.acceptAnything = false;
+                    yourModListing.shopNodes.Add(confirm.result);
+                    yourModListing.shopNodes.Add(terminalNode);
+                    yourModListing.shopNodes.Add(deny.result);
+                    if (itemList.Length > 1)
+                    {
+                        terminalNode.buyUnlockable = false;
+                        confirm.result.buyUnlockable = false;
+                        yourModListing.storePacks.Add(terminalNode, itemList);
+                        Plugin.Spam("storepack detected, adding itemlist");
+                    }
                 }
 
                 if (confirm != null && deny != null)
@@ -159,7 +207,110 @@ namespace OpenLib.CoreMethods
 
                 yourModListing.Listing.Add(terminalNode, commandAction);
                 allKeywordsList.Add(terminalKeyword);
-                Plugin.keywordsAdded.Add(terminalKeyword);
+
+                if (!Plugin.nodesAdded.Contains(terminalNode))
+                    Plugin.nodesAdded.Add(terminalNode);
+
+                if (!Plugin.keywordsAdded.Contains(terminalKeyword))
+                    Plugin.keywordsAdded.Add(terminalKeyword);
+
+                Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
+            }
+
+            return returnNode;
+        }
+
+        //when you want to refer to config items for management but also want a terminalnode returned to you
+        public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string>ConfirmAction = null, Func<string>DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
+        {
+            TerminalNode returnNode = null;
+
+            List<string> keywords = [];
+            bool isStringNull = true;
+            if (stringValue != null)
+            {
+                isStringNull = false;
+                keywords = CommonStringStuff.GetKeywordsPerConfigItem(stringValue.Value);
+            }
+
+            foreach (string keyWord in keywords) //added this to handle the full list in one method run to add list to menu item
+            {
+                List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+
+                if (IsCommandCreatedAlready(yourModListing.Listing, keyWord, commandAction, allKeywordsList, out TerminalKeyword outKeyword) && !reuseFunc)
+                    continue;
+
+                CheckForAndDeleteKeyWord(keyWord.ToLower());
+
+                if (DoesNodeExist(yourModListing.Listing, commandAction, out TerminalNode existingNode) && !reuseFunc)
+                {
+                    AddKeywordToExistingNode(keyWord, existingNode, true);
+                    Plugin.Spam($"existing node found {existingNode.name}, reusing associated func and adding additional keyword {keyWord}");
+                    continue;
+                }
+
+                TerminalNode terminalNode = ScriptableObject.CreateInstance<TerminalNode>();
+                terminalNode.name = nodeName;
+                terminalNode.displayText = nodeName;
+                terminalNode.clearPreviousText = clearText;
+                returnNode = terminalNode;
+
+                TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+                terminalKeyword.name = nodeName + "_keyword";
+                terminalKeyword.word = keyWord.ToLower();
+                terminalKeyword.isVerb = false;
+                terminalKeyword.specialKeywordResult = terminalNode;
+
+                CompatibleNoun confirm = null;
+                CompatibleNoun deny = null;
+
+                if (CommandType == 1) //base requires confirmation setup
+                {
+                    AddConfirm(nodeName, price, ConfirmAction, DenyAction, confirmText, denyText, yourModListing.Listing, out confirm, out deny);
+                    terminalNode.acceptAnything = false;
+                    Plugin.Spam("command type 1 detected, adding basic confirmation");
+                }
+                else if (CommandType == 2) //store command
+                {
+                    AddStoreCommand(nodeName, storeName, ref terminalKeyword, ref terminalNode, price, ConfirmAction, DenyAction, confirmText, denyText, yourModListing, alwaysInStock, maxStock, out confirm, out deny);
+                    Plugin.Spam("command type 2 detected, adding store logic");
+                    terminalNode.acceptAnything = false;
+                    yourModListing.shopNodes.Add(confirm.result);
+                    yourModListing.shopNodes.Add(terminalNode);
+                    yourModListing.shopNodes.Add(deny.result);
+                    if (itemList.Length > 1)
+                    {
+                        terminalNode.buyUnlockable = false;
+                        confirm.result.buyUnlockable = false;
+                        yourModListing.storePacks.Add(terminalNode, itemList);
+                        Plugin.Spam("storepack detected, adding itemlist");
+                    }
+                }
+
+                if (confirm != null && deny != null)
+                {
+                    allKeywordsList.Add(confirm.noun);
+                    Plugin.keywordsAdded.Add(confirm.noun);
+
+                    allKeywordsList.Add(deny.noun);
+                    Plugin.keywordsAdded.Add(deny.noun);
+
+                    terminalNode.terminalOptions = [confirm, deny];
+                    terminalNode.overrideOptions = true;
+
+                }
+                else
+                    Plugin.Spam($"no confirmation logic added for {keyWord}");
+
+                yourModListing.Listing.Add(terminalNode, commandAction);
+                allKeywordsList.Add(terminalKeyword);
+
+                if (!Plugin.nodesAdded.Contains(terminalNode))
+                    Plugin.nodesAdded.Add(terminalNode);
+
+                if (!Plugin.keywordsAdded.Contains(terminalKeyword))
+                    Plugin.keywordsAdded.Add(terminalKeyword);
+
                 Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
             }
 
@@ -173,18 +324,24 @@ namespace OpenLib.CoreMethods
                     itemKeywords = keywords,
                 };
 
-                ManagedBool fromNode = new()
+                ManagedConfig fromNode = new()
                 {
                     TerminalNode = returnNode,
                     menuItem = nodeInfo,
                     ConfigItemName = nodeName
                 };
                 managedBools.Add(fromNode);
+
+                if (!isStringNull)
+                {
+                    ConfigSetup.AddManagedString(stringValue, ref managedBools, fromNode);
+                }
             }
 
             return returnNode;
         }
 
+        //base level node/keyword creation
         public static TerminalNode CreateNode(TerminalMenu terminalMenu, string nodeName, string keyWord, Func<string> commandAction, MainListing yourModListing, bool isNextPageCommand = false)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -227,7 +384,7 @@ namespace OpenLib.CoreMethods
         }
 
 
-        public static TerminalNode CreateNode(ManagedBool managedBool, string keyWord, MainListing yourModListing)
+        public static TerminalNode CreateNode(ManagedConfig managedBool, string keyWord, MainListing yourModListing)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
 
@@ -301,7 +458,7 @@ namespace OpenLib.CoreMethods
                 yourModListing.shopNodes.Add(confirm.result);
                 yourModListing.shopNodes.Add(terminalNode);
                 yourModListing.shopNodes.Add(deny.result);
-                if(managedBool.itemList.Length > 1)
+                if(managedBool.itemList.Length > 1) //unused in this method as storepacks can be changed between lobby loads
                 {
                     terminalNode.buyUnlockable = false;
                     confirm.result.buyUnlockable = false;
@@ -327,12 +484,16 @@ namespace OpenLib.CoreMethods
 
             yourModListing.Listing.Add(terminalNode, commandAction);
             allKeywordsList.Add(terminalKeyword);
-            Plugin.keywordsAdded.Add(terminalKeyword);
+            if (!Plugin.nodesAdded.Contains(terminalNode))
+                Plugin.nodesAdded.Add(terminalNode);
+
+            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
+                Plugin.keywordsAdded.Add(terminalKeyword);
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
             return terminalNode;
         }
 
-        public static void AddConfirm(string nodeName, ManagedBool managedBool, out CompatibleNoun confirm, out CompatibleNoun deny)
+        public static void AddConfirm(string nodeName, ManagedConfig managedBool, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
             confirm = new CompatibleNoun
             {
@@ -403,7 +564,7 @@ namespace OpenLib.CoreMethods
                 nodeListing.Add(deny.result, DenyAction);
         }
 
-        public static void AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedBool managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)
+        public static void AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedConfig managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
             TerminalNode node = managedBool.TerminalNode;
 
@@ -507,7 +668,7 @@ namespace OpenLib.CoreMethods
             }
         }
 
-        public static UnlockableItem AddUnlockable(ManagedBool managedBool)
+        public static UnlockableItem AddUnlockable(ManagedConfig managedBool)
         {
             if (managedBool.UnlockableItem != null)
             {

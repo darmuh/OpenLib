@@ -21,7 +21,7 @@ namespace OpenLib.CoreMethods
             if (CommandDictionary.Count < 1)
                 return false;
 
-            Plugin.Spam("command dictionary is not null");
+            Plugin.Spam("command dictionary is not null in provided listing");
 
             EventManager.GetNewDisplayText.Invoke(node);
             //create event to subscribe to and perform other actions
@@ -40,6 +40,86 @@ namespace OpenLib.CoreMethods
                 return false;
             }
         }
+
+        public static bool GetNewDisplayText(List<MainListing> providedListing, ref TerminalNode node) //overload for multiple listings (terminalstuff)
+        {
+            if (node == null || providedListing.Count == 0)
+            {
+                Plugin.Spam("node is null or listings do not exist");
+                return false;
+            }
+
+            bool funcFound = false;
+            int looptimes = 0;
+
+            foreach(MainListing listing in providedListing)
+            {
+                Dictionary<TerminalNode, Func<string>> CommandDictionary = listing.Listing;
+
+                if (CommandDictionary.Count < 1)
+                    continue;
+                looptimes++;
+                Plugin.Spam($"command dictionary in this listing is not null ({looptimes})");
+
+                EventManager.GetNewDisplayText.Invoke(node);
+                //create event to subscribe to and perform other actions
+                //like terminalstuff doing dynamic cost analysis for the store node
+
+                if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
+                {
+                    CommonTerminal.parseNode = node; // set this static node for usage elsewhere
+                    Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
+                    node.displayText = newDisplayText();
+                    funcFound = true;
+                    break;
+                }
+                else
+                {
+                    Plugin.Spam("Not in special nodeListing dictionary");
+                    continue;
+                }
+            }
+
+            Plugin.MoreLogs("provided listings do not contain this node");
+            return funcFound;
+        }
+
+        public static Func<string> GetFuncFromNode(List<MainListing> providedListing, ref TerminalNode node) //overload for multiple listings (terminalstuff)
+        {
+            if (node == null || providedListing.Count == 0)
+            {
+                Plugin.Spam("node is null or listings do not exist");
+                return null;
+            }
+
+            int looptimes = 0;
+
+            foreach (MainListing listing in providedListing)
+            {
+                Dictionary<TerminalNode, Func<string>> CommandDictionary = listing.Listing;
+
+                if (CommandDictionary.Count < 1)
+                    continue;
+
+                looptimes++;
+                Plugin.Spam($"command dictionary in this listing is not null ({looptimes})");
+
+                if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
+                {
+                    Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
+                    return newDisplayText;
+                }
+                else
+                {
+                    Plugin.Spam("Not in this special nodeListing dictionary");
+                    continue;
+                }
+            }
+
+            Plugin.MoreLogs("provided listings do not contain this node");
+            return null;
+        }
+
 
         public static TerminalNode GetFromAllNodes(string nodeName)
         {

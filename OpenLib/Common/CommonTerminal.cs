@@ -13,7 +13,6 @@ namespace OpenLib.Common
             Plugin.Spam($"Screen set to {status}");
         }
 
-
         public static TerminalNode GetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing)
         {
             foreach (KeyValuePair<string, TerminalNode> pairValue in nodeListing)

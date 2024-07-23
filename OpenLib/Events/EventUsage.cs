@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenLib.Menus;
+using BepInEx.Configuration;
 
 namespace OpenLib.Events
 {
     public class EventUsage
     {
+        public static List<ConfigFile> configsToReload = [];
+
         public static void Subscribers()
         {
             EventManager.TerminalAwake.AddListener(OnTerminalAwake);
@@ -28,7 +31,7 @@ namespace OpenLib.Events
         {
             Plugin.instance.Terminal = instance;
             Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
-            CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManagedBools, ConfigSetup.defaultListing);
+            CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
 
         }
 
@@ -37,6 +40,15 @@ namespace OpenLib.Events
             RemoveThings.OnTerminalDisable();
             TerminalStart.delayStartEnum = false;
             ListManagement.ClearLists();
+
+            foreach(ConfigFile config in configsToReload)
+            {
+                Plugin.Spam("reloading config from list");
+                config.Save();
+                config.Reload();
+            }
+
+            configsToReload.Clear();
         }
 
         public static void OnTerminalStart()

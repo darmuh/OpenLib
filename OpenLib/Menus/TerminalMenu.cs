@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenLib.ConfigManager;
+using System;
 using System.Collections.Generic;
 using static OpenLib.Menus.MenuBuild;
 
@@ -31,8 +32,8 @@ namespace OpenLib.Menus
             this.terminalNodePerCategory.Clear();
             this.terminalNodes.Clear();
         }
-            
-    }
+
+            }
 
     public class TerminalMenuItem
     {
@@ -41,6 +42,17 @@ namespace OpenLib.Menus
         public string Category;
         public List<string> itemKeywords;
         public string itemDescription;
+
+        public void Delete()
+        {
+            this.itemDescription = "";
+            
+            this.Category = "";
+            this.ItemName = "";
+
+            if (this.itemKeywords.Count > 0)
+                this.itemKeywords.Clear();
+        }
 
     }
 

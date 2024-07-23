@@ -4,6 +4,7 @@ using HarmonyLib;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using OpenLib.Events;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -20,7 +21,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.0.1";
+            public const string PLUGIN_VERSION = "0.1.0";
         }
         
         internal static ManualLogSource Log;
@@ -33,7 +34,6 @@ namespace OpenLib
         public static List<TerminalNode> nodesAdded = [];
 
         public Terminal Terminal;
-        public static List<TerminalNode> Allnodes = [];
         public static List<TerminalNode> ShopNodes = [];
 
 
@@ -42,14 +42,20 @@ namespace OpenLib
             instance = this;
             Log = base.Logger;
             Log.LogInfo((object)$"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
-            ConfigSetup.defaultManagedBools = new();
+            ConfigSetup.defaultManaged = [];
             ConfigSetup.defaultListing = new();
             CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
-            ConfigSetup.BindConfigSettings(ConfigSetup.defaultManagedBools);
-            Config.ConfigReloaded += ConfigMisc.OnConfigReloaded;
+            ConfigSetup.BindConfigSettings();
+            Config.ConfigReloaded += OnConfigReloaded;
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             EventUsage.Subscribers();
             Log.LogInfo($"{PluginInfo.PLUGIN_NAME} load complete!");
+        }
+
+        internal void OnConfigReloaded(object sender, EventArgs e)
+        {
+            Log.LogInfo("Config has been reloaded!");
+            ConfigSetup.ReadConfigAndAssignValues(Plugin.instance.Config, ConfigSetup.defaultManaged);
         }
 
         internal static void MoreLogs(string message)

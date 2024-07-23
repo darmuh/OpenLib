@@ -58,7 +58,7 @@ namespace OpenLib.CoreMethods
            
         }
 
-        public static void GetCommandsToAdd(List<ManagedBool> managedBools, MainListing listingName)
+        public static void GetCommandsToAdd(List<ManagedConfig> managedBools, MainListing listingName)
         {
             Plugin.MoreLogs("GetCommandsToAdd");
             if(managedBools == null || listingName == null)
@@ -67,13 +67,13 @@ namespace OpenLib.CoreMethods
                 return;
             }
 
+            TerminalNode otherNode = LogicHandling.GetFromAllNodes("OtherCommands");
             Plugin.Spam($"listing count: {listingName.count}");
 
-            foreach(ManagedBool m in managedBools)
+            foreach(ManagedConfig m in managedBools)
             {
-                if(m.ConfigValue)
+                if(m.BoolValue)
                 {
-
                     Plugin.Spam("configvalue is true");
 
                     TerminalMenuItem matchItem = MakeMenuItem(m);
@@ -83,14 +83,24 @@ namespace OpenLib.CoreMethods
                     listingName.count++;
                     Plugin.MoreLogs($"{m.ConfigItemName} found in managed bools and is active");
                     if(m.KeywordList != null)
+                    {
                         AddCommandKeyword(m, listingName);
+                        if(m.categoryText.ToLower() == "other")
+                        {
+                            AddingThings.AddToExistingNodeText($"\n{m.configDescription}", ref otherNode);
+                        }
+                    }
+                        
                 }
                 else
-                    Plugin.MoreLogs($"{m.ConfigItemName} found in managed bools and is NOT active");
+                {
+                    Plugin.Spam("configvalue is false, deleting menuItem if not null");
+                    m.menuItem?.Delete();
+                }
             }
         }
 
-        public static void AddCommandKeyword(ManagedBool managedBool, MainListing listingName)
+        public static void AddCommandKeyword(ManagedConfig managedBool, MainListing listingName)
         {
             if(managedBool == null)
             {
@@ -98,9 +108,9 @@ namespace OpenLib.CoreMethods
                 return;
             }
 
-            if (managedBool.KeywordList.Count < 1)
+            if (managedBool.KeywordList.Count == 0)
             {
-                Plugin.ERROR($"KEYWORD LIST COUNT < 1 FOR {managedBool.ConfigItemName}");
+                Plugin.ERROR($"KEYWORD LIST COUNT = 0 FOR {managedBool.ConfigItemName}");
                 return;
             }
 
@@ -110,9 +120,6 @@ namespace OpenLib.CoreMethods
             {
                 Plugin.Spam($"adding {keyword}");
                 managedBool.TerminalNode = AddingThings.CreateNode(managedBool, keyword, listingName);
-                
-                if(!Plugin.nodesAdded.Contains(managedBool.TerminalNode))
-                    Plugin.nodesAdded.Add(managedBool.TerminalNode);
 
                 if(managedBool.specialNum != -1 && !listingName.specialListNum.ContainsKey(managedBool.TerminalNode)) //viewnodes
                 {

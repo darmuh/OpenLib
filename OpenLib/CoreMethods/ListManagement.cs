@@ -10,7 +10,6 @@ namespace OpenLib.CoreMethods
     {
         public static void ClearLists()
         {
-            Plugin.Allnodes.Clear();
             Plugin.ShopNodes.Clear();
         }
     }
