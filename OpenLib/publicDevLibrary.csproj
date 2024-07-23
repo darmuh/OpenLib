@@ -205,6 +205,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PluginCore\_Release Files\icon.png" />
     <Content Include="specialnodes.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -28,3 +28,6 @@
 
 
 *The plan is to have this library support all of my mods (darmuhsTerminalStuff, ghostCodes, and suitsTerminal). So this library will likely have more features in the future*
+
+Icon Attribution:
+[Online library icons created by Ajmal Naha - Flaticon](https://www.flaticon.com/free-icons/online-library)
