@@ -1,7 +1,7 @@
 {
   "name": "OpenLib",
-  "version_number": "0.1.0",
-  "website_url": "https://github.com/darmuh",
+  "version_number": "0.1.2",
+  "website_url": "https://github.com/darmuh/OpenLib",
   "description": "Open-source development library for LethalCompany, initially created for use with darmuh's Mods",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100"
