@@ -29,5 +29,9 @@
 
 *The plan is to have this library support all of my mods (darmuhsTerminalStuff, ghostCodes, and suitsTerminal). So this library will likely have more features in the future*
 
+Currently Supports:
+ - darmuhsTerminalStuff version 3.3.0+
+ - suitsTerminal 1.4.0+
+
 Icon Attribution:
 [Online library icons created by Ajmal Naha - Flaticon](https://www.flaticon.com/free-icons/online-library)

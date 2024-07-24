@@ -13,7 +13,7 @@ namespace OpenLib.ConfigManager
         //MAIN
         public string ConfigItemName;
         public bool RequiresNetworking;
-        public int ConfigType; //0 = bool, 1 = string, 2 = int
+        public int ConfigType = -1; //0 = bool, 1 = string, 2 = int
 
         //ManagedString
         public string StringValue; //for string config items
@@ -77,6 +77,7 @@ namespace OpenLib.ConfigManager
 
         public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clear = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
         {
+            ConfigType = 0;
             BoolValue = isEnabled;
             MainAction = mainAction;
             KeywordList = keywordList;
@@ -105,7 +106,7 @@ namespace OpenLib.ConfigManager
 
     public class ManagedBoolGet
     {
-        public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query, out ManagedConfig result)
+        public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query, int configType, out ManagedConfig result)
         {
             if (managedBools.Count == 0)
             {
@@ -118,10 +119,10 @@ namespace OpenLib.ConfigManager
 
             foreach (ManagedConfig item in managedBools)
             {
-                if (item.ConfigItemName == query)
+                if (item.ConfigItemName == query && item.ConfigType == configType)
                 {
                     result = item;
-                    Plugin.Spam($"{query} found in managedBool, returning true");
+                    Plugin.Spam($"{query} found with matching config type: {configType}, returning true");
                     return true;
                 }
             }

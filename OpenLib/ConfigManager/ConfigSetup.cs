@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using OpenLib.Common;
+using Steamworks.Ugc;
 
 namespace OpenLib.ConfigManager
 {
@@ -29,7 +30,7 @@ namespace OpenLib.ConfigManager
         {
             List<string> keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString);
 
-            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, out ManagedConfig resultBool))
+            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
             {
                 resultBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
@@ -56,7 +57,7 @@ namespace OpenLib.ConfigManager
                 keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString.Value);
             }
 
-            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, out ManagedConfig resultBool))
+            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
             {
                 resultBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
@@ -85,7 +86,7 @@ namespace OpenLib.ConfigManager
 
         public static ManagedConfig NewManagedBool(ref List<ManagedConfig> managedItems, string configItemName, bool isEnabled, string configDescription, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
         {
-            if(ManagedBoolGet.TryGetItemByName(managedItems, configItemName, out ManagedConfig resultBool))
+            if(ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
             {
                 resultBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
                 return resultBool;
@@ -137,7 +138,8 @@ namespace OpenLib.ConfigManager
                 ConfigItemName = configItem.Definition.Key,
                 configDescription = configItem.Description.Description,
                 StringValue = configItem.Value,
-                relatedConfigItem = relatedConfigItem
+                relatedConfigItem = relatedConfigItem,
+                ConfigType = 1
             };
 
             managedItems.Add(managedString);
@@ -163,25 +165,38 @@ namespace OpenLib.ConfigManager
 
             List<ConfigEntry<bool>> configBools = [];
 
-            List<ConfigDefinition> configKeys = [.. ModConfig.Keys];
-            foreach (ConfigDefinition item in configKeys)
+            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
-                if (ModConfig.TryGetEntry<bool>(item, out ConfigEntry<bool> entry))
+                configItems.Add(value.Definition, value);
+                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+            }
+
+            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            {
+                if (pair.Value.BoxedValue.GetType() == typeof(bool))
                 {
-                    if (ManagedBoolGet.TryGetItemByName(managedBools, item.Key, out ManagedConfig result))
+                    if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
                     {
-                        if (result.RequiresNetworking)
+                        if (ManagedBoolGet.TryGetItemByName(managedBools, pair.Key.Key, 0, out ManagedConfig result))
                         {
-                            configBools.Add(entry);
-                            Plugin.Spam($"Adding {item.Key} to bools list to check against networking");
+                            if (result.ConfigType != 0)
+                                Plugin.Spam("ManagedItem is type 0, bool");
+
+                            if (result.RequiresNetworking)
+                            {
+                                configBools.Add(entry);
+                                Plugin.Spam($"Adding {pair.Key.Key} to bools list to check against networking");
+                            }
+                            else
+                                Plugin.Spam($"{pair.Key.Key} is not listed as requiring networking");
                         }
                         else
-                            Plugin.Spam($"{item.Key} is not listed as requiring networking");
+                            Plugin.Spam($"entry is not a managed bool");
                     }
-                    else
-                        Plugin.Spam($"entry is not a managed bool");
                 }
-                Plugin.Spam($"entry is not a bool");
+                else
+                    Plugin.Spam($"entry is not a bool");
             }
 
             foreach (ConfigEntry<bool> configItem in configBools)
@@ -217,7 +232,7 @@ namespace OpenLib.ConfigManager
                     {
                         Plugin.Spam("bool entry found");
                         Plugin.Spam($"{entry.Definition.Key}");
-                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, out ManagedConfig match))
+                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 0, out ManagedConfig match))
                         {
                             match.BoolValue = entry.Value;
                             Plugin.Spam($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
@@ -232,7 +247,7 @@ namespace OpenLib.ConfigManager
                     {
                         Plugin.Spam("string entry found");
                         Plugin.Spam($"{entry.Definition.Key}");
-                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, out ManagedConfig match))
+                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 1, out ManagedConfig match))
                         {
                             match.StringValue = entry.Value;
                             Plugin.Spam($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");

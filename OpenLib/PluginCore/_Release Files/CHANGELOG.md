@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.4]
+ - Updated ManagedConfig items to indicate what type they are (bool or string)
+	- can expand to floats/ints/etc. later if needed
+ - Updated Managedbool and ManagedString methods to include the configtype at creation/modification
+ - Updated TryGetItemByName to indicate ConfigType as a parameter
+	- this is to ensure you are getting the config item you are looking for specifically
+ - Updated NetworkingCheck method to properly iterate through a config file
+
 ## [0.1.3]
  - Removed property "count" from MainListing class.
 	- This was causing an odd interaction where menus would not update their displaytext properly due to this property being equal to 0.
