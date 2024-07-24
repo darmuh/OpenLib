@@ -40,6 +40,18 @@ namespace OpenLib.Menus
             return myCategories;
         }
 
+        public static bool ShouldAddCategoryNameToMainMenu(List<TerminalMenuItem> menuItems, string categoryName)
+        {
+            foreach(TerminalMenuItem item in menuItems)
+            {
+                if (item.Category == categoryName)
+                    return true;
+                else
+                    continue;
+            }
+            return false;
+        }
+
         public static List<TerminalMenuItem> TerminalMenuItems(List<ManagedConfig> managedBools)
         {
             List<TerminalMenuItem> myMenuItems = [];
