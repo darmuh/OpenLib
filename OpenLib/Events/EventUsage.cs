@@ -90,7 +90,7 @@ namespace OpenLib.Events
 
         public static void OnLoadNewNode(TerminalNode node)
         {
-            Plugin.Spam($"listing count: {ConfigSetup.defaultListing.count}");
+            Plugin.Spam($"listing count: {ConfigSetup.defaultListing.Listing.Count}");
 
             if (node != null)
                 Plugin.Spam($"{node.name} has been loaded");

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.3]
+ - Removed property "count" from MainListing class.
+	- This was causing an odd interaction where menus would not update their displaytext properly due to this property being equal to 0.
+	- updated any usage of the count property to the Listing property's "Count"
+
 ## [0.1.2]
  - Fixed manifest link to the correct github page
 

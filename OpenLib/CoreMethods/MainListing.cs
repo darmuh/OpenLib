@@ -9,7 +9,7 @@ namespace OpenLib.CoreMethods
     public class MainListing
     {
         //Main
-        public int count = 0;
+        //public int count = 0;
         public List<TerminalNode> terminalNodes = [];
         public List<TerminalKeyword> terminalKeywords = [];
         public Dictionary<TerminalNode,Func<string>> Listing = [];
@@ -23,7 +23,7 @@ namespace OpenLib.CoreMethods
 
         public void DeleteAll()
         {
-            count = 0;
+            //count = 0;
             terminalKeywords.Clear();
             terminalNodes.Clear();
             Listing.Clear();
@@ -51,7 +51,7 @@ namespace OpenLib.CoreMethods
             listingName.specialListNum = [];
             listingName.specialListString = [];
             listingName.ListNumToString = [];
-            listingName.count = 0;
+            //listingName.count = 0;
 
             if (listingName == null)
                 Plugin.ERROR("InitListing still null");
@@ -68,7 +68,7 @@ namespace OpenLib.CoreMethods
             }
 
             TerminalNode otherNode = LogicHandling.GetFromAllNodes("OtherCommands");
-            Plugin.Spam($"listing count: {listingName.count}");
+            Plugin.Spam($"listing count: {listingName.Listing.Count}");
 
             foreach(ManagedConfig m in managedBools)
             {
@@ -80,7 +80,7 @@ namespace OpenLib.CoreMethods
                     if (matchItem != null)
                         m.menuItem = matchItem;
 
-                    listingName.count++;
+                    //listingName.count++;
                     Plugin.MoreLogs($"{m.ConfigItemName} found in managed bools and is active");
                     if(m.KeywordList != null)
                     {

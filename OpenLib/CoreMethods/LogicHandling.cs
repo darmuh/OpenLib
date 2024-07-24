@@ -10,7 +10,7 @@ namespace OpenLib.CoreMethods
     {
         public static bool GetNewDisplayText(MainListing providedListing, ref TerminalNode node)
         {
-            if (node == null || providedListing.count == 0)
+            if (node == null || providedListing.Listing.Count == 0)
             {
                 Plugin.Spam("node is null or listing is 0");
                 return false;
