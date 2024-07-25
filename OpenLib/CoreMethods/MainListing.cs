@@ -110,7 +110,7 @@ namespace OpenLib.CoreMethods
 
             if (managedBool.KeywordList.Count == 0)
             {
-                Plugin.ERROR($"KEYWORD LIST COUNT = 0 FOR {managedBool.ConfigItemName}");
+                Plugin.Spam($"KeywordList Count = 0 for {managedBool.ConfigItemName}");
                 return;
             }
 

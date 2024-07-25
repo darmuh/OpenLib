@@ -21,7 +21,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.1.4";
+            public const string PLUGIN_VERSION = "0.1.5";
         }
         
         internal static ManualLogSource Log;

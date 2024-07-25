@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.5]
+ - Adjusted some logging messages.
+ - Fixed error being thrown by invalid input during TerminalParseSent event.
+
 ## [0.1.4]
  - Updated ManagedConfig items to indicate what type they are (bool or string)
 	- can expand to floats/ints/etc. later if needed

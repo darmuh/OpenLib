@@ -11,6 +11,7 @@
 	- Currently supporting ManagedBools and ManagedStrings
 	- when a change is detected to the assigned value, your managedconfig item will also update.
 	- use this to manage your keyword creation/removal between lobby loads.
+	- also provides support for a networking configuration option via ConfigSetup.NetworkingCheck
 - Terminal Keyword/Node creation with flexibility in mind.
 	- Create simple commands that can use multiple keywords.
 	- Create shop nodes that will be added to the furniture rotation list

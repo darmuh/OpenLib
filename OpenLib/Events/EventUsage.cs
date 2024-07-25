@@ -71,13 +71,15 @@ namespace OpenLib.Events
             }
 
             string cleanedText = CommonStringStuff.GetCleanedScreenText(Plugin.instance.Terminal);
-            string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (ConfigSetup.defaultListing.specialListString.ContainsKey(words[0]))
+            if(cleanedText.Length > 0) //prevent errors being thrown from invalid text
             {
-                TerminalNode retrieveNode = CommonTerminal.GetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString);
-                node = retrieveNode;
-            } //listnumtostring should be patched in by terminalstuff, outside the scope of this mod other than holding the lists
+                string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (ConfigSetup.defaultListing.specialListString.ContainsKey(words[0]))
+                {
+                    TerminalNode retrieveNode = CommonTerminal.GetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString);
+                    node = retrieveNode;
+                }
+            }
 
             if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
             {
