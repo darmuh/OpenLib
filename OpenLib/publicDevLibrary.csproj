@@ -54,6 +54,7 @@
     <None Include="PluginCore\_Release Files\CHANGELOG.md" />
     <None Include="PluginCore\_Release Files\manifest.json" />
     <None Include="PluginCore\_Release Files\README.md" />
+    <None Include="Wiki\HowToUse.md" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" PrivateAssets="all" />
