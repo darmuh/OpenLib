@@ -1,10 +1,11 @@
 # OpenLib Documentation (WIP)
-
 The below documentation has been created to assist other mod developers who may consider using OpenLib's features within their projects.
+***
+## CoreMethods.AddingThings
 
-## Create a simple Terminal Command - AddBasicCommand method (without additional logic)
- Below is the simplest way to create a new terminal command:
+### AddBasicCommand
 - `AddBasicCommand(string nodeName, string keyWord, string displayText, bool isVerb, bool clearText, string category = "", string keywordDescription = "")`
+- This is probably the simplest way to add a terminal command without any additional logic
 - The return type for this method is **void**
 - string nodeName = The name assigned to your TerminalNode element
 - string keyWord = The keyword used in the terminal to display your command.
@@ -22,8 +23,8 @@ The below documentation has been created to assist other mod developers who may 
 	- This will add the same command as above but will not add the command description to the "other" command.
 	- As you can see, you do not need to define category or keywordDescription as these are optional parameters.
 
-## Create a Terminal Command with additional logic - AddNodeManual method
- Below is the simplest way to create a new terminal command with additional logic:
+### AddNodeManual
+ - This is probably the simplest way to add a terminal command WITH additional logic
  - `AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
 	 - The return type for this method is **TerminalNode**
 		- when using this method you can return a terminalnode for use in your code & further modification
@@ -60,4 +61,50 @@ The below documentation has been created to assist other mod developers who may 
 	- clearText is set to true so existing text will be removed from the terminal
 	- There will need to be a corresponding `static string RandomSuit() method` to return the displayText from the command and any additional logic
  - For more complicated examples, I suggest looking through the darmuhsTerminalStuff github.
- 
+
+### AddKeywordToExistingNode
+ - Easiest way to add an additional keyword to an already existing TerminalNode
+ - `AddKeywordToExistingNode(string keyWord, TerminalNode existingNode, bool addToList = false)`
+	- Requires a TerminalNode given as the parameter. 
+	- bool addToList determines whether or not the new keyword is registered to the library for deletion at lobby close. I recommend setting this to true.
+	- Return type is Void
+
+### AddToExistingNodeText
+ - Easy way to add text to an already existing TerminalNode
+ - `AddToExistingNodeText(string textToAdd, ref TerminalNode existingNode)`
+	- Requires a TerminalNode given as a parameter, will modify this node to add your new text to the end of it.
+	- This method is used for adding commands to the OtherCommands TerminalNode, for example.
+	- Return type is Void
+
+### CreateDummyNode
+ - Useful when you need to reference a blank TerminalNode
+ - `CreateDummyNode(string nodeName, bool clearPrevious, string displayText)`
+ - Return type is TerminalNode
+
+### Other accessible methods that you may end up using as standalones
+ - `AddStoreCommand(string nodeName, string storeName, ref TerminalKeyword keyword, ref TerminalNode node, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, MainListing mainListing, bool alwaysInStock, int maxStock, out CompatibleNoun confirm, out CompatibleNoun deny)`
+	- This requires a TerminalKeyword and TerminalNode to reference. Used by the other command adding methods when commandType is 2
+ - `AddConfirm(string nodeName, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, Dictionary<TerminalNode, Func<string>> nodeListing, out CompatibleNoun confirm, out CompatibleNoun deny)`
+	- Return Type is void, with two out parameters for the confirm and deny CompatibleNouns.
+	- This method is usually only used in conjunction with the other methods that add commands to the terminal and require confirmation
+ - `AddToBuyWord(ref TerminalKeyword buyKeyword, ref TerminalKeyword terminalKeyword, UnlockableItem item)`
+	- Usually used by the AddStoreCommand method.
+	- You will need to provide both the "buy" TerminalKeyword and your item's TerminalKeyword in parameters
+ - `AddUnlockable(string storeName, TerminalNode node, bool alwaysInStock, int maxStock)`
+	- This will add a faux UnlockableItem for use with the Terminal Store (not for real unlockables)
+	- Make sure you are not using an already existing unlockableitem's name as it will be replaced by yours otherwise
+
+### Overloads and other methods that are part of larger systems in this mod
+ - `CreateNode(ManagedConfig managedBool, string keyWord, MainListing yourModListing)`
+	- This is called at Terminal Awake in the CommandRegistry.AddCommandKeyword method.
+	- You will almost never need to call this method directly if you are using ManagedConfig to create your terminal commands.
+ - `AddConfirm(string nodeName, ManagedConfig managedBool, out CompatibleNoun confirm, out CompatibleNoun deny)`
+	- You will likely never need to call this method directly if you are using ManagedConfig to create your terminal commands.
+ - `AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedConfig managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)`
+	- You will likely never need to call this method directly if you are using ManagedConfig to create your terminal commands.
+ - `AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
+	- This is useful for keywords you dont want to define at Terminal Awake but do have tied to config options.
+	- The stringValue config option can have multiple keywords in it separated by semi-colons ";" to assign multiple keywords to the same TerminalNode.
+	- Example from darmuhsTerminalStuff:
+		- `AddNodeManual("Use Teleporter", ConfigSettings.tpKeywords, ShipControls.RegularTeleporterCommand, true, 0, defaultListing, defaultManaged, "CONTROLS", "Activate the Teleporter. Type a crewmate's name after the command to target them");`
+

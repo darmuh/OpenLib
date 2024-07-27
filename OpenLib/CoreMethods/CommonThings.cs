@@ -26,24 +26,6 @@ namespace OpenLib.CoreMethods
             return;
         }
 
-        public static TerminalNode CreateDummyNode(string nodeName, bool clearPrevious, string displayText)
-        {
-            if (UseMatchingNode(nodeName, out TerminalNode terminalNode))
-            {
-                terminalNode.displayText = displayText;
-                terminalNode.clearPreviousText = clearPrevious;
-            }
-            else
-            {
-                terminalNode = ScriptableObject.CreateInstance<TerminalNode>();
-                terminalNode.name = nodeName;
-                terminalNode.displayText = displayText;
-                terminalNode.clearPreviousText = clearPrevious;
-            }
-
-            return terminalNode;
-        }
-
 
     }
 }
