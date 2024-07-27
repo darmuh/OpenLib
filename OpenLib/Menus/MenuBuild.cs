@@ -127,7 +127,7 @@ namespace OpenLib.Menus
             {
                 foreach(TerminalMenuCategory category in terminalMenu.Categories)
                 {
-                    assembler.Append($"[{category.CatName}]\r\n{category.CatDescription}\r\n\r\n");
+                    assembler.Append($"[{category.CatName.ToUpper()}]\r\n{category.CatDescription}\r\n\r\n");
                 }
             }
 

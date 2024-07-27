@@ -20,7 +20,7 @@ namespace OpenLib.Common
             int emptySpace;
             StringBuilder message = new();
 
-            message.Append($"============ All [{categoryTitle}] Commands  ============");
+            message.Append($"============ All [{categoryTitle.ToUpper()}] Commands  ============");
             message.Append("\r\n");
 
             // Iterate through each item in the current page
