@@ -1,9 +1,5 @@
 ﻿using HarmonyLib;
-using OpenLib.CoreMethods;
 using OpenLib.Events;
-using System.Collections;
-using UnityEngine;
-using OpenLib.ConfigManager;
 
 namespace OpenLib
 {

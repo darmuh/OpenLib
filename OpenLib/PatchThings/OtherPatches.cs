@@ -1,9 +1,6 @@
-﻿using BepInEx.Bootstrap;
-using GameNetcodeStuff;
+﻿using GameNetcodeStuff;
 using HarmonyLib;
-using OpenLib.Compat;
 using OpenLib.Events;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace OpenLib

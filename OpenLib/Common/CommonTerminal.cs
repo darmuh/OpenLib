@@ -46,7 +46,7 @@ namespace OpenLib.Common
             Plugin.Spam("nodes have been added");
         }
 
-        public static string ClearText() //function using in terminalstuff clear command
+        public static string ClearText() //function used in terminalstuff clear command
         {
             string displayText = "\n";
             Plugin.Spam("display text cleared for real this time!!!");

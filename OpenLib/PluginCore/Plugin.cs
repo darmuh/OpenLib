@@ -13,7 +13,6 @@ namespace OpenLib
 {
     [BepInPlugin("darmuh.OpenLib", "OpenLib", (PluginInfo.PLUGIN_VERSION))]
 
-
     public class Plugin : BaseUnityPlugin
     {
         public static Plugin instance;
@@ -21,7 +20,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.1.5";
+            public const string PLUGIN_VERSION = "0.1.6";
         }
         
         internal static ManualLogSource Log;

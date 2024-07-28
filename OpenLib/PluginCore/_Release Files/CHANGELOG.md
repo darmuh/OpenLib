@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.6]
+ - Added soft compatibility method in Common.StartGame
+	- Call this method with the GameNetworkManagerStart Event to set your soft compatibility bools.
+ - Adjusted some methods that dont have any public use to be internal
+ - Removed duplicate method in CoreMethods.CommonThings
+ - Added some more public methods to Common.Misc for getting/setting color via hexcode config
+ - Updated terminal menus to display category names in upper case to be more in-line with vanilla terminal menus.
+
 ## [0.1.5]
  - Adjusted some logging messages.
  - Fixed error being thrown by invalid input during TerminalParseSent event.

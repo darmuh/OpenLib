@@ -1,4 +1,6 @@
-﻿using GameNetcodeStuff;
+﻿using BepInEx.Configuration;
+using GameNetcodeStuff;
+using UnityEngine;
 
 namespace OpenLib.Common
 {
@@ -43,6 +45,17 @@ namespace OpenLib.Common
 
             return -1;
         }
+        public static Color HexToColor(string hex)
+        {
+            // Convert hex color code to Color
+            ColorUtility.TryParseHtmlString(hex, out Color color);
+            return color;
+        }
 
+        public static void LogColorBeforeChange(Color color, ConfigEntry<string> entry)
+        {
+            string hexColor = ColorUtility.ToHtmlStringRGB(color);
+            Plugin.Log.LogDebug($"Previous Color noted as [{hexColor}] for configItem - {entry.Definition.Key}");
+        }
     }
 }

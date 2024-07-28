@@ -24,5 +24,18 @@ namespace OpenLib.Common
 
             quitTerminalEnum = false;
         }
+
+        public static IEnumerator TerminalQuitter(Terminal terminal, bool syncTerminalInUse) //overload for bool use
+        {
+            if (quitTerminalEnum)
+                yield break;
+
+            quitTerminalEnum = true;
+
+            yield return new WaitForSeconds(0.5f);
+            terminal.QuitTerminal(syncTerminalInUse);
+
+            quitTerminalEnum = false;
+        }
     }
 }

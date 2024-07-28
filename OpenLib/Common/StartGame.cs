@@ -1,29 +1,41 @@
-﻿using BepInEx.Bootstrap;
+﻿using BepInEx;
+using BepInEx.Bootstrap;
 using OpenLib.Compat;
+using System.Reflection;
 
 namespace OpenLib.Common
 {
     public class StartGame
     {
-        public static bool oneTimeOnly = false;
-        public static void CompatibilityCheck()
+        internal static bool oneTimeOnly = false;
+        internal static void CompatibilityCheck()
         {
-            if (Chainloader.PluginInfos.ContainsKey("BMX.LobbyCompatibility"))
+            if (SoftCompatibility("BMX.LobbyCompatibility", ref Plugin.instance.LobbyCompat))
             {
-                Plugin.MoreLogs("LobbyCompatibility detected, setting appropriate Lobby Compatibility Level depending on networking status");
-                Plugin.instance.LobbyCompat = true;
+                Plugin.Spam("LobbyCompatibility detected, setting appropriate Lobby Compatibility Level depending on networking status");
                 BMX_LobbyCompat.SetCompat(false);
             }
-            if (Chainloader.PluginInfos.ContainsKey("TerminalFormatter"))
+            if (SoftCompatibility("TerminalFormatter", ref Plugin.instance.TerminalFormatter))
             {
-                Plugin.MoreLogs("Terminal Formatter by mrov detected!");
-                Plugin.instance.TerminalFormatter = true;
+                Plugin.Spam("Terminal Formatter by mrov detected!");
             }
         }
-        public static void OnGameStart()
+        internal static void OnGameStart()
         {
             CompatibilityCheck();
             oneTimeOnly = false;
+        }
+
+        public static bool SoftCompatibility(string PluginGUID, ref bool isDetected)
+        {
+            if (Chainloader.PluginInfos.ContainsKey(PluginGUID))
+            {
+                string YourPluginName = Assembly.GetCallingAssembly().GetName().Name;
+                isDetected = true;
+                Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
+                return isDetected;
+            }
+            return isDetected = false;
         }
     }
 }
