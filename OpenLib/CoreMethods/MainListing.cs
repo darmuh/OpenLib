@@ -1,4 +1,5 @@
-﻿using OpenLib.ConfigManager;
+﻿using OpenLib.Common;
+using OpenLib.ConfigManager;
 using OpenLib.Menus;
 using System;
 using System.Collections.Generic;
@@ -127,10 +128,10 @@ namespace OpenLib.CoreMethods
                     listingName.ListNumToString.Add(managedBool.specialNum, managedBool.specialString);
                     Plugin.MoreLogs($"Added viewnode types to dictionaries, {managedBool.specialNum}");
                 }
-                else if(managedBool.specialString.Length > 1 && !listingName.specialListString.ContainsKey(managedBool.specialString)) //dynamic
+                else if(managedBool.specialString.Length > 1) //dynamic commands (take any input)
                 {
-                    listingName.specialListString.Add(managedBool.specialString, managedBool.TerminalNode);
-                    Plugin.MoreLogs("Adding specialString to node");
+                    listingName.specialListString.Add(keyword, managedBool.TerminalNode);
+                    Plugin.MoreLogs($"mapping keyword{keyword} for {managedBool.specialString} node");
                 }
             }
 

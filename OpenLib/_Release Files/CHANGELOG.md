@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.1.7]
+ - Added GetKeywordsPerConfigItem overload that allows for specifying separator char.
+ - Added some WIP methods in AddingThings, use at your own-risk.
+ - adjusted keyword check to be case in-sensitive
+ - made it so "specialString" in managedconfig items does not have to match the keyword
+ - Added RemoveCompatibleNoun method in RemoveThings.cs
+ - Added new patch/event StartOfRoundChangeLevel
+ - Added AssembleMainMenuText overload for when you're not using ManagedConfig stuff
+ - Added Plugin.WARNING shortcut for LogWarning messages
+
 ## [0.1.6]
  - Added soft compatibility method in Common.StartGame
 	- Call this method with the GameNetworkManagerStart Event to set your soft compatibility bools.

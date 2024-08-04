@@ -35,26 +35,16 @@
     <DebugSymbols>true</DebugSymbols>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'steamdir|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\Lethal Company\BepInEx\plugins\darmuh-darmuhsTerminalStuff\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <DebugType>portable</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <PropertyGroup>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="PluginCore\_Release Files\CHANGELOG.md" />
-    <None Include="PluginCore\_Release Files\LICENSE.MD" />
-    <None Include="PluginCore\_Release Files\manifest.json" />
-    <None Include="PluginCore\_Release Files\README.md" />
+    <None Include="_Release Files\CHANGELOG.md" />
+    <None Include="_Release Files\LICENSE.MD" />
+    <None Include="_Release Files\manifest.json" />
+    <None Include="_Release Files\README.md" />
     <None Include="Wiki\CoreMethods\CommandRegistry.md" />
     <None Include="Wiki\CoreMethods\CommonThings.md" />
     <None Include="Wiki\CoreMethods\AddingThings.md" />
@@ -210,7 +200,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PluginCore\_Release Files\icon.png" />
+    <Content Include="_Release Files\icon.png" />
     <Content Include="specialnodes.txt" />
   </ItemGroup>
   <ItemGroup>

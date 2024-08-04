@@ -1,6 +1,7 @@
 ﻿using OpenLib.ConfigManager;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static OpenLib.CoreMethods.DynamicBools;
 
 namespace OpenLib.CoreMethods
@@ -37,6 +38,27 @@ namespace OpenLib.CoreMethods
             keyWord.compatibleNouns = [.. keywordList];
         }
 
+        public static void RemoveCompatibleNoun(ref TerminalKeyword mainWord, TerminalKeyword wordToRemove)
+        {
+            bool removedWord = false;
+
+            if(mainWord.compatibleNouns != null)
+            {
+                List<CompatibleNoun> newList = [];
+                foreach(CompatibleNoun noun in mainWord.compatibleNouns)
+                {
+                    if (noun.noun != wordToRemove)
+                        newList.Add(noun);
+                    else
+                    {
+                        removedWord = true;
+                        Plugin.Spam($"Removing {wordToRemove.word}");
+                    }
+                }
+                mainWord.compatibleNouns = newList.ToArray();
+                Plugin.Spam($"DeleteCompatibleNoun of {wordToRemove.word} from {mainWord.word} complete, word removed: {removedWord}");
+            }
+        }
 
         public static void DeleteAllKeywords(ref List<TerminalKeyword> keywordList)
         {

@@ -104,6 +104,20 @@ namespace OpenLib.Common
             return keywordsInConfig;
         }
 
+        public static List<string> GetKeywordsPerConfigItem(string configItem, char separator) //config item separated by semicolon only
+        {
+            List<string> keywordsInConfig = [];
+            if (configItem.Length > 0)
+            {
+                keywordsInConfig = configItem.Split(separator)
+                                      .Select(item => item.TrimStart())
+                                      .ToList();
+                //Plugin.MoreLogs("GetKeywordsPerConfigItem split complete");
+            }
+
+            return keywordsInConfig;
+        }
+
         public static List<int> GetNumberListFromStringList(List<string> stringList) //return list of numbers from list of strings
         {
             List<int> numbersList = [];

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenLib.CoreMethods
 {
@@ -14,7 +11,7 @@ namespace OpenLib.CoreMethods
 
             foreach (TerminalNode node in allTerminalNodes)
             {
-                if (node.name.Equals(nodeName))
+                if (node.name.ToLower().Equals(nodeName.ToLower()))
                 {
                     returnNode = node;
                     Plugin.Spam($"Existing terminalNode [{nodeName}] found, using it rather than making a new one for this command");
@@ -32,7 +29,7 @@ namespace OpenLib.CoreMethods
 
             foreach (TerminalKeyword keyword in keyWordList)
             {
-                if (keyword.word.Equals(keyWord))
+                if (keyword.word.ToLower().Equals(keyWord.ToLower()))
                 {
                     //Plugin.MoreLogs($"Keyword: [{keyWord}] found!");
                     return true;
@@ -48,7 +45,7 @@ namespace OpenLib.CoreMethods
 
             foreach (TerminalKeyword keyword in keyWordList)
             {
-                if (keyword.word.Equals(keyWord))
+                if (keyword.word.ToLower().Equals(keyWord.ToLower()))
                 {
                     Plugin.Spam($"Keyword: [{keyWord}] found!");
                     terminalKeyword = keyword;
@@ -81,7 +78,7 @@ namespace OpenLib.CoreMethods
             List<Item> unlockableList = [.. Plugin.instance.Terminal.buyableItemsList];
             foreach (Item item in unlockableList)
             {
-                if (item.itemName.Equals(unlockableName))
+                if (item.itemName.ToLower().Equals(unlockableName.ToLower()))
                 {
                     itemOut = item;
                     return true;
@@ -96,7 +93,7 @@ namespace OpenLib.CoreMethods
         {
             foreach (TerminalKeyword terminalKeyword in terminalKeywords)
             {
-                if (terminalKeyword.word == keyWord && terminalKeyword.specialKeywordResult.displayText == displayText)
+                if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult.displayText == displayText)
                 {
                     Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                     return true;
@@ -117,7 +114,7 @@ namespace OpenLib.CoreMethods
                 {
                     foreach (TerminalKeyword terminalKeyword in terminalKeywords)
                     {
-                        if (terminalKeyword.word == keyWord && terminalKeyword.specialKeywordResult == entry.Key)
+                        if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
                         {
                             Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                             return true;
@@ -142,7 +139,7 @@ namespace OpenLib.CoreMethods
                 {
                     foreach (TerminalKeyword terminalKeyword in terminalKeywords)
                     {
-                        if (terminalKeyword.word == keyWord && terminalKeyword.specialKeywordResult == entry.Key)
+                        if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
                         {
                             Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                             outKeyword = terminalKeyword;

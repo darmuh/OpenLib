@@ -30,6 +30,7 @@ namespace OpenLib.Events
         public static Events.CustomEvent StartOfRoundAwake = new();
         public static Events.CustomEvent StartOfRoundStart = new();
         public static Events.CustomEvent StartOfRoundStartGame = new();
+        public static Events.CustomEvent StartOfRoundChangeLevel = new();
         public static Events.CustomEvent PlayerSpawn = new();
         public static Events.CustomEvent<ShipTeleporter> TeleporterAwake = new();
         public static Events.CustomEvent NormalTPFound = new();

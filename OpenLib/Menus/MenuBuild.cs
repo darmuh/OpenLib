@@ -134,6 +134,21 @@ namespace OpenLib.Menus
             return assembler.ToString();
         }
 
+        public static string AssembleMainMenuText(string MainMenuText, Dictionary<string,string> Categories)
+        {
+            StringBuilder assembler = new();
+            assembler.Append($"{MainMenuText}\r\n\r\n");
+            if (Categories.Count > 0)
+            {
+                foreach (KeyValuePair<string,string> category in Categories)
+                {
+                    assembler.Append($"[{category.Key.ToUpper()}]\r\n{category.Value}\r\n\r\n");
+                }
+            }
+
+            return assembler.ToString();
+        }
+
         public static void CreateCategoryCommands(TerminalMenu terminalMenu, MainListing yourModListing)
         {
             //Plugin.Spam("CreateCategoryCommands START");
@@ -212,7 +227,7 @@ namespace OpenLib.Menus
                 if(menuItem.Category.ToLower() == catName.ToLower())
                 {
                     catItems.Add($"> {GetKeywordsForMenuItem(menuItem.itemKeywords)}\r\n{menuItem.itemDescription}\r\n");
-                    Plugin.Spam($"{menuItem.itemKeywords} added");
+                    Plugin.Spam($"{GetKeywordsForMenuItem(menuItem.itemKeywords)} added");
                     Plugin.Spam($"{menuItem.itemDescription} added too!");
                 }
             }

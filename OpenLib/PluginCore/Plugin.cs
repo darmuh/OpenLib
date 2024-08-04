@@ -20,7 +20,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.1.6";
+            public const string PLUGIN_VERSION = "0.1.7";
         }
         
         internal static ManualLogSource Log;
@@ -76,6 +76,11 @@ namespace OpenLib
         internal static void ERROR(string message)
         {
             Log.LogError(message);
+        }
+
+        internal static void WARNING(string message)
+        {
+            Log.LogWarning(message); 
         }
     }
 

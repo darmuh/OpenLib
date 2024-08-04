@@ -34,6 +34,17 @@ namespace OpenLib
 
     }
 
+    //ChangeLevel
+    [HarmonyPatch(typeof(StartOfRound), "ChangeLevel")]
+    public class RouteEvent
+    {
+        public static void Postfix()
+        {
+            EventManager.StartOfRoundChangeLevel.Invoke();
+        }
+
+    }
+
     public class SpawnPatch
     {
         [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]

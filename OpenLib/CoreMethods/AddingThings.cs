@@ -8,13 +8,14 @@ using OpenLib.Menus;
 using OpenLib.ConfigManager;
 using OpenLib.Common;
 using UnityEngine.InputSystem;
+using Steamworks.Ugc;
 
 namespace OpenLib.CoreMethods
 {
     public class AddingThings
     {
         private static readonly char[] NewLineChars = Environment.NewLine.ToCharArray();
-        public static void AddKeywordToExistingNode(string keyWord, TerminalNode existingNode, bool addToList = false)
+        public static void AddKeywordToExistingNode(string keyWord, TerminalNode existingNode, bool addToList = true)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
             List<CompatibleNoun> existingNounList = [];
@@ -45,6 +46,40 @@ namespace OpenLib.CoreMethods
 
             Plugin.Spam($"Adding {keyWord} to existing node {existingNode.name}");
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
+        }
+
+        public static TerminalKeyword AddKeywordToNode(string keyWord, TerminalNode existingNode, bool addToList = true)
+        {
+            List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+            List<CompatibleNoun> existingNounList = [];
+            TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+            terminalKeyword.name = keyWord + "_keyword";
+            terminalKeyword.word = keyWord.ToLower();
+            terminalKeyword.isVerb = false;
+            terminalKeyword.specialKeywordResult = existingNode;
+
+            if (existingNode.terminalOptions != null)
+            {
+                existingNounList = [.. existingNode.terminalOptions];
+                Plugin.Spam($"{existingNode.name} has existing terminalOptions");
+            }
+
+            CompatibleNoun noun = new()
+            {
+                noun = terminalKeyword,
+                result = existingNode
+            };
+            existingNounList.Add(noun);
+            existingNode.terminalOptions = [.. existingNounList];
+
+            allKeywordsList.Add(terminalKeyword);
+
+            if (addToList)
+                Plugin.keywordsAdded.Add(terminalKeyword);
+
+            Plugin.Spam($"Adding {keyWord} to existing node {existingNode.name}");
+            Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
+            return terminalKeyword;
         }
 
         public static void AddToExistingNodeText(string textToAdd, ref TerminalNode existingNode)
@@ -750,7 +785,7 @@ namespace OpenLib.CoreMethods
         public static void AddToBuyWord(ref TerminalKeyword buyKeyword, ref TerminalKeyword terminalKeyword, UnlockableItem item)
         {
             terminalKeyword.defaultVerb = buyKeyword;
-            Plugin.Spam($"Added buy verb to {buyKeyword}");
+            Plugin.Spam($"Added buy verb to {buyKeyword.word}");
             CompatibleNoun wordIsCompatNoun = new()
             {
                 noun = terminalKeyword,
@@ -760,6 +795,63 @@ namespace OpenLib.CoreMethods
             buyKeywordList.Add(wordIsCompatNoun);
             buyKeyword.compatibleNouns = [.. buyKeywordList];
 
+        }
+
+        public static void AddToKeyword(ref TerminalKeyword originalKeyword, ref TerminalKeyword newWord)
+        {
+            if (!originalKeyword.isVerb)
+            {
+                Plugin.Log.LogWarning("AddToKeyword called on non-verb");
+                return;
+            }
+                
+            newWord.defaultVerb = originalKeyword;
+            Plugin.Spam($"Added verb {originalKeyword.word} to {newWord.word}");
+
+            CompatibleNoun wordIsCompatNoun = new()
+            {
+                noun = newWord,
+                result = newWord.specialKeywordResult
+            };
+            List<CompatibleNoun> compatibleNouns = [.. originalKeyword.compatibleNouns];
+            compatibleNouns.Add(wordIsCompatNoun);
+            originalKeyword.compatibleNouns = [.. compatibleNouns];
+        }
+
+        [Obsolete("This doesn't work at the moment")]
+        public static void AddNounWordSimple(string originalVerb, string nodeName, string keyWord, string displayText, bool clearText)
+        {
+            if (originalVerb.Length < 1)
+            {
+                Plugin.WARNING("originalVerb text is invalid");
+                return;
+            }
+
+            if(!TryGetKeyword(originalVerb, out TerminalKeyword originalWord))
+            {
+                Plugin.WARNING($"Unable to find word for {originalVerb}");
+                return;
+            }
+
+            TerminalNode terminalNode = ScriptableObject.CreateInstance<TerminalNode>();
+            terminalNode.name = nodeName;
+            terminalNode.displayText = displayText;
+            terminalNode.clearPreviousText = clearText;
+
+            TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+            terminalKeyword.name = nodeName + "_Noun";
+            terminalKeyword.word = keyWord.ToLower();
+            terminalKeyword.isVerb = false;
+            terminalKeyword.specialKeywordResult = terminalNode;
+
+            if (!Plugin.nodesAdded.Contains(terminalNode))
+                Plugin.nodesAdded.Add(terminalNode);
+
+            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
+                Plugin.keywordsAdded.Add(terminalKeyword);
+
+
+            AddToKeyword(ref originalWord, ref terminalKeyword);
         }
     }
 }
