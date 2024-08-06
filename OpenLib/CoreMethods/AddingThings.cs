@@ -82,23 +82,34 @@ namespace OpenLib.CoreMethods
             return terminalKeyword;
         }
 
+        public static void AddToHelpCommand(string textToAdd)
+        {
+            TerminalNode helpNode = Plugin.instance.Terminal.terminalNodes.specialNodes[13];
+
+            if (helpNode.displayText.Contains(textToAdd))
+            {
+                Plugin.WARNING($"Help command already contains this text: {textToAdd}");
+                return;
+            }
+
+            int lastCommandStart = helpNode.displayText.LastIndexOf('['); //looking for [numberOfItemsOnRoute]
+            helpNode.displayText = helpNode.displayText.Insert(lastCommandStart, $"{textToAdd}\r\n\r\n");
+        }
+
         public static void AddToExistingNodeText(string textToAdd, ref TerminalNode existingNode)
         {
             if (existingNode.displayText.Contains(textToAdd))
             {
                 Plugin.Log.LogWarning($"Unable to add below text to {existingNode.name}, it already has this text in it");
-                Plugin.Log.LogWarning($"text: {textToAdd}");
+                return;
             }
-            else
-            {
-                Plugin.Spam($"oldtext length {existingNode.displayText.Length}");
-                Plugin.Spam(existingNode.displayText);
-                string newText = existingNode.displayText.TrimEnd(NewLineChars);
-                newText += $"\n{textToAdd}\r\n\r\n";
-                existingNode.displayText = newText;
-                Plugin.Spam($"{existingNode.name} text updated!!!");
 
-            }
+            Plugin.Spam($"oldtext length {existingNode.displayText.Length}");
+            Plugin.Spam(existingNode.displayText);
+            string newText = existingNode.displayText.TrimEnd(NewLineChars);
+            newText += $"\n{textToAdd}\r\n\r\n";
+            existingNode.displayText = newText;
+            Plugin.Spam($"{existingNode.name} text updated!!!");
         }
 
         public static TerminalNode CreateDummyNode(string nodeName, bool clearPrevious, string displayText)
@@ -191,6 +202,7 @@ namespace OpenLib.CoreMethods
                 terminalNode.name = nodeName;
                 terminalNode.displayText = nodeName;
                 terminalNode.clearPreviousText = clearText;
+                terminalNode.buyUnlockable = false;
                 returnNode = terminalNode;
 
                 TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
@@ -218,7 +230,6 @@ namespace OpenLib.CoreMethods
                     yourModListing.shopNodes.Add(deny.result);
                     if (itemList.Length > 1)
                     {
-                        terminalNode.buyUnlockable = false;
                         confirm.result.buyUnlockable = false;
                         yourModListing.storePacks.Add(terminalNode, itemList);
                         Plugin.Spam("storepack detected, adding itemlist");
@@ -288,6 +299,7 @@ namespace OpenLib.CoreMethods
                 terminalNode.name = nodeName;
                 terminalNode.displayText = nodeName;
                 terminalNode.clearPreviousText = clearText;
+                terminalNode.buyUnlockable = false;
                 returnNode = terminalNode;
 
                 TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
@@ -315,7 +327,6 @@ namespace OpenLib.CoreMethods
                     yourModListing.shopNodes.Add(deny.result);
                     if (itemList.Length > 1)
                     {
-                        terminalNode.buyUnlockable = false;
                         confirm.result.buyUnlockable = false;
                         yourModListing.storePacks.Add(terminalNode, itemList);
                         Plugin.Spam("storepack detected, adding itemlist");
@@ -391,6 +402,7 @@ namespace OpenLib.CoreMethods
             terminalNode.name = nodeName;
             terminalNode.displayText = nodeName;
             terminalNode.clearPreviousText = clearText;
+            terminalNode.buyUnlockable = false;
 
             Plugin.Spam("node created");
 
@@ -456,6 +468,7 @@ namespace OpenLib.CoreMethods
             terminalNode.name = nodeName;
             terminalNode.displayText = nodeName;
             terminalNode.clearPreviousText = clearText;
+            terminalNode.buyUnlockable = false;
             managedBool.TerminalNode = terminalNode;
 
             TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
@@ -495,7 +508,6 @@ namespace OpenLib.CoreMethods
                 yourModListing.shopNodes.Add(deny.result);
                 if(managedBool.itemList.Length > 1) //unused in this method as storepacks can be changed between lobby loads
                 {
-                    terminalNode.buyUnlockable = false;
                     confirm.result.buyUnlockable = false;
                     yourModListing.storePacks.Add(terminalNode, managedBool.itemList);
                     Plugin.Spam("storepack detected, adding itemlist");
@@ -838,20 +850,25 @@ namespace OpenLib.CoreMethods
             terminalNode.displayText = displayText;
             terminalNode.clearPreviousText = clearText;
 
-            TerminalKeyword terminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
-            terminalKeyword.name = nodeName + "_Noun";
-            terminalKeyword.word = keyWord.ToLower();
-            terminalKeyword.isVerb = false;
-            terminalKeyword.specialKeywordResult = terminalNode;
+            CompatibleNoun newNoun = new()
+            {
+                noun = ScriptableObject.CreateInstance<TerminalKeyword>()
+            };
+
+            newNoun.noun.name = nodeName + "_Noun";
+            newNoun.noun.word = keyWord.ToLower();
+            newNoun.noun.isVerb = false;
+            newNoun.result = terminalNode;
+            newNoun.noun.specialKeywordResult = terminalNode;
 
             if (!Plugin.nodesAdded.Contains(terminalNode))
                 Plugin.nodesAdded.Add(terminalNode);
 
-            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
-                Plugin.keywordsAdded.Add(terminalKeyword);
+            if (!Plugin.keywordsAdded.Contains(newNoun.noun))
+                Plugin.keywordsAdded.Add(newNoun.noun);
 
 
-            AddToKeyword(ref originalWord, ref terminalKeyword);
+            AddToKeyword(ref originalWord, ref newNoun.noun);
         }
     }
 }

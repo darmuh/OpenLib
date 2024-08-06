@@ -34,31 +34,6 @@ namespace OpenLib.Events
 
         }
 
-        public class TerminalEventWithNode<Terminal>
-        {
-            public delegate void ParameterEvent(Terminal param, TerminalNode node);
-            private event ParameterEvent OnParameterEvent;
-            public bool HasListeners => (TEListeners != 0);
-            public int TEListeners { get; internal set; }
-
-            public void Invoke(Terminal param, TerminalNode node)
-            {
-                OnParameterEvent?.Invoke(param, node);
-            }
-
-            public void AddListener(ParameterEvent listener)
-            {
-                OnParameterEvent += listener;
-                TEListeners++;
-            }
-
-            public void RemoveListener(ParameterEvent listener)
-            {
-                OnParameterEvent -= listener;
-                TEListeners--;
-            }
-        }
-
         public class TerminalNodeEvent
         {
             public delegate TerminalNode Event(ref TerminalNode original);
@@ -70,6 +45,31 @@ namespace OpenLib.Events
             {
                 TerminalNode node = OnEvent?.Invoke(ref original);
                 return node;
+            }
+            public void AddListener(Event listener)
+            {
+                OnEvent += listener;
+                Listeners++;
+            }
+
+            public void RemoveListener(Event listener)
+            {
+                OnEvent -= listener;
+                Listeners--;
+            }
+        }
+
+        public class TerminalKeywordEvent
+        {
+            public delegate TerminalKeyword Event(ref TerminalKeyword original);
+            private event Event OnEvent;
+            public bool HasListeners => (Listeners != 0);
+            public int Listeners { get; internal set; }
+
+            public TerminalKeyword WordInvoke(ref TerminalKeyword original)
+            {
+                TerminalKeyword word = OnEvent?.Invoke(ref original);
+                return word;
             }
             public void AddListener(Event listener)
             {

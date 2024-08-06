@@ -23,6 +23,7 @@ namespace OpenLib.Events
         //gets terminalNode
         public static Events.CustomEvent<TerminalNode> TerminalLoadIfAffordable = new();
         public static Events.TerminalNodeEvent TerminalParseSent = new();
+        //public static Events.TerminalKeywordEvent TerminalParseWord = new();
         public static Events.CustomEvent<TerminalNode> TerminalLoadNewNode = new();
         public static Events.CustomEvent<TerminalNode> GetNewDisplayText = new();
 

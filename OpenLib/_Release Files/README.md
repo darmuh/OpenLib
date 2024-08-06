@@ -33,6 +33,8 @@
 Currently Supports:
  - darmuhsTerminalStuff version 3.3.0+
  - suitsTerminal 1.4.0+
+ - ShipColors 0.1.0+
+ - LethalConstellations 0.1.0+
 
 Icon Attribution:
 [Online library icons created by Ajmal Naha - Flaticon](https://www.flaticon.com/free-icons/online-library)
