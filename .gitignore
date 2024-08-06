@@ -361,3 +361,15 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/OpenLib/_Release Files/AsmResolver.dll
+/OpenLib/_Release Files/AsmResolver.DotNet.dll
+/OpenLib/_Release Files/AsmResolver.PE.dll
+/OpenLib/_Release Files/AsmResolver.PE.File.dll
+/OpenLib/_Release Files/BepInEx.AssemblyPublicizer.dll
+/OpenLib/_Release Files/BepInEx.AssemblyPublicizer.MSBuild.dll
+/OpenLib/_Release Files/BMX.LobbyCompatibility.dll
+/OpenLib/_Release Files/OpenLib.dll
+/OpenLib/_Release Files/OpenLib.dll.config
+/OpenLib/_Release Files/OpenLib.zip
+/OpenLib/_Release Files/Unity.RenderPipelines.HighDefinition.Runtime.dll
+/OpenLib/_Release Files/UnityEngine.AnimationModule.dll
