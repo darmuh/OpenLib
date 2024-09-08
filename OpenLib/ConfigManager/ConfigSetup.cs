@@ -163,7 +163,7 @@ namespace OpenLib.ConfigManager
         {
             List<string> lines = [];
             string configName = ModConfig.ConfigFilePath.Substring(ModConfig.ConfigFilePath.LastIndexOf('\\'));
-            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body><form id=\"configForm\">");
+            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body style=\"background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke\"><form id=\"configForm\">");
 
             Dictionary<ConfigDefinition, ConfigEntryBase> configItems = new Dictionary<ConfigDefinition, ConfigEntryBase>();
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())

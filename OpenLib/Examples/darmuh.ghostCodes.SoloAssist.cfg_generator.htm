@@ -1,0 +1,97 @@
+<html><title>darmuh.ghostCodes.SoloAssist.cfg Generator</title><body style="background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke"><form id="configForm">
+<fieldset>
+<legend>Stage 1</legend>
+<p>S1percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 1 (beginning of day to Noon)<br />
+<input type="range" name="S1percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S1inside<br>Decrease of insanity level when inside the factory during Stage 1 (beginning of day to Noon)<br />
+<input type="range" name="S1inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S1outside<br>Decrease of insanity level when outside the factory during Stage 1 (beginning of day to Noon)<br />
+<input type="range" name="S1outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>Stage 2</legend>
+<p>S2percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 2 (Noon to 5PM)<br />
+<input type="range" name="S2percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S2inside<br>Decrease of insanity level when inside the factory during Stage 2 (Noon to 5PM)<br />
+<input type="range" name="S2inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S2outside<br>Decrease of insanity level when outside the factory during Stage 2 (Noon to 5PM)<br />
+<input type="range" name="S2outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>Stage 3</legend>
+<p>S3percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 3 (5PM - 10PM)<br />
+<input type="range" name="S3percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S3inside<br>Decrease of insanity level when inside the factory during Stage 3 (5PM - 10PM)<br />
+<input type="range" name="S3inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>S3outside<br>Decrease of insanity level when outside the factory during Stage 3 (5PM - 10PM)<br />
+<input type="range" name="S3outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+        function serializeForm() {
+            const form = document.getElementById('configForm');
+            const elements = form.elements;
+            let result = [];
+
+            for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+                            result.push(`${element.name}:true`);
+                        } else {
+                            result.push(`${element.name}:false`);
+                        }
+                    } else {
+                        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+            }
+			
+			const compressedData = compressData(result.join('~ '));
+            document.getElementById('rawData').textContent = result.join('~ ');
+            document.getElementById('compressedData').textContent = compressedData;
+        }
+
+        function clearText() {
+        document.getElementById('rawData').textContent = '';
+        document.getElementById('compressedData').textContent = '';
+		
+        }
+
+		function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+		// Compress using pako
+		const compressed = pako.gzip(uint8Array);
+
+		// Convert compressed data to Base64
+		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+		}
+    </script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>
+</body></html>

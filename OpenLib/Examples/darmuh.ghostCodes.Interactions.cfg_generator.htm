@@ -1,0 +1,209 @@
+<html><title>darmuh.ghostCodes.Interactions.cfg Generator</title><body style="background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke"><form id="configForm">
+<fieldset>
+<legend>MainInteractions</legend>
+<p>TurretBerserk<br>How rare it is for the turret to go berserk from a ghostCode.<br />
+<input type="range" name="TurretBerserk" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>HungryBlastDoor<br>How rare it is for a blast door to start biting from a ghostCode.<br />
+<input type="range" name="HungryBlastDoor" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>MineBoom<br>How rare it is for a mine to blow itself up from a ghostCode.<br />
+<input type="range" name="MineBoom" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>PlayerLights<br>Set the percentage chance that the ghostGirl will flicker a player's lights during a ghostCode event.<br />
+<input type="range" name="PlayerLights" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>FlipBreaker<br>How rare it is for a ghostCode to flip the breaker and turn off the facility lights.<br />
+<input type="range" name="FlipBreaker" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>SignalTranslator<br>How frequent the signal translator will send messages during code events (percentage)<br />
+<input type="range" name="SignalTranslator" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>DoorInteractions</legend>
+<p>OpenAllRegularDoors<br>How rare it is for the openAllRegularDoorsChance to be called from a ghostCode.<br />
+<input type="range" name="OpenAllRegularDoors" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>CloseAllRegularDoors<br>How rare it is for the closeAllRegularDoorsEvent to be called from a ghostCode.<br />
+<input type="range" name="CloseAllRegularDoors" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>OpenRegularDoor<br>How rare it is for the openSingleDoorEvent to be called from a ghostCode.<br />
+<input type="range" name="OpenRegularDoor" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>CloseSingleDoor<br>How rare it is for the closeSingleDoorChance to be called from a ghostCode.<br />
+<input type="range" name="CloseSingleDoor" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>UnlockSingleDoor<br>How rare it is for the unlockSingleDoorChance to be called from a ghostCode.<br />
+<input type="range" name="UnlockSingleDoor" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>lockSingleDoorChance<br>How rare it is for the lockSingleDoorChance to be called from a ghostCode.<br />
+<input type="range" name="lockSingleDoorChance" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>HauntedDoor<br>How rare it is for a door to rapidly open/shut from a ghostCode.<br />
+<input type="range" name="HauntedDoor" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipInteractions</legend>
+<p>TeleportPlayer<br>How rare it is to call the normalTpEvent ghostcode.<br />
+<input type="range" name="TeleportPlayer" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>InverseTeleporter<br>How rare it is to call the inverseTpEvent ghostcode.<br />
+<input type="range" name="InverseTeleporter" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>LightsOnShip<br>How rare it is to call the lightsOnShipEvent ghostcode.<br />
+<input type="range" name="LightsOnShip" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DoorsOnShip<br>How rare it is to call the doorsOnShipEvent ghostcode.<br />
+<input type="range" name="DoorsOnShip" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>MonitorsOnShip<br>How rare it is to call the monitorsOnShipEvent ghostcode.<br />
+<input type="range" name="MonitorsOnShip" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>ShockTerminalUser<br>How rare it is to call the shockTerminalUserEvent ghostcode.<br />
+<input type="range" name="ShockTerminalUser" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>HauntingInteractions</legend>
+<p>BreatheOnWalkies<br>How rare it is for the ghost girl to start breathing on walkies when a ghost code is called.<br />
+<input type="range" name="BreatheOnWalkies" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>GarbleWalkies<br>How rare it is for the ghost girl to start garbling walkies when a ghost code is called.<br />
+<input type="range" name="GarbleWalkies" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DrainAllBatteries<br>How rare it is for the ghost girl to drain all batteries when a ghost code is called.<br />
+<input type="range" name="DrainAllBatteries" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DrainHauntedPlayerBatteries<br>How rare it is for the ghost girl to drain the haunted player's batteries.<br />
+<input type="range" name="DrainHauntedPlayerBatteries" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DrainRandomPlayerBatteries<br>How rare it is for the ghost girl to drain a random player's batteries.<br />
+<input type="range" name="DrainRandomPlayerBatteries" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>CounterPlay</legend>
+<p>EmoteStopChasing<br>How effective emoting to get the ghost girl to stop chasing you is.<br />
+<input type="range" name="EmoteStopChasing" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>EmoteStopChaseRequiredPlayers<br>Percentage of living players required to stop ghost girl from chasing.<br />
+<input type="range" name="EmoteStopChaseRequiredPlayers" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>ShowerStopChasing<br>How effective taking a shower to get the ghost girl to stop chasing you is.<br />
+<input type="range" name="ShowerStopChasing" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DeathNote<br>How effective typing a player's name in the terminal is to transfer the haunting.<br />
+<input type="range" name="DeathNote" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>DeathNoteMaxStrikes<br>Amount of times you can attempt to use the death note to transfer hauntings, use -1 for infinite attempts.<br />
+<input type="range" name="DeathNoteMaxStrikes" value="-1" min="-1" max="25" oninput="this.nextElementSibling.value = this.value">
+            <output>-1</output>
+</p>
+<p><input name="DeathNoteFailChase" type="checkbox"/> <label for="DeathNoteFailChase">DeathNoteFailChase</label><br>Enable or Disable triggering a ghost girl chase on failed attempt to transfer the haunting.<br></p>
+<p>TerminalReboot<br>How effective rebooting the terminal is to delay ghostCodes.<br />
+<input type="range" name="TerminalReboot" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>ModdedInteractions</legend>
+<p>ToilHeadTurretDisable<br>Chance of toilHeadTurretDisable being called in a ghostCode.<br />
+<input type="range" name="ToilHeadTurretDisable" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>ToilHeadTurretBerserk<br>Chance of toilHeadTurretBerserk being called in a ghostCode.<br />
+<input type="range" name="ToilHeadTurretBerserk" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>InteractionModifiers</legend>
+<p>BatteryDrainPercentageModifier<br>Percentage of battery to instantly drain when any of the battery drain ghostcodes are called.<br />
+<input type="range" name="BatteryDrainPercentageModifier" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p><input name="OnlyUniqueMessages" type="checkbox"/> <label for="OnlyUniqueMessages">OnlyUniqueMessages</label><br>Will ensure the each message sent is unique (as long as there is more than 1 message in signalMessages).<br></p>
+<p><label for="AllSignalMessages">AllSignalMessages</label><br>Comma-separated list of messages the ghostGirl will send over the signal translator when sending a code.<br /><input name="AllSignalMessages" type="text" value="" /><br /></p>
+<p><label for="AllMonitorMessages">AllMonitorMessages</label><br>Comma-separated list of messages the ghostGirl can display on the ship monitors when sending a code.<br /><input name="AllMonitorMessages" type="text" value="" /><br /></p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+        function serializeForm() {
+            const form = document.getElementById('configForm');
+            const elements = form.elements;
+            let result = [];
+
+            for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+                            result.push(`${element.name}:true`);
+                        } else {
+                            result.push(`${element.name}:false`);
+                        }
+                    } else {
+                        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+            }
+			
+			const compressedData = compressData(result.join('~ '));
+            document.getElementById('rawData').textContent = result.join('~ ');
+            document.getElementById('compressedData').textContent = compressedData;
+        }
+
+        function clearText() {
+        document.getElementById('rawData').textContent = '';
+        document.getElementById('compressedData').textContent = '';
+		
+        }
+
+		function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+		// Compress using pako
+		const compressed = pako.gzip(uint8Array);
+
+		// Convert compressed data to Base64
+		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+		}
+    </script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>
+</body></html>

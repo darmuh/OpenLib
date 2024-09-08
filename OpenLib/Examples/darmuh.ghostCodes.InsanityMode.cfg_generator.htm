@@ -1,0 +1,109 @@
+<html><title>darmuh.ghostCodes.InsanityMode.cfg Generator</title><body style="background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke"><form id="configForm">
+<fieldset>
+<legend>General</legend>
+<p>InsanityModeMultiplier<br>Multiplier for all interaction chances when at max insanity while insanity mode is active<br />
+<input type="range" name="InsanityModeMultiplier" value="0.2" step="0.001" min="0.2" max="3" oninput="this.nextElementSibling.value = this.value">
+            <output>0.2</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>Values</legend>
+<p>SanityLevel1<br>Set the percentage of the maximum sanity level required to reach Level 1 of Insanity Mode.<br />
+<input type="range" name="SanityLevel1" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>SanityLevel2<br>Set the percentage of the maximum sanity level required to reach Level 2 of Insanity Mode.<br />
+<input type="range" name="SanityLevel2" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>SanityLevel3<br>Set the percentage of the maximum sanity level required to reach Level 3 of Insanity Mode.<br />
+<input type="range" name="SanityLevel3" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>SanityMaxLevel<br>Set the percentage of the maximum sanity level required to reach MAX Level of Insanity Mode and trigger rapid fire.<br />
+<input type="range" name="SanityMaxLevel" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>WaitLevel1<br>Set the percentage of the wait time to use after reaching Level 1 of Insanity Mode.<br />
+<input type="range" name="WaitLevel1" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>WaitLevel2<br>Set the percentage of the wait time to use after reaching Level 2 of Insanity Mode.<br />
+<input type="range" name="WaitLevel2" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>WaitLevel3<br>Set the percentage of the wait time to use after reaching Level 3 of Insanity Mode.<br />
+<input type="range" name="WaitLevel3" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>WaitMaxLevel<br>Set the percentage of the wait time to use after reaching Max Level of Insanity Mode. (This is only triggered if rapidFire is disabled)<br />
+<input type="range" name="WaitMaxLevel" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset>
+<fieldset>
+<legend>Bonuses</legend>
+<p>DeathBonus<br>Percentage of current group insanity value that will be added for each dead player.<br />
+<input type="range" name="DeathBonus" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>GhostGirlBonus<br>Percentage of current group insanity value to increase for the group once a ghostGirl has been spawned.<br />
+<input type="range" name="GhostGirlBonus" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+<p>EmoteBuff<br>Percentage of current group insanity value to decrease from the group for each person that is emoting.<br />
+<input type="range" name="EmoteBuff" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output>
+</p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+        function serializeForm() {
+            const form = document.getElementById('configForm');
+            const elements = form.elements;
+            let result = [];
+
+            for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+                            result.push(`${element.name}:true`);
+                        } else {
+                            result.push(`${element.name}:false`);
+                        }
+                    } else {
+                        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+            }
+			
+			const compressedData = compressData(result.join('~ '));
+            document.getElementById('rawData').textContent = result.join('~ ');
+            document.getElementById('compressedData').textContent = compressedData;
+        }
+
+        function clearText() {
+        document.getElementById('rawData').textContent = '';
+        document.getElementById('compressedData').textContent = '';
+		
+        }
+
+		function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+		// Compress using pako
+		const compressed = pako.gzip(uint8Array);
+
+		// Convert compressed data to Base64
+		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+		}
+    </script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>
+</body></html>
