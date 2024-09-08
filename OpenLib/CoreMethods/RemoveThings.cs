@@ -55,8 +55,31 @@ namespace OpenLib.CoreMethods
                         Plugin.Spam($"Removing {wordToRemove.word}");
                     }
                 }
-                mainWord.compatibleNouns = newList.ToArray();
+                mainWord.compatibleNouns = [.. newList];
                 Plugin.Spam($"DeleteCompatibleNoun of {wordToRemove.word} from {mainWord.word} complete, word removed: {removedWord}");
+            }
+        }
+
+        public static void RemoveCompatibleNoun(ref TerminalKeyword mainWord, string nounToRemove)
+        {
+            bool removedWord = false;
+
+            if (mainWord.compatibleNouns != null)
+            {
+                List<CompatibleNoun> newList = [];
+                foreach (CompatibleNoun noun in mainWord.compatibleNouns)
+                {
+                    if (noun.noun.word.ToLower() != nounToRemove.ToLower())
+                        newList.Add(noun);
+                    else
+                    {
+                        //noun.noun.defaultVerb =;
+                        removedWord = true;
+                        Plugin.Spam($"Removing {nounToRemove}");
+                    }
+                }
+                mainWord.compatibleNouns = [.. newList];
+                Plugin.Spam($"DeleteCompatibleNoun of {nounToRemove} from {mainWord.word} complete, word removed: {removedWord}");
             }
         }
 

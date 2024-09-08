@@ -37,6 +37,7 @@ namespace OpenLib.Events
         public static Events.CustomEvent NormalTPFound = new();
         public static Events.CustomEvent InverseTPFound = new();
         public static Events.CustomEvent GameNetworkManagerStart = new();
+        public static Events.CustomEvent OnClientConnect = new();
 
         //personal events
         public static Events.CustomEvent TerminalDelayStart = new();

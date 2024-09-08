@@ -1,35 +1,41 @@
 ﻿using BepInEx.Configuration;
 using GameNetcodeStuff;
+using System;
 using UnityEngine;
 
 namespace OpenLib.Common
 {
     public class Misc
     {
-        public static PlayerControllerB GetPlayerFromName(string playerName)
+        public static bool TryGetPlayerFromName(string playerName, out PlayerControllerB thePlayer)
         {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
             {
                 if (player.playerUsername.ToLower() == playerName)
                 {
-                    return player;
+                    thePlayer = player;
+                    return true;
                 }
             }
 
-            return null;
+            thePlayer = null!;
+            return false;
         }
 
-        public static PlayerControllerB GetPlayerUsingTerminal()
+        public static bool TryGetPlayerUsingTerminal(out PlayerControllerB terminalUser)
         {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
             {
                 if (!player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger)
                 {
                     Plugin.MoreLogs($"Player: {player.playerUsername} detected using terminal.");
-                    return player;
+                    terminalUser = player;
+                    return true;
                 }
             }
-            return null;
+
+            terminalUser = null!;
+            return false;
         }
 
         public static int HostClientID()
@@ -56,6 +62,37 @@ namespace OpenLib.Common
         {
             string hexColor = ColorUtility.ToHtmlStringRGB(color);
             Plugin.Log.LogDebug($"Previous Color noted as [{hexColor}] for configItem - {entry.Definition.Key}");
+        }
+
+
+        // ----------------- Obsolete Old Methods ----------------- //
+
+        [Obsolete("Use TryGetPlayerFromName instead to avoid NRE")]
+        public static PlayerControllerB GetPlayerFromName(string playerName)
+        {
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
+            {
+                if (player.playerUsername.ToLower() == playerName)
+                {
+                    return player;
+                }
+            }
+
+            return null!;
+        }
+
+        [Obsolete("Use TryGetPlayerUsingTerminal instead to avoid NRE")]
+        public static PlayerControllerB GetPlayerUsingTerminal()
+        {
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
+            {
+                if (!player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger)
+                {
+                    Plugin.MoreLogs($"Player: {player.playerUsername} detected using terminal.");
+                    return player;
+                }
+            }
+            return null!;
         }
     }
 }

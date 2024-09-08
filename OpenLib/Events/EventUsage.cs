@@ -74,10 +74,10 @@ namespace OpenLib.Events
             if(cleanedText.Length > 0) //prevent errors being thrown from invalid text
             {
                 string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (ConfigSetup.defaultListing.specialListString.ContainsKey(words[0]))
+                if (CommonTerminal.TryGetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
                 {
-                    TerminalNode retrieveNode = CommonTerminal.GetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString);
                     node = retrieveNode;
+                    Plugin.Spam($"node found matching specialListString - {words[0]}");
                 }
             }
 

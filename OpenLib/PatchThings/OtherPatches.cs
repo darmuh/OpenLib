@@ -71,10 +71,18 @@ namespace OpenLib
     [HarmonyPatch(typeof(GameNetworkManager), "Start")]
     public class GameStartPatch
     {
-        
         public static void Postfix()
         {
             EventManager.GameNetworkManagerStart.Invoke();
+        }
+    }
+
+    [HarmonyPatch(typeof(StartOfRound), "OnClientConnect")]
+    public class OnClientConnectPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.OnClientConnect.Invoke();
         }
     }
 }

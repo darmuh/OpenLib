@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OpenLib.Common
 {
     public class CommonTerminal
     {
-        public static TerminalNode parseNode = null;
+        public static TerminalNode parseNode = null!;
 
         public static void ToggleScreen(bool status)
         {
@@ -13,16 +14,18 @@ namespace OpenLib.Common
             Plugin.Spam($"Screen set to {status}");
         }
 
-        public static TerminalNode GetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing)
+        public static bool TryGetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing, out TerminalNode returnNode)
         {
             foreach (KeyValuePair<string, TerminalNode> pairValue in nodeListing)
             {
                 if (pairValue.Key == query)
                 {
-                    return pairValue.Value;
+                    returnNode = pairValue.Value;
+                    return true;
                 }
             }
-            return null; // No matching command found for the given query
+            returnNode = null!;
+            return false; // No matching command found for the given query
         }
 
         //shop
@@ -51,6 +54,24 @@ namespace OpenLib.Common
             string displayText = "\n";
             Plugin.Spam("display text cleared for real this time!!!");
             return displayText;
+        }
+
+
+
+        // ----------------- Obsolete Old Methods ----------------- //
+
+        [Obsolete("Use TryGetNodeFromList instead to avoid NRE")]
+        public static TerminalNode GetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing)
+        {
+            foreach (KeyValuePair<string, TerminalNode> pairValue in nodeListing)
+            {
+                if (pairValue.Key == query)
+                {
+                    return pairValue.Value;
+                }
+            }
+            return null!; // No matching command found for the given query
+            //You should expect this null result if using this method!
         }
     }
 }

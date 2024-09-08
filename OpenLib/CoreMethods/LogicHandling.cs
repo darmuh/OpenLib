@@ -88,8 +88,8 @@ namespace OpenLib.CoreMethods
         {
             if (node == null || providedListing.Count == 0)
             {
-                Plugin.Spam("node is null or listings do not exist");
-                return null;
+                Plugin.WARNING("node is null or listings do not exist");
+                return null!;
             }
 
             int looptimes = 0;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BepInEx;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -128,7 +129,26 @@ namespace OpenLib.Common
                     numbersList.Add(number);
                 }
                 else
-                    Plugin.ERROR($"Could not parse {item} to integer");
+                    Plugin.WARNING($"Could not parse {item} to integer");
+            }
+
+            return numbersList;
+        }
+
+        public static List<float> GetFloatListFromStringList(List<string> stringList) //return list of floats from list of strings
+        {
+            List<float> numbersList = [];
+            foreach (string item in stringList)
+            {
+                if (item.IsNullOrWhiteSpace())
+                    continue;
+
+                if (float.TryParse(item, out float number))
+                {
+                    numbersList.Add(number);
+                }
+                else
+                    Plugin.WARNING($"Could not parse {item} to float");
             }
 
             return numbersList;

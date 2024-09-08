@@ -1,11 +1,14 @@
 ﻿using BepInEx.Configuration;
 using OpenLib.CoreMethods;
-using OpenLib.Menus;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using OpenLib.Common;
-using Steamworks.Ugc;
+using BepInEx;
+using System.IO.Compression;
+using System.Text;
+using LobbyCompatibility.Configuration;
 
 namespace OpenLib.ConfigManager
 {
@@ -155,6 +158,210 @@ namespace OpenLib.ConfigManager
             orphanedEntries.Clear(); // Clear orphaned entries (Unbinded/Abandoned entries)
             ModConfig.Save(); // Save the config file
         }
+
+        public static void WebConfig(ConfigFile ModConfig)
+        {
+            List<string> lines = [];
+            string configName = ModConfig.ConfigFilePath.Substring(ModConfig.ConfigFilePath.LastIndexOf('\\'));
+            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body><form id=\"configForm\">");
+
+            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = new Dictionary<ConfigDefinition, ConfigEntryBase>();
+            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+            {
+                configItems.Add(value.Definition, value);
+                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+            }
+
+            string lastSection = "";
+
+            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            {
+
+                if (pair.Key.Section != lastSection)
+                {
+                    if (lastSection != "")
+                        lines.Add($"</fieldset>");
+                    lines.Add($"<fieldset>\r\n<legend>{pair.Key.Section}</legend>");
+                    lastSection = pair.Key.Section;
+                }
+
+                if (pair.Value.BoxedValue.GetType() == typeof(bool))
+                {
+                    lines.Add($"<p><input name=\"{pair.Key.Key}\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                    Plugin.Spam($"bool config detected - {pair.Key.Key}");
+                }
+                else if (pair.Value.BoxedValue.GetType() == typeof(string))
+                {
+                    if(pair.Value.Description.AcceptableValues != null)
+                    {
+                        lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
+                        List<string> acceptableValues = ConfigHelper.GetAcceptableValues(pair.Value.Description.AcceptableValues);
+                        int num = 1;
+                        foreach(string value in acceptableValues)
+                        {
+                            string ToHtml = WebHelper.AddValueToHTMLCode(value, pair.Key.Key, num);
+                            lines.Add(ToHtml);
+                            num++;
+                        }
+                        lines.Add("</p>");
+                        Plugin.Spam($"clamped string config detected - {pair.Key.Key}");
+                    }
+                    else
+                    {
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"text\" value=\"\" /><br /></p>");
+                        Plugin.Spam($"string config detected - {pair.Key.Key}");
+                    }
+                    
+                }
+                else if (pair.Value.BoxedValue.GetType() == typeof(int) || pair.Value.BoxedValue.GetType() == typeof(float))
+                {
+                    if (pair.Value.Description.AcceptableValues != null)
+                    {
+                        lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
+                        List<float> acceptableValues = ConfigHelper.GetAcceptableValueF(pair.Value.Description.AcceptableValues);
+                        lines.Add(WebHelper.AddValueToHTMLCode(acceptableValues, pair.Key.Key));
+                        lines.Add("</p>");
+                        Plugin.Spam($"clamped number-type config detected - {pair.Key.Key}");
+                    }
+                    else
+                    {
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" value=\"\" /><br /></p>");
+                        Plugin.Spam($"number-type config detected - {pair.Key.Key}");
+                    }
+                }
+            }
+            lines.Add($"</fieldset><br /></form>");
+
+            // Add the compression script
+            lines.Add(@"<script src=""https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js""></script>
+	<script>
+        function serializeForm() {
+            const form = document.getElementById('configForm');
+            const elements = form.elements;
+            let result = [];
+
+            for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+                            result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+                            result.push(`${element.name}:true`);
+                        } else {
+                            result.push(`${element.name}:false`);
+                        }
+                    } else {
+                        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+            }
+			
+			const compressedData = compressData(result.join('~ '));
+            document.getElementById('rawData').textContent = result.join('~ ');
+            document.getElementById('compressedData').textContent = compressedData;
+        }
+
+        function clearText() {
+        document.getElementById('rawData').textContent = '';
+        document.getElementById('compressedData').textContent = '';
+		
+        }
+
+		function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+		// Compress using pako
+		const compressed = pako.gzip(uint8Array);
+
+		// Convert compressed data to Base64
+		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+		}
+    </script>");
+
+            lines.Add("<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> " +
+                "<button type='button' onclick='clearText()'>Clear Results</button><br>");
+            lines.Add("<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br>" +
+                "<br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>");
+
+            lines.Add("</body></html>");
+            if (!Directory.Exists($"{Paths.ConfigPath}/webconfig"))
+                Directory.CreateDirectory($"{Paths.ConfigPath}/webconfig");
+            File.WriteAllLines($"{Paths.ConfigPath}/webconfig/{configName}_generator.htm", lines);
+        }
+
+        static string DecompressBase64Gzip(string base64)
+        {
+            byte[] gzipBytes = Convert.FromBase64String(base64);
+
+            using (var compressedStream = new MemoryStream(gzipBytes))
+            using (var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
+            using (var reader = new StreamReader(gzipStream, Encoding.UTF8))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        public static void ReadCompressedConfig(ref ConfigEntry<string> configEntry, ConfigFile ModConfig)
+        {
+            string compressedDataBase64 = configEntry.Value;
+            string jsonString = DecompressBase64Gzip(compressedDataBase64);
+
+            Dictionary<string,string> fromString = ParseHelper.ParseKeyValuePairs(jsonString);
+
+            if (fromString.Count == 0)
+                return;
+
+            foreach(KeyValuePair<string, string> pair in fromString)
+            {
+                if(TryFindConfigItem(pair.Key, ModConfig, out ConfigEntryBase configItem))
+                {
+                    if(configItem.BoxedValue.GetType() == typeof(bool))
+                    {
+                        ConfigHelper.ChangeBool(ModConfig, configItem, pair.Value.ToLower());
+                    }
+                    else if(configItem.BoxedValue.GetType() == typeof(string))
+                    {
+                        ConfigHelper.ChangeString(ModConfig, configItem, pair.Value);
+                    }
+                    else if (configItem.BoxedValue.GetType() == typeof(int))
+                    {
+                        ConfigHelper.ChangeInt(ModConfig, configItem, pair.Value);
+                    }
+                    else if (configItem.BoxedValue.GetType() == typeof(float))
+                    {
+                        ConfigHelper.ChangeFloat(ModConfig, configItem, pair.Value);
+                    }
+                }
+            }
+
+            configEntry.Value = "";
+        }
+
+        public static bool TryFindConfigItem(string query, ConfigFile ModConfig, out ConfigEntryBase configItem)
+        {
+            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+            {
+                configItems.Add(value.Definition, value);
+                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+            }
+            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            {
+                if(pair.Key.Key == query)
+                {
+                    configItem = pair.Value;
+                    return true;
+                }
+
+            } 
+            configItem = null!;
+            return false;
+        }
+
 
         public static void NetworkingCheck(bool NetworkConfigOption, ConfigFile ModConfig, List<ManagedConfig> managedBools)
         {

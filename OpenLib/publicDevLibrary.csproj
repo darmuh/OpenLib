@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -160,9 +161,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compat\BMX_LobbyCompat.cs" />
+    <Compile Include="ConfigManager\ConfigHelper.cs" />
     <Compile Include="ConfigManager\ConfigMisc.cs" />
+    <Compile Include="ConfigManager\ParseHelper.cs" />
     <Compile Include="ConfigManager\ManagedConfig.cs" />
+    <Compile Include="ConfigManager\WebHelper.cs" />
     <Compile Include="CoreMethods\AddingThings.cs" />
+    <Compile Include="CoreMethods\BasicTerminal.cs" />
     <Compile Include="CoreMethods\CommonThings.cs" />
     <Compile Include="CoreMethods\ListManagement.cs" />
     <Compile Include="CoreMethods\MainListing.cs" />
@@ -176,7 +181,6 @@
     <Compile Include="Common\CommonTerminal.cs" />
     <Compile Include="Common\Misc.cs" />
     <Compile Include="Common\CommonStringStuff.cs" />
-    <Compile Include="Menus\MenuStuff.cs" />
     <Compile Include="Menus\TerminalMenu.cs" />
     <Compile Include="Menus\MenuBuild.cs" />
     <Compile Include="PatchThings\OtherPatches.cs" />

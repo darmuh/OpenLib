@@ -15,6 +15,7 @@ namespace OpenLib.CoreMethods
             {
                 if (keyWordList[i].word.Equals(keyWord))
                 {
+                    Plugin.Spam($"removing {keyWordList[i].word}");
                     keyWordList.RemoveAt(i);
                     //Plugin.MoreLogs($"Keyword: [{keyWord}] removed");
                     break;
@@ -22,7 +23,7 @@ namespace OpenLib.CoreMethods
             }
 
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. keyWordList];
-            Plugin.Spam($"keyword list adjusted, removed {keyWord}");
+            //Plugin.Spam($"keyword list adjusted");
             return;
         }
 

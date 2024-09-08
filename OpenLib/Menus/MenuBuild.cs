@@ -98,6 +98,12 @@ namespace OpenLib.Menus
 
         public static bool InMainMenu(TerminalNode terminalNode, TerminalMenu terminalMenu)
         {
+            if (terminalMenu == null)
+            {
+                Plugin.ERROR("ERROR: OpenLib menu is NULL, most likely failed to create!");
+                return false;
+            }
+
             if (terminalNode.name.Contains(terminalMenu.MenuName))
             {
                 terminalMenu.isActive = true;
