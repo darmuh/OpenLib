@@ -8,7 +8,6 @@ using OpenLib.Common;
 using BepInEx;
 using System.IO.Compression;
 using System.Text;
-using LobbyCompatibility.Configuration;
 
 namespace OpenLib.ConfigManager
 {
