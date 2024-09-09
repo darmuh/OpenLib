@@ -43,6 +43,7 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Website\Examples\index.php" />
     <None Include="_Release Files\CHANGELOG.md" />
     <None Include="_Release Files\LICENSE.MD" />
     <None Include="_Release Files\manifest.json" />

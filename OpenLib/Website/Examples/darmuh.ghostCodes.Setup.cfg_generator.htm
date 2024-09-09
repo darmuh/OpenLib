@@ -1,16 +1,18 @@
 <html><title>darmuh.ghostCodes.Setup.cfg Generator</title><body class="body">
 <style>
   .body {
-  background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);
+  background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
   color:whitesmoke;
   font: Monospace;
   padding-top: 1px;
   padding-right: 1px;
   padding-bottom: 1px;
   padding-left: 0px;
+  margin-left: 20%;
+  margin-right: 20%;
   }
   .slider {
-    margin-top: 3px;
+    margin-top: 3%;
   }
   .numberInput {
   background: transparent;
@@ -18,15 +20,15 @@
   text-align: center;
   font-weight: bold;
   font-size: 12px;
-  border: 0px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4%;
   vertical-align: super;
   }
  .checkbox{
-    margin-right: 2px;
-    margin-bottom: 4px;
+    margin-right: 0%;
+    margin-bottom: 1%;
     display: inline-block;
-    margin-left: 0px;
+    margin-left: 0%;
   }
 textarea {
   background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
@@ -40,13 +42,14 @@ textarea {
   text-align: left;
   font-size: 12px;
   border: 0px solid #ccc;
-  border-radius: 4px;
+  border-radius: 4%;
   width: 40%;
   padding: 2px;
-  margin-top: 4px;
+  margin-top: 1%;
   }
 
 </style>
+<h1><center>darmuh.ghostCodes.Setup.cfg Generator</h1></center><center><p>Upload your config:<br><input type="file" id="fileInput" accept=".cfg"> <button type="button" onclick="loadFileAsText()"> Submit Config</button></p></center>
 <form id="configForm">
 <fieldset>
 <legend>Mode</legend>
@@ -68,14 +71,14 @@ textarea {
 <input type="radio" id="SecondaryMode4" checked="checked" name="SecondaryMode" value="None">
             <label for="SecondaryMode4">None</label><br>
 </p>
-<p><label for="SecondaryModeLevels">SecondaryModeLevels</label><br>Comma-separated listing of all levels that will use the mode listed in [SecondaryMode]<br /><input name="SecondaryModeLevels" type="text" class="stringInput" value="" /><br /></p>
-<p><input name="RandomIntervals" class="checkbox" checked="checked" type="checkbox"/> <label for="RandomIntervals">RandomIntervals</label><br>Disable this to use the 'set' intervals, all modes use intervals on first load.<br></p>
+<p><label for="SecondaryModeLevels">SecondaryModeLevels</label><br>Comma-separated listing of all levels that will use the mode listed in [SecondaryMode]<br /><input id="SecondaryModeLevels" name="SecondaryModeLevels" type="text" class="stringInput" value="" /><br /></p>
+<p><input id="RandomIntervals" name="RandomIntervals" class="checkbox" checked="checked" type="checkbox"/> <label for="RandomIntervals">RandomIntervals</label><br>Disable this to use the 'set' intervals, all modes use intervals on first load.<br></p>
 <p>RapidFireMaxHours<br>Set the maximum amount of hours for rapidFire to be active when on Max Insanity (Insanity Mode ONLY).
 Set to 0 to disable rapidFire<br />
 <input type="range" name="RapidFireMaxHours" id="RapidFireMaxHours_slider" value="1" min="0" max="24" oninput="RapidFireMaxHours_text.value = RapidFireMaxHours_slider.value">
 <input id="RapidFireMaxHours_text" type="text" class="numberInput" size="4" min="0" max="24" value="1" oninput="RapidFireMaxHours_slider.value = RapidFireMaxHours_text.value">
 </p>
-<p><input name="SoloAssist" class="checkbox" checked="checked" type="checkbox"/> <label for="SoloAssist">SoloAssist</label><br>Enable this to add insanity debuffs for single-player Insanity Mode<br></p>
+<p><input id="SoloAssist" name="SoloAssist" class="checkbox" checked="checked" type="checkbox"/> <label for="SoloAssist">SoloAssist</label><br>Enable this to add insanity debuffs for single-player Insanity Mode<br></p>
 </fieldset>
 <fieldset>
 <legend>Codes</legend>
@@ -85,18 +88,18 @@ Set to 0 to disable rapidFire<br />
 <p>MaxCodes<br>This is the maximum amount of ghost codes that CAN be sent in one round. If you'd like for there to be the possibility of no codes set this to 0.<br />
 <input name="MaxCodes" type="number" class="stringInput" min="0" max="9999999" value="100" />
 </p>
-<p><input name="HauntingsCountCodes" class="checkbox" type="checkbox"/> <label for="HauntingsCountCodes">HauntingsCountCodes</label><br>Set this to true if you want hauntings to adhere to minimum/maximum code counts.<br></p>
+<p><input id="HauntingsCountCodes" name="HauntingsCountCodes" class="checkbox" type="checkbox"/> <label for="HauntingsCountCodes">HauntingsCountCodes</label><br>Set this to true if you want hauntings to adhere to minimum/maximum code counts.<br></p>
 </fieldset>
 <fieldset>
 <legend>Misc</legend>
-<p><input name="FixGhostGirlBreakers" class="checkbox" checked="checked" type="checkbox"/> <label for="FixGhostGirlBreakers">FixGhostGirlBreakers</label><br>Fix the vanilla code so that the ghost girl can flip the breakers at the start of a chase.<br></p>
+<p><input id="FixGhostGirlBreakers" name="FixGhostGirlBreakers" class="checkbox" checked="checked" type="checkbox"/> <label for="FixGhostGirlBreakers">FixGhostGirlBreakers</label><br>Fix the vanilla code so that the ghost girl can flip the breakers at the start of a chase.<br></p>
 <p>VanillaBreakersChance<br>Percent chance the ghost girl will flip the breakers when beginning a chase.<br />
 <input type="range" name="VanillaBreakersChance" id="VanillaBreakersChance_slider" value="20" min="0" max="100" oninput="VanillaBreakersChance_text.value = VanillaBreakersChance_slider.value">
 <input id="VanillaBreakersChance_text" type="text" class="numberInput" size="4" min="0" max="100" value="20" oninput="VanillaBreakersChance_slider.value = VanillaBreakersChance_text.value">
 </p>
-<p><input name="IgnoreLandmines" class="checkbox" type="checkbox"/> <label for="IgnoreLandmines">IgnoreLandmines</label><br>Toggle whether ghostCodes ignore landmines<br></p>
-<p><input name="IgnoreTurrets" class="checkbox" type="checkbox"/> <label for="IgnoreTurrets">IgnoreTurrets</label><br>Toggle whether ghostCodes ignore turrets<br></p>
-<p><input name="IgnoreDoors" class="checkbox" type="checkbox"/> <label for="IgnoreDoors">IgnoreDoors</label><br>Toggle whether ghostCodes ignore blast doors<br></p>
+<p><input id="IgnoreLandmines" name="IgnoreLandmines" class="checkbox" type="checkbox"/> <label for="IgnoreLandmines">IgnoreLandmines</label><br>Toggle whether ghostCodes ignore landmines<br></p>
+<p><input id="IgnoreTurrets" name="IgnoreTurrets" class="checkbox" type="checkbox"/> <label for="IgnoreTurrets">IgnoreTurrets</label><br>Toggle whether ghostCodes ignore turrets<br></p>
+<p><input id="IgnoreDoors" name="IgnoreDoors" class="checkbox" type="checkbox"/> <label for="IgnoreDoors">IgnoreDoors</label><br>Toggle whether ghostCodes ignore blast doors<br></p>
 </fieldset>
 <fieldset>
 <legend>Effects/Sound</legend>
@@ -108,8 +111,8 @@ Set to 0 to disable rapidFire<br />
 <input type="range" name="TerminalSoundChance" id="TerminalSoundChance_slider" value="100" min="0" max="100" oninput="TerminalSoundChance_text.value = TerminalSoundChance_slider.value">
 <input id="TerminalSoundChance_text" type="text" class="numberInput" size="4" min="0" max="100" value="100" oninput="TerminalSoundChance_slider.value = TerminalSoundChance_text.value">
 </p>
-<p><input name="BroadcastEffect" class="checkbox" checked="checked" type="checkbox"/> <label for="BroadcastEffect">BroadcastEffect</label><br>Set this to false if you want to disable the code broadcast effect on the terminal during a ghost code event.<br></p>
-<p><input name="RapidLights" class="checkbox" checked="checked" type="checkbox"/> <label for="RapidLights">RapidLights</label><br>Disable this to remove light flashing effect during RapidFire event.
+<p><input id="BroadcastEffect" name="BroadcastEffect" class="checkbox" checked="checked" type="checkbox"/> <label for="BroadcastEffect">BroadcastEffect</label><br>Set this to false if you want to disable the code broadcast effect on the terminal during a ghost code event.<br></p>
+<p><input id="RapidLights" name="RapidLights" class="checkbox" checked="checked" type="checkbox"/> <label for="RapidLights">RapidLights</label><br>Disable this to remove light flashing effect during RapidFire event.
 (DISABLE THIS IF YOU HAVE SEVERE EPILEPSY)<br></p>
 <p>RapidLightsMin<br>Set shortest possible time between each light flickering effect during rapidFire event.<br />
 <input type="range" name="RapidLightsMin" id="RapidLightsMin_slider" value="0.2" step="0.001" min="0.1" max="10" oninput="RapidLightsMin_text.value = RapidLightsMin_slider.value">
@@ -120,7 +123,7 @@ Set to 0 to disable rapidFire<br />
 <input id="RapidLightsMax_text" type="text" class="numberInput" size="4" min="0.1" max="20" value="0.6" oninput="RapidLightsMax_slider.value = RapidLightsMax_text.value">
 </p>
 <p><label for="RapidLightsColorValue">RapidLightsColorValue</label><br>Determine color lights will change to during rapidFire event.
-Set to a valid hex code for color change or leave as nochange to disable color change<br /><input name="RapidLightsColorValue" type="text" class="stringInput" value="nochange" /><br /></p>
+Set to a valid hex code for color change or leave as nochange to disable color change<br /><input id="RapidLightsColorValue" name="RapidLightsColorValue" type="text" class="stringInput" value="nochange" /><br /></p>
 </fieldset>
 <fieldset>
 <legend>Intervals</legend>
@@ -157,52 +160,138 @@ NOTE: Must be higher than RandIntervalACMin!<br />
 </fieldset><br /></form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 	<script>
-        function serializeForm() {
-            const form = document.getElementById('configForm');
-            const elements = form.elements;
-            let result = [];
+function serializeForm() {
+    const form = document.getElementById('configForm');
+    const elements = form.elements;
+    let result = [];
 
-            for (let element of elements) {
+    for (let element of elements) {
                 if (element.name) {
                     if (element.type === 'radio') {
                         if (element.checked) {
-                            result.push(`${element.name}:${element.value}`);
+        result.push(`${element.name}:${element.value}`);
                         }
                     } else if(element.type === 'checkbox') {
                         if (element.checked) {
-                            result.push(`${element.name}:true`);
+        result.push(`${element.name}:true`);
                         } else {
-                            result.push(`${element.name}:false`);
+        result.push(`${element.name}:false`);
                         }
                     } else {
-                        result.push(`${element.name}:${element.value}`);
+        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+    }
+
+    const compressedData = compressData(result.join('~ '));
+    document.getElementById('rawData').textContent = result.join('~ ');
+    document.getElementById('compressedData').textContent = compressedData;
+}
+
+//MinCodes = 4
+function parseConfig(text) {
+    const lines = text.split('\n');
+    const notConfig = ['#', '['];
+
+    lines.forEach(str => {
+        if (!notConfig.some(char => str.startsWith(char))) {
+            const pair = str.split(" = ");
+            console.log("attempting to update config item on site for " + str);
+            if(pair[0] && pair[1]) //truthy
+                updateConfig(pair[0], pair[1]);
+        }
+        else {
+            console.log("below line is not a config item\n" + str);
+        }
+    });
+}
+
+function updateConfig(key, value) {
+    if (key === null || value === null) {
+        console.warn("Cannot update key-value pair, one item is NULL");
+        return;
+    }
+
+    key = key.trim();
+    value = value.trim();
+
+    const matching = document.getElementsByName(key);
+    if (matching.length === 1) {
+        const element = matching[0];
+        let typ = matching[0].getAttribute("type");
+        let next = element.nextElementSibling;
+        if (typ === "checkbox") {
+            if (value === "true")
+                element.setAttribute("checked", "checked");
+            else
+                element.removeAttribute("checked");
+        } else if (element.hasAttribute("value")) {
+            if (typ === "range") {
+                if (next !== null) {
+                    next.setAttribute("value", value);
+                    next.textContent = value;
+                }
+                element.setAttribute("value", value);
+            } else {
+                element.setAttribute("value", value);
+                element.textContent = value;
+                console.log("not a range setting values");
+            }
+            
+        } else {
+            console.warn("Unable to find attribute to update for: " + key + value);
+        }
+    } else {
+        matching.forEach(doc => {
+            if (doc.hasAttribute("type") && doc.hasAttribute("value")) {
+                let atr = doc.getAttribute("value");
+                let typ = doc.getAttribute("type");
+                if (typ === "radio") {
+                    if (atr === value) {
+                        doc.setAttribute("checked", "checked");
+                    } else {
+                        console.log("not the button we are looking for, skipping & removing attribute");
+                        doc.removeAttribute("checked");
                     }
                 }
             }
-			
-			const compressedData = compressData(result.join('~ '));
-            document.getElementById('rawData').textContent = result.join('~ ');
-            document.getElementById('compressedData').textContent = compressedData;
-        }
+        });
+    }
+}
 
-        function clearText() {
-        document.getElementById('rawData').textContent = '';
-        document.getElementById('compressedData').textContent = '';
+
+function loadFileAsText() {
+    var fileToLoad = document.getElementById("fileInput").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        parseConfig(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+
+function clearText() {
+    document.getElementById('rawData').textContent = '';
+    document.getElementById('compressedData').textContent = '';
 		
-        }
+}
 
-		function compressData(data) {
+
+function compressData(data) {
 
 		// Convert query string to a Uint8Array
 		const uint8Array = new TextEncoder().encode(data);
 
-		// Compress using pako
-		const compressed = pako.gzip(uint8Array);
+    // Compress using pako
+    const compressed = pako.gzip(uint8Array);
 
-		// Convert compressed data to Base64
-		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
-		}
-    </script>
+    // Convert compressed data to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+}
+</script>
 <br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
 <br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
 </body></html>
