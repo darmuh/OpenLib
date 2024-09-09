@@ -1,0 +1,232 @@
+<html><title>com.github.darmuh.LethalConstellations.cfg Generator</title><body class="body">
+<style>
+  .body {
+  background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
+  color:whitesmoke;
+  font: Monospace;
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 0px;
+  margin-left: 20%;
+  margin-right: 20%;
+  }
+  .slider {
+    margin-top: 3%;
+  }
+  .numberInput {
+  background: transparent;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4%;
+  vertical-align: super;
+  }
+ .checkbox{
+    margin-right: 0%;
+    margin-bottom: 1%;
+    display: inline-block;
+    margin-left: 0%;
+  }
+textarea {
+  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+  color: white;
+  width: 80%; 
+  height: 60px;
+  }
+  .stringInput {
+  background: #EDEFED;
+  color: #171817;
+  text-align: left;
+  font-size: 12px;
+  border: 0px solid #ccc;
+  border-radius: 4%;
+  width: 40%;
+  padding: 2px;
+  margin-top: 1%;
+  }
+
+</style>
+<h1><center>com.github.darmuh.LethalConstellations.cfg Generator</h1></center><center><p>Upload your config:<br><input type="file" id="fileInput" accept=".cfg"> <button type="button" onclick="loadFileAsText()"> Submit Config</button></p></center>
+<form id="configForm">
+<fieldset>
+<legend>Debug</legend>
+<p><input id="ExtensiveLogging" name="ExtensiveLogging" class="checkbox" type="checkbox"/> <label for="ExtensiveLogging">ExtensiveLogging</label><br>Enable or Disable extensive logging for this mod.<br></p>
+<p><input id="DeveloperLogging" name="DeveloperLogging" class="checkbox" type="checkbox"/> <label for="DeveloperLogging">DeveloperLogging</label><br>Enable or Disable developer logging for this mod. (this will fill your log file FAST)<br></p>
+</fieldset>
+<fieldset>
+<legend>Setup</legend>
+<p><label for="ConstellationList">ConstellationList</label><br>Comma separated list of your ConstellationWord Names, or leave blank for default LLL moon tags<br /><input id="ConstellationList" name="ConstellationList" type="text" class="stringInput" value="" /><br /></p>
+<p><label for="CompanyDefaultConstellation">CompanyDefaultConstellation</label><br>The company's default constellation.
+This constellation will be assigned when loading saves starting at the company moon.<br /><input id="CompanyDefaultConstellation" name="CompanyDefaultConstellation" type="text" class="stringInput" value="" /><br /></p>
+<p><label for="IgnoreList">IgnoreList</label><br>Comma separated list of moon names that should not be touched by this mod.
+Generally you'll almost always have Liquidation in this list until it's a real moon as well as any moons you dont want associated with any particular constellation<br /><input id="IgnoreList" name="IgnoreList" type="text" class="stringInput" value="Liquidation,Moon2Example" /><br /></p>
+<p><input id="ModifyMoonPrices" name="ModifyMoonPrices" class="checkbox" checked="checked" type="checkbox"/> <label for="ModifyMoonPrices">ModifyMoonPrices</label><br>Disable this to stop this mod from modifying any moon prices<br></p>
+<p><input id="RequireConfirmation" name="RequireConfirmation" class="checkbox" checked="checked" type="checkbox"/> <label for="RequireConfirmation">RequireConfirmation</label><br>Enable this to require add a confirmation check before routing to a constellation and spending credits<br></p>
+<p><input id="HideUnaffordableConstellations" name="HideUnaffordableConstellations" class="checkbox" type="checkbox"/> <label for="HideUnaffordableConstellations">HideUnaffordableConstellations</label><br>Enable this to hide constellations that you can't afford to route to.<br></p>
+<p>AddHintTo<br>Choose where to add hints to the main 'constellations' command<br />
+<input type="radio" id="AddHintTo1" checked="checked" name="AddHintTo" value="both">
+            <label for="AddHintTo1">both</label><br>
+<input type="radio" id="AddHintTo2" name="AddHintTo" value="none">
+            <label for="AddHintTo2">none</label><br>
+<input type="radio" id="AddHintTo3" name="AddHintTo" value="help">
+            <label for="AddHintTo3">help</label><br>
+<input type="radio" id="AddHintTo4" name="AddHintTo" value="other">
+            <label for="AddHintTo4">other</label><br>
+</p>
+<p><input id="ConstellationSpecificInfoNodes" name="ConstellationSpecificInfoNodes" class="checkbox" type="checkbox"/> <label for="ConstellationSpecificInfoNodes">ConstellationSpecificInfoNodes</label><br>Enable this to add config options to the dynamic config for each constellation to have info nodes with customizable text<br></p>
+</fieldset>
+<fieldset>
+<legend>Customization</legend>
+<p><label for="ConstellationsWord">ConstellationsWord</label><br>Use this config item to change any instance of the word 'Constellations' with your own specific word.
+The terminal keyword will use this one!!!<br /><input id="ConstellationsWord" name="ConstellationsWord" type="text" class="stringInput" value="Constellations" /><br /></p>
+<p><label for="ConstellationWord">ConstellationWord</label><br>Use this config item to change any instance of the word 'Constellation' with your own specific word.<br /><input id="ConstellationWord" name="ConstellationWord" type="text" class="stringInput" value="Constellation" /><br /></p>
+<p><label for="ConstellationsShortcut">ConstellationsShortcut</label><br>Specify a list of shortcuts to use for the constellations menu command.
+Each shortcut keyword is separated by a ','<br /><input id="ConstellationsShortcut" name="ConstellationsShortcut" type="text" class="stringInput" value="" /><br /></p>
+<p><label for="ConstellationsHintText">ConstellationsHintText</label><br>text displayed for the hint added to commands like 'help' and 'other' regarding the constellations menu command<br /><input id="ConstellationsHintText" name="ConstellationsHintText" type="text" class="stringInput" value=">[keyword]
+To display Constellations available for routing" /><br /></p>
+<p><label for="ConstellationsInfoText">ConstellationsInfoText</label><br>Use this config item to change any instance of the word 'ConstellationWord' with your own specific word<br /><input id="ConstellationsInfoText" name="ConstellationsInfoText" type="text" class="stringInput" value="Use this command to display Constellations available for routing.
+
+Route to a specific constellation to update your moons listing!
+
+" /><br /></p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+function serializeForm() {
+    const form = document.getElementById('configForm');
+    const elements = form.elements;
+    let result = [];
+
+    for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+        result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+        result.push(`${element.name}:true`);
+                        } else {
+        result.push(`${element.name}:false`);
+                        }
+                    } else {
+        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+    }
+
+    const compressedData = compressData(result.join('~ '));
+    document.getElementById('rawData').textContent = result.join('~ ');
+    document.getElementById('compressedData').textContent = compressedData;
+}
+
+//MinCodes = 4
+function parseConfig(text) {
+    const lines = text.split('\n');
+    const notConfig = ['#', '['];
+
+    lines.forEach(str => {
+        if (!notConfig.some(char => str.startsWith(char))) {
+            const pair = str.split(" = ");
+            console.log("attempting to update config item on site for " + str);
+            if(pair[0] && pair[1]) //truthy
+                updateConfig(pair[0], pair[1]);
+        }
+        else {
+            console.log("below line is not a config item\n" + str);
+        }
+    });
+}
+
+function updateConfig(key, value) {
+    if (key === null || value === null) {
+        console.warn("Cannot update key-value pair, one item is NULL");
+        return;
+    }
+
+    key = key.trim();
+    value = value.trim();
+
+    const matching = document.getElementsByName(key);
+    if (matching.length === 1) {
+        const element = matching[0];
+        let typ = matching[0].getAttribute("type");
+        let next = element.nextElementSibling;
+        if (typ === "checkbox") {
+            if (value === "true")
+                element.setAttribute("checked", "checked");
+            else
+                element.removeAttribute("checked");
+        } else if (element.hasAttribute("value")) {
+            if (typ === "range") {
+                if (next !== null) {
+                    next.setAttribute("value", value);
+                    next.textContent = value;
+                }
+                element.setAttribute("value", value);
+            } else {
+                element.setAttribute("value", value);
+                element.textContent = value;
+                console.log("not a range setting values");
+            }
+            
+        } else {
+            console.warn("Unable to find attribute to update for: " + key + value);
+        }
+    } else {
+        matching.forEach(doc => {
+            if (doc.hasAttribute("type") && doc.hasAttribute("value")) {
+                let atr = doc.getAttribute("value");
+                let typ = doc.getAttribute("type");
+                if (typ === "radio") {
+                    if (atr === value) {
+                        doc.setAttribute("checked", "checked");
+                    } else {
+                        console.log("not the button we are looking for, skipping & removing attribute");
+                        doc.removeAttribute("checked");
+                    }
+                }
+            }
+        });
+    }
+}
+
+
+function loadFileAsText() {
+    var fileToLoad = document.getElementById("fileInput").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        parseConfig(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+
+function clearText() {
+    document.getElementById('rawData').textContent = '';
+    document.getElementById('compressedData').textContent = '';
+		
+}
+
+
+function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+    // Compress using pako
+    const compressed = pako.gzip(uint8Array);
+
+    // Convert compressed data to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+}
+</script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
+</body></html>

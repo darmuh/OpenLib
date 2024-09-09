@@ -43,7 +43,6 @@
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Website\Examples\index.php" />
     <None Include="_Release Files\CHANGELOG.md" />
     <None Include="_Release Files\LICENSE.MD" />
     <None Include="_Release Files\manifest.json" />
@@ -206,10 +205,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Website\Examples\com.github.darmuh.LethalConstellations.cfg_generator.htm" />
     <Content Include="Website\Examples\darmuh.ghostCodes.InsanityMode.cfg_generator.htm" />
     <Content Include="Website\Examples\darmuh.ghostCodes.Interactions.cfg_generator.htm" />
     <Content Include="Website\Examples\darmuh.ghostCodes.Setup.cfg_generator.htm" />
     <Content Include="Website\Examples\darmuh.ghostCodes.SoloAssist.cfg_generator.htm" />
+    <Content Include="Website\Examples\LethalConstellations_Generated.cfg_generator.htm" />
     <Content Include="Website\scripts.js" />
     <Content Include="Website\style.html" />
     <Content Include="_Release Files\icon.png" />
