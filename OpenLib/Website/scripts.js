@@ -21,8 +21,8 @@ function serializeForm() {
                 }
     }
 
-    const compressedData = compressData(result.join('~ '));
-    document.getElementById('rawData').textContent = result.join('~ ');
+    const compressedData = compressData(result.join(';:; '));
+    document.getElementById('rawData').textContent = result.join(';:; ');
     document.getElementById('compressedData').textContent = compressedData;
 }
 

@@ -33,19 +33,12 @@ namespace OpenLib.ConfigManager
 
         public static Dictionary<string, string> ParseKeyValuePairs(string data)
         {
-
             var dictionary = new Dictionary<string, string>();
             if (data.IsNullOrWhiteSpace()) 
                 return dictionary;
 
-            // Remove trailing comma
-            if (data.EndsWith("~"))
-            {
-                data = data.TrimEnd('~');
-            }
-
             // Split by comma to get key-value pairs
-            var pairs = data.Split('~');
+            var pairs = data.Split(new[] { ";:;" }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var pair in pairs)
             {

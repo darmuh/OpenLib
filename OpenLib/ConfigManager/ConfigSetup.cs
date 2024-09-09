@@ -281,8 +281,8 @@ function serializeForm() {
                 }
     }
 
-    const compressedData = compressData(result.join('~ '));
-    document.getElementById('rawData').textContent = result.join('~ ');
+    const compressedData = compressData(result.join(';:; '));
+    document.getElementById('rawData').textContent = result.join(';:; ');
     document.getElementById('compressedData').textContent = compressedData;
 }
 
@@ -417,9 +417,9 @@ function compressData(data) {
         public static void ReadCompressedConfig(ref ConfigEntry<string> configEntry, ConfigFile ModConfig)
         {
             string compressedDataBase64 = configEntry.Value;
-            string jsonString = DecompressBase64Gzip(compressedDataBase64);
+            string decompressed = DecompressBase64Gzip(compressedDataBase64);
 
-            Dictionary<string,string> fromString = ParseHelper.ParseKeyValuePairs(jsonString);
+            Dictionary<string,string> fromString = ParseHelper.ParseKeyValuePairs(decompressed);
 
             if (fromString.Count == 0)
                 return;
