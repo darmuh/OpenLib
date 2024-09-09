@@ -25,8 +25,7 @@
 - Assign new keywords to already existing nodes.
 - Event system lets you subscribe to all manners of Terminal patches. See EventUsage for examples on how to subscribe to these events.
 - Patches into the Awake method for the Teleporter class and provides referenceable Teleporter instances for both the normal teleporter and inverse teleporter
-- Generate webconfig files for config modification and code generation. See [Examples here](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/index.php)
-
+- Generate webconfig files for config modification and code generation. See [Example here](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/darmuh.ghostCodes.Setup.cfg_generator.htm)
 
 *The plan is to have this library support all of my mods (darmuhsTerminalStuff, ghostCodes, and suitsTerminal). So this library will likely have more features in the future*
 
