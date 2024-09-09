@@ -166,7 +166,9 @@ namespace OpenLib.ConfigManager
             lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body class=\"body\">");
             
             //css style, dont bother editing this in C# just cut/paste
-            lines.Add("<style>\r\n  .body {\r\n  background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);\r\n  color:whitesmoke;\r\n  font: Monospace;\r\n  padding-top: 1px;\r\n  padding-right: 1px;\r\n  padding-bottom: 1px;\r\n  padding-left: 0px;\r\n  }\r\n  .slider {\r\n    margin-top: 3px;\r\n  }\r\n  .numberInput {\r\n  background: transparent;\r\n  color: white;\r\n  text-align: center;\r\n  font-weight: bold;\r\n  font-size: 12px;\r\n  border: 0px solid #ccc;\r\n  border-radius: 4px;\r\n  vertical-align: super;\r\n  }\r\n .checkbox{\r\n    margin-right: 2px;\r\n    margin-bottom: 4px;\r\n    display: inline-block;\r\n    margin-left: 0px;\r\n  }\r\ntextarea {\r\n  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);\r\n  color: white;\r\n  width: 80%; \r\n  height: 60px;\r\n  }\r\n  .stringInput {\r\n  background: #EDEFED;\r\n  color: #171817;\r\n  text-align: left;\r\n  font-size: 12px;\r\n  border: 0px solid #ccc;\r\n  border-radius: 4px;\r\n  width: 40%;\r\n  padding: 2px;\r\n  margin-top: 4px;\r\n  }\r\n\r\n</style>");
+            lines.Add("<style>\r\n  .body {\r\n  background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);\r\n  color:whitesmoke;\r\n  font: Monospace;\r\n  padding-top: 1px;\r\n  padding-right: 1px;\r\n  padding-bottom: 1px;\r\n  padding-left: 0px;\r\n  margin-left: 20%;\r\n  margin-right: 20%;\r\n  }\r\n  .slider {\r\n    margin-top: 3%;\r\n  }\r\n  .numberInput {\r\n  background: transparent;\r\n  color: white;\r\n  text-align: center;\r\n  font-weight: bold;\r\n  font-size: 12px;\r\n  border: 1px solid #ccc;\r\n  border-radius: 4%;\r\n  vertical-align: super;\r\n  }\r\n .checkbox{\r\n    margin-right: 0%;\r\n    margin-bottom: 1%;\r\n    display: inline-block;\r\n    margin-left: 0%;\r\n  }\r\ntextarea {\r\n  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);\r\n  color: white;\r\n  width: 80%; \r\n  height: 60px;\r\n  }\r\n  .stringInput {\r\n  background: #EDEFED;\r\n  color: #171817;\r\n  text-align: left;\r\n  font-size: 12px;\r\n  border: 0px solid #ccc;\r\n  border-radius: 4%;\r\n  width: 40%;\r\n  padding: 2px;\r\n  margin-top: 1%;\r\n  }\r\n\r\n</style>");
+
+            lines.Add($"<h1><center>{configName.Replace("\\", "")} Generator</h1></center><center><p>Upload your config:<br><input type=\"file\" id=\"fileInput\" accept=\".cfg\"> <button type=\"button\" onclick=\"loadFileAsText()\"> Submit Config</button></p></center>");
 
             lines.Add("<form id=\"configForm\">");
 
@@ -197,12 +199,12 @@ namespace OpenLib.ConfigManager
                     if ((bool)pair.Value.DefaultValue)
                     {
                         Plugin.Spam("default is TRUE");
-                        lines.Add($"<p><input name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                        lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                     }
                     else
                     {
                         Plugin.Spam("default is FALSE");
-                        lines.Add($"<p><input name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                        lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                     }
                     
                     
@@ -230,7 +232,7 @@ namespace OpenLib.ConfigManager
                     }
                     else
                     {
-                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
                         Plugin.Spam($"string config detected - {pair.Key.Key}");
                     }
                     
@@ -257,52 +259,138 @@ namespace OpenLib.ConfigManager
             // Add the compression script
             lines.Add(@"<script src=""https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js""></script>
 	<script>
-        function serializeForm() {
-            const form = document.getElementById('configForm');
-            const elements = form.elements;
-            let result = [];
+function serializeForm() {
+    const form = document.getElementById('configForm');
+    const elements = form.elements;
+    let result = [];
 
-            for (let element of elements) {
+    for (let element of elements) {
                 if (element.name) {
                     if (element.type === 'radio') {
                         if (element.checked) {
-                            result.push(`${element.name}:${element.value}`);
+        result.push(`${element.name}:${element.value}`);
                         }
                     } else if(element.type === 'checkbox') {
                         if (element.checked) {
-                            result.push(`${element.name}:true`);
+        result.push(`${element.name}:true`);
                         } else {
-                            result.push(`${element.name}:false`);
+        result.push(`${element.name}:false`);
                         }
                     } else {
-                        result.push(`${element.name}:${element.value}`);
+        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+    }
+
+    const compressedData = compressData(result.join('~ '));
+    document.getElementById('rawData').textContent = result.join('~ ');
+    document.getElementById('compressedData').textContent = compressedData;
+}
+
+//MinCodes = 4
+function parseConfig(text) {
+    const lines = text.split('\n');
+    const notConfig = ['#', '['];
+
+    lines.forEach(str => {
+        if (!notConfig.some(char => str.startsWith(char))) {
+            const pair = str.split("" = "");
+            console.log(""attempting to update config item on site for "" + str);
+            if(pair[0] && pair[1]) //truthy
+                updateConfig(pair[0], pair[1]);
+        }
+        else {
+            console.log(""below line is not a config item\n"" + str);
+        }
+    });
+}
+
+function updateConfig(key, value) {
+    if (key === null || value === null) {
+        console.warn(""Cannot update key-value pair, one item is NULL"");
+        return;
+    }
+
+    key = key.trim();
+    value = value.trim();
+
+    const matching = document.getElementsByName(key);
+    if (matching.length === 1) {
+        const element = matching[0];
+        let typ = matching[0].getAttribute(""type"");
+        let next = element.nextElementSibling;
+        if (typ === ""checkbox"") {
+            if (value === ""true"")
+                element.setAttribute(""checked"", ""checked"");
+            else
+                element.removeAttribute(""checked"");
+        } else if (element.hasAttribute(""value"")) {
+            if (typ === ""range"") {
+                if (next !== null) {
+                    next.setAttribute(""value"", value);
+                    next.textContent = value;
+                }
+                element.setAttribute(""value"", value);
+            } else {
+                element.setAttribute(""value"", value);
+                element.textContent = value;
+                console.log(""not a range setting values"");
+            }
+            
+        } else {
+            console.warn(""Unable to find attribute to update for: "" + key + value);
+        }
+    } else {
+        matching.forEach(doc => {
+            if (doc.hasAttribute(""type"") && doc.hasAttribute(""value"")) {
+                let atr = doc.getAttribute(""value"");
+                let typ = doc.getAttribute(""type"");
+                if (typ === ""radio"") {
+                    if (atr === value) {
+                        doc.setAttribute(""checked"", ""checked"");
+                    } else {
+                        console.log(""not the button we are looking for, skipping & removing attribute"");
+                        doc.removeAttribute(""checked"");
                     }
                 }
             }
-			
-			const compressedData = compressData(result.join('~ '));
-            document.getElementById('rawData').textContent = result.join('~ ');
-            document.getElementById('compressedData').textContent = compressedData;
-        }
+        });
+    }
+}
 
-        function clearText() {
-        document.getElementById('rawData').textContent = '';
-        document.getElementById('compressedData').textContent = '';
+
+function loadFileAsText() {
+    var fileToLoad = document.getElementById(""fileInput"").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        parseConfig(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(fileToLoad, ""UTF-8"");
+}
+
+
+function clearText() {
+    document.getElementById('rawData').textContent = '';
+    document.getElementById('compressedData').textContent = '';
 		
-        }
+}
 
-		function compressData(data) {
+
+function compressData(data) {
 
 		// Convert query string to a Uint8Array
 		const uint8Array = new TextEncoder().encode(data);
 
-		// Compress using pako
-		const compressed = pako.gzip(uint8Array);
+    // Compress using pako
+    const compressed = pako.gzip(uint8Array);
 
-		// Convert compressed data to Base64
-		return btoa(String.fromCharCode(...new Uint8Array(compressed)));
-		}
-    </script>");
+    // Convert compressed data to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+}
+</script>");
 
             lines.Add("<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> " +
                 "<button type='button' onclick='clearText()'>Clear Results</button><br>");
