@@ -1,59 +1,108 @@
-<html><title>darmuh.ghostCodes.InsanityMode.cfg Generator</title><body style="background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke"><form id="configForm">
+<html><title>darmuh.ghostCodes.InsanityMode.cfg Generator</title><body class="body">
+<style>
+  .body {
+  background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);
+  color:whitesmoke;
+  font: Monospace;
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 0px;
+  }
+  .slider {
+    margin-top: 3px;
+  }
+  .numberInput {
+  background: transparent;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  vertical-align: super;
+  }
+ .checkbox{
+    margin-right: 2px;
+    margin-bottom: 4px;
+    display: inline-block;
+    margin-left: 0px;
+  }
+textarea {
+  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+  color: white;
+  width: 80%; 
+  height: 60px;
+  }
+  .stringInput {
+  background: #EDEFED;
+  color: #171817;
+  text-align: left;
+  font-size: 12px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  width: 40%;
+  padding: 2px;
+  margin-top: 4px;
+  }
+
+</style>
+<form id="configForm">
 <fieldset>
 <legend>General</legend>
 <p>InsanityModeMultiplier<br>Multiplier for all interaction chances when at max insanity while insanity mode is active<br />
-<input type="range" name="InsanityModeMultiplier" value="0.2" step="0.001" min="0.2" max="3" oninput="this.nextElementSibling.value = this.value">
-            <output>0.2</output>
+<input type="range" name="InsanityModeMultiplier" id="InsanityModeMultiplier_slider" value="1.5" step="0.001" min="0.2" max="3" oninput="InsanityModeMultiplier_text.value = InsanityModeMultiplier_slider.value">
+<input id="InsanityModeMultiplier_text" type="text" class="numberInput" size="4" min="0.2" max="3" value="1.5" oninput="InsanityModeMultiplier_slider.value = InsanityModeMultiplier_text.value">
 </p>
 </fieldset>
 <fieldset>
 <legend>Values</legend>
 <p>SanityLevel1<br>Set the percentage of the maximum sanity level required to reach Level 1 of Insanity Mode.<br />
-<input type="range" name="SanityLevel1" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="SanityLevel1" id="SanityLevel1_slider" value="25" min="0" max="100" oninput="SanityLevel1_text.value = SanityLevel1_slider.value">
+<input id="SanityLevel1_text" type="text" class="numberInput" size="4" min="0" max="100" value="25" oninput="SanityLevel1_slider.value = SanityLevel1_text.value">
 </p>
 <p>SanityLevel2<br>Set the percentage of the maximum sanity level required to reach Level 2 of Insanity Mode.<br />
-<input type="range" name="SanityLevel2" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="SanityLevel2" id="SanityLevel2_slider" value="50" min="0" max="100" oninput="SanityLevel2_text.value = SanityLevel2_slider.value">
+<input id="SanityLevel2_text" type="text" class="numberInput" size="4" min="0" max="100" value="50" oninput="SanityLevel2_slider.value = SanityLevel2_text.value">
 </p>
 <p>SanityLevel3<br>Set the percentage of the maximum sanity level required to reach Level 3 of Insanity Mode.<br />
-<input type="range" name="SanityLevel3" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="SanityLevel3" id="SanityLevel3_slider" value="75" min="0" max="100" oninput="SanityLevel3_text.value = SanityLevel3_slider.value">
+<input id="SanityLevel3_text" type="text" class="numberInput" size="4" min="0" max="100" value="75" oninput="SanityLevel3_slider.value = SanityLevel3_text.value">
 </p>
 <p>SanityMaxLevel<br>Set the percentage of the maximum sanity level required to reach MAX Level of Insanity Mode and trigger rapid fire.<br />
-<input type="range" name="SanityMaxLevel" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="SanityMaxLevel" id="SanityMaxLevel_slider" value="95" min="0" max="100" oninput="SanityMaxLevel_text.value = SanityMaxLevel_slider.value">
+<input id="SanityMaxLevel_text" type="text" class="numberInput" size="4" min="0" max="100" value="95" oninput="SanityMaxLevel_slider.value = SanityMaxLevel_text.value">
 </p>
 <p>WaitLevel1<br>Set the percentage of the wait time to use after reaching Level 1 of Insanity Mode.<br />
-<input type="range" name="WaitLevel1" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="WaitLevel1" id="WaitLevel1_slider" value="90" min="0" max="100" oninput="WaitLevel1_text.value = WaitLevel1_slider.value">
+<input id="WaitLevel1_text" type="text" class="numberInput" size="4" min="0" max="100" value="90" oninput="WaitLevel1_slider.value = WaitLevel1_text.value">
 </p>
 <p>WaitLevel2<br>Set the percentage of the wait time to use after reaching Level 2 of Insanity Mode.<br />
-<input type="range" name="WaitLevel2" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="WaitLevel2" id="WaitLevel2_slider" value="50" min="0" max="100" oninput="WaitLevel2_text.value = WaitLevel2_slider.value">
+<input id="WaitLevel2_text" type="text" class="numberInput" size="4" min="0" max="100" value="50" oninput="WaitLevel2_slider.value = WaitLevel2_text.value">
 </p>
 <p>WaitLevel3<br>Set the percentage of the wait time to use after reaching Level 3 of Insanity Mode.<br />
-<input type="range" name="WaitLevel3" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="WaitLevel3" id="WaitLevel3_slider" value="10" min="0" max="100" oninput="WaitLevel3_text.value = WaitLevel3_slider.value">
+<input id="WaitLevel3_text" type="text" class="numberInput" size="4" min="0" max="100" value="10" oninput="WaitLevel3_slider.value = WaitLevel3_text.value">
 </p>
 <p>WaitMaxLevel<br>Set the percentage of the wait time to use after reaching Max Level of Insanity Mode. (This is only triggered if rapidFire is disabled)<br />
-<input type="range" name="WaitMaxLevel" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="WaitMaxLevel" id="WaitMaxLevel_slider" value="2" min="0" max="100" oninput="WaitMaxLevel_text.value = WaitMaxLevel_slider.value">
+<input id="WaitMaxLevel_text" type="text" class="numberInput" size="4" min="0" max="100" value="2" oninput="WaitMaxLevel_slider.value = WaitMaxLevel_text.value">
 </p>
 </fieldset>
 <fieldset>
 <legend>Bonuses</legend>
 <p>DeathBonus<br>Percentage of current group insanity value that will be added for each dead player.<br />
-<input type="range" name="DeathBonus" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="DeathBonus" id="DeathBonus_slider" value="10" min="0" max="100" oninput="DeathBonus_text.value = DeathBonus_slider.value">
+<input id="DeathBonus_text" type="text" class="numberInput" size="4" min="0" max="100" value="10" oninput="DeathBonus_slider.value = DeathBonus_text.value">
 </p>
 <p>GhostGirlBonus<br>Percentage of current group insanity value to increase for the group once a ghostGirl has been spawned.<br />
-<input type="range" name="GhostGirlBonus" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="GhostGirlBonus" id="GhostGirlBonus_slider" value="10" min="0" max="100" oninput="GhostGirlBonus_text.value = GhostGirlBonus_slider.value">
+<input id="GhostGirlBonus_text" type="text" class="numberInput" size="4" min="0" max="100" value="10" oninput="GhostGirlBonus_slider.value = GhostGirlBonus_text.value">
 </p>
 <p>EmoteBuff<br>Percentage of current group insanity value to decrease from the group for each person that is emoting.<br />
-<input type="range" name="EmoteBuff" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="EmoteBuff" id="EmoteBuff_slider" value="25" min="0" max="100" oninput="EmoteBuff_text.value = EmoteBuff_slider.value">
+<input id="EmoteBuff_text" type="text" class="numberInput" size="4" min="0" max="100" value="25" oninput="EmoteBuff_slider.value = EmoteBuff_text.value">
 </p>
 </fieldset><br /></form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
@@ -105,5 +154,5 @@
 		}
     </script>
 <br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
-<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>
+<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
 </body></html>

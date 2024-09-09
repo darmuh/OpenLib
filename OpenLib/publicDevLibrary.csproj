@@ -207,6 +207,7 @@
   <ItemGroup>
     <Content Include="Examples\darmuh.ghostCodes.InsanityMode.cfg_generator.htm" />
     <Content Include="Examples\darmuh.ghostCodes.Interactions.cfg_generator.htm" />
+    <Content Include="Examples\darmuh.ghostCodes.Setup.cfg_generator.htm" />
     <Content Include="Examples\darmuh.ghostCodes.SoloAssist.cfg_generator.htm" />
     <Content Include="_Release Files\icon.png" />
     <Content Include="specialnodes.txt" />

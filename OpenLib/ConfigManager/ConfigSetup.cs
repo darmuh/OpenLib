@@ -163,7 +163,12 @@ namespace OpenLib.ConfigManager
         {
             List<string> lines = [];
             string configName = ModConfig.ConfigFilePath.Substring(ModConfig.ConfigFilePath.LastIndexOf('\\'));
-            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body style=\"background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke\"><form id=\"configForm\">");
+            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body class=\"body\">");
+            
+            //css style, dont bother editing this in C# just cut/paste
+            lines.Add("<style>\r\n  .body {\r\n  background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);\r\n  color:whitesmoke;\r\n  font: Monospace;\r\n  padding-top: 1px;\r\n  padding-right: 1px;\r\n  padding-bottom: 1px;\r\n  padding-left: 0px;\r\n  }\r\n  .slider {\r\n    margin-top: 3px;\r\n  }\r\n  .numberInput {\r\n  background: transparent;\r\n  color: white;\r\n  text-align: center;\r\n  font-weight: bold;\r\n  font-size: 12px;\r\n  border: 0px solid #ccc;\r\n  border-radius: 4px;\r\n  vertical-align: super;\r\n  }\r\n .checkbox{\r\n    margin-right: 2px;\r\n    margin-bottom: 4px;\r\n    display: inline-block;\r\n    margin-left: 0px;\r\n  }\r\ntextarea {\r\n  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);\r\n  color: white;\r\n  width: 80%; \r\n  height: 60px;\r\n  }\r\n  .stringInput {\r\n  background: #EDEFED;\r\n  color: #171817;\r\n  text-align: left;\r\n  font-size: 12px;\r\n  border: 0px solid #ccc;\r\n  border-radius: 4px;\r\n  width: 40%;\r\n  padding: 2px;\r\n  margin-top: 4px;\r\n  }\r\n\r\n</style>");
+
+            lines.Add("<form id=\"configForm\">");
 
             Dictionary<ConfigDefinition, ConfigEntryBase> configItems = new Dictionary<ConfigDefinition, ConfigEntryBase>();
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
@@ -172,6 +177,7 @@ namespace OpenLib.ConfigManager
                 Plugin.Spam($"added {value.Definition} to list of configItems to check");
             }
 
+            
             string lastSection = "";
 
             foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
@@ -187,8 +193,19 @@ namespace OpenLib.ConfigManager
 
                 if (pair.Value.BoxedValue.GetType() == typeof(bool))
                 {
-                    lines.Add($"<p><input name=\"{pair.Key.Key}\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                     Plugin.Spam($"bool config detected - {pair.Key.Key}");
+                    if ((bool)pair.Value.DefaultValue)
+                    {
+                        Plugin.Spam("default is TRUE");
+                        lines.Add($"<p><input name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                    }
+                    else
+                    {
+                        Plugin.Spam("default is FALSE");
+                        lines.Add($"<p><input name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                    }
+                    
+                    
                 }
                 else if (pair.Value.BoxedValue.GetType() == typeof(string))
                 {
@@ -199,7 +216,12 @@ namespace OpenLib.ConfigManager
                         int num = 1;
                         foreach(string value in acceptableValues)
                         {
-                            string ToHtml = WebHelper.AddValueToHTMLCode(value, pair.Key.Key, num);
+                            string ToHtml = "";
+                            if (value == (string)pair.Value.DefaultValue)
+                                ToHtml = WebHelper.AddValueToHTMLCode(value, pair.Key.Key, num, true);
+                            else
+                                ToHtml = WebHelper.AddValueToHTMLCode(value, pair.Key.Key, num, false);
+
                             lines.Add(ToHtml);
                             num++;
                         }
@@ -208,7 +230,7 @@ namespace OpenLib.ConfigManager
                     }
                     else
                     {
-                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"text\" value=\"\" /><br /></p>");
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
                         Plugin.Spam($"string config detected - {pair.Key.Key}");
                     }
                     
@@ -219,13 +241,13 @@ namespace OpenLib.ConfigManager
                     {
                         lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
                         List<float> acceptableValues = ConfigHelper.GetAcceptableValueF(pair.Value.Description.AcceptableValues);
-                        lines.Add(WebHelper.AddValueToHTMLCode(acceptableValues, pair.Key.Key));
+                        lines.Add(WebHelper.AddValueToHTMLCode(acceptableValues, pair.Key.Key, pair.Value.DefaultValue.ToString()));
                         lines.Add("</p>");
                         Plugin.Spam($"clamped number-type config detected - {pair.Key.Key}");
                     }
                     else
                     {
-                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" value=\"\" /><br /></p>");
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" class=\"numberInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
                         Plugin.Spam($"number-type config detected - {pair.Key.Key}");
                     }
                 }
@@ -284,8 +306,8 @@ namespace OpenLib.ConfigManager
 
             lines.Add("<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> " +
                 "<button type='button' onclick='clearText()'>Clear Results</button><br>");
-            lines.Add("<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br>" +
-                "<br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>");
+            lines.Add("<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br>" +
+                "<br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>");
 
             lines.Add("</body></html>");
             if (!Directory.Exists($"{Paths.ConfigPath}/webconfig"))

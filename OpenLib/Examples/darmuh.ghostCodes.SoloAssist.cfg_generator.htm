@@ -1,47 +1,96 @@
-<html><title>darmuh.ghostCodes.SoloAssist.cfg Generator</title><body style="background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);color:whitesmoke"><form id="configForm">
+<html><title>darmuh.ghostCodes.SoloAssist.cfg Generator</title><body class="body">
+<style>
+  .body {
+  background-image: linear-gradient(to bottom right,#2c2b2b, #0a0a0a);
+  color:whitesmoke;
+  font: Monospace;
+  padding-top: 1px;
+  padding-right: 1px;
+  padding-bottom: 1px;
+  padding-left: 0px;
+  }
+  .slider {
+    margin-top: 3px;
+  }
+  .numberInput {
+  background: transparent;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  vertical-align: super;
+  }
+ .checkbox{
+    margin-right: 2px;
+    margin-bottom: 4px;
+    display: inline-block;
+    margin-left: 0px;
+  }
+textarea {
+  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+  color: white;
+  width: 80%; 
+  height: 60px;
+  }
+  .stringInput {
+  background: #EDEFED;
+  color: #171817;
+  text-align: left;
+  font-size: 12px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  width: 40%;
+  padding: 2px;
+  margin-top: 4px;
+  }
+
+</style>
+<form id="configForm">
 <fieldset>
 <legend>Stage 1</legend>
 <p>S1percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 1 (beginning of day to Noon)<br />
-<input type="range" name="S1percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S1percent" id="S1percent_slider" value="50" min="0" max="100" oninput="S1percent_text.value = S1percent_slider.value">
+<input id="S1percent_text" type="text" class="numberInput" size="4" min="0" max="100" value="50" oninput="S1percent_slider.value = S1percent_text.value">
 </p>
 <p>S1inside<br>Decrease of insanity level when inside the factory during Stage 1 (beginning of day to Noon)<br />
-<input type="range" name="S1inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S1inside" id="S1inside_slider" value="20" min="0" max="40" oninput="S1inside_text.value = S1inside_slider.value">
+<input id="S1inside_text" type="text" class="numberInput" size="4" min="0" max="40" value="20" oninput="S1inside_slider.value = S1inside_text.value">
 </p>
 <p>S1outside<br>Decrease of insanity level when outside the factory during Stage 1 (beginning of day to Noon)<br />
-<input type="range" name="S1outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S1outside" id="S1outside_slider" value="25" min="0" max="40" oninput="S1outside_text.value = S1outside_slider.value">
+<input id="S1outside_text" type="text" class="numberInput" size="4" min="0" max="40" value="25" oninput="S1outside_slider.value = S1outside_text.value">
 </p>
 </fieldset>
 <fieldset>
 <legend>Stage 2</legend>
 <p>S2percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 2 (Noon to 5PM)<br />
-<input type="range" name="S2percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S2percent" id="S2percent_slider" value="75" min="0" max="100" oninput="S2percent_text.value = S2percent_slider.value">
+<input id="S2percent_text" type="text" class="numberInput" size="4" min="0" max="100" value="75" oninput="S2percent_slider.value = S2percent_text.value">
 </p>
 <p>S2inside<br>Decrease of insanity level when inside the factory during Stage 2 (Noon to 5PM)<br />
-<input type="range" name="S2inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S2inside" id="S2inside_slider" value="10" min="0" max="40" oninput="S2inside_text.value = S2inside_slider.value">
+<input id="S2inside_text" type="text" class="numberInput" size="4" min="0" max="40" value="10" oninput="S2inside_slider.value = S2inside_text.value">
 </p>
 <p>S2outside<br>Decrease of insanity level when outside the factory during Stage 2 (Noon to 5PM)<br />
-<input type="range" name="S2outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S2outside" id="S2outside_slider" value="15" min="0" max="40" oninput="S2outside_text.value = S2outside_slider.value">
+<input id="S2outside_text" type="text" class="numberInput" size="4" min="0" max="40" value="15" oninput="S2outside_slider.value = S2outside_text.value">
 </p>
 </fieldset>
 <fieldset>
 <legend>Stage 3</legend>
 <p>S3percent<br>Percentage of Max Insanity required to hit Solo Assistance Buff during Stage 3 (5PM - 10PM)<br />
-<input type="range" name="S3percent" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S3percent" id="S3percent_slider" value="90" min="0" max="100" oninput="S3percent_text.value = S3percent_slider.value">
+<input id="S3percent_text" type="text" class="numberInput" size="4" min="0" max="100" value="90" oninput="S3percent_slider.value = S3percent_text.value">
 </p>
 <p>S3inside<br>Decrease of insanity level when inside the factory during Stage 3 (5PM - 10PM)<br />
-<input type="range" name="S3inside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S3inside" id="S3inside_slider" value="5" min="0" max="40" oninput="S3inside_text.value = S3inside_slider.value">
+<input id="S3inside_text" type="text" class="numberInput" size="4" min="0" max="40" value="5" oninput="S3inside_slider.value = S3inside_text.value">
 </p>
 <p>S3outside<br>Decrease of insanity level when outside the factory during Stage 3 (5PM - 10PM)<br />
-<input type="range" name="S3outside" value="0" min="0" max="40" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output>
+<input type="range" name="S3outside" id="S3outside_slider" value="10" min="0" max="40" oninput="S3outside_text.value = S3outside_slider.value">
+<input id="S3outside_text" type="text" class="numberInput" size="4" min="0" max="40" value="10" oninput="S3outside_slider.value = S3outside_text.value">
 </p>
 </fieldset><br /></form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
@@ -93,5 +142,5 @@
 		}
     </script>
 <br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
-<br>Raw data:<br><textarea id='rawData' readonly=true style='width: 80%; height: 60px;'></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true style='width: 80%; height: 60px;'></textarea></center>
+<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
 </body></html>
