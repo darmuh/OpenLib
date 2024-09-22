@@ -38,19 +38,22 @@ namespace OpenLib.Common
             return false;
         }
 
-        public static int HostClientID()
+        public static bool TryGetHostClientID(out int HostClientID)
         {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
             {
                 if (player.isHostPlayerObject)
                 {
                     Plugin.MoreLogs($"Player: {player.playerUsername} is the host, client ID: {player.playerClientId}.");
-                    return ((int)player.playerClientId);
+                    HostClientID = ((int)player.playerClientId);
+                    return true;
                 }
             }
 
-            return -1;
+            HostClientID = -1;
+            return false;
         }
+
         public static Color HexToColor(string hex)
         {
             // Convert hex color code to Color
@@ -66,6 +69,21 @@ namespace OpenLib.Common
 
 
         // ----------------- Obsolete Old Methods ----------------- //
+        
+        [Obsolete("Use TryGetHostClientID instead to avoid NRE")]
+        public static int HostClientID()
+        {
+            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
+            {
+                if (player.isHostPlayerObject)
+                {
+                    Plugin.MoreLogs($"Player: {player.playerUsername} is the host, client ID: {player.playerClientId}.");
+                    return ((int)player.playerClientId);
+                }
+            }
+
+            return -1;
+        }
 
         [Obsolete("Use TryGetPlayerFromName instead to avoid NRE")]
         public static PlayerControllerB GetPlayerFromName(string playerName)

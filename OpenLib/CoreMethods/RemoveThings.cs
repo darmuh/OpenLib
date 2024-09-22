@@ -1,7 +1,8 @@
-﻿using OpenLib.ConfigManager;
+﻿using OpenLib.Common;
+using OpenLib.ConfigManager;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 using static OpenLib.CoreMethods.DynamicBools;
 
 namespace OpenLib.CoreMethods
@@ -13,12 +14,13 @@ namespace OpenLib.CoreMethods
             Plugin.Spam("OnTerminalDisable called");
             DeleteAllNodes(ref Plugin.nodesAdded);
             DeleteAllKeywords(ref Plugin.keywordsAdded);
+            if (CamStuff.MirrorObject != null)
+                GameObject.Destroy(CamStuff.MirrorObject);
             ConfigSetup.defaultListing.DeleteAll();
         }
 
         public static void DeleteNounWord(ref TerminalKeyword keyWord, string terminalKeyword)
         {
-
             List<CompatibleNoun> keywordList = [.. keyWord.compatibleNouns];
             List<CompatibleNoun> nounsToRemove = [];
             foreach (CompatibleNoun compatibleNoun in keywordList)
@@ -38,6 +40,7 @@ namespace OpenLib.CoreMethods
             keyWord.compatibleNouns = [.. keywordList];
         }
 
+        [Obsolete("This doesn't really work right at the moment")]
         public static void RemoveCompatibleNoun(ref TerminalKeyword mainWord, TerminalKeyword wordToRemove)
         {
             bool removedWord = false;
@@ -60,6 +63,7 @@ namespace OpenLib.CoreMethods
             }
         }
 
+        [Obsolete("This doesn't really work right at the moment")]
         public static void RemoveCompatibleNoun(ref TerminalKeyword mainWord, string nounToRemove)
         {
             bool removedWord = false;
@@ -188,7 +192,7 @@ namespace OpenLib.CoreMethods
                 if (allNodesList[i].name.Equals(nodeName))
                 {
                     UnityEngine.Object.Destroy(allNodesList[i]);
-                    //Plugin.MoreLogs($"Keyword: [{keyWord}] removed");
+                    Plugin.Spam($"Node: [{nodeName}] removed");
                     break;
                 }
             }

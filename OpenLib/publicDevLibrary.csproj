@@ -69,14 +69,15 @@
     </Reference>
     <Reference Include="BMX.LobbyCompatibility">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\LobbyCompatibility\BMX.LobbyCompatibility.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Facepunch.Steamworks.Win64, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Facepunch.Steamworks.Win64.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="FovAdjust">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\Rozebud-FOV_Adjust\FovAdjust.dll</HintPath>
+    <Reference Include="LethalConfig">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="OpenBodyCams">
@@ -96,7 +97,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TwoRadarMaps">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\2radarmaps\TwoRadarMaps.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\Zaggy1024-TwoRadarMaps\TwoRadarMaps.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Collections, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -116,6 +117,7 @@
     <Reference Include="Unity.RenderPipelines.HighDefinition.Runtime, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,6 +131,7 @@
     <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -160,15 +163,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CamStuff.cs" />
     <Compile Include="Compat\BMX_LobbyCompat.cs" />
+    <Compile Include="Compat\LethalConfigSoft.cs" />
+    <Compile Include="Compat\OpenBodyCamFuncs.cs" />
     <Compile Include="ConfigManager\ConfigHelper.cs" />
     <Compile Include="ConfigManager\ConfigMisc.cs" />
+    <Compile Include="ConfigManager\ConfigSync.cs" />
     <Compile Include="ConfigManager\ParseHelper.cs" />
     <Compile Include="ConfigManager\ManagedConfig.cs" />
     <Compile Include="ConfigManager\WebHelper.cs" />
     <Compile Include="CoreMethods\AddingThings.cs" />
     <Compile Include="CoreMethods\BasicTerminal.cs" />
     <Compile Include="CoreMethods\CommonThings.cs" />
+    <Compile Include="CoreMethods\FauxKeyword.cs" />
     <Compile Include="CoreMethods\ListManagement.cs" />
     <Compile Include="CoreMethods\MainListing.cs" />
     <Compile Include="Events\EventManager.cs" />

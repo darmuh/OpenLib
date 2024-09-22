@@ -1,15 +1,17 @@
 ﻿// credit to iambatby's LethalLevelLoader for these methods
 // https://github.com/IAmBatby/LethalLevelLoader/blob/main/LethalLevelLoader/Patches/TerminalManager.cs
 // some minor modifications for use in this project
+// if you dont know what you're doing with terminalkeywords/terminalnodes I recommend using the methods i've created in AddingThings.cs
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace OpenLib.CoreMethods
 {
     public class BasicTerminal
     {
-        /*
         public static TerminalKeyword CreateNewTerminalKeyword(string name, string keyword)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -17,10 +19,11 @@ namespace OpenLib.CoreMethods
             newTerminalKeyword.name = name;
 
             newTerminalKeyword.word = keyword;
-            newTerminalKeyword.compatibleNouns = new CompatibleNoun[0];
+            newTerminalKeyword.compatibleNouns = [];
             newTerminalKeyword.defaultVerb = null;
+            allKeywordsList.Add(newTerminalKeyword);
 
-            Plugin.instance.Terminal.terminalNodes.allKeywords = Plugin.instance.Terminal.terminalNodes.allKeywords.AddItem(newTerminalKeyword).ToArray();
+            Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
 
             return (newTerminalKeyword);
         }
@@ -28,7 +31,7 @@ namespace OpenLib.CoreMethods
         public static TerminalNode CreateNewTerminalNode()
         {
             TerminalNode newTerminalNode = ScriptableObject.CreateInstance<TerminalNode>();
-            newTerminalNode.name = "NewLethalLevelLoaderTerminalNode";
+            newTerminalNode.name = "OpenLibTerminalNode";
 
             newTerminalNode.displayText = string.Empty;
             newTerminalNode.terminalEvent = string.Empty;
@@ -40,10 +43,31 @@ namespace OpenLib.CoreMethods
             newTerminalNode.creatureFileID = -1;
             newTerminalNode.storyLogFileID = -1;
             newTerminalNode.playSyncedClip = -1;
-            newTerminalNode.terminalOptions = new CompatibleNoun[0];
+            newTerminalNode.terminalOptions = [];
 
             return (newTerminalNode);
         }
-        */
+
+        public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null, Dictionary<TerminalNode, Func<string>> nodeListing = null)
+        {
+            CompatibleNoun thisNoun = new();
+            if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
+                thisNoun.noun = thisWord;
+            else
+                thisNoun.noun = BasicTerminal.CreateNewTerminalKeyword(nodeName + "_" + word, word);
+
+
+            thisNoun.result = BasicTerminal.CreateNewTerminalNode();
+            thisNoun.result.name = nodeName + "_" + word;
+            thisNoun.result.displayText = displayText;
+            thisNoun.result.clearPreviousText = true;
+            thisNoun.result.itemCost = price;
+
+            thisNoun.noun.specialKeywordResult = thisNoun.result;
+            if (thisAction != null && nodeListing != null)
+                nodeListing.Add(thisNoun.result, thisAction);
+
+            return thisNoun;
+        }
     }
 }

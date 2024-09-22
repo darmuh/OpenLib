@@ -1,50 +1,95 @@
 ﻿<style>
-  .body {
-  background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
-  color:whitesmoke;
-  font: Monospace;
-  padding-top: 1px;
-  padding-right: 1px;
-  padding-bottom: 1px;
-  padding-left: 0px;
-  margin-left: 20%;
-  margin-right: 20%;
-  }
-  .slider {
-    margin-top: 3%;
-  }
-  .numberInput {
-  background: transparent;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4%;
-  vertical-align: super;
-  }
- .checkbox{
-    margin-right: 0%;
-    margin-bottom: 1%;
-    display: inline-block;
-    margin-left: 0%;
-  }
-textarea {
-  background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
-  color: white;
-  width: 80%; 
-  height: 60px;
-  }
-  .stringInput {
-  background: #EDEFED;
-  color: #171817;
-  text-align: left;
-  font-size: 12px;
-  border: 0px solid #ccc;
-  border-radius: 4%;
-  width: 40%;
-  padding: 2px;
-  margin-top: 1%;
-  }
+    .body {
+        background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
+        color: whitesmoke;
+        font: Monospace;
+        padding-top: 1px;
+        padding-right: 1px;
+        padding-bottom: 1px;
+        padding-left: 0px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
 
+    .slider {
+        margin-top: 3%;
+    }
+
+    .slider:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    .numberInput {
+        background: transparent;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4%;
+        vertical-align: super;
+    }
+
+    .checkbox {
+        margin-right: 0%;
+        margin-bottom: 1%;
+        display: inline-block;
+        margin-left: 0%;
+    }
+
+    .checkbox:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    textarea {
+        background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+        color: #C6A97C;
+        width: 80%;
+        height: 60px;
+        resize: vertical;
+    }
+
+    .stringInput {
+        background: #EDEFED;
+        background-color: #C6A97C;
+        text-align: left;
+        font-size: 12px;
+        border: 0px solid #ccc;
+        border-radius: 4%;
+        width: 40%;
+        padding: 2px;
+        margin-top: 1%;
+    }
+
+    .colorText {
+        width: 10%;
+        border: 1px solid #ddd;
+        border-radius: 5%;
+        box-shadow: 0 0 0px #ddd;
+    }
+
+    input[type=color] {
+        border-width: 0px;
+        border: none;
+        background: none;
+        height: 24px;
+        width: 24px;
+        vertical-align: sub;
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    input[type=color]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-width: 0px;
+        border: 1px solid #fafff9;
+        outline: none;
+    }
+    input[type=text]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-color: #ddd;
+        outline: none;
+    }
 </style>

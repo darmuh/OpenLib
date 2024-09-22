@@ -1,17 +1,12 @@
 ﻿using OpenLib.Events;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OpenLib.Common
 {
     public class TerminalStart
     {
-        public static bool delayStartEnum = false;
+        internal static bool delayStartEnum = false;
 
         internal static void TerminalStartGroupDelay()
         {
@@ -33,7 +28,7 @@ namespace OpenLib.Common
             delayStartEnum = false;
         }
 
-        public static void AddStoreItems()
+        internal static void AddStoreItems()
         {
             if (Plugin.instance.TerminalFormatter)
                 return;

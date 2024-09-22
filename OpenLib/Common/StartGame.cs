@@ -19,6 +19,16 @@ namespace OpenLib.Common
             {
                 Plugin.Spam("Terminal Formatter by mrov detected!");
             }
+            if (SoftCompatibility("ainavt.lc.lethalconfig", ref Plugin.instance.LethalConfig))
+                Plugin.Spam("LethalConfig functions enabled!");
+            if (SoftCompatibility("Zaggy1024.OpenBodyCams", ref Plugin.instance.OpenBodyCamsMod))
+            {
+                Plugin.Spam("OpenBodyCams by Zaggy1024 detected!");
+            }
+            if (SoftCompatibility("Zaggy1024.TwoRadarMaps", ref Plugin.instance.TwoRadarMapsMod))
+            {
+                Plugin.Spam("TwoRadarMaps by Zaggy1024 detected!");
+            }
         }
         internal static void OnGameStart()
         {
@@ -32,7 +42,8 @@ namespace OpenLib.Common
             {
                 string YourPluginName = Assembly.GetCallingAssembly().GetName().Name;
                 isDetected = true;
-                Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
+                if(Plugin.PluginInfo.PLUGIN_GUID != PluginGUID)
+                    Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
                 return isDetected;
             }
             return isDetected = false;

@@ -1,6 +1,4 @@
-﻿using OpenLib.ConfigManager;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using static OpenLib.Menus.MenuBuild;
 
 namespace OpenLib.Menus

@@ -1,17 +1,16 @@
 ﻿using LobbyCompatibility.Features;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenLib.Compat
 {
-    internal class BMX_LobbyCompat
+    public class BMX_LobbyCompat
     {
-        public static void SetCompat(bool isNetworked)
+        internal static void SetCompat(bool isNetworked)
         {
+            if (!Plugin.instance.LobbyCompat)
+                return;
+
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
             if (isNetworked)
@@ -21,6 +20,25 @@ namespace OpenLib.Compat
             else
             {
                 PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+            }
+        }
+
+        public static bool SetBMXCompat(bool isNetworked, Version version) //for public use
+        {
+            if (!Plugin.instance.LobbyCompat)
+            {
+                return false;
+            }
+
+            if (isNetworked)
+            {
+                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
+                return true;
+            }
+            else
+            {
+                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+                return true;
             }
         }
     }

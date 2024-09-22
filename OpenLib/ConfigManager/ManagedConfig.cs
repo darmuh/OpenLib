@@ -1,10 +1,8 @@
-﻿using OpenLib.Menus;
+﻿using OpenLib.Common;
+using OpenLib.Menus;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine.Video;
 
 namespace OpenLib.ConfigManager
 {
@@ -42,6 +40,8 @@ namespace OpenLib.ConfigManager
         public string configDescription;
         public Func<string> ConfirmAction;
         public Func<string> DenyAction;
+        public Func<string> InfoAction;
+        public string InfoText = "";
 
         //for menus
         public TerminalMenuItem menuItem;
@@ -73,6 +73,20 @@ namespace OpenLib.ConfigManager
                 this.StringValue = newValue;
                 Plugin.Spam($"Updating string value for managed item {this.ConfigItemName}");
             }
+        }
+
+        public void DefaultInfoText()
+        {
+            if (this.menuItem != null)
+            {
+                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(this.menuItem.itemKeywords) + " ]\r\n" + this.menuItem.itemDescription + "\r\n\r\n";
+                this.InfoText = text;
+            }
+        }
+
+        public void AddInfoAction(Func<string> action) //update for info commands
+        {
+            this.InfoAction = action;
         }
 
         public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clear = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenLib.ConfigManager;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,8 +56,6 @@ namespace OpenLib.Common
             Plugin.Spam("display text cleared for real this time!!!");
             return displayText;
         }
-
-
 
         // ----------------- Obsolete Old Methods ----------------- //
 

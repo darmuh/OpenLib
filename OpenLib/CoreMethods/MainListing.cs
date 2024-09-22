@@ -1,5 +1,4 @@
-﻿using OpenLib.Common;
-using OpenLib.ConfigManager;
+﻿using OpenLib.ConfigManager;
 using OpenLib.Menus;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ namespace OpenLib.CoreMethods
         public List<TerminalKeyword> terminalKeywords = [];
         public Dictionary<TerminalNode,Func<string>> Listing = [];
         public List<TerminalNode> shopNodes = [];
+        public List<FauxKeyword> fauxKeywords = [];
 
         //Special stuff
         public Dictionary<TerminalNode, int> specialListNum = [];
@@ -33,18 +33,15 @@ namespace OpenLib.CoreMethods
             specialListString.Clear();
             ListNumToString.Clear();
             storePacks.Clear();
+            fauxKeywords.Clear();
         }
-
     }
-
 
     public class CommandRegistry
     {
         public static void InitListing(ref MainListing listingName)
         {
-
             listingName ??= new MainListing();
-
             listingName.terminalNodes = [];
             listingName.terminalKeywords = [];
             listingName.Listing = [];
@@ -52,7 +49,6 @@ namespace OpenLib.CoreMethods
             listingName.specialListNum = [];
             listingName.specialListString = [];
             listingName.ListNumToString = [];
-            //listingName.count = 0;
 
             if (listingName == null)
                 Plugin.ERROR("InitListing still null");
@@ -68,7 +64,6 @@ namespace OpenLib.CoreMethods
                 return;
             }
 
-            TerminalNode otherNode = LogicHandling.GetFromAllNodes("OtherCommands");
             Plugin.Spam($"listing count: {listingName.Listing.Count}");
 
             foreach(ManagedConfig m in managedBools)
@@ -81,17 +76,20 @@ namespace OpenLib.CoreMethods
                     if (matchItem != null)
                         m.menuItem = matchItem;
 
-                    //listingName.count++;
                     Plugin.MoreLogs($"{m.ConfigItemName} found in managed bools and is active");
                     if(m.KeywordList != null)
                     {
                         AddCommandKeyword(m, listingName);
                         if(m.categoryText.ToLower() == "other")
                         {
-                            AddingThings.AddToExistingNodeText($"\n{m.configDescription}", ref otherNode);
+                            if (!LogicHandling.TryGetFromAllNodes("OtherCommands", out TerminalNode otherNode))
+                            {
+                                Plugin.WARNING($"Unable to add {m.configDescription} to OtherCommands\nOtherCommands TerminalNode could not be found!");
+                            }
+                            else
+                                AddingThings.AddToExistingNodeText($"\n{m.configDescription}", ref otherNode);
                         }
-                    }
-                        
+                    }      
                 }
                 else
                 {
@@ -120,9 +118,13 @@ namespace OpenLib.CoreMethods
             foreach (string keyword in managedBool.KeywordList)
             {
                 Plugin.Spam($"adding {keyword}");
+                GenerateInfoText(managedBool);
                 managedBool.TerminalNode = AddingThings.CreateNode(managedBool, keyword, listingName);
-
-                if(managedBool.specialNum != -1 && !listingName.specialListNum.ContainsKey(managedBool.TerminalNode)) //viewnodes
+                
+                if(DynamicBools.TryGetKeyword("info", out TerminalKeyword infoWord))
+                    AddingThings.InfoText(managedBool, keyword, infoWord, listingName);
+                
+                if (managedBool.specialNum != -1 && !listingName.specialListNum.ContainsKey(managedBool.TerminalNode)) //viewnodes
                 {
                     listingName.specialListNum.Add(managedBool.TerminalNode, managedBool.specialNum);
                     listingName.ListNumToString.Add(managedBool.specialNum, managedBool.specialString);
@@ -134,7 +136,32 @@ namespace OpenLib.CoreMethods
                     Plugin.MoreLogs($"mapping keyword{keyword} for {managedBool.specialString} node");
                 }
             }
+        }
 
+        public static void GenerateInfoText(ManagedConfig managedBool)
+        {
+            if (managedBool == null)
+            {
+                Plugin.ERROR("managedBool is null @GenerateInfoText()");
+                return;
+            }
+
+            if (managedBool.KeywordList.Count == 0)
+            {
+                Plugin.Spam($"KeywordList Count = 0 for {managedBool.ConfigItemName}");
+                return;
+            }
+
+            if (managedBool.InfoAction != null)
+                return;
+
+            if (managedBool.InfoText.Length > 0)
+                return;
+
+            if (managedBool.menuItem == null)
+                Plugin.Spam("no menu items to grab description from");
+            else
+                managedBool.DefaultInfoText();
         }
     }
 }

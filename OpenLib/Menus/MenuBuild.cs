@@ -1,16 +1,12 @@
 ﻿using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
-using Steamworks.Data;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Text;
 using static OpenLib.Common.CommonStringStuff;
 
 namespace OpenLib.Menus
-{ 
+{
     public class MenuBuild
     {
         public static bool isNextEnabled = false;
@@ -22,7 +18,7 @@ namespace OpenLib.Menus
         public static List<TerminalMenuCategory> InitCategories(Dictionary<string, string> CategoryItems)
         {
             Plugin.Spam("InitCategories START");
-            List <TerminalMenuCategory> myCategories = [];
+            List<TerminalMenuCategory> myCategories = [];
 
             if (CategoryItems.Count < 1)
                 return myCategories;
@@ -42,7 +38,7 @@ namespace OpenLib.Menus
 
         public static bool ShouldAddCategoryNameToMainMenu(List<TerminalMenuItem> menuItems, string categoryName)
         {
-            foreach(TerminalMenuItem item in menuItems)
+            foreach (TerminalMenuItem item in menuItems)
             {
                 if (item.Category == categoryName)
                     return true;
@@ -55,9 +51,9 @@ namespace OpenLib.Menus
         public static List<TerminalMenuItem> TerminalMenuItems(List<ManagedConfig> managedBools)
         {
             List<TerminalMenuItem> myMenuItems = [];
-            foreach(ManagedConfig m in managedBools)
+            foreach (ManagedConfig m in managedBools)
             {
-                if(m.menuItem != null)
+                if (m.menuItem != null)
                 {
                     myMenuItems.Add(m.menuItem);
                 }
@@ -71,7 +67,7 @@ namespace OpenLib.Menus
         public static TerminalMenu AssembleMainMenu(string menuName, string keyword, string mainMenuText, List<TerminalMenuCategory> categoryList, List<TerminalMenuItem> menuItems, bool addToOther = false, string menuDescription = "")
         {
             TerminalMenu thisMenu = new()
-            {   
+            {
                 MenuName = menuName,
                 setKeyword = keyword,
                 Categories = categoryList,
@@ -82,7 +78,7 @@ namespace OpenLib.Menus
                 isNextEnabled = false
             };
             string displayText = AssembleMainMenuText(thisMenu);
-            
+
             if (addToOther)
             {
                 AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true, "other", menuDescription);
@@ -91,9 +87,9 @@ namespace OpenLib.Menus
             {
                 AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true);
             }
-            
+
             allMenus.Add(thisMenu);
-            return thisMenu; 
+            return thisMenu;
         }
 
         public static bool InMainMenu(TerminalNode terminalNode, TerminalMenu terminalMenu)
@@ -122,7 +118,7 @@ namespace OpenLib.Menus
                 terminalMenu.isActive = false;
                 return false;
             }
-                
+
         }
 
         public static string AssembleMainMenuText(TerminalMenu terminalMenu)
@@ -131,7 +127,7 @@ namespace OpenLib.Menus
             assembler.Append($"{terminalMenu.MainMenuText}\r\n\r\n");
             if (terminalMenu.Categories.Count > 0)
             {
-                foreach(TerminalMenuCategory category in terminalMenu.Categories)
+                foreach (TerminalMenuCategory category in terminalMenu.Categories)
                 {
                     assembler.Append($"[{category.CatName.ToUpper()}]\r\n{category.CatDescription}\r\n\r\n");
                 }
@@ -140,13 +136,13 @@ namespace OpenLib.Menus
             return assembler.ToString();
         }
 
-        public static string AssembleMainMenuText(string MainMenuText, Dictionary<string,string> Categories)
+        public static string AssembleMainMenuText(string MainMenuText, Dictionary<string, string> Categories)
         {
             StringBuilder assembler = new();
             assembler.Append($"{MainMenuText}\r\n\r\n");
             if (Categories.Count > 0)
             {
-                foreach (KeyValuePair<string,string> category in Categories)
+                foreach (KeyValuePair<string, string> category in Categories)
                 {
                     assembler.Append($"[{category.Key.ToUpper()}]\r\n{category.Value}\r\n\r\n");
                 }
@@ -163,8 +159,8 @@ namespace OpenLib.Menus
             foreach (TerminalMenuCategory category in terminalMenu.Categories)
             {
                 Plugin.Spam("checking category in terminalMenu.categories");
-                Dictionary<string,List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
-                if(!categoryLists.Contains(catListing))
+                Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
+                if (!categoryLists.Contains(catListing))
                     categoryLists.Add(catListing);
                 TerminalNode menuNode = AddingThings.CreateNode(terminalMenu, $"{category.CatName}", category.CatName.ToLower(), GetFirstInList, yourModListing);
                 terminalMenu.terminalNodes.Add(menuNode);
@@ -192,12 +188,12 @@ namespace OpenLib.Menus
         {
             Plugin.Spam("2.1");
             List<string> empty = [];
-            foreach(TerminalMenu terminalMenu in allMenus)
+            foreach (TerminalMenu terminalMenu in allMenus)
             {
                 Plugin.Spam("2.2");
                 if (!terminalMenu.isActive)
                     continue;
-                for(int i = 0; i < terminalMenu.Categories.Count; i++)
+                for (int i = 0; i < terminalMenu.Categories.Count; i++)
                 {
                     Plugin.Spam("2.3");
                     foreach (KeyValuePair<string, List<string>> catList in terminalMenu.categoryLists[i])
@@ -210,7 +206,7 @@ namespace OpenLib.Menus
                         }
                     }
                 }
-                
+
             }
 
             Plugin.Spam("2.1 FAIL");
@@ -230,7 +226,7 @@ namespace OpenLib.Menus
             foreach (TerminalMenuItem menuItem in terminalMenuItems)
             {
                 Plugin.Spam($"checking {menuItem.ItemName}");
-                if(menuItem.Category.ToLower() == catName.ToLower())
+                if (menuItem.Category.ToLower() == catName.ToLower())
                 {
                     catItems.Add($"> {GetKeywordsForMenuItem(menuItem.itemKeywords)}\r\n{menuItem.itemDescription}\r\n");
                     Plugin.Spam($"{GetKeywordsForMenuItem(menuItem.itemKeywords)} added");
@@ -260,7 +256,7 @@ namespace OpenLib.Menus
                     string fail = "ERROR: Unable to get current category!\r\n\r\n";
                     return fail;
                 }
-                    
+
                 menuName.isActive = true;
                 menuName.nextCount = nextCount;
                 menuName.currentCategory = currentCategory;
@@ -304,12 +300,12 @@ namespace OpenLib.Menus
                     terminalMenu.isActive = false;
                     continue;
                 }
-                    
+
                 else
                 {
                     foreach (KeyValuePair<string, TerminalNode> pair in terminalMenu.terminalNodePerCategory)
                     {
-                        if(pair.Value == givenNode)
+                        if (pair.Value == givenNode)
                         {
                             Plugin.Spam($"FOUND NODE AND PAIR {pair.Key}");
                             terminalMenu.isActive = true;
@@ -354,6 +350,8 @@ namespace OpenLib.Menus
 
                 return menuItem;
             }
+
+            Plugin.WARNING("Empty categoryText, Unable to create TerminalMenuItem! (null return)");
             return null;
         }
     }

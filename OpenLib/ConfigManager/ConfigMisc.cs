@@ -1,8 +1,6 @@
 ﻿using BepInEx.Configuration;
 using OpenLib.Events;
-using System;
 using System.Collections.Generic;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace OpenLib.ConfigManager
 {

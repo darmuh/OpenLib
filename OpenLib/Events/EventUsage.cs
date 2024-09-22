@@ -3,10 +3,6 @@ using OpenLib.CoreMethods;
 using OpenLib.Common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenLib.Menus;
 using BepInEx.Configuration;
 
 namespace OpenLib.Events
@@ -30,6 +26,7 @@ namespace OpenLib.Events
         public static void OnTerminalAwake(Terminal instance)
         {
             Plugin.instance.Terminal = instance;
+            CamStuff.MirrorObject = new();
             Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
             CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
 
@@ -37,6 +34,8 @@ namespace OpenLib.Events
 
         public static void OnTerminalDisable()
         {
+            if (Plugin.instance.OpenBodyCamsMod)
+                Compat.OpenBodyCamFuncs.ResidualCamsCheck();
             RemoveThings.OnTerminalDisable();
             TerminalStart.delayStartEnum = false;
             ListManagement.ClearLists();
@@ -63,13 +62,13 @@ namespace OpenLib.Events
 
         public static TerminalNode OnParseSent(ref TerminalNode node)
         {
-            Plugin.Spam("parse event");
+            Plugin.Spam("parsing sentence");
             if (node == null)
             {
                 Plugin.ERROR("node detected as NULL");
                 return node;
-            }
-
+            }          
+            
             string cleanedText = CommonStringStuff.GetCleanedScreenText(Plugin.instance.Terminal);
             if(cleanedText.Length > 0) //prevent errors being thrown from invalid text
             {
@@ -79,6 +78,11 @@ namespace OpenLib.Events
                     node = retrieveNode;
                     Plugin.Spam($"node found matching specialListString - {words[0]}");
                 }
+
+                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, cleanedText, ref node))
+                {
+                    Plugin.MoreLogs($"faux word detected on current node!");
+                }
             }
 
             if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
@@ -86,16 +90,26 @@ namespace OpenLib.Events
                 Plugin.MoreLogs($"node found: {node.name}");
             }
 
-            return node;
+            
 
+            
+            return node;
         }
 
         public static void OnLoadNewNode(TerminalNode node)
         {
             Plugin.Spam($"listing count: {ConfigSetup.defaultListing.Listing.Count}");
 
-            if (node != null)
-                Plugin.Spam($"{node.name} has been loaded");
+            if (node == null)
+                return;
+
+            Plugin.Spam($"{node.name} has been loaded");
+
+            if (node.acceptAnything && node.terminalOptions.Length < 1)
+            {
+                node.acceptAnything = false;
+                Plugin.Spam("fixing node property to avoid errors! (eg. LLL route locked)");
+            }
         }
 
     }

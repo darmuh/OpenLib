@@ -85,5 +85,26 @@ namespace OpenLib.ConfigManager
                 entry.Value = float.Parse(newValue);
             }
         }
+
+        public static bool TryFindConfigItem(string query, ConfigFile ModConfig, out ConfigEntryBase configItem)
+        {
+            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+            {
+                configItems.Add(value.Definition, value);
+                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+            }
+            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            {
+                if (pair.Key.Key == query)
+                {
+                    configItem = pair.Value;
+                    return true;
+                }
+
+            }
+            configItem = null!;
+            return false;
+        }
     }
 }
