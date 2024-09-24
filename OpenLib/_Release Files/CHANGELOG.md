@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.0]
+ - Added nullable to project and updated some common use methods to prefer a TryGet bool in order to avoid NREs.
+ - Added OpenBodyCams common methods for creating a terminal bodycam or terminal mirror for use in suitsTerminal/darmuhsTerminalStuff
+ - Refactored terminal keyword/node/noun creation
+ - Added FauxKeywords for creating terminal keywords that should only work in the context of a certain terminal node. (for LethalConstellations)
+ - Added Config file to HTML page generation methods for config editing within an HTML page. 
+	- These pages will produce a code that can be read by a single config item to update the entire config.
+ - Added LLL Hotfix for route locked terminal node soft-locking the terminal and throwing errors on any input.
+ - General code cleanup, too many changes to individually note.
+	
 ## [0.1.8]
  - Added AddToHelpCommand method.
  - Adjusted some other small things
