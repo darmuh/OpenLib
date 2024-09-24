@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Bootstrap;
 using OpenLib.Compat;
+using System;
 using System.Reflection;
 
 namespace OpenLib.Common
@@ -20,7 +21,10 @@ namespace OpenLib.Common
                 Plugin.Spam("Terminal Formatter by mrov detected!");
             }
             if (SoftCompatibility("ainavt.lc.lethalconfig", ref Plugin.instance.LethalConfig))
+            {
+                LethalConfigSoft.LethalConfigVersion = LethalConfigSoft.GetVersion("ainavt.lc.lethalconfig");
                 Plugin.Spam("LethalConfig functions enabled!");
+            } 
             if (SoftCompatibility("Zaggy1024.OpenBodyCams", ref Plugin.instance.OpenBodyCamsMod))
             {
                 Plugin.Spam("OpenBodyCams by Zaggy1024 detected!");
@@ -42,7 +46,7 @@ namespace OpenLib.Common
             {
                 string YourPluginName = Assembly.GetCallingAssembly().GetName().Name;
                 isDetected = true;
-                if(Plugin.PluginInfo.PLUGIN_GUID != PluginGUID)
+                if(Plugin.PluginInfo.PLUGIN_NAME != YourPluginName)
                     Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
                 return isDetected;
             }
