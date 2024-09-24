@@ -28,7 +28,7 @@
 - Patches into the Awake method for the Teleporter class and provides referenceable Teleporter instances for both the normal teleporter and inverse teleporter
 - [NEW in 0.2.0] Config to HTML file generation. Use this to create an html page that can be used to read/modify config files.
 	- Will generate a code at the bottom of the page that can be used to update all config items at once via a decompress method.
-	- For an example use-case, see ShipColors v0.2.0
+	- For an example use-case, see ShipColors v0.2.0, example [here](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/ShipColors_Generated.cfg_generator.htm)
 - [NEW in 0.2.0] Faux Keywords are keywords that will only work in the terminal from within the TerminalNode they are assigned.
 	- These will not overwrite existing keywords.
 	- Feature is still in testing, but is planned for use in LethalConstellations
