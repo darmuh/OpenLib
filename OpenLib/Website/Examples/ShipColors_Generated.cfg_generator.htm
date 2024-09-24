@@ -1,0 +1,1274 @@
+<html><title>ShipColors_Generated.cfg Generator</title><body class="body">
+<style>
+    .body {
+        background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
+        color: whitesmoke;
+        font: Monospace;
+        padding-top: 1px;
+        padding-right: 1px;
+        padding-bottom: 1px;
+        padding-left: 0px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .slider {
+        margin-top: 3%;
+    }
+
+    .slider:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    .numberInput {
+        background: transparent;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4%;
+        vertical-align: super;
+    }
+
+    .checkbox {
+        margin-right: 0%;
+        margin-bottom: 1%;
+        display: inline-block;
+        margin-left: 0%;
+    }
+
+    .checkbox:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    textarea {
+        background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+        color: #C6A97C;
+        width: 80%;
+        height: 60px;
+        resize: vertical;
+    }
+
+    .stringInput {
+        background: #EDEFED;
+        background-color: #C6A97C;
+        text-align: left;
+        font-size: 12px;
+        border: 0px solid #ccc;
+        border-radius: 4%;
+        width: 40%;
+        padding: 2px;
+        margin-top: 1%;
+    }
+
+    .colorText {
+        width: 10%;
+        border: 1px solid #ddd;
+        border-radius: 5%;
+        box-shadow: 0 0 0px #ddd;
+    }
+
+    input[type=color] {
+        border-width: 0px;
+        border: none;
+        background: none;
+        height: 24px;
+        width: 24px;
+        vertical-align: sub;
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    input[type=color]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-width: 0px;
+        border: 1px solid #fafff9;
+        outline: none;
+    }
+    input[type=text]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-color: #ddd;
+        outline: none;
+    }
+</style>
+<h1><center>ShipColors_Generated.cfg Generator</h1></center><center><p>Upload your config:<br><input type="file" id="fileInput" accept=".cfg"> <button type="button" onclick="loadFileAsText()"> Submit Config</button></p></center>
+<form id="configForm">
+<fieldset>
+<legend>BezierCurve Colors</legend>
+<p><label for="TubeVent (Instance) Color">TubeVent (Instance) Color</label><br><input type="color" id="color0" name="TubeVent (Instance) Color" value="#CFCFCF" oninput="color0_text.value = color0.value"> <input type="text" class="colorText" name="TubeVent (Instance) Color_text" id="color0_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color0.value = color0_text.value"></p>
+<p>TubeVent (Instance) Alpha<br>Change alpha of mat, TubeVent (Instance) as part of object BezierCurve<br />
+<input type="range" name="tubeventinstancealpha" id="number_slider0" value="1" step="0.001" min="0" max="1" oninput="number_text0.value = number_slider0.value">
+<input id="number_text0" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider0.value = number_text0.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Bunkbeds Colors</legend>
+<p><label for="BunkbedsTex (Instance) Color">BunkbedsTex (Instance) Color</label><br><input type="color" id="color1" name="BunkbedsTex (Instance) Color" value="#CFCFCF" oninput="color1_text.value = color1.value"> <input type="text" class="colorText" name="BunkbedsTex (Instance) Color_text" id="color1_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color1.value = color1_text.value"></p>
+<p>BunkbedsTex (Instance) Alpha<br>Change alpha of mat, BunkbedsTex (Instance) as part of object Bunkbeds<br />
+<input type="range" name="bunkbedstexinstancealpha" id="number_slider1" value="1" step="0.001" min="0" max="1" oninput="number_text1.value = number_slider1.value">
+<input id="number_text1" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider1.value = number_text1.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>CatwalkRailLining Colors</legend>
+<p><label for="CatwalkRailBase (Instance) Color">CatwalkRailBase (Instance) Color</label><br><input type="color" id="color2" name="CatwalkRailBase (Instance) Color" value="#999292" oninput="color2_text.value = color2.value"> <input type="text" class="colorText" name="CatwalkRailBase (Instance) Color_text" id="color2_text" value="#999292" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color2.value = color2_text.value"></p>
+<p>CatwalkRailBase (Instance) Alpha<br>Change alpha of mat, CatwalkRailBase (Instance) as part of object CatwalkRailLining<br />
+<input type="range" name="catwalkrailbaseinstancealpha" id="number_slider2" value="1" step="0.001" min="0" max="1" oninput="number_text2.value = number_slider2.value">
+<input id="number_text2" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider2.value = number_text2.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>CatwalkRailLiningB Colors</legend>
+<p><label for="CatwalkRailB (Instance) Color">CatwalkRailB (Instance) Color</label><br><input type="color" id="color3" name="CatwalkRailB (Instance) Color" value="#AA894D" oninput="color3_text.value = color3.value"> <input type="text" class="colorText" name="CatwalkRailB (Instance) Color_text" id="color3_text" value="#AA894D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color3.value = color3_text.value"></p>
+<p>CatwalkRailB (Instance) Alpha<br>Change alpha of mat, CatwalkRailB (Instance) as part of object CatwalkRailLiningB<br />
+<input type="range" name="catwalkrailbinstancealpha" id="number_slider3" value="1" step="0.001" min="0" max="1" oninput="number_text3.value = number_slider3.value">
+<input id="number_text3" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider3.value = number_text3.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>CatwalkShip Colors</legend>
+<p><label for="CatwalkGrate (Instance) Color">CatwalkGrate (Instance) Color</label><br><input type="color" id="color4" name="CatwalkGrate (Instance) Color" value="#B0B0B0" oninput="color4_text.value = color4.value"> <input type="text" class="colorText" name="CatwalkGrate (Instance) Color_text" id="color4_text" value="#B0B0B0" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color4.value = color4_text.value"></p>
+<p>CatwalkGrate (Instance) Alpha<br>Change alpha of mat, CatwalkGrate (Instance) as part of object CatwalkShip<br />
+<input type="range" name="catwalkgrateinstancealpha" id="number_slider4" value="1" step="0.001" min="0" max="1" oninput="number_text4.value = number_slider4.value">
+<input id="number_text4" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider4.value = number_text4.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>CatwalkUnderneathSupports Colors</legend>
+<p><label for="CatwalkRailBase (Instance) Color">CatwalkRailBase (Instance) Color</label><br><input type="color" id="color5" name="CatwalkRailBase (Instance) Color" value="#999292" oninput="color5_text.value = color5.value"> <input type="text" class="colorText" name="CatwalkRailBase (Instance) Color_text" id="color5_text" value="#999292" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color5.value = color5_text.value"></p>
+<p>CatwalkRailBase (Instance) Alpha<br>Change alpha of mat, CatwalkRailBase (Instance) as part of object CatwalkUnderneathSupports<br />
+<input type="range" name="catwalkrailbaseinstancealpha" id="number_slider5" value="1" step="0.001" min="0" max="1" oninput="number_text5.value = number_slider5.value">
+<input id="number_text5" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider5.value = number_text5.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ControlDesk Colors</legend>
+<p><label for="HangarDeskBottom (Instance) Color">HangarDeskBottom (Instance) Color</label><br><input type="color" id="color6" name="HangarDeskBottom (Instance) Color" value="#545250" oninput="color6_text.value = color6.value"> <input type="text" class="colorText" name="HangarDeskBottom (Instance) Color_text" id="color6_text" value="#545250" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color6.value = color6_text.value"></p>
+<p>HangarDeskBottom (Instance) Alpha<br>Change alpha of mat, HangarDeskBottom (Instance) as part of object ControlDesk<br />
+<input type="range" name="hangardeskbottominstancealpha" id="number_slider6" value="1" step="0.001" min="0" max="1" oninput="number_text6.value = number_slider6.value">
+<input id="number_text6" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider6.value = number_text6.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ControlDesk.001 Colors</legend>
+<p><label for="HangarDeskBottom (Instance) Color">HangarDeskBottom (Instance) Color</label><br><input type="color" id="color7" name="HangarDeskBottom (Instance) Color" value="#545250" oninput="color7_text.value = color7.value"> <input type="text" class="colorText" name="HangarDeskBottom (Instance) Color_text" id="color7_text" value="#545250" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color7.value = color7_text.value"></p>
+<p>HangarDeskBottom (Instance) Alpha<br>Change alpha of mat, HangarDeskBottom (Instance) as part of object ControlDesk.001<br />
+<input type="range" name="hangardeskbottominstancealpha" id="number_slider7" value="1" step="0.001" min="0" max="1" oninput="number_text7.value = number_slider7.value">
+<input id="number_text7" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider7.value = number_text7.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ControlPanelWTexture Colors</legend>
+<p><label for="ControlPanel (Instance) Color">ControlPanel (Instance) Color</label><br><input type="color" id="color8" name="ControlPanel (Instance) Color" value="#6C6862" oninput="color8_text.value = color8.value"> <input type="text" class="colorText" name="ControlPanel (Instance) Color_text" id="color8_text" value="#6C6862" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color8.value = color8_text.value"></p>
+<p>ControlPanel (Instance) Alpha<br>Change alpha of mat, ControlPanel (Instance) as part of object ControlPanelWTexture<br />
+<input type="range" name="controlpanelinstancealpha" id="number_slider8" value="1" step="0.001" min="0" max="1" oninput="number_text8.value = number_slider8.value">
+<input id="number_text8" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider8.value = number_text8.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cube.004 Colors</legend>
+<p><label for="ThrusterDarkMetal (Instance) Color">ThrusterDarkMetal (Instance) Color</label><br><input type="color" id="color9" name="ThrusterDarkMetal (Instance) Color" value="#424242" oninput="color9_text.value = color9.value"> <input type="text" class="colorText" name="ThrusterDarkMetal (Instance) Color_text" id="color9_text" value="#424242" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color9.value = color9_text.value"></p>
+<p>ThrusterDarkMetal (Instance) Alpha<br>Change alpha of mat, ThrusterDarkMetal (Instance) as part of object Cube.004<br />
+<input type="range" name="thrusterdarkmetalinstancealpha" id="number_slider9" value="1" step="0.001" min="0" max="1" oninput="number_text9.value = number_slider9.value">
+<input id="number_text9" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider9.value = number_text9.value">
+</p>
+<p><label for="WarningStripes (Instance) Color">WarningStripes (Instance) Color</label><br><input type="color" id="color10" name="WarningStripes (Instance) Color" value="#E7E545" oninput="color10_text.value = color10.value"> <input type="text" class="colorText" name="WarningStripes (Instance) Color_text" id="color10_text" value="#E7E545" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color10.value = color10_text.value"></p>
+<p>WarningStripes (Instance) Alpha<br>Change alpha of mat, WarningStripes (Instance) as part of object Cube.004<br />
+<input type="range" name="warningstripesinstancealpha" id="number_slider10" value="1" step="0.001" min="0" max="1" oninput="number_text10.value = number_slider10.value">
+<input id="number_text10" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider10.value = number_text10.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cube.005 Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color11" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color11_text.value = color11.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color11_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color11.value = color11_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object Cube.005<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider11" value="1" step="0.001" min="0" max="1" oninput="number_text11.value = number_slider11.value">
+<input id="number_text11" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider11.value = number_text11.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cube.006 Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color12" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color12_text.value = color12.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color12_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color12.value = color12_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object Cube.006<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider12" value="1" step="0.001" min="0" max="1" oninput="number_text12.value = number_slider12.value">
+<input id="number_text12" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider12.value = number_text12.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cube.007 Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color13" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color13_text.value = color13.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color13_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color13.value = color13_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object Cube.007<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider13" value="1" step="0.001" min="0" max="1" oninput="number_text13.value = number_slider13.value">
+<input id="number_text13" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider13.value = number_text13.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cube.008 Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color14" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color14_text.value = color14.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color14_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color14.value = color14_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object Cube.008<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider14" value="1" step="0.001" min="0" max="1" oninput="number_text14.value = number_slider14.value">
+<input id="number_text14" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider14.value = number_text14.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cylinder.002 Colors</legend>
+<p><label for="HangarShipDoor2 (Instance) Color">HangarShipDoor2 (Instance) Color</label><br><input type="color" id="color15" name="HangarShipDoor2 (Instance) Color" value="#6F645D" oninput="color15_text.value = color15.value"> <input type="text" class="colorText" name="HangarShipDoor2 (Instance) Color_text" id="color15_text" value="#6F645D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color15.value = color15_text.value"></p>
+<p>HangarShipDoor2 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor2 (Instance) as part of object Cylinder.002<br />
+<input type="range" name="hangarshipdoor2instancealpha" id="number_slider15" value="1" step="0.001" min="0" max="1" oninput="number_text15.value = number_slider15.value">
+<input id="number_text15" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider15.value = number_text15.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>DoorGenerator Colors</legend>
+<p><label for="HangarShipDoorMachine (Instance) Color">HangarShipDoorMachine (Instance) Color</label><br><input type="color" id="color16" name="HangarShipDoorMachine (Instance) Color" value="#FFECD0" oninput="color16_text.value = color16.value"> <input type="text" class="colorText" name="HangarShipDoorMachine (Instance) Color_text" id="color16_text" value="#FFECD0" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color16.value = color16_text.value"></p>
+<p>HangarShipDoorMachine (Instance) Alpha<br>Change alpha of mat, HangarShipDoorMachine (Instance) as part of object DoorGenerator<br />
+<input type="range" name="hangarshipdoormachineinstancealpha" id="number_slider16" value="1" step="0.001" min="0" max="1" oninput="number_text16.value = number_slider16.value">
+<input id="number_text16" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider16.value = number_text16.value">
+</p>
+<p><label for="TubeVent (Instance) Color">TubeVent (Instance) Color</label><br><input type="color" id="color17" name="TubeVent (Instance) Color" value="#CFCFCF" oninput="color17_text.value = color17.value"> <input type="text" class="colorText" name="TubeVent (Instance) Color_text" id="color17_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color17.value = color17_text.value"></p>
+<p>TubeVent (Instance) Alpha<br>Change alpha of mat, TubeVent (Instance) as part of object DoorGenerator<br />
+<input type="range" name="tubeventinstancealpha" id="number_slider17" value="1" step="0.001" min="0" max="1" oninput="number_text17.value = number_slider17.value">
+<input id="number_text17" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider17.value = number_text17.value">
+</p>
+<p><label for="SteelBolt (Instance) Color">SteelBolt (Instance) Color</label><br><input type="color" id="color18" name="SteelBolt (Instance) Color" value="#FFFFFF" oninput="color18_text.value = color18.value"> <input type="text" class="colorText" name="SteelBolt (Instance) Color_text" id="color18_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color18.value = color18_text.value"></p>
+<p>SteelBolt (Instance) Alpha<br>Change alpha of mat, SteelBolt (Instance) as part of object DoorGenerator<br />
+<input type="range" name="steelboltinstancealpha" id="number_slider18" value="1" step="0.001" min="0" max="1" oninput="number_text18.value = number_slider18.value">
+<input id="number_text18" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider18.value = number_text18.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>FileCabinet Colors</legend>
+<p><label for="BunkbedsTex (Instance) Color">BunkbedsTex (Instance) Color</label><br><input type="color" id="color19" name="BunkbedsTex (Instance) Color" value="#CFCFCF" oninput="color19_text.value = color19.value"> <input type="text" class="colorText" name="BunkbedsTex (Instance) Color_text" id="color19_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color19.value = color19_text.value"></p>
+<p>BunkbedsTex (Instance) Alpha<br>Change alpha of mat, BunkbedsTex (Instance) as part of object FileCabinet<br />
+<input type="range" name="bunkbedstexinstancealpha" id="number_slider19" value="1" step="0.001" min="0" max="1" oninput="number_text19.value = number_slider19.value">
+<input id="number_text19" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider19.value = number_text19.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>HangarDoorLeft Colors</legend>
+<p><label for="HangarShipDoor1 (Instance) Color">HangarShipDoor1 (Instance) Color</label><br><input type="color" id="color20" name="HangarShipDoor1 (Instance) Color" value="#71665E" oninput="color20_text.value = color20.value"> <input type="text" class="colorText" name="HangarShipDoor1 (Instance) Color_text" id="color20_text" value="#71665E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color20.value = color20_text.value"></p>
+<p>HangarShipDoor1 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor1 (Instance) as part of object HangarDoorLeft<br />
+<input type="range" name="hangarshipdoor1instancealpha" id="number_slider20" value="1" step="0.001" min="0" max="1" oninput="number_text20.value = number_slider20.value">
+<input id="number_text20" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider20.value = number_text20.value">
+</p>
+<p><label for="HangarShipDoor2 (Instance) Color">HangarShipDoor2 (Instance) Color</label><br><input type="color" id="color21" name="HangarShipDoor2 (Instance) Color" value="#6F645D" oninput="color21_text.value = color21.value"> <input type="text" class="colorText" name="HangarShipDoor2 (Instance) Color_text" id="color21_text" value="#6F645D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color21.value = color21_text.value"></p>
+<p>HangarShipDoor2 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor2 (Instance) as part of object HangarDoorLeft<br />
+<input type="range" name="hangarshipdoor2instancealpha" id="number_slider21" value="1" step="0.001" min="0" max="1" oninput="number_text21.value = number_slider21.value">
+<input id="number_text21" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider21.value = number_text21.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>HangarDoorLever Colors</legend>
+<p><label for="SilverHandle (Instance) Color">SilverHandle (Instance) Color</label><br><input type="color" id="color22" name="SilverHandle (Instance) Color" value="#B2B2B2" oninput="color22_text.value = color22.value"> <input type="text" class="colorText" name="SilverHandle (Instance) Color_text" id="color22_text" value="#B2B2B2" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color22.value = color22_text.value"></p>
+<p>SilverHandle (Instance) Alpha<br>Change alpha of mat, SilverHandle (Instance) as part of object HangarDoorLever<br />
+<input type="range" name="silverhandleinstancealpha" id="number_slider22" value="1" step="0.001" min="0" max="1" oninput="number_text22.value = number_slider22.value">
+<input id="number_text22" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider22.value = number_text22.value">
+</p>
+<p><label for="BlackButtons (Instance) Color">BlackButtons (Instance) Color</label><br><input type="color" id="color23" name="BlackButtons (Instance) Color" value="#191919" oninput="color23_text.value = color23.value"> <input type="text" class="colorText" name="BlackButtons (Instance) Color_text" id="color23_text" value="#191919" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color23.value = color23_text.value"></p>
+<p>BlackButtons (Instance) Alpha<br>Change alpha of mat, BlackButtons (Instance) as part of object HangarDoorLever<br />
+<input type="range" name="blackbuttonsinstancealpha" id="number_slider23" value="1" step="0.001" min="0" max="1" oninput="number_text23.value = number_slider23.value">
+<input id="number_text23" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider23.value = number_text23.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>HangarDoorRight Colors</legend>
+<p><label for="HangarShipDoor2 (Instance) Color">HangarShipDoor2 (Instance) Color</label><br><input type="color" id="color24" name="HangarShipDoor2 (Instance) Color" value="#6F645D" oninput="color24_text.value = color24.value"> <input type="text" class="colorText" name="HangarShipDoor2 (Instance) Color_text" id="color24_text" value="#6F645D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color24.value = color24_text.value"></p>
+<p>HangarShipDoor2 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor2 (Instance) as part of object HangarDoorRight<br />
+<input type="range" name="hangarshipdoor2instancealpha" id="number_slider24" value="1" step="0.001" min="0" max="1" oninput="number_text24.value = number_slider24.value">
+<input id="number_text24" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider24.value = number_text24.value">
+</p>
+<p><label for="HangarShipDoor1 (Instance) Color">HangarShipDoor1 (Instance) Color</label><br><input type="color" id="color25" name="HangarShipDoor1 (Instance) Color" value="#71665E" oninput="color25_text.value = color25.value"> <input type="text" class="colorText" name="HangarShipDoor1 (Instance) Color_text" id="color25_text" value="#71665E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color25.value = color25_text.value"></p>
+<p>HangarShipDoor1 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor1 (Instance) as part of object HangarDoorRight<br />
+<input type="range" name="hangarshipdoor1instancealpha" id="number_slider25" value="1" step="0.001" min="0" max="1" oninput="number_text25.value = number_slider25.value">
+<input id="number_text25" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider25.value = number_text25.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>HangingLamp Colors</legend>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color26" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color26_text.value = color26.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color26_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color26.value = color26_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object HangingLamp<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider26" value="1" step="0.001" min="0" max="1" oninput="number_text26.value = number_slider26.value">
+<input id="number_text26" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider26.value = number_text26.value">
+</p>
+<p><label for="LampGrating (Instance) Color">LampGrating (Instance) Color</label><br><input type="color" id="color27" name="LampGrating (Instance) Color" value="#7A7A7A" oninput="color27_text.value = color27.value"> <input type="text" class="colorText" name="LampGrating (Instance) Color_text" id="color27_text" value="#7A7A7A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color27.value = color27_text.value"></p>
+<p>LampGrating (Instance) Alpha<br>Change alpha of mat, LampGrating (Instance) as part of object HangingLamp<br />
+<input type="range" name="lampgratinginstancealpha" id="number_slider27" value="1" step="0.001" min="0" max="1" oninput="number_text27.value = number_slider27.value">
+<input id="number_text27" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider27.value = number_text27.value">
+</p>
+<p><label for="LEDLight (Instance) Color">LEDLight (Instance) Color</label><br><input type="color" id="color28" name="LEDLight (Instance) Color" value="#FFFFFF" oninput="color28_text.value = color28.value"> <input type="text" class="colorText" name="LEDLight (Instance) Color_text" id="color28_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color28.value = color28_text.value"></p>
+<p>LEDLight (Instance) Alpha<br>Change alpha of mat, LEDLight (Instance) as part of object HangingLamp<br />
+<input type="range" name="ledlightinstancealpha" id="number_slider28" value="1" step="0.001" min="0" max="1" oninput="number_text28.value = number_slider28.value">
+<input id="number_text28" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider28.value = number_text28.value">
+</p>
+<p><label for="HelmetGlass 1 (Instance) Color">HelmetGlass 1 (Instance) Color</label><br><input type="color" id="color29" name="HelmetGlass 1 (Instance) Color" value="#B1D2FF" oninput="color29_text.value = color29.value"> <input type="text" class="colorText" name="HelmetGlass 1 (Instance) Color_text" id="color29_text" value="#B1D2FF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color29.value = color29_text.value"></p>
+<p>HelmetGlass 1 (Instance) Alpha<br>Change alpha of mat, HelmetGlass 1 (Instance) as part of object HangingLamp<br />
+<input type="range" name="helmetglass1instancealpha" id="number_slider29" value="0.2901961" step="0.001" min="0" max="1" oninput="number_text29.value = number_slider29.value">
+<input id="number_text29" type="text" class="numberInput" size="4" min="0" max="1" value="0.2901961" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider29.value = number_text29.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>MeterBoxDevice.001 Colors</legend>
+<p><label for="Cord (Instance) Color">Cord (Instance) Color</label><br><input type="color" id="color30" name="Cord (Instance) Color" value="#403E32" oninput="color30_text.value = color30.value"> <input type="text" class="colorText" name="Cord (Instance) Color_text" id="color30_text" value="#403E32" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color30.value = color30_text.value"></p>
+<p>Cord (Instance) Alpha<br>Change alpha of mat, Cord (Instance) as part of object MeterBoxDevice.001<br />
+<input type="range" name="cordinstancealpha" id="number_slider30" value="1" step="0.001" min="0" max="1" oninput="number_text30.value = number_slider30.value">
+<input id="number_text30" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider30.value = number_text30.value">
+</p>
+<p><label for="TanPlastic (Instance) Color">TanPlastic (Instance) Color</label><br><input type="color" id="color31" name="TanPlastic (Instance) Color" value="#E7CDAB" oninput="color31_text.value = color31.value"> <input type="text" class="colorText" name="TanPlastic (Instance) Color_text" id="color31_text" value="#E7CDAB" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color31.value = color31_text.value"></p>
+<p>TanPlastic (Instance) Alpha<br>Change alpha of mat, TanPlastic (Instance) as part of object MeterBoxDevice.001<br />
+<input type="range" name="tanplasticinstancealpha" id="number_slider31" value="1" step="0.001" min="0" max="1" oninput="number_text31.value = number_slider31.value">
+<input id="number_text31" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider31.value = number_text31.value">
+</p>
+<p><label for="WhiteHandle (Instance) Color">WhiteHandle (Instance) Color</label><br><input type="color" id="color32" name="WhiteHandle (Instance) Color" value="#E7E7E7" oninput="color32_text.value = color32.value"> <input type="text" class="colorText" name="WhiteHandle (Instance) Color_text" id="color32_text" value="#E7E7E7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color32.value = color32_text.value"></p>
+<p>WhiteHandle (Instance) Alpha<br>Change alpha of mat, WhiteHandle (Instance) as part of object MeterBoxDevice.001<br />
+<input type="range" name="whitehandleinstancealpha" id="number_slider32" value="1" step="0.001" min="0" max="1" oninput="number_text32.value = number_slider32.value">
+<input id="number_text32" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider32.value = number_text32.value">
+</p>
+<p><label for="RustySteel (Instance) Color">RustySteel (Instance) Color</label><br><input type="color" id="color33" name="RustySteel (Instance) Color" value="#6E6767" oninput="color33_text.value = color33.value"> <input type="text" class="colorText" name="RustySteel (Instance) Color_text" id="color33_text" value="#6E6767" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color33.value = color33_text.value"></p>
+<p>RustySteel (Instance) Alpha<br>Change alpha of mat, RustySteel (Instance) as part of object MeterBoxDevice.001<br />
+<input type="range" name="rustysteelinstancealpha" id="number_slider33" value="1" step="0.001" min="0" max="1" oninput="number_text33.value = number_slider33.value">
+<input id="number_text33" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider33.value = number_text33.value">
+</p>
+<p><label for="BlueMetal (Instance) Color">BlueMetal (Instance) Color</label><br><input type="color" id="color34" name="BlueMetal (Instance) Color" value="#505C5A" oninput="color34_text.value = color34.value"> <input type="text" class="colorText" name="BlueMetal (Instance) Color_text" id="color34_text" value="#505C5A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color34.value = color34_text.value"></p>
+<p>BlueMetal (Instance) Alpha<br>Change alpha of mat, BlueMetal (Instance) as part of object MeterBoxDevice.001<br />
+<input type="range" name="bluemetalinstancealpha" id="number_slider34" value="1" step="0.001" min="0" max="1" oninput="number_text34.value = number_slider34.value">
+<input id="number_text34" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider34.value = number_text34.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>NurbsPath Colors</legend>
+<p><label for="Pipes1 (Instance) Color">Pipes1 (Instance) Color</label><br><input type="color" id="color35" name="Pipes1 (Instance) Color" value="#694C26" oninput="color35_text.value = color35.value"> <input type="text" class="colorText" name="Pipes1 (Instance) Color_text" id="color35_text" value="#694C26" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color35.value = color35_text.value"></p>
+<p>Pipes1 (Instance) Alpha<br>Change alpha of mat, Pipes1 (Instance) as part of object NurbsPath<br />
+<input type="range" name="pipes1instancealpha" id="number_slider35" value="1" step="0.001" min="0" max="1" oninput="number_text35.value = number_slider35.value">
+<input id="number_text35" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider35.value = number_text35.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>NurbsPath.001 Colors</legend>
+<p><label for="RustySteel (Instance) Color">RustySteel (Instance) Color</label><br><input type="color" id="color36" name="RustySteel (Instance) Color" value="#959595" oninput="color36_text.value = color36.value"> <input type="text" class="colorText" name="RustySteel (Instance) Color_text" id="color36_text" value="#959595" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color36.value = color36_text.value"></p>
+<p>RustySteel (Instance) Alpha<br>Change alpha of mat, RustySteel (Instance) as part of object NurbsPath.001<br />
+<input type="range" name="rustysteelinstancealpha" id="number_slider36" value="1" step="0.001" min="0" max="1" oninput="number_text36.value = number_slider36.value">
+<input id="number_text36" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider36.value = number_text36.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>NurbsPath.002 Colors</legend>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color37" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color37_text.value = color37.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color37_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color37.value = color37_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object NurbsPath.002<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider37" value="1" step="0.001" min="0" max="1" oninput="number_text37.value = number_slider37.value">
+<input id="number_text37" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider37.value = number_text37.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>NurbsPath.004 Colors</legend>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color38" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color38_text.value = color38.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color38_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color38.value = color38_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object NurbsPath.004<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider38" value="1" step="0.001" min="0" max="1" oninput="number_text38.value = number_slider38.value">
+<input id="number_text38" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider38.value = number_text38.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Pipework2.002 Colors</legend>
+<p><label for="BlueMetal (Instance) Color">BlueMetal (Instance) Color</label><br><input type="color" id="color39" name="BlueMetal (Instance) Color" value="#505C5A" oninput="color39_text.value = color39.value"> <input type="text" class="colorText" name="BlueMetal (Instance) Color_text" id="color39_text" value="#505C5A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color39.value = color39_text.value"></p>
+<p>BlueMetal (Instance) Alpha<br>Change alpha of mat, BlueMetal (Instance) as part of object Pipework2.002<br />
+<input type="range" name="bluemetalinstancealpha" id="number_slider39" value="1" step="0.001" min="0" max="1" oninput="number_text39.value = number_slider39.value">
+<input id="number_text39" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider39.value = number_text39.value">
+</p>
+<p><label for="WhitePipeRust (Instance) Color">WhitePipeRust (Instance) Color</label><br><input type="color" id="color40" name="WhitePipeRust (Instance) Color" value="#BDB09F" oninput="color40_text.value = color40.value"> <input type="text" class="colorText" name="WhitePipeRust (Instance) Color_text" id="color40_text" value="#BDB09F" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color40.value = color40_text.value"></p>
+<p>WhitePipeRust (Instance) Alpha<br>Change alpha of mat, WhitePipeRust (Instance) as part of object Pipework2.002<br />
+<input type="range" name="whitepiperustinstancealpha" id="number_slider40" value="1" step="0.001" min="0" max="1" oninput="number_text40.value = number_slider40.value">
+<input id="number_text40" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider40.value = number_text40.value">
+</p>
+<p><label for="RustySteel (Instance) Color">RustySteel (Instance) Color</label><br><input type="color" id="color41" name="RustySteel (Instance) Color" value="#6E6767" oninput="color41_text.value = color41.value"> <input type="text" class="colorText" name="RustySteel (Instance) Color_text" id="color41_text" value="#6E6767" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color41.value = color41_text.value"></p>
+<p>RustySteel (Instance) Alpha<br>Change alpha of mat, RustySteel (Instance) as part of object Pipework2.002<br />
+<input type="range" name="rustysteelinstancealpha" id="number_slider41" value="1" step="0.001" min="0" max="1" oninput="number_text41.value = number_slider41.value">
+<input id="number_text41" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider41.value = number_text41.value">
+</p>
+<p><label for="Cord (Instance) Color">Cord (Instance) Color</label><br><input type="color" id="color42" name="Cord (Instance) Color" value="#403E32" oninput="color42_text.value = color42.value"> <input type="text" class="colorText" name="Cord (Instance) Color_text" id="color42_text" value="#403E32" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color42.value = color42_text.value"></p>
+<p>Cord (Instance) Alpha<br>Change alpha of mat, Cord (Instance) as part of object Pipework2.002<br />
+<input type="range" name="cordinstancealpha" id="number_slider42" value="1" step="0.001" min="0" max="1" oninput="number_text42.value = number_slider42.value">
+<input id="number_text42" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider42.value = number_text42.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipHull Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color43" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color43_text.value = color43.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color43_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color43.value = color43_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipHull<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider43" value="1" step="0.001" min="0" max="1" oninput="number_text43.value = number_slider43.value">
+<input id="number_text43" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider43.value = number_text43.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipInside Colors</legend>
+<p><label for="HangarShipHull (Instance) Color">HangarShipHull (Instance) Color</label><br><input type="color" id="color44" name="HangarShipHull (Instance) Color" value="#FFFFFF" oninput="color44_text.value = color44.value"> <input type="text" class="colorText" name="HangarShipHull (Instance) Color_text" id="color44_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color44.value = color44_text.value"></p>
+<p>HangarShipHull (Instance) Alpha<br>Change alpha of mat, HangarShipHull (Instance) as part of object ShipInside<br />
+<input type="range" name="hangarshiphullinstancealpha" id="number_slider44" value="1" step="0.001" min="0" max="1" oninput="number_text44.value = number_slider44.value">
+<input id="number_text44" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider44.value = number_text44.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color45" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color45_text.value = color45.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color45_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color45.value = color45_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipInside<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider45" value="1" step="0.001" min="0" max="1" oninput="number_text45.value = number_slider45.value">
+<input id="number_text45" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider45.value = number_text45.value">
+</p>
+<p><label for="HangarShipFloor (Instance) Color">HangarShipFloor (Instance) Color</label><br><input type="color" id="color46" name="HangarShipFloor (Instance) Color" value="#C8BDB8" oninput="color46_text.value = color46.value"> <input type="text" class="colorText" name="HangarShipFloor (Instance) Color_text" id="color46_text" value="#C8BDB8" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color46.value = color46_text.value"></p>
+<p>HangarShipFloor (Instance) Alpha<br>Change alpha of mat, HangarShipFloor (Instance) as part of object ShipInside<br />
+<input type="range" name="hangarshipfloorinstancealpha" id="number_slider46" value="1" step="0.001" min="0" max="1" oninput="number_text46.value = number_slider46.value">
+<input id="number_text46" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider46.value = number_text46.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipInside.001 Colors</legend>
+<p><label for="HangarDoorFrame (Instance) Color">HangarDoorFrame (Instance) Color</label><br><input type="color" id="color47" name="HangarDoorFrame (Instance) Color" value="#443F3D" oninput="color47_text.value = color47.value"> <input type="text" class="colorText" name="HangarDoorFrame (Instance) Color_text" id="color47_text" value="#443F3D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color47.value = color47_text.value"></p>
+<p>HangarDoorFrame (Instance) Alpha<br>Change alpha of mat, HangarDoorFrame (Instance) as part of object ShipInside.001<br />
+<input type="range" name="hangardoorframeinstancealpha" id="number_slider47" value="1" step="0.001" min="0" max="1" oninput="number_text47.value = number_slider47.value">
+<input id="number_text47" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider47.value = number_text47.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color48" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color48_text.value = color48.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color48_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color48.value = color48_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipInside.001<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider48" value="1" step="0.001" min="0" max="1" oninput="number_text48.value = number_slider48.value">
+<input id="number_text48" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider48.value = number_text48.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipRailPosts Colors</legend>
+<p><label for="CatwalkRail (Instance) Color">CatwalkRail (Instance) Color</label><br><input type="color" id="color49" name="CatwalkRail (Instance) Color" value="#E7C54F" oninput="color49_text.value = color49.value"> <input type="text" class="colorText" name="CatwalkRail (Instance) Color_text" id="color49_text" value="#E7C54F" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color49.value = color49_text.value"></p>
+<p>CatwalkRail (Instance) Alpha<br>Change alpha of mat, CatwalkRail (Instance) as part of object ShipRailPosts<br />
+<input type="range" name="catwalkrailinstancealpha" id="number_slider49" value="1" step="0.001" min="0" max="1" oninput="number_text49.value = number_slider49.value">
+<input id="number_text49" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider49.value = number_text49.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipRails Colors</legend>
+<p><label for="CatwalkRailB (Instance) Color">CatwalkRailB (Instance) Color</label><br><input type="color" id="color50" name="CatwalkRailB (Instance) Color" value="#AA894D" oninput="color50_text.value = color50.value"> <input type="text" class="colorText" name="CatwalkRailB (Instance) Color_text" id="color50_text" value="#AA894D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color50.value = color50_text.value"></p>
+<p>CatwalkRailB (Instance) Alpha<br>Change alpha of mat, CatwalkRailB (Instance) as part of object ShipRails<br />
+<input type="range" name="catwalkrailbinstancealpha" id="number_slider50" value="1" step="0.001" min="0" max="1" oninput="number_text50.value = number_slider50.value">
+<input id="number_text50" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider50.value = number_text50.value">
+</p>
+<p><label for="CatwalkRail (Instance) Color">CatwalkRail (Instance) Color</label><br><input type="color" id="color51" name="CatwalkRail (Instance) Color" value="#E7C54F" oninput="color51_text.value = color51.value"> <input type="text" class="colorText" name="CatwalkRail (Instance) Color_text" id="color51_text" value="#E7C54F" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color51.value = color51_text.value"></p>
+<p>CatwalkRail (Instance) Alpha<br>Change alpha of mat, CatwalkRail (Instance) as part of object ShipRails<br />
+<input type="range" name="catwalkrailinstancealpha" id="number_slider51" value="1" step="0.001" min="0" max="1" oninput="number_text51.value = number_slider51.value">
+<input id="number_text51" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider51.value = number_text51.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipSupportBeams Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color52" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color52_text.value = color52.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color52_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color52.value = color52_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipSupportBeams<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider52" value="1" step="0.001" min="0" max="1" oninput="number_text52.value = number_slider52.value">
+<input id="number_text52" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider52.value = number_text52.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipSupportBeams.001 Colors</legend>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color53" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color53_text.value = color53.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color53_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color53.value = color53_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipSupportBeams.001<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider53" value="1" step="0.001" min="0" max="1" oninput="number_text53.value = number_slider53.value">
+<input id="number_text53" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider53.value = number_text53.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>SideMachineryLeft Colors</legend>
+<p><label for="Cord (Instance) Color">Cord (Instance) Color</label><br><input type="color" id="color54" name="Cord (Instance) Color" value="#403E32" oninput="color54_text.value = color54.value"> <input type="text" class="colorText" name="Cord (Instance) Color_text" id="color54_text" value="#403E32" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color54.value = color54_text.value"></p>
+<p>Cord (Instance) Alpha<br>Change alpha of mat, Cord (Instance) as part of object SideMachineryLeft<br />
+<input type="range" name="cordinstancealpha" id="number_slider54" value="1" step="0.001" min="0" max="1" oninput="number_text54.value = number_slider54.value">
+<input id="number_text54" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider54.value = number_text54.value">
+</p>
+<p><label for="RustySteel (Instance) Color">RustySteel (Instance) Color</label><br><input type="color" id="color55" name="RustySteel (Instance) Color" value="#959595" oninput="color55_text.value = color55.value"> <input type="text" class="colorText" name="RustySteel (Instance) Color_text" id="color55_text" value="#959595" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color55.value = color55_text.value"></p>
+<p>RustySteel (Instance) Alpha<br>Change alpha of mat, RustySteel (Instance) as part of object SideMachineryLeft<br />
+<input type="range" name="rustysteelinstancealpha" id="number_slider55" value="1" step="0.001" min="0" max="1" oninput="number_text55.value = number_slider55.value">
+<input id="number_text55" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider55.value = number_text55.value">
+</p>
+<p><label for="HangarDoorFrame (Instance) Color">HangarDoorFrame (Instance) Color</label><br><input type="color" id="color56" name="HangarDoorFrame (Instance) Color" value="#443F3D" oninput="color56_text.value = color56.value"> <input type="text" class="colorText" name="HangarDoorFrame (Instance) Color_text" id="color56_text" value="#443F3D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color56.value = color56_text.value"></p>
+<p>HangarDoorFrame (Instance) Alpha<br>Change alpha of mat, HangarDoorFrame (Instance) as part of object SideMachineryLeft<br />
+<input type="range" name="hangardoorframeinstancealpha" id="number_slider56" value="1" step="0.001" min="0" max="1" oninput="number_text56.value = number_slider56.value">
+<input id="number_text56" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider56.value = number_text56.value">
+</p>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color57" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color57_text.value = color57.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color57_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color57.value = color57_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object SideMachineryLeft<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider57" value="1" step="0.001" min="0" max="1" oninput="number_text57.value = number_slider57.value">
+<input id="number_text57" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider57.value = number_text57.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color58" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color58_text.value = color58.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color58_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color58.value = color58_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object SideMachineryLeft<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider58" value="1" step="0.001" min="0" max="1" oninput="number_text58.value = number_slider58.value">
+<input id="number_text58" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider58.value = number_text58.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>SideMachineryRight Colors</legend>
+<p><label for="Cord (Instance) Color">Cord (Instance) Color</label><br><input type="color" id="color59" name="Cord (Instance) Color" value="#403E32" oninput="color59_text.value = color59.value"> <input type="text" class="colorText" name="Cord (Instance) Color_text" id="color59_text" value="#403E32" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color59.value = color59_text.value"></p>
+<p>Cord (Instance) Alpha<br>Change alpha of mat, Cord (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="cordinstancealpha" id="number_slider59" value="1" step="0.001" min="0" max="1" oninput="number_text59.value = number_slider59.value">
+<input id="number_text59" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider59.value = number_text59.value">
+</p>
+<p><label for="RustySteel (Instance) Color">RustySteel (Instance) Color</label><br><input type="color" id="color60" name="RustySteel (Instance) Color" value="#959595" oninput="color60_text.value = color60.value"> <input type="text" class="colorText" name="RustySteel (Instance) Color_text" id="color60_text" value="#959595" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color60.value = color60_text.value"></p>
+<p>RustySteel (Instance) Alpha<br>Change alpha of mat, RustySteel (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="rustysteelinstancealpha" id="number_slider60" value="1" step="0.001" min="0" max="1" oninput="number_text60.value = number_slider60.value">
+<input id="number_text60" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider60.value = number_text60.value">
+</p>
+<p><label for="HangarDoorFrame (Instance) Color">HangarDoorFrame (Instance) Color</label><br><input type="color" id="color61" name="HangarDoorFrame (Instance) Color" value="#443F3D" oninput="color61_text.value = color61.value"> <input type="text" class="colorText" name="HangarDoorFrame (Instance) Color_text" id="color61_text" value="#443F3D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color61.value = color61_text.value"></p>
+<p>HangarDoorFrame (Instance) Alpha<br>Change alpha of mat, HangarDoorFrame (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="hangardoorframeinstancealpha" id="number_slider61" value="1" step="0.001" min="0" max="1" oninput="number_text61.value = number_slider61.value">
+<input id="number_text61" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider61.value = number_text61.value">
+</p>
+<p><label for="BlueMetal (Instance) Color">BlueMetal (Instance) Color</label><br><input type="color" id="color62" name="BlueMetal (Instance) Color" value="#505C5A" oninput="color62_text.value = color62.value"> <input type="text" class="colorText" name="BlueMetal (Instance) Color_text" id="color62_text" value="#505C5A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color62.value = color62_text.value"></p>
+<p>BlueMetal (Instance) Alpha<br>Change alpha of mat, BlueMetal (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="bluemetalinstancealpha" id="number_slider62" value="1" step="0.001" min="0" max="1" oninput="number_text62.value = number_slider62.value">
+<input id="number_text62" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider62.value = number_text62.value">
+</p>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color63" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color63_text.value = color63.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color63_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color63.value = color63_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider63" value="1" step="0.001" min="0" max="1" oninput="number_text63.value = number_slider63.value">
+<input id="number_text63" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider63.value = number_text63.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color64" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color64_text.value = color64.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color64_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color64.value = color64_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider64" value="1" step="0.001" min="0" max="1" oninput="number_text64.value = number_slider64.value">
+<input id="number_text64" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider64.value = number_text64.value">
+</p>
+<p><label for="WhitePipeRust (Instance) Color">WhitePipeRust (Instance) Color</label><br><input type="color" id="color65" name="WhitePipeRust (Instance) Color" value="#BDB09F" oninput="color65_text.value = color65.value"> <input type="text" class="colorText" name="WhitePipeRust (Instance) Color_text" id="color65_text" value="#BDB09F" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color65.value = color65_text.value"></p>
+<p>WhitePipeRust (Instance) Alpha<br>Change alpha of mat, WhitePipeRust (Instance) as part of object SideMachineryRight<br />
+<input type="range" name="whitepiperustinstancealpha" id="number_slider65" value="1" step="0.001" min="0" max="1" oninput="number_text65.value = number_slider65.value">
+<input id="number_text65" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider65.value = number_text65.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>StorageCloset Colors</legend>
+<p><label for="ClosetRedFrame (Instance) Color">ClosetRedFrame (Instance) Color</label><br><input type="color" id="color66" name="ClosetRedFrame (Instance) Color" value="#6D2021" oninput="color66_text.value = color66.value"> <input type="text" class="colorText" name="ClosetRedFrame (Instance) Color_text" id="color66_text" value="#6D2021" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color66.value = color66_text.value"></p>
+<p>ClosetRedFrame (Instance) Alpha<br>Change alpha of mat, ClosetRedFrame (Instance) as part of object StorageCloset<br />
+<input type="range" name="closetredframeinstancealpha" id="number_slider66" value="1" step="0.001" min="0" max="1" oninput="number_text66.value = number_slider66.value">
+<input id="number_text66" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider66.value = number_text66.value">
+</p>
+<p><label for="BlackRubber (Instance) Color">BlackRubber (Instance) Color</label><br><input type="color" id="color67" name="BlackRubber (Instance) Color" value="#2E2E2E" oninput="color67_text.value = color67.value"> <input type="text" class="colorText" name="BlackRubber (Instance) Color_text" id="color67_text" value="#2E2E2E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color67.value = color67_text.value"></p>
+<p>BlackRubber (Instance) Alpha<br>Change alpha of mat, BlackRubber (Instance) as part of object StorageCloset<br />
+<input type="range" name="blackrubberinstancealpha" id="number_slider67" value="1" step="0.001" min="0" max="1" oninput="number_text67.value = number_slider67.value">
+<input id="number_text67" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider67.value = number_text67.value">
+</p>
+<p><label for="ClosetRedDoor (Instance) Color">ClosetRedDoor (Instance) Color</label><br><input type="color" id="color68" name="ClosetRedDoor (Instance) Color" value="#7D2426" oninput="color68_text.value = color68.value"> <input type="text" class="colorText" name="ClosetRedDoor (Instance) Color_text" id="color68_text" value="#7D2426" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color68.value = color68_text.value"></p>
+<p>ClosetRedDoor (Instance) Alpha<br>Change alpha of mat, ClosetRedDoor (Instance) as part of object StorageCloset<br />
+<input type="range" name="closetreddoorinstancealpha" id="number_slider68" value="1" step="0.001" min="0" max="1" oninput="number_text68.value = number_slider68.value">
+<input id="number_text68" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider68.value = number_text68.value">
+</p>
+<p><label for="SilverHandle (Instance) Color">SilverHandle (Instance) Color</label><br><input type="color" id="color69" name="SilverHandle (Instance) Color" value="#B2B2B2" oninput="color69_text.value = color69.value"> <input type="text" class="colorText" name="SilverHandle (Instance) Color_text" id="color69_text" value="#B2B2B2" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color69.value = color69_text.value"></p>
+<p>SilverHandle (Instance) Alpha<br>Change alpha of mat, SilverHandle (Instance) as part of object StorageCloset<br />
+<input type="range" name="silverhandleinstancealpha" id="number_slider69" value="1" step="0.001" min="0" max="1" oninput="number_text69.value = number_slider69.value">
+<input id="number_text69" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider69.value = number_text69.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ThrusterBackLeft Colors</legend>
+<p><label for="ThrusterDarkMetal (Instance) Color">ThrusterDarkMetal (Instance) Color</label><br><input type="color" id="color70" name="ThrusterDarkMetal (Instance) Color" value="#424242" oninput="color70_text.value = color70.value"> <input type="text" class="colorText" name="ThrusterDarkMetal (Instance) Color_text" id="color70_text" value="#424242" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color70.value = color70_text.value"></p>
+<p>ThrusterDarkMetal (Instance) Alpha<br>Change alpha of mat, ThrusterDarkMetal (Instance) as part of object ThrusterBackLeft<br />
+<input type="range" name="thrusterdarkmetalinstancealpha" id="number_slider70" value="1" step="0.001" min="0" max="1" oninput="number_text70.value = number_slider70.value">
+<input id="number_text70" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider70.value = number_text70.value">
+</p>
+<p><label for="ThrusterRedSmooth (Instance) Color">ThrusterRedSmooth (Instance) Color</label><br><input type="color" id="color71" name="ThrusterRedSmooth (Instance) Color" value="#744140" oninput="color71_text.value = color71.value"> <input type="text" class="colorText" name="ThrusterRedSmooth (Instance) Color_text" id="color71_text" value="#744140" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color71.value = color71_text.value"></p>
+<p>ThrusterRedSmooth (Instance) Alpha<br>Change alpha of mat, ThrusterRedSmooth (Instance) as part of object ThrusterBackLeft<br />
+<input type="range" name="thrusterredsmoothinstancealpha" id="number_slider71" value="1" step="0.001" min="0" max="1" oninput="number_text71.value = number_slider71.value">
+<input id="number_text71" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider71.value = number_text71.value">
+</p>
+<p><label for="ThrusterOutside (Instance) Color">ThrusterOutside (Instance) Color</label><br><input type="color" id="color72" name="ThrusterOutside (Instance) Color" value="#7E7E7E" oninput="color72_text.value = color72.value"> <input type="text" class="colorText" name="ThrusterOutside (Instance) Color_text" id="color72_text" value="#7E7E7E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color72.value = color72_text.value"></p>
+<p>ThrusterOutside (Instance) Alpha<br>Change alpha of mat, ThrusterOutside (Instance) as part of object ThrusterBackLeft<br />
+<input type="range" name="thrusteroutsideinstancealpha" id="number_slider72" value="1" step="0.001" min="0" max="1" oninput="number_text72.value = number_slider72.value">
+<input id="number_text72" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider72.value = number_text72.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color73" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color73_text.value = color73.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color73_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color73.value = color73_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object ThrusterBackLeft<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider73" value="1" step="0.001" min="0" max="1" oninput="number_text73.value = number_slider73.value">
+<input id="number_text73" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider73.value = number_text73.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ThrusterBackRight Colors</legend>
+<p><label for="ThrusterDarkMetal (Instance) Color">ThrusterDarkMetal (Instance) Color</label><br><input type="color" id="color74" name="ThrusterDarkMetal (Instance) Color" value="#424242" oninput="color74_text.value = color74.value"> <input type="text" class="colorText" name="ThrusterDarkMetal (Instance) Color_text" id="color74_text" value="#424242" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color74.value = color74_text.value"></p>
+<p>ThrusterDarkMetal (Instance) Alpha<br>Change alpha of mat, ThrusterDarkMetal (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="thrusterdarkmetalinstancealpha" id="number_slider74" value="1" step="0.001" min="0" max="1" oninput="number_text74.value = number_slider74.value">
+<input id="number_text74" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider74.value = number_text74.value">
+</p>
+<p><label for="ThrusterRedSmooth (Instance) Color">ThrusterRedSmooth (Instance) Color</label><br><input type="color" id="color75" name="ThrusterRedSmooth (Instance) Color" value="#744140" oninput="color75_text.value = color75.value"> <input type="text" class="colorText" name="ThrusterRedSmooth (Instance) Color_text" id="color75_text" value="#744140" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color75.value = color75_text.value"></p>
+<p>ThrusterRedSmooth (Instance) Alpha<br>Change alpha of mat, ThrusterRedSmooth (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="thrusterredsmoothinstancealpha" id="number_slider75" value="1" step="0.001" min="0" max="1" oninput="number_text75.value = number_slider75.value">
+<input id="number_text75" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider75.value = number_text75.value">
+</p>
+<p><label for="ThrusterOutside (Instance) Color">ThrusterOutside (Instance) Color</label><br><input type="color" id="color76" name="ThrusterOutside (Instance) Color" value="#7E7E7E" oninput="color76_text.value = color76.value"> <input type="text" class="colorText" name="ThrusterOutside (Instance) Color_text" id="color76_text" value="#7E7E7E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color76.value = color76_text.value"></p>
+<p>ThrusterOutside (Instance) Alpha<br>Change alpha of mat, ThrusterOutside (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="thrusteroutsideinstancealpha" id="number_slider76" value="1" step="0.001" min="0" max="1" oninput="number_text76.value = number_slider76.value">
+<input id="number_text76" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider76.value = number_text76.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color77" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color77_text.value = color77.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color77_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color77.value = color77_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider77" value="1" step="0.001" min="0" max="1" oninput="number_text77.value = number_slider77.value">
+<input id="number_text77" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider77.value = number_text77.value">
+</p>
+<p><label for="TubeVent (Instance) Color">TubeVent (Instance) Color</label><br><input type="color" id="color78" name="TubeVent (Instance) Color" value="#CFCFCF" oninput="color78_text.value = color78.value"> <input type="text" class="colorText" name="TubeVent (Instance) Color_text" id="color78_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color78.value = color78_text.value"></p>
+<p>TubeVent (Instance) Alpha<br>Change alpha of mat, TubeVent (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="tubeventinstancealpha" id="number_slider78" value="1" step="0.001" min="0" max="1" oninput="number_text78.value = number_slider78.value">
+<input id="number_text78" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider78.value = number_text78.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color79" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color79_text.value = color79.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color79_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color79.value = color79_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object ThrusterBackRight<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider79" value="1" step="0.001" min="0" max="1" oninput="number_text79.value = number_slider79.value">
+<input id="number_text79" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider79.value = number_text79.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ThrusterFrontLeft Colors</legend>
+<p><label for="ThrusterDarkMetal (Instance) Color">ThrusterDarkMetal (Instance) Color</label><br><input type="color" id="color80" name="ThrusterDarkMetal (Instance) Color" value="#424242" oninput="color80_text.value = color80.value"> <input type="text" class="colorText" name="ThrusterDarkMetal (Instance) Color_text" id="color80_text" value="#424242" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color80.value = color80_text.value"></p>
+<p>ThrusterDarkMetal (Instance) Alpha<br>Change alpha of mat, ThrusterDarkMetal (Instance) as part of object ThrusterFrontLeft<br />
+<input type="range" name="thrusterdarkmetalinstancealpha" id="number_slider80" value="1" step="0.001" min="0" max="1" oninput="number_text80.value = number_slider80.value">
+<input id="number_text80" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider80.value = number_text80.value">
+</p>
+<p><label for="ThrusterRedSmooth (Instance) Color">ThrusterRedSmooth (Instance) Color</label><br><input type="color" id="color81" name="ThrusterRedSmooth (Instance) Color" value="#744140" oninput="color81_text.value = color81.value"> <input type="text" class="colorText" name="ThrusterRedSmooth (Instance) Color_text" id="color81_text" value="#744140" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color81.value = color81_text.value"></p>
+<p>ThrusterRedSmooth (Instance) Alpha<br>Change alpha of mat, ThrusterRedSmooth (Instance) as part of object ThrusterFrontLeft<br />
+<input type="range" name="thrusterredsmoothinstancealpha" id="number_slider81" value="1" step="0.001" min="0" max="1" oninput="number_text81.value = number_slider81.value">
+<input id="number_text81" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider81.value = number_text81.value">
+</p>
+<p><label for="ThrusterOutside (Instance) Color">ThrusterOutside (Instance) Color</label><br><input type="color" id="color82" name="ThrusterOutside (Instance) Color" value="#7E7E7E" oninput="color82_text.value = color82.value"> <input type="text" class="colorText" name="ThrusterOutside (Instance) Color_text" id="color82_text" value="#7E7E7E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color82.value = color82_text.value"></p>
+<p>ThrusterOutside (Instance) Alpha<br>Change alpha of mat, ThrusterOutside (Instance) as part of object ThrusterFrontLeft<br />
+<input type="range" name="thrusteroutsideinstancealpha" id="number_slider82" value="1" step="0.001" min="0" max="1" oninput="number_text82.value = number_slider82.value">
+<input id="number_text82" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider82.value = number_text82.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color83" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color83_text.value = color83.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color83_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color83.value = color83_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ThrusterFrontLeft<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider83" value="1" step="0.001" min="0" max="1" oninput="number_text83.value = number_slider83.value">
+<input id="number_text83" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider83.value = number_text83.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color84" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color84_text.value = color84.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color84_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color84.value = color84_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object ThrusterFrontLeft<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider84" value="1" step="0.001" min="0" max="1" oninput="number_text84.value = number_slider84.value">
+<input id="number_text84" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider84.value = number_text84.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ThrusterFrontRight Colors</legend>
+<p><label for="ThrusterDarkMetal (Instance) Color">ThrusterDarkMetal (Instance) Color</label><br><input type="color" id="color85" name="ThrusterDarkMetal (Instance) Color" value="#424242" oninput="color85_text.value = color85.value"> <input type="text" class="colorText" name="ThrusterDarkMetal (Instance) Color_text" id="color85_text" value="#424242" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color85.value = color85_text.value"></p>
+<p>ThrusterDarkMetal (Instance) Alpha<br>Change alpha of mat, ThrusterDarkMetal (Instance) as part of object ThrusterFrontRight<br />
+<input type="range" name="thrusterdarkmetalinstancealpha" id="number_slider85" value="1" step="0.001" min="0" max="1" oninput="number_text85.value = number_slider85.value">
+<input id="number_text85" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider85.value = number_text85.value">
+</p>
+<p><label for="ThrusterRedSmooth (Instance) Color">ThrusterRedSmooth (Instance) Color</label><br><input type="color" id="color86" name="ThrusterRedSmooth (Instance) Color" value="#744140" oninput="color86_text.value = color86.value"> <input type="text" class="colorText" name="ThrusterRedSmooth (Instance) Color_text" id="color86_text" value="#744140" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color86.value = color86_text.value"></p>
+<p>ThrusterRedSmooth (Instance) Alpha<br>Change alpha of mat, ThrusterRedSmooth (Instance) as part of object ThrusterFrontRight<br />
+<input type="range" name="thrusterredsmoothinstancealpha" id="number_slider86" value="1" step="0.001" min="0" max="1" oninput="number_text86.value = number_slider86.value">
+<input id="number_text86" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider86.value = number_text86.value">
+</p>
+<p><label for="ThrusterOutside (Instance) Color">ThrusterOutside (Instance) Color</label><br><input type="color" id="color87" name="ThrusterOutside (Instance) Color" value="#7E7E7E" oninput="color87_text.value = color87.value"> <input type="text" class="colorText" name="ThrusterOutside (Instance) Color_text" id="color87_text" value="#7E7E7E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color87.value = color87_text.value"></p>
+<p>ThrusterOutside (Instance) Alpha<br>Change alpha of mat, ThrusterOutside (Instance) as part of object ThrusterFrontRight<br />
+<input type="range" name="thrusteroutsideinstancealpha" id="number_slider87" value="1" step="0.001" min="0" max="1" oninput="number_text87.value = number_slider87.value">
+<input id="number_text87" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider87.value = number_text87.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color88" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color88_text.value = color88.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color88_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color88.value = color88_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ThrusterFrontRight<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider88" value="1" step="0.001" min="0" max="1" oninput="number_text88.value = number_slider88.value">
+<input id="number_text88" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider88.value = number_text88.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color89" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color89_text.value = color89.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color89_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color89.value = color89_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object ThrusterFrontRight<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider89" value="1" step="0.001" min="0" max="1" oninput="number_text89.value = number_slider89.value">
+<input id="number_text89" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider89.value = number_text89.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>UnderbellyMachineParts Colors</legend>
+<p><label for="HangarDoorFrame (Instance) Color">HangarDoorFrame (Instance) Color</label><br><input type="color" id="color90" name="HangarDoorFrame (Instance) Color" value="#443F3D" oninput="color90_text.value = color90.value"> <input type="text" class="colorText" name="HangarDoorFrame (Instance) Color_text" id="color90_text" value="#443F3D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color90.value = color90_text.value"></p>
+<p>HangarDoorFrame (Instance) Alpha<br>Change alpha of mat, HangarDoorFrame (Instance) as part of object UnderbellyMachineParts<br />
+<input type="range" name="hangardoorframeinstancealpha" id="number_slider90" value="1" step="0.001" min="0" max="1" oninput="number_text90.value = number_slider90.value">
+<input id="number_text90" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider90.value = number_text90.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>warningStickers Colors</legend>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color91" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color91_text.value = color91.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color91_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color91.value = color91_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object warningStickers<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider91" value="1" step="0.001" min="0" max="1" oninput="number_text91.value = number_slider91.value">
+<input id="number_text91" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider91.value = number_text91.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>WallCords Colors</legend>
+<p><label for="BlackCord (Instance) Color">BlackCord (Instance) Color</label><br><input type="color" id="color92" name="BlackCord (Instance) Color" value="#2C2C2C" oninput="color92_text.value = color92.value"> <input type="text" class="colorText" name="BlackCord (Instance) Color_text" id="color92_text" value="#2C2C2C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color92.value = color92_text.value"></p>
+<p>BlackCord (Instance) Alpha<br>Change alpha of mat, BlackCord (Instance) as part of object WallCords<br />
+<input type="range" name="blackcordinstancealpha" id="number_slider92" value="1" step="0.001" min="0" max="1" oninput="number_text92.value = number_slider92.value">
+<input id="number_text92" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider92.value = number_text92.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>VentEntrance Colors</legend>
+<p><label for="VentCover (Instance) Color">VentCover (Instance) Color</label><br><input type="color" id="color93" name="VentCover (Instance) Color" value="#FFFFFF" oninput="color93_text.value = color93.value"> <input type="text" class="colorText" name="VentCover (Instance) Color_text" id="color93_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color93.value = color93_text.value"></p>
+<p>VentCover (Instance) Alpha<br>Change alpha of mat, VentCover (Instance) as part of object VentEntrance<br />
+<input type="range" name="ventcoverinstancealpha" id="number_slider93" value="1" step="0.001" min="0" max="1" oninput="number_text93.value = number_slider93.value">
+<input id="number_text93" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider93.value = number_text93.value">
+</p>
+<p><label for="VentTunnel (Instance) Color">VentTunnel (Instance) Color</label><br><input type="color" id="color94" name="VentTunnel (Instance) Color" value="#6A6A6A" oninput="color94_text.value = color94.value"> <input type="text" class="colorText" name="VentTunnel (Instance) Color_text" id="color94_text" value="#6A6A6A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color94.value = color94_text.value"></p>
+<p>VentTunnel (Instance) Alpha<br>Change alpha of mat, VentTunnel (Instance) as part of object VentEntrance<br />
+<input type="range" name="venttunnelinstancealpha" id="number_slider94" value="1" step="0.001" min="0" max="1" oninput="number_text94.value = number_slider94.value">
+<input id="number_text94" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider94.value = number_text94.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipElectricLights Colors</legend>
+<p><label for="DoorMetal (Instance) Color">DoorMetal (Instance) Color</label><br><input type="color" id="color95" name="DoorMetal (Instance) Color" value="#C5C5C9" oninput="color95_text.value = color95.value"> <input type="text" class="colorText" name="DoorMetal (Instance) Color_text" id="color95_text" value="#C5C5C9" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color95.value = color95_text.value"></p>
+<p>DoorMetal (Instance) Alpha<br>Change alpha of mat, DoorMetal (Instance) as part of object ShipElectricLights<br />
+<input type="range" name="doormetalinstancealpha" id="number_slider95" value="1" step="0.001" min="0" max="1" oninput="number_text95.value = number_slider95.value">
+<input id="number_text95" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider95.value = number_text95.value">
+</p>
+<p><label for="LampGrating (Instance) Color">LampGrating (Instance) Color</label><br><input type="color" id="color96" name="LampGrating (Instance) Color" value="#7A7A7A" oninput="color96_text.value = color96.value"> <input type="text" class="colorText" name="LampGrating (Instance) Color_text" id="color96_text" value="#7A7A7A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color96.value = color96_text.value"></p>
+<p>LampGrating (Instance) Alpha<br>Change alpha of mat, LampGrating (Instance) as part of object ShipElectricLights<br />
+<input type="range" name="lampgratinginstancealpha" id="number_slider96" value="1" step="0.001" min="0" max="1" oninput="number_text96.value = number_slider96.value">
+<input id="number_text96" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider96.value = number_text96.value">
+</p>
+<p><label for="LEDLight (Instance) Color">LEDLight (Instance) Color</label><br><input type="color" id="color97" name="LEDLight (Instance) Color" value="#FFFFFF" oninput="color97_text.value = color97.value"> <input type="text" class="colorText" name="LEDLight (Instance) Color_text" id="color97_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color97.value = color97_text.value"></p>
+<p>LEDLight (Instance) Alpha<br>Change alpha of mat, LEDLight (Instance) as part of object ShipElectricLights<br />
+<input type="range" name="ledlightinstancealpha" id="number_slider97" value="1" step="0.001" min="0" max="1" oninput="number_text97.value = number_slider97.value">
+<input id="number_text97" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider97.value = number_text97.value">
+</p>
+<p><label for="HelmetGlass 1 (Instance) Color">HelmetGlass 1 (Instance) Color</label><br><input type="color" id="color98" name="HelmetGlass 1 (Instance) Color" value="#B1D2FF" oninput="color98_text.value = color98.value"> <input type="text" class="colorText" name="HelmetGlass 1 (Instance) Color_text" id="color98_text" value="#B1D2FF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color98.value = color98_text.value"></p>
+<p>HelmetGlass 1 (Instance) Alpha<br>Change alpha of mat, HelmetGlass 1 (Instance) as part of object ShipElectricLights<br />
+<input type="range" name="helmetglass1instancealpha" id="number_slider98" value="0.2901961" step="0.001" min="0" max="1" oninput="number_text98.value = number_slider98.value">
+<input id="number_text98" type="text" class="numberInput" size="4" min="0" max="1" value="0.2901961" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider98.value = number_text98.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>LadderShort Colors</legend>
+<p><label for="LadderSteel (Instance) Color">LadderSteel (Instance) Color</label><br><input type="color" id="color99" name="LadderSteel (Instance) Color" value="#DDC100" oninput="color99_text.value = color99.value"> <input type="text" class="colorText" name="LadderSteel (Instance) Color_text" id="color99_text" value="#DDC100" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color99.value = color99_text.value"></p>
+<p>LadderSteel (Instance) Alpha<br>Change alpha of mat, LadderSteel (Instance) as part of object LadderShort<br />
+<input type="range" name="laddersteelinstancealpha" id="number_slider99" value="1" step="0.001" min="0" max="1" oninput="number_text99.value = number_slider99.value">
+<input id="number_text99" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider99.value = number_text99.value">
+</p>
+<p><label for="LadderPainted (Instance) Color">LadderPainted (Instance) Color</label><br><input type="color" id="color100" name="LadderPainted (Instance) Color" value="#B8B9B7" oninput="color100_text.value = color100.value"> <input type="text" class="colorText" name="LadderPainted (Instance) Color_text" id="color100_text" value="#B8B9B7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color100.value = color100_text.value"></p>
+<p>LadderPainted (Instance) Alpha<br>Change alpha of mat, LadderPainted (Instance) as part of object LadderShort<br />
+<input type="range" name="ladderpaintedinstancealpha" id="number_slider100" value="1" step="0.001" min="0" max="1" oninput="number_text100.value = number_slider100.value">
+<input id="number_text100" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider100.value = number_text100.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>LadderShort (1) Colors</legend>
+<p><label for="LadderSteel (Instance) Color">LadderSteel (Instance) Color</label><br><input type="color" id="color101" name="LadderSteel (Instance) Color" value="#DDC100" oninput="color101_text.value = color101.value"> <input type="text" class="colorText" name="LadderSteel (Instance) Color_text" id="color101_text" value="#DDC100" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color101.value = color101_text.value"></p>
+<p>LadderSteel (Instance) Alpha<br>Change alpha of mat, LadderSteel (Instance) as part of object LadderShort (1)<br />
+<input type="range" name="laddersteelinstancealpha" id="number_slider101" value="1" step="0.001" min="0" max="1" oninput="number_text101.value = number_slider101.value">
+<input id="number_text101" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider101.value = number_text101.value">
+</p>
+<p><label for="LadderPainted (Instance) Color">LadderPainted (Instance) Color</label><br><input type="color" id="color102" name="LadderPainted (Instance) Color" value="#B8B9B7" oninput="color102_text.value = color102.value"> <input type="text" class="colorText" name="LadderPainted (Instance) Color_text" id="color102_text" value="#B8B9B7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color102.value = color102_text.value"></p>
+<p>LadderPainted (Instance) Alpha<br>Change alpha of mat, LadderPainted (Instance) as part of object LadderShort (1)<br />
+<input type="range" name="ladderpaintedinstancealpha" id="number_slider102" value="1" step="0.001" min="0" max="1" oninput="number_text102.value = number_slider102.value">
+<input id="number_text102" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider102.value = number_text102.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Terminal Colors</legend>
+<p><label for="TerminalTex (Instance) Color">TerminalTex (Instance) Color</label><br><input type="color" id="color103" name="TerminalTex (Instance) Color" value="#CFCFCF" oninput="color103_text.value = color103.value"> <input type="text" class="colorText" name="TerminalTex (Instance) Color_text" id="color103_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color103.value = color103_text.value"></p>
+<p>TerminalTex (Instance) Alpha<br>Change alpha of mat, TerminalTex (Instance) as part of object Terminal<br />
+<input type="range" name="terminaltexinstancealpha" id="number_slider103" value="1" step="0.001" min="0" max="1" oninput="number_text103.value = number_slider103.value">
+<input id="number_text103" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider103.value = number_text103.value">
+</p>
+<p><label for="HelmetGlass 1 (Instance) Color">HelmetGlass 1 (Instance) Color</label><br><input type="color" id="color104" name="HelmetGlass 1 (Instance) Color" value="#B1D2FF" oninput="color104_text.value = color104.value"> <input type="text" class="colorText" name="HelmetGlass 1 (Instance) Color_text" id="color104_text" value="#B1D2FF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color104.value = color104_text.value"></p>
+<p>HelmetGlass 1 (Instance) Alpha<br>Change alpha of mat, HelmetGlass 1 (Instance) as part of object Terminal<br />
+<input type="range" name="helmetglass1instancealpha" id="number_slider104" value="0.2901961" step="0.001" min="0" max="1" oninput="number_text104.value = number_slider104.value">
+<input id="number_text104" type="text" class="numberInput" size="4" min="0" max="1" value="0.2901961" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider104.value = number_text104.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color105" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color105_text.value = color105.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color105_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color105.value = color105_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object Terminal<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider105" value="1" step="0.001" min="0" max="1" oninput="number_text105.value = number_slider105.value">
+<input id="number_text105" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider105.value = number_text105.value">
+</p>
+<p><label for="BlackRubber (Instance) Color">BlackRubber (Instance) Color</label><br><input type="color" id="color106" name="BlackRubber (Instance) Color" value="#2E2E2E" oninput="color106_text.value = color106.value"> <input type="text" class="colorText" name="BlackRubber (Instance) Color_text" id="color106_text" value="#2E2E2E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color106.value = color106_text.value"></p>
+<p>BlackRubber (Instance) Alpha<br>Change alpha of mat, BlackRubber (Instance) as part of object Terminal<br />
+<input type="range" name="blackrubberinstancealpha" id="number_slider106" value="1" step="0.001" min="0" max="1" oninput="number_text106.value = number_slider106.value">
+<input id="number_text106" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider106.value = number_text106.value">
+</p>
+<p><label for="TerminalKeyboard (Instance) Color">TerminalKeyboard (Instance) Color</label><br><input type="color" id="color107" name="TerminalKeyboard (Instance) Color" value="#878787" oninput="color107_text.value = color107.value"> <input type="text" class="colorText" name="TerminalKeyboard (Instance) Color_text" id="color107_text" value="#878787" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color107.value = color107_text.value"></p>
+<p>TerminalKeyboard (Instance) Alpha<br>Change alpha of mat, TerminalKeyboard (Instance) as part of object Terminal<br />
+<input type="range" name="terminalkeyboardinstancealpha" id="number_slider107" value="1" step="0.001" min="0" max="1" oninput="number_text107.value = number_slider107.value">
+<input id="number_text107" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider107.value = number_text107.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipModels2b Colors</legend>
+<p><label for="ElevatorShaftSteel (Instance) Color">ElevatorShaftSteel (Instance) Color</label><br><input type="color" id="color108" name="ElevatorShaftSteel (Instance) Color" value="#FFFFFF" oninput="color108_text.value = color108.value"> <input type="text" class="colorText" name="ElevatorShaftSteel (Instance) Color_text" id="color108_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color108.value = color108_text.value"></p>
+<p>ElevatorShaftSteel (Instance) Alpha<br>Change alpha of mat, ElevatorShaftSteel (Instance) as part of object ShipModels2b<br />
+<input type="range" name="elevatorshaftsteelinstancealpha" id="number_slider108" value="1" step="0.001" min="0" max="1" oninput="number_text108.value = number_slider108.value">
+<input id="number_text108" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider108.value = number_text108.value">
+</p>
+<p><label for="BlackRubber (Instance) Color">BlackRubber (Instance) Color</label><br><input type="color" id="color109" name="BlackRubber (Instance) Color" value="#2E2E2E" oninput="color109_text.value = color109.value"> <input type="text" class="colorText" name="BlackRubber (Instance) Color_text" id="color109_text" value="#2E2E2E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color109.value = color109_text.value"></p>
+<p>BlackRubber (Instance) Alpha<br>Change alpha of mat, BlackRubber (Instance) as part of object ShipModels2b<br />
+<input type="range" name="blackrubberinstancealpha" id="number_slider109" value="1" step="0.001" min="0" max="1" oninput="number_text109.value = number_slider109.value">
+<input id="number_text109" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider109.value = number_text109.value">
+</p>
+<p><label for="PowerBoxGrating (Instance) Color">PowerBoxGrating (Instance) Color</label><br><input type="color" id="color110" name="PowerBoxGrating (Instance) Color" value="#CACACA" oninput="color110_text.value = color110.value"> <input type="text" class="colorText" name="PowerBoxGrating (Instance) Color_text" id="color110_text" value="#CACACA" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color110.value = color110_text.value"></p>
+<p>PowerBoxGrating (Instance) Alpha<br>Change alpha of mat, PowerBoxGrating (Instance) as part of object ShipModels2b<br />
+<input type="range" name="powerboxgratinginstancealpha" id="number_slider110" value="1" step="0.001" min="0" max="1" oninput="number_text110.value = number_slider110.value">
+<input id="number_text110" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider110.value = number_text110.value">
+</p>
+<p><label for="SpeakerFace (Instance) Color">SpeakerFace (Instance) Color</label><br><input type="color" id="color111" name="SpeakerFace (Instance) Color" value="#FFFFFF" oninput="color111_text.value = color111.value"> <input type="text" class="colorText" name="SpeakerFace (Instance) Color_text" id="color111_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color111.value = color111_text.value"></p>
+<p>SpeakerFace (Instance) Alpha<br>Change alpha of mat, SpeakerFace (Instance) as part of object ShipModels2b<br />
+<input type="range" name="speakerfaceinstancealpha" id="number_slider111" value="1" step="0.001" min="0" max="1" oninput="number_text111.value = number_slider111.value">
+<input id="number_text111" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider111.value = number_text111.value">
+</p>
+<p><label for="RedButtonLED (Instance) Color">RedButtonLED (Instance) Color</label><br><input type="color" id="color112" name="RedButtonLED (Instance) Color" value="#713131" oninput="color112_text.value = color112.value"> <input type="text" class="colorText" name="RedButtonLED (Instance) Color_text" id="color112_text" value="#713131" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color112.value = color112_text.value"></p>
+<p>RedButtonLED (Instance) Alpha<br>Change alpha of mat, RedButtonLED (Instance) as part of object ShipModels2b<br />
+<input type="range" name="redbuttonledinstancealpha" id="number_slider112" value="1" step="0.001" min="0" max="1" oninput="number_text112.value = number_slider112.value">
+<input id="number_text112" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider112.value = number_text112.value">
+</p>
+<p><label for="ChargeStationColor (Instance) Color">ChargeStationColor (Instance) Color</label><br><input type="color" id="color113" name="ChargeStationColor (Instance) Color" value="#5C5840" oninput="color113_text.value = color113.value"> <input type="text" class="colorText" name="ChargeStationColor (Instance) Color_text" id="color113_text" value="#5C5840" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color113.value = color113_text.value"></p>
+<p>ChargeStationColor (Instance) Alpha<br>Change alpha of mat, ChargeStationColor (Instance) as part of object ShipModels2b<br />
+<input type="range" name="chargestationcolorinstancealpha" id="number_slider113" value="1" step="0.001" min="0" max="1" oninput="number_text113.value = number_slider113.value">
+<input id="number_text113" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider113.value = number_text113.value">
+</p>
+<p><label for="DarkSteel (Instance) Color">DarkSteel (Instance) Color</label><br><input type="color" id="color114" name="DarkSteel (Instance) Color" value="#494949" oninput="color114_text.value = color114.value"> <input type="text" class="colorText" name="DarkSteel (Instance) Color_text" id="color114_text" value="#494949" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color114.value = color114_text.value"></p>
+<p>DarkSteel (Instance) Alpha<br>Change alpha of mat, DarkSteel (Instance) as part of object ShipModels2b<br />
+<input type="range" name="darksteelinstancealpha" id="number_slider114" value="1" step="0.001" min="0" max="1" oninput="number_text114.value = number_slider114.value">
+<input id="number_text114" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider114.value = number_text114.value">
+</p>
+<p><label for="WarningStickers (Instance) Color">WarningStickers (Instance) Color</label><br><input type="color" id="color115" name="WarningStickers (Instance) Color" value="#FFFFFF" oninput="color115_text.value = color115.value"> <input type="text" class="colorText" name="WarningStickers (Instance) Color_text" id="color115_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color115.value = color115_text.value"></p>
+<p>WarningStickers (Instance) Alpha<br>Change alpha of mat, WarningStickers (Instance) as part of object ShipModels2b<br />
+<input type="range" name="warningstickersinstancealpha" id="number_slider115" value="1" step="0.001" min="0" max="1" oninput="number_text115.value = number_slider115.value">
+<input id="number_text115" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider115.value = number_text115.value">
+</p>
+<p><label for="Camera (Instance) Color">Camera (Instance) Color</label><br><input type="color" id="color116" name="Camera (Instance) Color" value="#3C3C3C" oninput="color116_text.value = color116.value"> <input type="text" class="colorText" name="Camera (Instance) Color_text" id="color116_text" value="#3C3C3C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color116.value = color116_text.value"></p>
+<p>Camera (Instance) Alpha<br>Change alpha of mat, Camera (Instance) as part of object ShipModels2b<br />
+<input type="range" name="camerainstancealpha" id="number_slider116" value="1" step="0.001" min="0" max="1" oninput="number_text116.value = number_slider116.value">
+<input id="number_text116" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider116.value = number_text116.value">
+</p>
+<p><label for="CopperCoil (Instance) Color">CopperCoil (Instance) Color</label><br><input type="color" id="color117" name="CopperCoil (Instance) Color" value="#B87333" oninput="color117_text.value = color117.value"> <input type="text" class="colorText" name="CopperCoil (Instance) Color_text" id="color117_text" value="#B87333" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color117.value = color117_text.value"></p>
+<p>CopperCoil (Instance) Alpha<br>Change alpha of mat, CopperCoil (Instance) as part of object ShipModels2b<br />
+<input type="range" name="coppercoilinstancealpha" id="number_slider117" value="1" step="0.001" min="0" max="1" oninput="number_text117.value = number_slider117.value">
+<input id="number_text117" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider117.value = number_text117.value">
+</p>
+<p><label for="ShinySteel (Instance) Color">ShinySteel (Instance) Color</label><br><input type="color" id="color118" name="ShinySteel (Instance) Color" value="#999999" oninput="color118_text.value = color118.value"> <input type="text" class="colorText" name="ShinySteel (Instance) Color_text" id="color118_text" value="#999999" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color118.value = color118_text.value"></p>
+<p>ShinySteel (Instance) Alpha<br>Change alpha of mat, ShinySteel (Instance) as part of object ShipModels2b<br />
+<input type="range" name="shinysteelinstancealpha" id="number_slider118" value="1" step="0.001" min="0" max="1" oninput="number_text118.value = number_slider118.value">
+<input id="number_text118" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider118.value = number_text118.value">
+</p>
+<p><label for="SteelBolt (Instance) Color">SteelBolt (Instance) Color</label><br><input type="color" id="color119" name="SteelBolt (Instance) Color" value="#FFFFFF" oninput="color119_text.value = color119.value"> <input type="text" class="colorText" name="SteelBolt (Instance) Color_text" id="color119_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color119.value = color119_text.value"></p>
+<p>SteelBolt (Instance) Alpha<br>Change alpha of mat, SteelBolt (Instance) as part of object ShipModels2b<br />
+<input type="range" name="steelboltinstancealpha" id="number_slider119" value="1" step="0.001" min="0" max="1" oninput="number_text119.value = number_slider119.value">
+<input id="number_text119" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider119.value = number_text119.value">
+</p>
+<p><label for="LEDLight (Instance) Color">LEDLight (Instance) Color</label><br><input type="color" id="color120" name="LEDLight (Instance) Color" value="#ABABAB" oninput="color120_text.value = color120.value"> <input type="text" class="colorText" name="LEDLight (Instance) Color_text" id="color120_text" value="#ABABAB" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color120.value = color120_text.value"></p>
+<p>LEDLight (Instance) Alpha<br>Change alpha of mat, LEDLight (Instance) as part of object ShipModels2b<br />
+<input type="range" name="ledlightinstancealpha" id="number_slider120" value="1" step="0.001" min="0" max="1" oninput="number_text120.value = number_slider120.value">
+<input id="number_text120" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider120.value = number_text120.value">
+</p>
+<p><label for="TerminalTex (Instance) Color">TerminalTex (Instance) Color</label><br><input type="color" id="color121" name="TerminalTex (Instance) Color" value="#CFCFCF" oninput="color121_text.value = color121.value"> <input type="text" class="colorText" name="TerminalTex (Instance) Color_text" id="color121_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color121.value = color121_text.value"></p>
+<p>TerminalTex (Instance) Alpha<br>Change alpha of mat, TerminalTex (Instance) as part of object ShipModels2b<br />
+<input type="range" name="terminaltexinstancealpha" id="number_slider121" value="1" step="0.001" min="0" max="1" oninput="number_text121.value = number_slider121.value">
+<input id="number_text121" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider121.value = number_text121.value">
+</p>
+<p><label for="BlackScreen (Instance) Color">BlackScreen (Instance) Color</label><br><input type="color" id="color122" name="BlackScreen (Instance) Color" value="#000000" oninput="color122_text.value = color122.value"> <input type="text" class="colorText" name="BlackScreen (Instance) Color_text" id="color122_text" value="#000000" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color122.value = color122_text.value"></p>
+<p>BlackScreen (Instance) Alpha<br>Change alpha of mat, BlackScreen (Instance) as part of object ShipModels2b<br />
+<input type="range" name="blackscreeninstancealpha" id="number_slider122" value="1" step="0.001" min="0" max="1" oninput="number_text122.value = number_slider122.value">
+<input id="number_text122" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider122.value = number_text122.value">
+</p>
+<p><label for="RedButton (Instance) Color">RedButton (Instance) Color</label><br><input type="color" id="color123" name="RedButton (Instance) Color" value="#833232" oninput="color123_text.value = color123.value"> <input type="text" class="colorText" name="RedButton (Instance) Color_text" id="color123_text" value="#833232" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color123.value = color123_text.value"></p>
+<p>RedButton (Instance) Alpha<br>Change alpha of mat, RedButton (Instance) as part of object ShipModels2b<br />
+<input type="range" name="redbuttoninstancealpha" id="number_slider123" value="1" step="0.001" min="0" max="1" oninput="number_text123.value = number_slider123.value">
+<input id="number_text123" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider123.value = number_text123.value">
+</p>
+<p><label for="GreyButton (Instance) Color">GreyButton (Instance) Color</label><br><input type="color" id="color124" name="GreyButton (Instance) Color" value="#545454" oninput="color124_text.value = color124.value"> <input type="text" class="colorText" name="GreyButton (Instance) Color_text" id="color124_text" value="#545454" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color124.value = color124_text.value"></p>
+<p>GreyButton (Instance) Alpha<br>Change alpha of mat, GreyButton (Instance) as part of object ShipModels2b<br />
+<input type="range" name="greybuttoninstancealpha" id="number_slider124" value="1" step="0.001" min="0" max="1" oninput="number_text124.value = number_slider124.value">
+<input id="number_text124" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider124.value = number_text124.value">
+</p>
+<p><label for="GIShipMonitor13 (Instance) Color">GIShipMonitor13 (Instance) Color</label><br><input type="color" id="color125" name="GIShipMonitor13 (Instance) Color" value="#FFFFFF" oninput="color125_text.value = color125.value"> <input type="text" class="colorText" name="GIShipMonitor13 (Instance) Color_text" id="color125_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color125.value = color125_text.value"></p>
+<p>GIShipMonitor13 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor13 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor13instancealpha" id="number_slider125" value="1" step="0.001" min="0" max="1" oninput="number_text125.value = number_slider125.value">
+<input id="number_text125" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider125.value = number_text125.value">
+</p>
+<p><label for="GIShipMonitor1 (Instance) Color">GIShipMonitor1 (Instance) Color</label><br><input type="color" id="color126" name="GIShipMonitor1 (Instance) Color" value="#FFFFFF" oninput="color126_text.value = color126.value"> <input type="text" class="colorText" name="GIShipMonitor1 (Instance) Color_text" id="color126_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color126.value = color126_text.value"></p>
+<p>GIShipMonitor1 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor1 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor1instancealpha" id="number_slider126" value="1" step="0.001" min="0" max="1" oninput="number_text126.value = number_slider126.value">
+<input id="number_text126" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider126.value = number_text126.value">
+</p>
+<p><label for="GIShipMonitor2 (Instance) Color">GIShipMonitor2 (Instance) Color</label><br><input type="color" id="color127" name="GIShipMonitor2 (Instance) Color" value="#FFFFFF" oninput="color127_text.value = color127.value"> <input type="text" class="colorText" name="GIShipMonitor2 (Instance) Color_text" id="color127_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color127.value = color127_text.value"></p>
+<p>GIShipMonitor2 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor2 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor2instancealpha" id="number_slider127" value="1" step="0.001" min="0" max="1" oninput="number_text127.value = number_slider127.value">
+<input id="number_text127" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider127.value = number_text127.value">
+</p>
+<p><label for="GIShipMonitor7 (Instance) Color">GIShipMonitor7 (Instance) Color</label><br><input type="color" id="color128" name="GIShipMonitor7 (Instance) Color" value="#FFFFFF" oninput="color128_text.value = color128.value"> <input type="text" class="colorText" name="GIShipMonitor7 (Instance) Color_text" id="color128_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color128.value = color128_text.value"></p>
+<p>GIShipMonitor7 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor7 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor7instancealpha" id="number_slider128" value="1" step="0.001" min="0" max="1" oninput="number_text128.value = number_slider128.value">
+<input id="number_text128" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider128.value = number_text128.value">
+</p>
+<p><label for="GIShipMonitor8 (Instance) Color">GIShipMonitor8 (Instance) Color</label><br><input type="color" id="color129" name="GIShipMonitor8 (Instance) Color" value="#FFFFFF" oninput="color129_text.value = color129.value"> <input type="text" class="colorText" name="GIShipMonitor8 (Instance) Color_text" id="color129_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color129.value = color129_text.value"></p>
+<p>GIShipMonitor8 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor8 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor8instancealpha" id="number_slider129" value="1" step="0.001" min="0" max="1" oninput="number_text129.value = number_slider129.value">
+<input id="number_text129" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider129.value = number_text129.value">
+</p>
+<p><label for="GIShipMonitor3 (Instance) Color">GIShipMonitor3 (Instance) Color</label><br><input type="color" id="color130" name="GIShipMonitor3 (Instance) Color" value="#FFFFFF" oninput="color130_text.value = color130.value"> <input type="text" class="colorText" name="GIShipMonitor3 (Instance) Color_text" id="color130_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color130.value = color130_text.value"></p>
+<p>GIShipMonitor3 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor3 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor3instancealpha" id="number_slider130" value="1" step="0.001" min="0" max="1" oninput="number_text130.value = number_slider130.value">
+<input id="number_text130" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider130.value = number_text130.value">
+</p>
+<p><label for="GIShipMonitor4 (Instance) Color">GIShipMonitor4 (Instance) Color</label><br><input type="color" id="color131" name="GIShipMonitor4 (Instance) Color" value="#FFFFFF" oninput="color131_text.value = color131.value"> <input type="text" class="colorText" name="GIShipMonitor4 (Instance) Color_text" id="color131_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color131.value = color131_text.value"></p>
+<p>GIShipMonitor4 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor4 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor4instancealpha" id="number_slider131" value="1" step="0.001" min="0" max="1" oninput="number_text131.value = number_slider131.value">
+<input id="number_text131" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider131.value = number_text131.value">
+</p>
+<p><label for="GIShipMonitor9 (Instance) Color">GIShipMonitor9 (Instance) Color</label><br><input type="color" id="color132" name="GIShipMonitor9 (Instance) Color" value="#FFFFFF" oninput="color132_text.value = color132.value"> <input type="text" class="colorText" name="GIShipMonitor9 (Instance) Color_text" id="color132_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color132.value = color132_text.value"></p>
+<p>GIShipMonitor9 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor9 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor9instancealpha" id="number_slider132" value="1" step="0.001" min="0" max="1" oninput="number_text132.value = number_slider132.value">
+<input id="number_text132" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider132.value = number_text132.value">
+</p>
+<p><label for="GIShipMonitor10 (Instance) Color">GIShipMonitor10 (Instance) Color</label><br><input type="color" id="color133" name="GIShipMonitor10 (Instance) Color" value="#FFFFFF" oninput="color133_text.value = color133.value"> <input type="text" class="colorText" name="GIShipMonitor10 (Instance) Color_text" id="color133_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color133.value = color133_text.value"></p>
+<p>GIShipMonitor10 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor10 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor10instancealpha" id="number_slider133" value="1" step="0.001" min="0" max="1" oninput="number_text133.value = number_slider133.value">
+<input id="number_text133" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider133.value = number_text133.value">
+</p>
+<p><label for="GIShipMonitor5 (Instance) Color">GIShipMonitor5 (Instance) Color</label><br><input type="color" id="color134" name="GIShipMonitor5 (Instance) Color" value="#FFFFFF" oninput="color134_text.value = color134.value"> <input type="text" class="colorText" name="GIShipMonitor5 (Instance) Color_text" id="color134_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color134.value = color134_text.value"></p>
+<p>GIShipMonitor5 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor5 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor5instancealpha" id="number_slider134" value="1" step="0.001" min="0" max="1" oninput="number_text134.value = number_slider134.value">
+<input id="number_text134" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider134.value = number_text134.value">
+</p>
+<p><label for="GIShipMonitor6 (Instance) Color">GIShipMonitor6 (Instance) Color</label><br><input type="color" id="color135" name="GIShipMonitor6 (Instance) Color" value="#FFFFFF" oninput="color135_text.value = color135.value"> <input type="text" class="colorText" name="GIShipMonitor6 (Instance) Color_text" id="color135_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color135.value = color135_text.value"></p>
+<p>GIShipMonitor6 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor6 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor6instancealpha" id="number_slider135" value="1" step="0.001" min="0" max="1" oninput="number_text135.value = number_slider135.value">
+<input id="number_text135" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider135.value = number_text135.value">
+</p>
+<p><label for="GIShipMonitor11 (Instance) Color">GIShipMonitor11 (Instance) Color</label><br><input type="color" id="color136" name="GIShipMonitor11 (Instance) Color" value="#FFFFFF" oninput="color136_text.value = color136.value"> <input type="text" class="colorText" name="GIShipMonitor11 (Instance) Color_text" id="color136_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color136.value = color136_text.value"></p>
+<p>GIShipMonitor11 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor11 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor11instancealpha" id="number_slider136" value="1" step="0.001" min="0" max="1" oninput="number_text136.value = number_slider136.value">
+<input id="number_text136" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider136.value = number_text136.value">
+</p>
+<p><label for="GIShipMonitor12 (Instance) Color">GIShipMonitor12 (Instance) Color</label><br><input type="color" id="color137" name="GIShipMonitor12 (Instance) Color" value="#FFFFFF" oninput="color137_text.value = color137.value"> <input type="text" class="colorText" name="GIShipMonitor12 (Instance) Color_text" id="color137_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color137.value = color137_text.value"></p>
+<p>GIShipMonitor12 (Instance) Alpha<br>Change alpha of mat, GIShipMonitor12 (Instance) as part of object ShipModels2b<br />
+<input type="range" name="gishipmonitor12instancealpha" id="number_slider137" value="1" step="0.001" min="0" max="1" oninput="number_text137.value = number_slider137.value">
+<input id="number_text137" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider137.value = number_text137.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>SmallDetails Colors</legend>
+<p><label for="BatteryPack (Instance) Color">BatteryPack (Instance) Color</label><br><input type="color" id="color138" name="BatteryPack (Instance) Color" value="#E7E7E7" oninput="color138_text.value = color138.value"> <input type="text" class="colorText" name="BatteryPack (Instance) Color_text" id="color138_text" value="#E7E7E7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color138.value = color138_text.value"></p>
+<p>BatteryPack (Instance) Alpha<br>Change alpha of mat, BatteryPack (Instance) as part of object SmallDetails<br />
+<input type="range" name="batterypackinstancealpha" id="number_slider138" value="1" step="0.001" min="0" max="1" oninput="number_text138.value = number_slider138.value">
+<input id="number_text138" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider138.value = number_text138.value">
+</p>
+<p><label for="BatteryPlastic (Instance) Color">BatteryPlastic (Instance) Color</label><br><input type="color" id="color139" name="BatteryPlastic (Instance) Color" value="#A5BAFF" oninput="color139_text.value = color139.value"> <input type="text" class="colorText" name="BatteryPlastic (Instance) Color_text" id="color139_text" value="#A5BAFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color139.value = color139_text.value"></p>
+<p>BatteryPlastic (Instance) Alpha<br>Change alpha of mat, BatteryPlastic (Instance) as part of object SmallDetails<br />
+<input type="range" name="batteryplasticinstancealpha" id="number_slider139" value="0.2078431" step="0.001" min="0" max="1" oninput="number_text139.value = number_slider139.value">
+<input id="number_text139" type="text" class="numberInput" size="4" min="0" max="1" value="0.2078431" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider139.value = number_text139.value">
+</p>
+<p><label for="BatteryPackLabel (Instance) Color">BatteryPackLabel (Instance) Color</label><br><input type="color" id="color140" name="BatteryPackLabel (Instance) Color" value="#E7E7E7" oninput="color140_text.value = color140.value"> <input type="text" class="colorText" name="BatteryPackLabel (Instance) Color_text" id="color140_text" value="#E7E7E7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color140.value = color140_text.value"></p>
+<p>BatteryPackLabel (Instance) Alpha<br>Change alpha of mat, BatteryPackLabel (Instance) as part of object SmallDetails<br />
+<input type="range" name="batterypacklabelinstancealpha" id="number_slider140" value="1" step="0.001" min="0" max="1" oninput="number_text140.value = number_slider140.value">
+<input id="number_text140" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider140.value = number_text140.value">
+</p>
+<p><label for="Camera (Instance) Color">Camera (Instance) Color</label><br><input type="color" id="color141" name="Camera (Instance) Color" value="#3C3C3C" oninput="color141_text.value = color141.value"> <input type="text" class="colorText" name="Camera (Instance) Color_text" id="color141_text" value="#3C3C3C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color141.value = color141_text.value"></p>
+<p>Camera (Instance) Alpha<br>Change alpha of mat, Camera (Instance) as part of object SmallDetails<br />
+<input type="range" name="camerainstancealpha" id="number_slider141" value="1" step="0.001" min="0" max="1" oninput="number_text141.value = number_slider141.value">
+<input id="number_text141" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider141.value = number_text141.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>AnimatedShipDoor Colors</legend>
+<p><label for="WindowFrame (Instance) Color">WindowFrame (Instance) Color</label><br><input type="color" id="color142" name="WindowFrame (Instance) Color" value="#373732" oninput="color142_text.value = color142.value"> <input type="text" class="colorText" name="WindowFrame (Instance) Color_text" id="color142_text" value="#373732" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color142.value = color142_text.value"></p>
+<p>WindowFrame (Instance) Alpha<br>Change alpha of mat, WindowFrame (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="windowframeinstancealpha" id="number_slider142" value="1" step="0.001" min="0" max="1" oninput="number_text142.value = number_slider142.value">
+<input id="number_text142" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider142.value = number_text142.value">
+</p>
+<p><label for="BlackRubber (Instance) Color">BlackRubber (Instance) Color</label><br><input type="color" id="color143" name="BlackRubber (Instance) Color" value="#2E2E2E" oninput="color143_text.value = color143.value"> <input type="text" class="colorText" name="BlackRubber (Instance) Color_text" id="color143_text" value="#2E2E2E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color143.value = color143_text.value"></p>
+<p>BlackRubber (Instance) Alpha<br>Change alpha of mat, BlackRubber (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="blackrubberinstancealpha" id="number_slider143" value="1" step="0.001" min="0" max="1" oninput="number_text143.value = number_slider143.value">
+<input id="number_text143" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider143.value = number_text143.value">
+</p>
+<p><label for="ButtonWhite (Instance) Color">ButtonWhite (Instance) Color</label><br><input type="color" id="color144" name="ButtonWhite (Instance) Color" value="#B2B2B2" oninput="color144_text.value = color144.value"> <input type="text" class="colorText" name="ButtonWhite (Instance) Color_text" id="color144_text" value="#B2B2B2" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color144.value = color144_text.value"></p>
+<p>ButtonWhite (Instance) Alpha<br>Change alpha of mat, ButtonWhite (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="buttonwhiteinstancealpha" id="number_slider144" value="1" step="0.001" min="0" max="1" oninput="number_text144.value = number_slider144.value">
+<input id="number_text144" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider144.value = number_text144.value">
+</p>
+<p><label for="GreenButton (Instance) Color">GreenButton (Instance) Color</label><br><input type="color" id="color145" name="GreenButton (Instance) Color" value="#436E3B" oninput="color145_text.value = color145.value"> <input type="text" class="colorText" name="GreenButton (Instance) Color_text" id="color145_text" value="#436E3B" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color145.value = color145_text.value"></p>
+<p>GreenButton (Instance) Alpha<br>Change alpha of mat, GreenButton (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="greenbuttoninstancealpha" id="number_slider145" value="1" step="0.001" min="0" max="1" oninput="number_text145.value = number_slider145.value">
+<input id="number_text145" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider145.value = number_text145.value">
+</p>
+<p><label for="RedButton (Instance) Color">RedButton (Instance) Color</label><br><input type="color" id="color146" name="RedButton (Instance) Color" value="#833232" oninput="color146_text.value = color146.value"> <input type="text" class="colorText" name="RedButton (Instance) Color_text" id="color146_text" value="#833232" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color146.value = color146_text.value"></p>
+<p>RedButton (Instance) Alpha<br>Change alpha of mat, RedButton (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="redbuttoninstancealpha" id="number_slider146" value="1" step="0.001" min="0" max="1" oninput="number_text146.value = number_slider146.value">
+<input id="number_text146" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider146.value = number_text146.value">
+</p>
+<p><label for="BlackButtons (Instance) Color">BlackButtons (Instance) Color</label><br><input type="color" id="color147" name="BlackButtons (Instance) Color" value="#191919" oninput="color147_text.value = color147.value"> <input type="text" class="colorText" name="BlackButtons (Instance) Color_text" id="color147_text" value="#191919" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color147.value = color147_text.value"></p>
+<p>BlackButtons (Instance) Alpha<br>Change alpha of mat, BlackButtons (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="blackbuttonsinstancealpha" id="number_slider147" value="1" step="0.001" min="0" max="1" oninput="number_text147.value = number_slider147.value">
+<input id="number_text147" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider147.value = number_text147.value">
+</p>
+<p><label for="HangarShipDoor1 (Instance) Color">HangarShipDoor1 (Instance) Color</label><br><input type="color" id="color148" name="HangarShipDoor1 (Instance) Color" value="#71665E" oninput="color148_text.value = color148.value"> <input type="text" class="colorText" name="HangarShipDoor1 (Instance) Color_text" id="color148_text" value="#71665E" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color148.value = color148_text.value"></p>
+<p>HangarShipDoor1 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor1 (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="hangarshipdoor1instancealpha" id="number_slider148" value="1" step="0.001" min="0" max="1" oninput="number_text148.value = number_slider148.value">
+<input id="number_text148" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider148.value = number_text148.value">
+</p>
+<p><label for="HangarShipDoor2 (Instance) Color">HangarShipDoor2 (Instance) Color</label><br><input type="color" id="color149" name="HangarShipDoor2 (Instance) Color" value="#6F645D" oninput="color149_text.value = color149.value"> <input type="text" class="colorText" name="HangarShipDoor2 (Instance) Color_text" id="color149_text" value="#6F645D" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color149.value = color149_text.value"></p>
+<p>HangarShipDoor2 (Instance) Alpha<br>Change alpha of mat, HangarShipDoor2 (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="hangarshipdoor2instancealpha" id="number_slider149" value="1" step="0.001" min="0" max="1" oninput="number_text149.value = number_slider149.value">
+<input id="number_text149" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider149.value = number_text149.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Cameras Colors</legend>
+<p><label for="TerminalTex (Instance) Color">TerminalTex (Instance) Color</label><br><input type="color" id="color150" name="TerminalTex (Instance) Color" value="#CFCFCF" oninput="color150_text.value = color150.value"> <input type="text" class="colorText" name="TerminalTex (Instance) Color_text" id="color150_text" value="#CFCFCF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color150.value = color150_text.value"></p>
+<p>TerminalTex (Instance) Alpha<br>Change alpha of mat, TerminalTex (Instance) as part of object Cameras<br />
+<input type="range" name="terminaltexinstancealpha" id="number_slider150" value="1" step="0.001" min="0" max="1" oninput="number_text150.value = number_slider150.value">
+<input id="number_text150" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider150.value = number_text150.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>LightSwitchContainer Colors</legend>
+<p><label for="LightSwitch (Instance) Color">LightSwitch (Instance) Color</label><br><input type="color" id="color151" name="LightSwitch (Instance) Color" value="#606060" oninput="color151_text.value = color151.value"> <input type="text" class="colorText" name="LightSwitch (Instance) Color_text" id="color151_text" value="#606060" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color151.value = color151_text.value"></p>
+<p>LightSwitch (Instance) Alpha<br>Change alpha of mat, LightSwitch (Instance) as part of object LightSwitchContainer<br />
+<input type="range" name="lightswitchinstancealpha" id="number_slider151" value="1" step="0.001" min="0" max="1" oninput="number_text151.value = number_slider151.value">
+<input id="number_text151" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider151.value = number_text151.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>StickyNoteItem Colors</legend>
+<p><label for="StickyNoteMaterial (Instance) Color">StickyNoteMaterial (Instance) Color</label><br><input type="color" id="color152" name="StickyNoteMaterial (Instance) Color" value="#FFFFFF" oninput="color152_text.value = color152.value"> <input type="text" class="colorText" name="StickyNoteMaterial (Instance) Color_text" id="color152_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color152.value = color152_text.value"></p>
+<p>StickyNoteMaterial (Instance) Alpha<br>Change alpha of mat, StickyNoteMaterial (Instance) as part of object StickyNoteItem<br />
+<input type="range" name="stickynotematerialinstancealpha" id="number_slider152" value="1" step="0.001" min="0" max="1" oninput="number_text152.value = number_slider152.value">
+<input id="number_text152" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider152.value = number_text152.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ClipboardManual Colors</legend>
+<p><label for="SmoothSteel (Instance) Color">SmoothSteel (Instance) Color</label><br><input type="color" id="color153" name="SmoothSteel (Instance) Color" value="#FFFFFF" oninput="color153_text.value = color153.value"> <input type="text" class="colorText" name="SmoothSteel (Instance) Color_text" id="color153_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color153.value = color153_text.value"></p>
+<p>SmoothSteel (Instance) Alpha<br>Change alpha of mat, SmoothSteel (Instance) as part of object ClipboardManual<br />
+<input type="range" name="smoothsteelinstancealpha" id="number_slider153" value="1" step="0.001" min="0" max="1" oninput="number_text153.value = number_slider153.value">
+<input id="number_text153" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider153.value = number_text153.value">
+</p>
+<p><label for="ClipboardWood (Instance) Color">ClipboardWood (Instance) Color</label><br><input type="color" id="color154" name="ClipboardWood (Instance) Color" value="#C6A97C" oninput="color154_text.value = color154.value"> <input type="text" class="colorText" name="ClipboardWood (Instance) Color_text" id="color154_text" value="#C6A97C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color154.value = color154_text.value"></p>
+<p>ClipboardWood (Instance) Alpha<br>Change alpha of mat, ClipboardWood (Instance) as part of object ClipboardManual<br />
+<input type="range" name="clipboardwoodinstancealpha" id="number_slider154" value="1" step="0.001" min="0" max="1" oninput="number_text154.value = number_slider154.value">
+<input id="number_text154" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider154.value = number_text154.value">
+</p>
+<p><label for="SmoothSteelDark (Instance) Color">SmoothSteelDark (Instance) Color</label><br><input type="color" id="color155" name="SmoothSteelDark (Instance) Color" value="#B4B4B4" oninput="color155_text.value = color155.value"> <input type="text" class="colorText" name="SmoothSteelDark (Instance) Color_text" id="color155_text" value="#B4B4B4" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color155.value = color155_text.value"></p>
+<p>SmoothSteelDark (Instance) Alpha<br>Change alpha of mat, SmoothSteelDark (Instance) as part of object ClipboardManual<br />
+<input type="range" name="smoothsteeldarkinstancealpha" id="number_slider155" value="1" step="0.001" min="0" max="1" oninput="number_text155.value = number_slider155.value">
+<input id="number_text155" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider155.value = number_text155.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>GiantCylinderMagnet Colors</legend>
+<p><label for="DarkSteel (Instance) Color">DarkSteel (Instance) Color</label><br><input type="color" id="color156" name="DarkSteel (Instance) Color" value="#494949" oninput="color156_text.value = color156.value"> <input type="text" class="colorText" name="DarkSteel (Instance) Color_text" id="color156_text" value="#494949" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color156.value = color156_text.value"></p>
+<p>DarkSteel (Instance) Alpha<br>Change alpha of mat, DarkSteel (Instance) as part of object GiantCylinderMagnet<br />
+<input type="range" name="darksteelinstancealpha" id="number_slider156" value="1" step="0.001" min="0" max="1" oninput="number_text156.value = number_slider156.value">
+<input id="number_text156" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider156.value = number_text156.value">
+</p>
+<p><label for="ShipMagnet (Instance) Color">ShipMagnet (Instance) Color</label><br><input type="color" id="color157" name="ShipMagnet (Instance) Color" value="#FFFFFF" oninput="color157_text.value = color157.value"> <input type="text" class="colorText" name="ShipMagnet (Instance) Color_text" id="color157_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color157.value = color157_text.value"></p>
+<p>ShipMagnet (Instance) Alpha<br>Change alpha of mat, ShipMagnet (Instance) as part of object GiantCylinderMagnet<br />
+<input type="range" name="shipmagnetinstancealpha" id="number_slider157" value="1" step="0.001" min="0" max="1" oninput="number_text157.value = number_slider157.value">
+<input id="number_text157" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider157.value = number_text157.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>MagnetLever Colors</legend>
+<p><label for="LeverSwitchMat (Instance) Color">LeverSwitchMat (Instance) Color</label><br><input type="color" id="color158" name="LeverSwitchMat (Instance) Color" value="#FFFFFF" oninput="color158_text.value = color158.value"> <input type="text" class="colorText" name="LeverSwitchMat (Instance) Color_text" id="color158_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color158.value = color158_text.value"></p>
+<p>LeverSwitchMat (Instance) Alpha<br>Change alpha of mat, LeverSwitchMat (Instance) as part of object MagnetLever<br />
+<input type="range" name="leverswitchmatinstancealpha" id="number_slider158" value="1" step="0.001" min="0" max="1" oninput="number_text158.value = number_slider158.value">
+<input id="number_text158" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider158.value = number_text158.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>VentChute(Clone) Colors</legend>
+<p><label for="vent_chute_material (Instance) Color">vent_chute_material (Instance) Color</label><br><input type="color" id="color159" name="vent_chute_material (Instance) Color" value="#FFFFFF" oninput="color159_text.value = color159.value"> <input type="text" class="colorText" name="vent_chute_material (Instance) Color_text" id="color159_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color159.value = color159_text.value"></p>
+<p>vent_chute_material (Instance) Alpha<br>Change alpha of mat, vent_chute_material (Instance) as part of object VentChute(Clone)<br />
+<input type="range" name="ventchutematerialinstancealpha" id="number_slider159" value="1" step="0.001" min="0" max="1" oninput="number_text159.value = number_slider159.value">
+<input id="number_text159" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider159.value = number_text159.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>Plane.001 (Old) Colors</legend>
+<p><label for="Posters (Instance) Color">Posters (Instance) Color</label><br><input type="color" id="color160" name="Posters (Instance) Color" value="#FFFFFF" oninput="color160_text.value = color160.value"> <input type="text" class="colorText" name="Posters (Instance) Color_text" id="color160_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color160.value = color160_text.value"></p>
+<p>Posters (Instance) Alpha<br>Change alpha of mat, Posters (Instance) as part of object Plane.001 (Old)<br />
+<input type="range" name="postersinstancealpha" id="number_slider160" value="1" step="0.001" min="0" max="1" oninput="number_text160.value = number_slider160.value">
+<input id="number_text160" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider160.value = number_text160.value">
+</p>
+<p><label for="TipsPoster (Instance) Color">TipsPoster (Instance) Color</label><br><input type="color" id="color161" name="TipsPoster (Instance) Color" value="#FFFFFF" oninput="color161_text.value = color161.value"> <input type="text" class="colorText" name="TipsPoster (Instance) Color_text" id="color161_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color161.value = color161_text.value"></p>
+<p>TipsPoster (Instance) Alpha<br>Change alpha of mat, TipsPoster (Instance) as part of object Plane.001 (Old)<br />
+<input type="range" name="tipsposterinstancealpha" id="number_slider161" value="1" step="0.001" min="0" max="1" oninput="number_text161.value = number_slider161.value">
+<input id="number_text161" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider161.value = number_text161.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipInside (Old) Colors</legend>
+<p><label for="HangarShipHull (Instance) Color">HangarShipHull (Instance) Color</label><br><input type="color" id="color162" name="HangarShipHull (Instance) Color" value="#FFFFFF" oninput="color162_text.value = color162.value"> <input type="text" class="colorText" name="HangarShipHull (Instance) Color_text" id="color162_text" value="#FFFFFF" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color162.value = color162_text.value"></p>
+<p>HangarShipHull (Instance) Alpha<br>Change alpha of mat, HangarShipHull (Instance) as part of object ShipInside (Old)<br />
+<input type="range" name="hangarshiphullinstancealpha" id="number_slider162" value="1" step="0.001" min="0" max="1" oninput="number_text162.value = number_slider162.value">
+<input id="number_text162" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider162.value = number_text162.value">
+</p>
+<p><label for="HangarShipRoomMetal (Instance) Color">HangarShipRoomMetal (Instance) Color</label><br><input type="color" id="color163" name="HangarShipRoomMetal (Instance) Color" value="#D6C9B5" oninput="color163_text.value = color163.value"> <input type="text" class="colorText" name="HangarShipRoomMetal (Instance) Color_text" id="color163_text" value="#D6C9B5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color163.value = color163_text.value"></p>
+<p>HangarShipRoomMetal (Instance) Alpha<br>Change alpha of mat, HangarShipRoomMetal (Instance) as part of object ShipInside (Old)<br />
+<input type="range" name="hangarshiproommetalinstancealpha" id="number_slider163" value="1" step="0.001" min="0" max="1" oninput="number_text163.value = number_slider163.value">
+<input id="number_text163" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider163.value = number_text163.value">
+</p>
+<p><label for="HangarShipFloor (Instance) Color">HangarShipFloor (Instance) Color</label><br><input type="color" id="color164" name="HangarShipFloor (Instance) Color" value="#C8BDB8" oninput="color164_text.value = color164.value"> <input type="text" class="colorText" name="HangarShipFloor (Instance) Color_text" id="color164_text" value="#C8BDB8" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color164.value = color164_text.value"></p>
+<p>HangarShipFloor (Instance) Alpha<br>Change alpha of mat, HangarShipFloor (Instance) as part of object ShipInside (Old)<br />
+<input type="range" name="hangarshipfloorinstancealpha" id="number_slider164" value="1" step="0.001" min="0" max="1" oninput="number_text164.value = number_slider164.value">
+<input id="number_text164" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider164.value = number_text164.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>AnimatedShipDoor Colors</legend>
+<p><label for="GlassNoRefractionIridescence (Instance) Color">GlassNoRefractionIridescence (Instance) Color</label><br><input type="color" id="color165" name="GlassNoRefractionIridescence (Instance) Color" value="#3A362C" oninput="color165_text.value = color165.value"> <input type="text" class="colorText" name="GlassNoRefractionIridescence (Instance) Color_text" id="color165_text" value="#3A362C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color165.value = color165_text.value"></p>
+<p>GlassNoRefractionIridescence (Instance) Alpha<br>Change alpha of mat, GlassNoRefractionIridescence (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="glassnorefractioniridescenceinstancealpha" id="number_slider165" value="0.3490196" step="0.001" min="0" max="1" oninput="number_text165.value = number_slider165.value">
+<input id="number_text165" type="text" class="numberInput" size="4" min="0" max="1" value="0.3490196" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider165.value = number_text165.value">
+</p>
+<p><label for="DoorShutterTexture (Instance) Color">DoorShutterTexture (Instance) Color</label><br><input type="color" id="color166" name="DoorShutterTexture (Instance) Color" value="#574F4A" oninput="color166_text.value = color166.value"> <input type="text" class="colorText" name="DoorShutterTexture (Instance) Color_text" id="color166_text" value="#574F4A" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color166.value = color166_text.value"></p>
+<p>DoorShutterTexture (Instance) Alpha<br>Change alpha of mat, DoorShutterTexture (Instance) as part of object AnimatedShipDoor<br />
+<input type="range" name="doorshuttertextureinstancealpha" id="number_slider166" value="1" step="0.001" min="0" max="1" oninput="number_text166.value = number_slider166.value">
+<input id="number_text166" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider166.value = number_text166.value">
+</p>
+</fieldset>
+<fieldset>
+<legend>ShipInside Colors</legend>
+<p><label for="Cover (Instance) Color">Cover (Instance) Color</label><br><input type="color" id="color167" name="Cover (Instance) Color" value="#C5BFB5" oninput="color167_text.value = color167.value"> <input type="text" class="colorText" name="Cover (Instance) Color_text" id="color167_text" value="#C5BFB5" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color167.value = color167_text.value"></p>
+<p>Cover (Instance) Alpha<br>Change alpha of mat, Cover (Instance) as part of object ShipInside<br />
+<input type="range" name="coverinstancealpha" id="number_slider167" value="1" step="0.001" min="0" max="1" oninput="number_text167.value = number_slider167.value">
+<input id="number_text167" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider167.value = number_text167.value">
+</p>
+<p><label for="GlassNoRefractionIridescence (Instance) Color">GlassNoRefractionIridescence (Instance) Color</label><br><input type="color" id="color168" name="GlassNoRefractionIridescence (Instance) Color" value="#3A362C" oninput="color168_text.value = color168.value"> <input type="text" class="colorText" name="GlassNoRefractionIridescence (Instance) Color_text" id="color168_text" value="#3A362C" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color168.value = color168_text.value"></p>
+<p>GlassNoRefractionIridescence (Instance) Alpha<br>Change alpha of mat, GlassNoRefractionIridescence (Instance) as part of object ShipInside<br />
+<input type="range" name="glassnorefractioniridescenceinstancealpha" id="number_slider168" value="0.3490196" step="0.001" min="0" max="1" oninput="number_text168.value = number_slider168.value">
+<input id="number_text168" type="text" class="numberInput" size="4" min="0" max="1" value="0.3490196" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider168.value = number_text168.value">
+</p>
+<p><label for="FloorShutter (Instance) Color">FloorShutter (Instance) Color</label><br><input type="color" id="color169" name="FloorShutter (Instance) Color" value="#B7B7B7" oninput="color169_text.value = color169.value"> <input type="text" class="colorText" name="FloorShutter (Instance) Color_text" id="color169_text" value="#B7B7B7" onkeypress="return /[0-9a-zA-Z#]/i.test(event.key)" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?" oninput="color169.value = color169_text.value"></p>
+<p>FloorShutter (Instance) Alpha<br>Change alpha of mat, FloorShutter (Instance) as part of object ShipInside<br />
+<input type="range" name="floorshutterinstancealpha" id="number_slider169" value="1" step="0.001" min="0" max="1" oninput="number_text169.value = number_slider169.value">
+<input id="number_text169" type="text" class="numberInput" size="4" min="0" max="1" value="1" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider169.value = number_text169.value">
+</p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+function serializeForm() {
+    const form = document.getElementById('configForm');
+    const elements = form.elements;
+    let result = [];
+
+    for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+        result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+        result.push(`${element.name}:true`);
+                        } else {
+        result.push(`${element.name}:false`);
+                        }
+                    } else {
+        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+    }
+
+    const compressedData = compressData(result.join(';:; '));
+    document.getElementById('rawData').textContent = result.join(';:; ');
+    document.getElementById('compressedData').textContent = compressedData;
+}
+
+//MinCodes = 4
+function parseConfig(text) {
+    const lines = text.split('\n');
+    const notConfig = ['#', '['];
+
+    lines.forEach(str => {
+        if (!notConfig.some(char => str.startsWith(char))) {
+            const pair = str.split(" = ");
+            console.log("attempting to update config item on site for " + str);
+            if(pair[0] && pair[1]) //truthy
+                updateConfig(pair[0], pair[1]);
+        }
+        else {
+            console.log("below line is not a config item\n" + str);
+        }
+    });
+}
+
+function updateConfig(key, value) {
+    if (key === null || value === null) {
+        console.warn("Cannot update key-value pair, one item is NULL");
+        return;
+    }
+
+    key = key.trim();
+    value = value.trim();
+
+    const matching = document.getElementsByName(key);
+    if (matching.length === 1) {
+        const element = matching[0];
+        let typ = matching[0].getAttribute("type");
+        let next = element.nextElementSibling;
+        if (typ === "checkbox") {
+            if (value === "true")
+                element.setAttribute("checked", "checked");
+            else
+                element.removeAttribute("checked");
+        } else if (element.hasAttribute("value")) {
+            if (typ === "range") {
+                if (next !== null) {
+                    next.setAttribute("value", value);
+                    next.textContent = value;
+                }
+                element.setAttribute("value", value);
+            } else {
+                element.setAttribute("value", value);
+                element.textContent = value;
+                console.log("not a range setting values");
+            }
+            
+        } else {
+            console.warn("Unable to find attribute to update for: " + key + value);
+        }
+    } else {
+        matching.forEach(doc => {
+            if (doc.hasAttribute("type") && doc.hasAttribute("value")) {
+                let atr = doc.getAttribute("value");
+                let typ = doc.getAttribute("type");
+                if (typ === "radio") {
+                    if (atr === value) {
+                        doc.setAttribute("checked", "checked");
+                    } else {
+                        console.log("not the button we are looking for, skipping & removing attribute");
+                        doc.removeAttribute("checked");
+                    }
+                }
+            }
+        });
+    }
+}
+
+
+function loadFileAsText() {
+    var fileToLoad = document.getElementById("fileInput").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        parseConfig(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+
+function clearText() {
+    document.getElementById('rawData').textContent = '';
+    document.getElementById('compressedData').textContent = '';
+		
+}
+
+
+function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+    // Compress using pako
+    const compressed = pako.gzip(uint8Array);
+
+    // Convert compressed data to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+}
+</script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
+</body></html>
