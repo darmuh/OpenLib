@@ -26,7 +26,7 @@ namespace OpenLib.CoreMethods
                 Plugin.Spam($"{existingNode.name} has existing terminalOptions");
             }
 
-            CompatibleNoun noun = new()
+            CompatibleNoun noun = new() //not added to noun list as no keyword associated to it
             {
                 noun = terminalKeyword,
                 result = existingNode
@@ -57,7 +57,7 @@ namespace OpenLib.CoreMethods
                 Plugin.Spam($"{existingNode.name} has existing terminalOptions");
             }
 
-            CompatibleNoun noun = new()
+            CompatibleNoun noun = new() //no associated keyword, not adding to noun list
             {
                 noun = terminalKeyword,
                 result = existingNode
@@ -470,10 +470,12 @@ namespace OpenLib.CoreMethods
             };
             List<CompatibleNoun> buyKeywordList = [.. buyKeyword.compatibleNouns];
             buyKeywordList.Add(wordIsCompatNoun);
+            Plugin.nounsAdded.Add(wordIsCompatNoun);
             buyKeyword.compatibleNouns = [.. buyKeywordList];
 
         }
 
+        [Obsolete("Use AddCompatibleNoun instead")]
         public static void AddToKeyword(ref TerminalKeyword originalKeyword, ref TerminalKeyword newWord)
         {
             if (!originalKeyword.isVerb)
@@ -492,6 +494,7 @@ namespace OpenLib.CoreMethods
             };
             List<CompatibleNoun> compatibleNouns = [.. originalKeyword.compatibleNouns];
             compatibleNouns.Add(wordIsCompatNoun);
+            Plugin.nounsAdded.Add(wordIsCompatNoun);
             originalKeyword.compatibleNouns = [.. compatibleNouns];
         }
 
@@ -521,8 +524,9 @@ namespace OpenLib.CoreMethods
                 newNoun.result = resultNode;
 
                 originalNouns.Add(newNoun);
-                originalWord.compatibleNouns = originalNouns.ToArray();
+                originalWord.compatibleNouns = [.. originalNouns];
                 Plugin.Spam($"Added NOUN: {newNoun.noun.word} to WORD: {originalWord.word} compatible nouns");
+                Plugin.nounsAdded.Add(newNoun);
                 return;
             }
             else

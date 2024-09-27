@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.1]
+ - Fixed issue where new compatible nouns were not deleted on exit to main menu
+ - Fixed issue with blank terminal input throwing errors
+ - Updated terminalkeyword deletion to not try every single word against "buy" as a compatible noun
+
 ## [0.2.0]
  - Added nullable to project and updated some common use methods to prefer a TryGet bool in order to avoid NREs.
  - Added OpenBodyCams common methods for creating a terminal bodycam or terminal mirror for use in suitsTerminal/darmuhsTerminalStuff

@@ -2,6 +2,7 @@
 using OpenLib.ConfigManager;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static OpenLib.CoreMethods.DynamicBools;
 
@@ -13,12 +14,13 @@ namespace OpenLib.CoreMethods
         {
             Plugin.Spam("OnTerminalDisable called");
             DeleteAllNodes(ref Plugin.nodesAdded);
-            DeleteAllKeywords(ref Plugin.keywordsAdded);
+            DeleteAllNouns(ref Plugin.nounsAdded); //keywords follows this method
             if (CamStuff.MirrorObject != null)
                 GameObject.Destroy(CamStuff.MirrorObject);
             ConfigSetup.defaultListing.DeleteAll();
         }
 
+        [Obsolete("Probably dont need to do this anymore")]
         public static void DeleteNounWord(ref TerminalKeyword keyWord, string terminalKeyword)
         {
             List<CompatibleNoun> keywordList = [.. keyWord.compatibleNouns];
@@ -87,6 +89,46 @@ namespace OpenLib.CoreMethods
             }
         }
 
+        public static void DeleteAllNouns(ref List<CompatibleNoun> nounsToDelete)
+        {
+            if(nounsToDelete.Count == 0)
+            {
+                Plugin.Spam("no nouns detected to delete");
+                DeleteAllKeywords(ref Plugin.keywordsAdded);
+                return;
+            }
+
+            List<TerminalKeyword> allKeywords = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+
+            foreach (CompatibleNoun noun in nounsToDelete)
+            {
+                if (allKeywords.Any(k => k.compatibleNouns != null && k.compatibleNouns.Contains(noun)))
+                {
+                    List<TerminalKeyword> keywords = allKeywords.FindAll(k => k.compatibleNouns != null && k.compatibleNouns.Contains(noun));
+
+                    foreach (TerminalKeyword keyword in keywords)
+                    {
+                        List<CompatibleNoun> newList = [.. keyword.compatibleNouns];
+                        if (newList.Remove(noun))
+                        {
+                            keyword.compatibleNouns = [.. newList];
+                            Plugin.Spam($"{noun.noun.word} removed from word: {keyword.word}");
+                        }
+                            
+                        else
+                            Plugin.WARNING($"Unable to remove compatible noun: {noun.noun.word} from word: {keyword.word}");
+                    }
+                }
+                else
+                    Plugin.WARNING($"Unable to find any words {noun.noun.word} is associated to");
+            }
+
+            Plugin.nounsAdded.Clear();
+            Plugin.Spam("DeleteAllNouns Completed");
+
+            DeleteAllKeywords(ref Plugin.keywordsAdded);
+        }
+
         public static void DeleteAllKeywords(ref List<TerminalKeyword> keywordList)
         {
             if (keywordList.Count == 0)
@@ -97,11 +139,6 @@ namespace OpenLib.CoreMethods
 
             foreach (TerminalKeyword keyword in keywordList)
             {
-                if (TryGetKeyword("buy", out TerminalKeyword buyKeyword))
-                {
-                    DeleteNounWord(ref buyKeyword, keyword.word);
-                }
-
                 for (int i = allKeywords.Count - 1; i >= 0; i--)
                 {
                     if (allKeywords[i] == keyword)

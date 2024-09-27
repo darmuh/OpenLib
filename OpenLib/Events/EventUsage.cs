@@ -73,6 +73,9 @@ namespace OpenLib.Events
             if(cleanedText.Length > 0) //prevent errors being thrown from invalid text
             {
                 string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length == 0)
+                    return node;
+
                 if (CommonTerminal.TryGetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
                 {
                     node = retrieveNode;
@@ -90,9 +93,6 @@ namespace OpenLib.Events
                 Plugin.MoreLogs($"node found: {node.name}");
             }
 
-            
-
-            
             return node;
         }
 
