@@ -31,7 +31,7 @@ namespace OpenLib.ConfigManager
         public static Dictionary<string, string> ParseKeyValuePairs(string data)
         {
             var dictionary = new Dictionary<string, string>();
-            if (data.IsNullOrWhiteSpace()) 
+            if (data.IsNullOrWhiteSpace())
                 return dictionary;
 
             // Split by comma to get key-value pairs

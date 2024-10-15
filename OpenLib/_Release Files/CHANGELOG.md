@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.3]
+ - Added GetCam function for OpenBodyCams Compat with suitsTerminal upcoming update
+ - Added Homebrew camera methods (from suitsTerminal/terminalstuff)
+	- Updated homebrew cam compatibility with: TooManyEmotes, MirrorDecor, and ModelReplacementAPI
+ - Updated some OpenBodyCams stuff
+ - Added patch for detecting emotes (works with TME)
+ - Some more code cleanup
+
+## [0.2.2]
+ - General Code Cleanup
+ - Added new method AddSpecialListString to identify manually commands that accept any input
+	- Also modified this behavior to be a bit more forgiving with where to expect the string
+ - Added new overload for SetBMXCompat which does not need Version as a param
+
 ## [0.2.1]
  - Fixed issue where new compatible nouns were not deleted on exit to main menu
  - Fixed issue with blank terminal input throwing errors

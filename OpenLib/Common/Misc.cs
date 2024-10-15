@@ -69,7 +69,7 @@ namespace OpenLib.Common
 
 
         // ----------------- Obsolete Old Methods ----------------- //
-        
+
         [Obsolete("Use TryGetHostClientID instead to avoid NRE")]
         public static int HostClientID()
         {

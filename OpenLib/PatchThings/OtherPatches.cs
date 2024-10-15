@@ -45,6 +45,15 @@ namespace OpenLib
 
     }
 
+    [HarmonyPatch(typeof(PlayerControllerB), "StartPerformingEmoteServerRpc")]
+    public class EmotePatch
+    {
+        public static void Postfix()
+        {
+            EventManager.PlayerEmote.Invoke();
+        }
+    }
+
     public class SpawnPatch
     {
         [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]
@@ -65,7 +74,7 @@ namespace OpenLib
             EventManager.TeleporterAwake.Invoke(__instance);
         }
 
-        
+
     }
 
     [HarmonyPatch(typeof(GameNetworkManager), "Start")]

@@ -1,7 +1,5 @@
-﻿using BepInEx;
-using BepInEx.Bootstrap;
+﻿using BepInEx.Bootstrap;
 using OpenLib.Compat;
-using System;
 using System.Reflection;
 
 namespace OpenLib.Common
@@ -24,7 +22,7 @@ namespace OpenLib.Common
             {
                 LethalConfigSoft.LethalConfigVersion = LethalConfigSoft.GetVersion("ainavt.lc.lethalconfig");
                 Plugin.Spam("LethalConfig functions enabled!");
-            } 
+            }
             if (SoftCompatibility("Zaggy1024.OpenBodyCams", ref Plugin.instance.OpenBodyCamsMod))
             {
                 Plugin.Spam("OpenBodyCams by Zaggy1024 detected!");
@@ -33,6 +31,14 @@ namespace OpenLib.Common
             {
                 Plugin.Spam("TwoRadarMaps by Zaggy1024 detected!");
             }
+            if (SoftCompatibility("meow.ModelReplacementAPI", ref Plugin.instance.ModelReplacement))
+                Plugin.Spam("ModelReplacementAPI detected!");
+
+            if (SoftCompatibility("FlipMods.TooManyEmotes", ref Plugin.instance.TooManyEmotes))
+                Plugin.Spam("TooManyEmotes by FlipMods detected!");
+
+            if (SoftCompatibility("quackandcheese.mirrordecor", ref Plugin.instance.MirrorDecor))
+                Plugin.Spam("MirrorDecor detected!");
         }
         internal static void OnGameStart()
         {
@@ -46,7 +52,7 @@ namespace OpenLib.Common
             {
                 string YourPluginName = Assembly.GetCallingAssembly().GetName().Name;
                 isDetected = true;
-                if(Plugin.PluginInfo.PLUGIN_NAME != YourPluginName)
+                if (Plugin.PluginInfo.PLUGIN_NAME != YourPluginName)
                     Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
                 return isDetected;
             }

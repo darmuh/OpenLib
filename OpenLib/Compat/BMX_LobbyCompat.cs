@@ -23,6 +23,27 @@ namespace OpenLib.Compat
             }
         }
 
+        public static bool SetBMXCompat(bool isNetworked) //for public use, no version necessary
+        {
+            if (!Plugin.instance.LobbyCompat)
+            {
+                return false;
+            }
+
+            Version version = Assembly.GetCallingAssembly().GetName().Version;
+
+            if (isNetworked)
+            {
+                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
+                return true;
+            }
+            else
+            {
+                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+                return true;
+            }
+        }
+
         public static bool SetBMXCompat(bool isNetworked, Version version) //for public use
         {
             if (!Plugin.instance.LobbyCompat)

@@ -17,7 +17,7 @@ namespace OpenLib.Menus
         public List<TerminalMenuItem> menuItems;
 
         //TerminalStuff
-        public Dictionary<string,TerminalNode> terminalNodePerCategory = [];
+        public Dictionary<string, TerminalNode> terminalNodePerCategory = [];
         public List<Dictionary<string, List<string>>> categoryLists = [];
         public List<TerminalNode> terminalNodes = [];
 
@@ -31,7 +31,7 @@ namespace OpenLib.Menus
             this.terminalNodes.Clear();
         }
 
-            }
+    }
 
     public class TerminalMenuItem
     {
@@ -44,7 +44,7 @@ namespace OpenLib.Menus
         public void Delete()
         {
             this.itemDescription = "";
-            
+
             this.Category = "";
             this.ItemName = "";
 

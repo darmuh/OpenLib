@@ -2,7 +2,6 @@
 using OpenLib.Menus;
 using System;
 using System.Collections.Generic;
-using UnityEngine.Video;
 
 namespace OpenLib.ConfigManager
 {
@@ -171,5 +170,5 @@ namespace OpenLib.ConfigManager
             return false;
         }
     }
-    
+
 }

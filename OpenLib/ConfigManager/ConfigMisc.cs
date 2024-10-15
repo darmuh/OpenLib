@@ -10,7 +10,7 @@ namespace OpenLib.ConfigManager
         {
             foreach (ManagedConfig item in managedItems)
             {
-                if(item.configDescription == entryBase.Description.Description)
+                if (item.configDescription == entryBase.Description.Description)
                 {
                     if (entryBase.BoxedValue.GetType() == typeof(bool))
                     {
@@ -61,7 +61,7 @@ namespace OpenLib.ConfigManager
             }
             else
                 return true;
-            
+
         }
     }
 }

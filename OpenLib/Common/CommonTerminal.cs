@@ -1,7 +1,6 @@
-﻿using OpenLib.ConfigManager;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace OpenLib.Common
 {
@@ -17,15 +16,27 @@ namespace OpenLib.Common
 
         public static bool TryGetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing, out TerminalNode returnNode)
         {
+            returnNode = null!;
+
+            if (query.Length == 0)
+                return false;
+
+            string[] words = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (!nodeListing.Any(x => words.Contains(x.Key.ToLower())))
+                return false;
+
             foreach (KeyValuePair<string, TerminalNode> pairValue in nodeListing)
             {
-                if (pairValue.Key == query)
+                if (words.Any(x => x.ToLower() == pairValue.Key.ToLower()))
                 {
                     returnNode = pairValue.Value;
                     return true;
                 }
             }
-            returnNode = null!;
+
+
+
             return false; // No matching command found for the given query
         }
 

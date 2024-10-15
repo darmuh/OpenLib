@@ -20,9 +20,9 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.2.1";
+            public const string PLUGIN_VERSION = "0.2.3";
         }
-        
+
         internal static ManualLogSource Log;
 
         //Compatibility
@@ -31,6 +31,9 @@ namespace OpenLib
         public bool LethalConfig = false;
         public bool OpenBodyCamsMod = false;
         public bool TwoRadarMapsMod = false;
+        public bool ModelReplacement = false;
+        public bool TooManyEmotes = false;
+        public bool MirrorDecor = false;
 
         public static List<TerminalKeyword> keywordsAdded = [];
         public static List<TerminalNode> nodesAdded = [];
@@ -44,7 +47,7 @@ namespace OpenLib
         {
             instance = this;
             Log = base.Logger;
-            Log.LogInfo((object)$"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
+            Log.LogInfo($"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
             ConfigSetup.defaultManaged = [];
             ConfigSetup.defaultListing = new();
             CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
@@ -84,7 +87,7 @@ namespace OpenLib
 
         internal static void WARNING(string message)
         {
-            Log.LogWarning(message); 
+            Log.LogWarning(message);
         }
     }
 

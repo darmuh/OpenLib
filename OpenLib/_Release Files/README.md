@@ -2,7 +2,7 @@
 
 ### Open-source development library for LethalCompany
 
-- This is a library of commonly used methods from darmuh's mods. Allowing for flexible additions to the terminal.
+- This is a library of commonly used methods from darmuh's mods. Allowing for flexible additions to the terminal and unified game patching.
 - This will remain open to the public for collaborative efforts. All I ask is that you maintain compatibility with any mod that uses this library.
 
 

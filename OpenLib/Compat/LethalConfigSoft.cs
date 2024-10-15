@@ -20,7 +20,7 @@ namespace OpenLib.Compat
 
             Plugin.Spam($"Queuing file {configName.ConfigFilePath}");
             LethalConfigManager.QueueCustomConfigFileForLateAutoGeneration(configName);
-            
+
         }
 
         public static bool IsLethalConfigUpdated()
@@ -59,7 +59,7 @@ namespace OpenLib.Compat
                 return;
             Assembly Caller = Assembly.GetCallingAssembly();
             Plugin.MoreLogs($"AddLoadCodeButton called from {Caller.GetName().Name}!\nName: {name}\nDescription: {description}\nButtonText: {buttonText}");
-            
+
 
             LethalConfigManager.AddConfigItem(new GenericButtonConfigItem(section, name, description, buttonText, () =>
             {

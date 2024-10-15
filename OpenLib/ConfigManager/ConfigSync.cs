@@ -18,9 +18,9 @@ namespace OpenLib.ConfigManager
         public static void UpdateFromHost(string key, bool value, ConfigFile myConfig)
         {
             //call this on clients in RPC
-            if(ConfigHelper.TryFindConfigItem(key, myConfig, out ConfigEntryBase entry))
+            if (ConfigHelper.TryFindConfigItem(key, myConfig, out ConfigEntryBase entry))
             {
-                if(entry.GetType() == typeof(bool))
+                if (entry.GetType() == typeof(bool))
                 {
                     ConfigEntry<bool> configEntry = entry as ConfigEntry<bool>;
                     if (configEntry.Value == value)
@@ -29,7 +29,7 @@ namespace OpenLib.ConfigManager
                     {
                         configEntry.Value = value;
                         Plugin.WARNING($"Config sync has updated {key} to {value}");
-                    }    
+                    }
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace OpenLib.ConfigManager
             return [.. myConfig.GetConfigEntries()];
         }
 
-        public static Dictionary<string,string> ConfigStrings(List<ConfigEntryBase> myConfig)
+        public static Dictionary<string, string> ConfigStrings(List<ConfigEntryBase> myConfig)
         {
             Dictionary<string, string> items = [];
 
@@ -111,12 +111,12 @@ namespace OpenLib.ConfigManager
 
             foreach (ConfigEntryBase item in myConfig)
             {
-                if(item.BoxedValue.GetType() == typeof(string))
+                if (item.BoxedValue.GetType() == typeof(string))
                 {
                     ConfigEntry<string> value = item as ConfigEntry<string>;
                     items.Add(item.Definition.Key, value.Value);
                 }
-                
+
             }
             return items;
         }

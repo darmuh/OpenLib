@@ -2,7 +2,6 @@
 using OpenLib.Events;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 
 namespace OpenLib.CoreMethods
@@ -59,7 +58,7 @@ namespace OpenLib.CoreMethods
             bool funcFound = false;
             int looptimes = 0;
 
-            foreach(MainListing listing in providedListing)
+            foreach (MainListing listing in providedListing)
             {
                 if (listing.Listing.Count < 1)
                     continue;
@@ -94,14 +93,14 @@ namespace OpenLib.CoreMethods
         public static bool GetDisplayFromFaux(List<FauxKeyword> fauxWords, string words, ref TerminalNode node)
         {
             Plugin.Spam($"GetDisplayFromFaux {words}");
-            foreach(FauxKeyword keyword in fauxWords)
+            foreach (FauxKeyword keyword in fauxWords)
             {
-                if(keyword.ResultFunc == null || keyword.Keyword == null || keyword.MainPage == null)
+                if (keyword.ResultFunc == null || keyword.Keyword == null || keyword.MainPage == null)
                     continue;
 
                 keyword.thisNode.displayText = "";
 
-                if(words.StartsWith(keyword.Keyword.Substring(0, 4), true, null) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
+                if (words.StartsWith(keyword.Keyword.Substring(0, 4), true, null) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
                 {
                     if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
                         keyword.GetConfirm = true;
@@ -109,7 +108,7 @@ namespace OpenLib.CoreMethods
                     node = keyword.thisNode;
                     return true;
                 }
-                else if(Plugin.instance.Terminal.currentNode == keyword.thisNode && keyword.GetConfirm)
+                else if (Plugin.instance.Terminal.currentNode == keyword.thisNode && keyword.GetConfirm)
                 {
                     if (words.StartsWith("c", false, null))
                     {
@@ -117,18 +116,18 @@ namespace OpenLib.CoreMethods
                         node = keyword.thisNode;
                         keyword.GetConfirm = false;
                     }
-                        
+
                     else if (words.StartsWith("d", false, null))
                     {
                         keyword.thisNode.displayText = keyword.DenyFunc();
                         node = keyword.thisNode;
                         keyword.GetConfirm = false;
-                    }       
+                    }
                     else if (words.StartsWith(keyword.Keyword, false, null))
                     {
                         keyword.thisNode.displayText = keyword.ResultFunc();
                         node = keyword.thisNode;
-                    }     
+                    }
                     else
                         return false;
 

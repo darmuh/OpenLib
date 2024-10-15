@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using BepInEx.Configuration;
-using static OpenLib.CoreMethods.DynamicBools;
-using static OpenLib.CoreMethods.CommonThings;
-using OpenLib.Menus;
-using OpenLib.ConfigManager;
+﻿using BepInEx.Configuration;
 using OpenLib.Common;
+using OpenLib.ConfigManager;
+using OpenLib.Menus;
+using System;
+using System.Collections.Generic;
+using static OpenLib.CoreMethods.CommonThings;
+using static OpenLib.CoreMethods.DynamicBools;
 
 namespace OpenLib.CoreMethods
 {
@@ -157,14 +157,14 @@ namespace OpenLib.CoreMethods
 
             allKeywordsList.Add(terminalKeyword);
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
-            
+
             if (!Plugin.nodesAdded.Contains(terminalNode))
                 Plugin.nodesAdded.Add(terminalNode);
 
-            if(!Plugin.keywordsAdded.Contains(terminalKeyword))
+            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
                 Plugin.keywordsAdded.Add(terminalKeyword);
 
-            if(category.ToLower() == "other" && otherNode != null)
+            if (category.ToLower() == "other" && otherNode != null)
             {
                 AddToExistingNodeText($"{keywordDescription}", ref otherNode);
                 Plugin.Spam("adding node to other listing");
@@ -172,18 +172,18 @@ namespace OpenLib.CoreMethods
         }
 
         //for use without referring to specific config items
-        public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "") 
+        public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
             TerminalNode returnNode = null;
             List<string> keywords = [];
             if (stringValue != null)
                 keywords = CommonStringStuff.GetKeywordsPerConfigItem(stringValue);
 
-            foreach(string keyword in keywords)
+            foreach (string keyword in keywords)
             {
                 returnNode = BaseCommandCreation(nodeName, keyword, commandAction, clearText, CommandType, yourModListing, price, ConfirmAction, DenyAction, confirmText, denyText, alwaysInStock, maxStock, storeName, reuseFunc, itemList);
             }
-            
+
 
             if (returnNode == null)
                 Plugin.WARNING("Returning NULL terminal node @AddNodeManual!!!");
@@ -192,7 +192,7 @@ namespace OpenLib.CoreMethods
         }
 
         //when you want to refer to config items for management but also want a terminalnode returned to you
-        public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string>ConfirmAction = null, Func<string>DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
+        public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
             TerminalNode returnNode = null;
             List<string> keywords = [];
@@ -203,7 +203,7 @@ namespace OpenLib.CoreMethods
                 keywords = CommonStringStuff.GetKeywordsPerConfigItem(stringValue.Value);
             }
 
-            foreach(string keyword in keywords)
+            foreach (string keyword in keywords)
             {
                 returnNode = BaseCommandCreation(nodeName, keyword, commandAction, clearText, CommandType, yourModListing, price, ConfirmAction, DenyAction, confirmText, denyText, alwaysInStock, maxStock, storeName, reuseFunc, itemList);
             }
@@ -266,7 +266,7 @@ namespace OpenLib.CoreMethods
             yourModListing.Listing.Add(terminalNode, commandAction);
             Plugin.Spam("func added to listing");
 
-            if(!isNextPageCommand)
+            if (!isNextPageCommand)
             {
                 terminalMenu.terminalNodePerCategory.Add(keyWord, terminalNode);
                 Plugin.Spam("added terminalNode to menus nodelisting");
@@ -304,7 +304,7 @@ namespace OpenLib.CoreMethods
 
         public static void AddToFauxListing(FauxKeyword fauxWord, MainListing yourListing)
         {
-            if(fauxWord.MainPage != null)
+            if (fauxWord.MainPage != null)
                 yourListing.fauxKeywords.Add(fauxWord);
         }
 
@@ -326,7 +326,7 @@ namespace OpenLib.CoreMethods
                 nodeName = managedBool.nodeName;
                 Plugin.Spam($"using nodeName: {nodeName}");
             }
-                
+
             bool clearText = managedBool.clearText;
 
             TerminalNode terminalNode = BaseCommandCreation(nodeName, keyWord, commandAction, managedBool.clearText, managedBool.CommandType, yourModListing, managedBool.price, managedBool.ConfirmAction, managedBool.DenyAction, managedBool.confirmText, managedBool.denyText, managedBool.alwaysInStock, managedBool.maxStock, managedBool.storeName, managedBool.reuseFunc, managedBool.itemList);
@@ -401,7 +401,7 @@ namespace OpenLib.CoreMethods
 
         public static void StoreStuff(string nodeName, string storeName, ref TerminalKeyword keyword, ref TerminalNode node, int price, bool alwaysInStock, int maxStock, ref CompatibleNoun confirm, ref CompatibleNoun deny)
         {
-           
+
             node.terminalOptions = [confirm, deny];
 
             UnlockableItem storeItem = AddUnlockable(nodeName, node, alwaysInStock, maxStock);
@@ -483,7 +483,7 @@ namespace OpenLib.CoreMethods
                 Plugin.Log.LogWarning("AddToKeyword called on non-verb");
                 return;
             }
-                
+
             newWord.defaultVerb = originalKeyword;
             Plugin.Spam($"Added verb {originalKeyword.word} to {newWord.word}");
 
@@ -508,16 +508,16 @@ namespace OpenLib.CoreMethods
 
             List<CompatibleNoun> originalNouns = [.. originalWord.compatibleNouns];
 
-            foreach(CompatibleNoun compatibleNoun in originalNouns)
+            foreach (CompatibleNoun compatibleNoun in originalNouns)
             {
-                if(compatibleNoun.noun.word.ToLower()  == word.ToLower())
+                if (compatibleNoun.noun.word.ToLower() == word.ToLower())
                 {
                     Plugin.WARNING($"NOUN: {compatibleNoun.noun.word} already exists for WORD: {originalWord.word}");
                     return;
                 }
             }
 
-            if(TryGetKeyword(word, out TerminalKeyword terminalKeyword))
+            if (TryGetKeyword(word, out TerminalKeyword terminalKeyword))
             {
                 CompatibleNoun newNoun = new();
                 newNoun.noun = terminalKeyword;
@@ -533,7 +533,7 @@ namespace OpenLib.CoreMethods
             {
                 Plugin.WARNING($"word: {word} does not exist, unable to add as compatible noun");
             }
-     
+
         }
 
         public static TerminalNode BaseCommandCreation(string nodeName, string keyWord, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, bool alwaysInStock, int maxStock, string storeName, bool reuseFunc, string itemList)

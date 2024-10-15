@@ -10,7 +10,7 @@ namespace OpenLib.ConfigManager
         public static List<string> GetAcceptableValues(AcceptableValueBase acceptableValueBase)
         {
             List<string> result = [];
-            if(acceptableValueBase == null)
+            if (acceptableValueBase == null)
                 return result;
             else
             {
@@ -33,7 +33,7 @@ namespace OpenLib.ConfigManager
                 Plugin.Spam(description);
                 //# Acceptable value range: From 0 to 100
                 //# Acceptable value range: From 0.1 to 10
-                description = description.Replace("# Acceptable value range: From ", "").Replace("to","").Replace(" ", ",");
+                description = description.Replace("# Acceptable value range: From ", "").Replace("to", "").Replace(" ", ",");
                 result = CommonStringStuff.GetFloatListFromStringList(CommonStringStuff.GetKeywordsPerConfigItem(description, ','));
                 return result;
             }

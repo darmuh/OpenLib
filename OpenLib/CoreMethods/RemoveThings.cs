@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static OpenLib.CoreMethods.DynamicBools;
 
 namespace OpenLib.CoreMethods
 {
@@ -15,9 +14,19 @@ namespace OpenLib.CoreMethods
             Plugin.Spam("OnTerminalDisable called");
             DeleteAllNodes(ref Plugin.nodesAdded);
             DeleteAllNouns(ref Plugin.nounsAdded); //keywords follows this method
-            if (CamStuff.MirrorObject != null)
-                GameObject.Destroy(CamStuff.MirrorObject);
+            DeleteCams();
             ConfigSetup.defaultListing.DeleteAll();
+        }
+
+        private static void DeleteCams()
+        {
+            if (CamStuff.CameraData != null)
+                GameObject.Destroy(CamStuff.CameraData);
+
+            if (CamStuff.ObcCameraHolder != null)
+                GameObject.Destroy(CamStuff.ObcCameraHolder);
+            if (CamStuff.ObcCameraHolder != null)
+                GameObject.Destroy(CamStuff.ObcCameraHolder);
         }
 
         [Obsolete("Probably dont need to do this anymore")]
@@ -27,7 +36,7 @@ namespace OpenLib.CoreMethods
             List<CompatibleNoun> nounsToRemove = [];
             foreach (CompatibleNoun compatibleNoun in keywordList)
             {
-                if(compatibleNoun.noun.word.ToLower() == terminalKeyword.ToLower())
+                if (compatibleNoun.noun.word.ToLower() == terminalKeyword.ToLower())
                 {
                     nounsToRemove.Add(compatibleNoun);
                 }
@@ -47,10 +56,10 @@ namespace OpenLib.CoreMethods
         {
             bool removedWord = false;
 
-            if(mainWord.compatibleNouns != null)
+            if (mainWord.compatibleNouns != null)
             {
                 List<CompatibleNoun> newList = [];
-                foreach(CompatibleNoun noun in mainWord.compatibleNouns)
+                foreach (CompatibleNoun noun in mainWord.compatibleNouns)
                 {
                     if (noun.noun != wordToRemove)
                         newList.Add(noun);
@@ -91,7 +100,7 @@ namespace OpenLib.CoreMethods
 
         public static void DeleteAllNouns(ref List<CompatibleNoun> nounsToDelete)
         {
-            if(nounsToDelete.Count == 0)
+            if (nounsToDelete.Count == 0)
             {
                 Plugin.Spam("no nouns detected to delete");
                 DeleteAllKeywords(ref Plugin.keywordsAdded);
@@ -114,7 +123,7 @@ namespace OpenLib.CoreMethods
                             keyword.compatibleNouns = [.. newList];
                             Plugin.Spam($"{noun.noun.word} removed from word: {keyword.word}");
                         }
-                            
+
                         else
                             Plugin.WARNING($"Unable to remove compatible noun: {noun.noun.word} from word: {keyword.word}");
                     }
@@ -146,7 +155,7 @@ namespace OpenLib.CoreMethods
                         Plugin.Spam($"Removing {keyword.word} from all keywords list");
                         allKeywords.RemoveAt(i);
                         break;
-                    }     
+                    }
                 }
             }
 

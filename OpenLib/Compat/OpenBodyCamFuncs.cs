@@ -3,9 +3,8 @@ using OpenBodyCams.API;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using static OpenLib.Common.CamStuff;
-using OpenLib.Common;
+using Object = UnityEngine.Object;
 
 namespace OpenLib.Compat
 {
@@ -39,6 +38,19 @@ namespace OpenLib.Compat
                 return true;
             else
                 return false;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static Camera GetCam(MonoBehaviour mono)
+        {
+            BodyCamComponent bodycam = mono as BodyCamComponent;
+            if (bodycam != null)
+                return bodycam.GetCamera();
+            else
+            {
+                Plugin.WARNING("Unable to grab bodycamcomponent @GetCam");
+                return null;
+            }
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -193,11 +205,11 @@ namespace OpenLib.Compat
         // from suitsTerminal
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void OpenBodyCamsMirror(string res, float zoom, bool ortho)
+        public static void OpenBodyCamsMirror(string res, float zoom, bool ortho, ref GameObject CamHolder)
         {
             Plugin.MoreLogs("OBC - Getting ZaggyCam texture OpenBodyCamsMirror()");
             if ((TerminalMirrorCam == null || TerminalMirrorCam.gameObject == null || ((BodyCamComponent)TerminalMirrorCam) == null))
-                CreateTerminalMirror(res, zoom, ortho);
+                CreateTerminalMirror(res, zoom, ortho, CamHolder);
 
             Plugin.MoreLogs($"OBC - Attempting to grab targetTexture");
             SetMirrorCamTexture(((BodyCamComponent)TerminalMirrorCam).GetCamera().targetTexture);
@@ -206,20 +218,23 @@ namespace OpenLib.Compat
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void OpenBodyCamsMirrorStatus(bool state, string res, float zoom, bool ortho)
+        public static void OpenBodyCamsMirrorStatus(bool state, string res, float zoom, bool ortho, ref GameObject CamHolder)
         {
             Plugin.MoreLogs($"OBC - OpenBodyCamsMirrorStatus() state: {state}");
             if (state)
-                OpenBodyCamsMirror(res, zoom, ortho);
+                OpenBodyCamsMirror(res, zoom, ortho, ref CamHolder);
             else
-                TerminalCameraStatus(state);
+                TerminalMirrorStatus(state);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void CreateTerminalMirror(string res, float zoom, bool ortho)
+        public static void CreateTerminalMirror(string res, float zoom, bool ortho, GameObject CameraHolder)
         {
             if (!Plugin.instance.OpenBodyCamsMod)
                 return;
+
+            if (CameraHolder == null)
+                CameraHolder = new("ObcCamHolder");
 
             ToggleOpenCams(false, true);
 
@@ -240,12 +255,12 @@ namespace OpenLib.Compat
             terminalMirrorCam.OnBlankedSet += CamIsBlanked;
 
             terminalMirrorCam.Resolution = GetResolutionForOBC(res);
-            terminalMirrorCam.SetTargetToTransform(MirrorObject.transform);
+            terminalMirrorCam.SetTargetToTransform(CameraHolder.transform);
             Camera cam = terminalMirrorCam.GetCamera();
             cam.gameObject.name = "OpenLib OBC mirrorcam";
             SetMirrorCamTexture(cam.targetTexture);
 
-            CamInitMirror(cam, zoom, ortho);
+            CamInitMirror(CameraHolder, cam, zoom, ortho);
             Plugin.MoreLogs("OBC - TerminalStuff obc mirrorcam created!");
         }
 
@@ -284,7 +299,7 @@ namespace OpenLib.Compat
         private static void ResetTransform(Camera cam)
         {
             Plugin.MoreLogs("OBC - ResetTransform Called!");
-            CamInitMirror(cam, -1, false);
+            CamInitMirror(((BodyCamComponent)TerminalMirrorCam).gameObject, cam, -1, false);
         }
 
         private static Vector2Int GetResolutionForOBC(string configItem)

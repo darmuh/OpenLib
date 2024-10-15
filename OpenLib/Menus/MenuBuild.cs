@@ -53,7 +53,7 @@ namespace OpenLib.Menus
             List<TerminalMenuItem> myMenuItems = [];
             foreach (ManagedConfig m in managedBools)
             {
-                if (m.menuItem != null)
+                if (m.menuItem != null && m.KeywordList.Count > 0)
                 {
                     myMenuItems.Add(m.menuItem);
                 }

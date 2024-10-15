@@ -12,7 +12,7 @@ namespace OpenLib.CoreMethods
         //public int count = 0;
         public List<TerminalNode> terminalNodes = [];
         public List<TerminalKeyword> terminalKeywords = [];
-        public Dictionary<TerminalNode,Func<string>> Listing = [];
+        public Dictionary<TerminalNode, Func<string>> Listing = [];
         public List<TerminalNode> shopNodes = [];
         public List<FauxKeyword> fauxKeywords = [];
 
@@ -52,13 +52,13 @@ namespace OpenLib.CoreMethods
 
             if (listingName == null)
                 Plugin.ERROR("InitListing still null");
-           
+
         }
 
         public static void GetCommandsToAdd(List<ManagedConfig> managedBools, MainListing listingName)
         {
             Plugin.MoreLogs("GetCommandsToAdd");
-            if(managedBools == null || listingName == null)
+            if (managedBools == null || listingName == null)
             {
                 Plugin.Spam("params are null");
                 return;
@@ -66,9 +66,9 @@ namespace OpenLib.CoreMethods
 
             Plugin.Spam($"listing count: {listingName.Listing.Count}");
 
-            foreach(ManagedConfig m in managedBools)
+            foreach (ManagedConfig m in managedBools)
             {
-                if(m.BoolValue)
+                if (m.BoolValue)
                 {
                     Plugin.Spam("configvalue is true");
 
@@ -77,10 +77,10 @@ namespace OpenLib.CoreMethods
                         m.menuItem = matchItem;
 
                     Plugin.MoreLogs($"{m.ConfigItemName} found in managed bools and is active");
-                    if(m.KeywordList != null)
+                    if (m.KeywordList != null)
                     {
                         AddCommandKeyword(m, listingName);
-                        if(m.categoryText.ToLower() == "other")
+                        if (m.categoryText.ToLower() == "other")
                         {
                             if (!LogicHandling.TryGetFromAllNodes("OtherCommands", out TerminalNode otherNode))
                             {
@@ -89,7 +89,7 @@ namespace OpenLib.CoreMethods
                             else
                                 AddingThings.AddToExistingNodeText($"\n{m.configDescription}", ref otherNode);
                         }
-                    }      
+                    }
                 }
                 else
                 {
@@ -101,7 +101,7 @@ namespace OpenLib.CoreMethods
 
         public static void AddCommandKeyword(ManagedConfig managedBool, MainListing listingName)
         {
-            if(managedBool == null)
+            if (managedBool == null)
             {
                 Plugin.ERROR("managedBool is null @AddCommandKeyword()");
                 return;
@@ -114,23 +114,23 @@ namespace OpenLib.CoreMethods
             }
 
             Plugin.Spam("AddCommandKeyword starting:");
-                
+
             foreach (string keyword in managedBool.KeywordList)
             {
                 Plugin.Spam($"adding {keyword}");
                 GenerateInfoText(managedBool);
                 managedBool.TerminalNode = AddingThings.CreateNode(managedBool, keyword, listingName);
-                
-                if(DynamicBools.TryGetKeyword("info", out TerminalKeyword infoWord))
+
+                if (DynamicBools.TryGetKeyword("info", out TerminalKeyword infoWord))
                     AddingThings.InfoText(managedBool, keyword, infoWord, listingName);
-                
+
                 if (managedBool.specialNum != -1 && !listingName.specialListNum.ContainsKey(managedBool.TerminalNode)) //viewnodes
                 {
                     listingName.specialListNum.Add(managedBool.TerminalNode, managedBool.specialNum);
                     listingName.ListNumToString.Add(managedBool.specialNum, managedBool.specialString);
                     Plugin.MoreLogs($"Added viewnode types to dictionaries, {managedBool.specialNum}");
                 }
-                else if(managedBool.specialString.Length > 1) //dynamic commands (take any input)
+                else if (managedBool.specialString.Length > 1) //dynamic commands (take any input)
                 {
                     listingName.specialListString.Add(keyword, managedBool.TerminalNode);
                     Plugin.MoreLogs($"mapping keyword{keyword} for {managedBool.specialString} node");
@@ -162,6 +162,24 @@ namespace OpenLib.CoreMethods
                 Plugin.Spam("no menu items to grab description from");
             else
                 managedBool.DefaultInfoText();
+        }
+
+        public static void AddSpecialListString(ref MainListing listingName, TerminalNode node, string special)
+        {
+            if (listingName.Listing.ContainsKey(node))
+            {
+                if (listingName.specialListString.ContainsKey(special))
+                {
+                    Plugin.WARNING($"Listing already contains special string key {special}");
+                    return;
+                }
+                else
+                {
+                    listingName.specialListString.Add(special, node);
+                    Plugin.Spam($"{node.name} added to special string listing with key {special}");
+                }
+            }
+
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using BepInEx.Configuration;
+using OpenLib.Common;
 using OpenLib.CoreMethods;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using OpenLib.Common;
 
 namespace OpenLib.ConfigManager
 {
@@ -45,7 +45,7 @@ namespace OpenLib.ConfigManager
             }
         }
 
-        public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", ConfigEntry<string> configString = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true,  Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+        public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", ConfigEntry<string> configString = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
         {
             List<string> keywordList = [];
             bool isStringNull = true;
@@ -72,7 +72,7 @@ namespace OpenLib.ConfigManager
 
 
                 managedItems.Add(managedBool);
-                
+
                 if (!isStringNull)
                 {
                     AddManagedString(configString, ref managedItems, managedBool);
@@ -84,7 +84,7 @@ namespace OpenLib.ConfigManager
 
         public static ManagedConfig NewManagedBool(ref List<ManagedConfig> managedItems, string configItemName, bool isEnabled, string configDescription, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
         {
-            if(ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
+            if (ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
             {
                 resultBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
                 return resultBool;
@@ -96,7 +96,7 @@ namespace OpenLib.ConfigManager
 
                 managedItems.Add(managedBool);
                 return managedBool;
-            } 
+            }
         }
 
         public static ConfigEntry<bool> MakeBool(ConfigFile ModConfig, string section, string configItemName, bool defaultValue, string configDescription)

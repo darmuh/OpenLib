@@ -1,10 +1,6 @@
 ﻿//https://github.com/AndreyMrovol/LethalMrovLib/blob/main/MrovLib/EventManager.cs
 //used above from mrov as inspiration
 
-using BepInEx.Configuration;
-using GameNetcodeStuff;
-using System.Collections.Generic;
-
 namespace OpenLib.Events
 {
     public static class EventManager
@@ -33,6 +29,7 @@ namespace OpenLib.Events
         public static Events.CustomEvent StartOfRoundStartGame = new();
         public static Events.CustomEvent StartOfRoundChangeLevel = new();
         public static Events.CustomEvent PlayerSpawn = new();
+        public static Events.CustomEvent PlayerEmote = new();
         public static Events.CustomEvent<ShipTeleporter> TeleporterAwake = new();
         public static Events.CustomEvent NormalTPFound = new();
         public static Events.CustomEvent InverseTPFound = new();

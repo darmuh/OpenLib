@@ -50,7 +50,7 @@ namespace OpenLib.Common
             }
             else
                 isNextEnabled = false;
-                
+
             return message.ToString();
         }
 
@@ -101,7 +101,7 @@ namespace OpenLib.Common
                                       .ToList();
                 //Plugin.MoreLogs("GetKeywordsPerConfigItem split complete");
             }
-                
+
             return keywordsInConfig;
         }
 
@@ -163,7 +163,7 @@ namespace OpenLib.Common
                                       .Select(item => item.TrimStart())
                                       .ToList();
             }
-            
+
             return itemList;
         }
 
@@ -171,7 +171,7 @@ namespace OpenLib.Common
         {
             List<string> itemsToLower = [];
 
-            foreach(string item in stringList)
+            foreach (string item in stringList)
             {
                 itemsToLower.Add(item.ToLower());
             }

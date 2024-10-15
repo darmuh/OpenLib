@@ -2,8 +2,6 @@
 // https://github.com/AndreyMrovol/LethalMrovLib/blob/main/MrovLib/Events/Events.cs
 // used above as template for this version of event creation
 
-using DigitalRuby.ThunderAndLightning;
-
 namespace OpenLib.Events
 {
     public class Events

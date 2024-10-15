@@ -1,9 +1,9 @@
-﻿using BepInEx.Configuration;
-using BepInEx;
+﻿using BepInEx;
+using BepInEx.Configuration;
 using System;
 using System.Collections.Generic;
-using System.IO.Compression;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using static OpenLib.ConfigManager.ConfigHelper;
 
@@ -30,12 +30,12 @@ namespace OpenLib.ConfigManager
             if (values.Count != 2)
                 return "";
 
-            configName = Common.CommonStringStuff.RemovePunctuation(configName).Replace(" ","");
+            configName = Common.CommonStringStuff.RemovePunctuation(configName).Replace(" ", "");
 
             if (values[1] > 999)
             {
                 Plugin.Spam($"clamped number-type max value too high for slider - {values[1]}");
-                return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";   
+                return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";
             }
 
             if (values[0].ToString().Contains(".") || values[1] <= 1)
@@ -309,12 +309,10 @@ function compressData(data) {
         {
             byte[] gzipBytes = Convert.FromBase64String(base64);
 
-            using (var compressedStream = new MemoryStream(gzipBytes))
-            using (var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress))
-            using (var reader = new StreamReader(gzipStream, Encoding.UTF8))
-            {
-                return reader.ReadToEnd();
-            }
+            using var compressedStream = new MemoryStream(gzipBytes);
+            using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
+            using var reader = new StreamReader(gzipStream, Encoding.UTF8);
+            return reader.ReadToEnd();
         }
 
         public static void ReadCompressedConfig(ref ConfigEntry<string> configEntry, ConfigFile ModConfig)

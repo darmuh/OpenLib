@@ -1,9 +1,9 @@
-﻿using OpenLib.ConfigManager;
-using OpenLib.CoreMethods;
+﻿using BepInEx.Configuration;
 using OpenLib.Common;
-using System;
+using OpenLib.Compat;
+using OpenLib.ConfigManager;
+using OpenLib.CoreMethods;
 using System.Collections.Generic;
-using BepInEx.Configuration;
 
 namespace OpenLib.Events
 {
@@ -21,15 +21,26 @@ namespace OpenLib.Events
             EventManager.TerminalBeginUsing.AddListener(OnUsingTerminal);
             EventManager.GameNetworkManagerStart.AddListener(StartGame.OnGameStart);
             EventManager.TeleporterAwake.AddListener(Teleporter.CheckTeleporterTypeAndAssign);
+            //EventManager.PlayerSpawn.AddListener(PlayerSpawned);
+            EventManager.PlayerEmote.AddListener(OnPlayerEmote);
         }
 
         public static void OnTerminalAwake(Terminal instance)
         {
             Plugin.instance.Terminal = instance;
-            CamStuff.MirrorObject = new();
             Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
             CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
+        }
 
+        public static void PlayerSpawned()
+        {
+            //nothing needed yet
+        }
+
+        public static void OnPlayerEmote()
+        {
+            if (Plugin.instance.TooManyEmotes)
+                TMECompat.EmoteDetected();
         }
 
         public static void OnTerminalDisable()
@@ -40,7 +51,7 @@ namespace OpenLib.Events
             TerminalStart.delayStartEnum = false;
             ListManagement.ClearLists();
 
-            foreach(ConfigFile config in configsToReload)
+            foreach (ConfigFile config in configsToReload)
             {
                 Plugin.Spam("reloading config from list");
                 config.Save();
@@ -53,6 +64,7 @@ namespace OpenLib.Events
         public static void OnTerminalStart()
         {
             TerminalStart.TerminalStartGroupDelay();
+
         }
 
         public static void OnUsingTerminal()
@@ -67,24 +79,20 @@ namespace OpenLib.Events
             {
                 Plugin.ERROR("node detected as NULL");
                 return node;
-            }          
-            
-            string cleanedText = CommonStringStuff.GetCleanedScreenText(Plugin.instance.Terminal);
-            if(cleanedText.Length > 0) //prevent errors being thrown from invalid text
+            }
+
+            string screenText = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
+            if (screenText.Length > 0) //prevent errors being thrown from invalid text
             {
-                string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (words.Length == 0)
-                    return node;
-
-                if (CommonTerminal.TryGetNodeFromList(words[0], ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
-                {
-                    node = retrieveNode;
-                    Plugin.Spam($"node found matching specialListString - {words[0]}");
-                }
-
-                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, cleanedText, ref node))
+                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
                 {
                     Plugin.MoreLogs($"faux word detected on current node!");
+                }
+
+                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
+                {
+                    node = retrieveNode;
+                    Plugin.Spam($"node found matching specialListString in text - {screenText}");
                 }
             }
 
