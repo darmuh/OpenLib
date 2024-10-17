@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.4]
+ - Added more null handling in MenuBuild.TerminalMenuItems
+
 ## [0.2.3]
  - Added GetCam function for OpenBodyCams Compat with suitsTerminal upcoming update
  - Added Homebrew camera methods (from suitsTerminal/terminalstuff)

@@ -2,6 +2,7 @@
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static OpenLib.Common.CommonStringStuff;
 
@@ -51,9 +52,19 @@ namespace OpenLib.Menus
         public static List<TerminalMenuItem> TerminalMenuItems(List<ManagedConfig> managedBools)
         {
             List<TerminalMenuItem> myMenuItems = [];
+
+            managedBools.RemoveAll(m => m == null); //remove null entries from list
+
             foreach (ManagedConfig m in managedBools)
             {
-                if (m.menuItem != null && m.KeywordList.Count > 0)
+
+                if (m.menuItem == null)
+                    continue;
+
+                if (m.KeywordList == null)
+                    continue;
+
+                if (m.KeywordList.Count > 0)
                 {
                     myMenuItems.Add(m.menuItem);
                 }
