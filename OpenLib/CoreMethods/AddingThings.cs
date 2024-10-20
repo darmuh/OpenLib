@@ -304,6 +304,12 @@ namespace OpenLib.CoreMethods
 
         public static void AddToFauxListing(FauxKeyword fauxWord, MainListing yourListing)
         {
+            if (fauxWord == null)
+                return;
+
+            if (fauxWord.Keyword == null)
+                return;
+
             if (fauxWord.MainPage != null)
                 yourListing.fauxKeywords.Add(fauxWord);
         }

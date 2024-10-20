@@ -16,6 +16,12 @@ namespace OpenLib.CoreMethods
 
         public FauxKeyword(string mainWord, string keyword, Func<string> resultFunc)
         {
+            if (keyword.Length < 3)
+            {
+                Plugin.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
+                return;
+            }
+                
             if (DynamicBools.TryGetKeyword(mainWord, out TerminalKeyword mainPage))
             {
                 this.MainPage = mainPage.specialKeywordResult;

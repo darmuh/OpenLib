@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.5]
+ - Fixed confirmation keyword issue introudced in 0.2.1(?) which would result in typing confirm by itself loading a random confirmation result.
+	- Thanks _stormyy for the report via darmuhsTerminalStuff!
+ - Removed TooManyEmotes layer override patch, was causing issues with other camera mods when my homebrew cams were not in use.
+	- Homebrew cams will now use layer23 to show the player's body
+ - Fixed issue noted with FauxKeywords throwing errors when they are too short (noted in LethalConstellations thread)
+ - Added new Update patches for Terminal/Player, currently only utilized by darmuhsTerminalStuff
+	- These patches have a boolean that disables invoking the events by default and must be enabled by the mod expecting to use them.
+
 ## [0.2.4]
  - Added more null handling in MenuBuild.TerminalMenuItems
 

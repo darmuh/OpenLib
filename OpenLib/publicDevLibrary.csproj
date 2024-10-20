@@ -176,7 +176,6 @@
     <Compile Include="Compat\LethalConfigSoft.cs" />
     <Compile Include="Compat\ModelAPI.cs" />
     <Compile Include="Compat\OpenBodyCamFuncs.cs" />
-    <Compile Include="Compat\TMECompat.cs" />
     <Compile Include="ConfigManager\ConfigHelper.cs" />
     <Compile Include="ConfigManager\ConfigMisc.cs" />
     <Compile Include="ConfigManager\ConfigSync.cs" />

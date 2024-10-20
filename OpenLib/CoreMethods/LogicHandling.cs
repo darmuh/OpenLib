@@ -100,7 +100,7 @@ namespace OpenLib.CoreMethods
 
                 keyword.thisNode.displayText = "";
 
-                if (words.StartsWith(keyword.Keyword.Substring(0, 4), true, null) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
+                if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, null) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
                 {
                     if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
                         keyword.GetConfirm = true;

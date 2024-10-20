@@ -38,6 +38,10 @@ namespace OpenLib.Events
 
         //personal events
         public static Events.CustomEvent TerminalDelayStart = new();
+        
+        //PlayerUpdate Events
+        public static Events.CustomEvent PlayerIsInShip = new();
+        public static Events.CustomEvent PlayerIsDead = new();
 
     }
 }

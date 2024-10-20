@@ -59,7 +59,6 @@ namespace OpenLib
     [HarmonyPatch(typeof(Terminal), "BeginUsingTerminal")]
     public class Terminal_Begin_Patch
     {
-
         static void Postfix()
         {
             //put event here
@@ -79,13 +78,24 @@ namespace OpenLib
         }
     }
 
-    [HarmonyPatch(typeof(Terminal), "SetTerminalInUseClientRpc")]
-    public class TerminalInUseRpcPatch
+    [HarmonyPatch(typeof(Terminal), "Update")]
+    public class TerminalUpdatePatch
     {
-        static void Postfix()
+        public static bool inUse = false;
+        public static bool usePatch = false;
+
+        static void Postfix(Terminal __instance)
         {
+            if (!usePatch) //any mod that wishes to use this patch needs to enable this
+                return;
+
             //events
-            EventManager.SetTerminalInUse.Invoke();
+            if (__instance.placeableObject.inUse != inUse)
+            {
+                inUse = __instance.placeableObject.inUse;
+                EventManager.SetTerminalInUse.Invoke();
+            }
+            
         }
     }
 

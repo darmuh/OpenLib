@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using OpenLib.Common;
-using OpenLib.Compat;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace OpenLib.Events
             EventManager.GameNetworkManagerStart.AddListener(StartGame.OnGameStart);
             EventManager.TeleporterAwake.AddListener(Teleporter.CheckTeleporterTypeAndAssign);
             //EventManager.PlayerSpawn.AddListener(PlayerSpawned);
-            EventManager.PlayerEmote.AddListener(OnPlayerEmote);
+            //EventManager.PlayerEmote.AddListener(OnPlayerEmote);
         }
 
         public static void OnTerminalAwake(Terminal instance)
@@ -30,17 +29,6 @@ namespace OpenLib.Events
             Plugin.instance.Terminal = instance;
             Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
             CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
-        }
-
-        public static void PlayerSpawned()
-        {
-            //nothing needed yet
-        }
-
-        public static void OnPlayerEmote()
-        {
-            if (Plugin.instance.TooManyEmotes)
-                TMECompat.EmoteDetected();
         }
 
         public static void OnTerminalDisable()
@@ -64,7 +52,6 @@ namespace OpenLib.Events
         public static void OnTerminalStart()
         {
             TerminalStart.TerminalStartGroupDelay();
-
         }
 
         public static void OnUsingTerminal()

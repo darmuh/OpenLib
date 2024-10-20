@@ -89,12 +89,7 @@ namespace OpenLib.Common
                 cullingMaskInt = Compat.ModelAPI.GetThirdPersonMask(cullingMaskInt);
             else
             {
-                if (Plugin.instance.TooManyEmotes)
-                {
-                    cullingMaskInt = Compat.TMECompat.CullingMaskUpdate(cullingMaskInt);
-                }
-                else if (Plugin.instance.MirrorDecor)
-                    cullingMaskInt |= (1 << 23);
+                cullingMaskInt |= (1 << 23); //show this bit since every mod likes to make the player this layer
 
                 StartOfRound.Instance.localPlayerController.thisPlayerModelArms.gameObject.layer = 5;
                 //always set model arms to UI layer when using homebrew cams (except for modelreplacementAPI)
@@ -135,6 +130,14 @@ namespace OpenLib.Common
 
             playerCam.gameObject.SetActive(active);
 
+        }
+
+        public static Camera GetCam(GameObject Container)
+        {
+            if (Container == null)
+                return null;
+
+            return Container.GetComponent<Camera>();
         }
     }
 }

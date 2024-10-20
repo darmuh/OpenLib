@@ -1,6 +1,7 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using OpenLib.Events;
+using System;
 using UnityEngine;
 
 namespace OpenLib
@@ -51,6 +52,42 @@ namespace OpenLib
         public static void Postfix()
         {
             EventManager.PlayerEmote.Invoke();
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayerControllerB), "Update")]
+    public class PlayerUpdatePatch
+    {
+        //InShipEvent
+        public static bool usePatch = false;
+        public static bool inShip = false;
+        public static bool isDead = false;
+
+        public static void Postfix(PlayerControllerB __instance)
+        {
+            if (!usePatch) //any mod that wishes to use this patch needs to enable this
+                return;
+
+            if (StartOfRound.Instance == null) //in case this doesnt exist yet
+                return;
+
+            if (StartOfRound.Instance.localPlayerController == null) //or this
+                return;
+
+            if (StartOfRound.Instance.localPlayerController != __instance) //stop from detecting other player's updates
+                return;
+
+            if(__instance.isInHangarShipRoom != inShip)
+            {
+                inShip = __instance.isInHangarShipRoom;
+                EventManager.PlayerIsInShip.Invoke();
+            }
+
+            if(__instance.isPlayerDead != isDead)
+            {
+                isDead = __instance.isPlayerDead;
+                EventManager.PlayerIsDead.Invoke();
+            }
         }
     }
 
