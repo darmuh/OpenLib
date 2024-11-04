@@ -26,7 +26,7 @@ namespace OpenLib.CoreMethods
 
             Plugin.Spam("command dictionary is not null in provided listing");
 
-            EventManager.GetNewDisplayText.Invoke(node);
+            node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
             //create event to subscribe to and perform other actions
             //like terminalstuff doing dynamic cost analysis for the store node
 
@@ -67,7 +67,7 @@ namespace OpenLib.CoreMethods
                 looptimes++;
                 Plugin.Spam($"command dictionary in this listing is not empty ({looptimes})");
 
-                EventManager.GetNewDisplayText.Invoke(node);
+                node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
                 //create event to subscribe to and perform other actions
                 //like terminalstuff doing dynamic cost analysis for the store node
 

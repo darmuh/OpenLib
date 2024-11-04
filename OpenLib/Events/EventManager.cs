@@ -21,7 +21,7 @@ namespace OpenLib.Events
         public static Events.TerminalNodeEvent TerminalParseSent = new();
         //public static Events.TerminalKeywordEvent TerminalParseWord = new();
         public static Events.CustomEvent<TerminalNode> TerminalLoadNewNode = new();
-        public static Events.CustomEvent<TerminalNode> GetNewDisplayText = new();
+        public static Events.TerminalNodeEvent GetNewDisplayText = new();
 
         //Other patch events
         public static Events.CustomEvent StartOfRoundAwake = new();
@@ -35,6 +35,7 @@ namespace OpenLib.Events
         public static Events.CustomEvent InverseTPFound = new();
         public static Events.CustomEvent GameNetworkManagerStart = new();
         public static Events.CustomEvent OnClientConnect = new();
+        public static Events.CustomEvent SpecateNextPlayer = new(); //SpectateNextPlayer
 
         //personal events
         public static Events.CustomEvent TerminalDelayStart = new();
@@ -42,6 +43,7 @@ namespace OpenLib.Events
         //PlayerUpdate Events
         public static Events.CustomEvent PlayerIsInShip = new();
         public static Events.CustomEvent PlayerIsDead = new();
+        public static Events.CustomEvent SpecatingPlayerIsInShip = new();
 
     }
 }

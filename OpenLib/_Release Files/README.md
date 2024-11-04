@@ -26,28 +26,27 @@
 - Assign new keywords to already existing nodes.
 - Event system lets you subscribe to all manners of Terminal patches. See EventUsage for examples on how to subscribe to these events.
 - Patches into the Awake method for the Teleporter class and provides referenceable Teleporter instances for both the normal teleporter and inverse teleporter
-- [NEW in 0.2.0] Config to HTML file generation. Use this to create an html page that can be used to read/modify config files.
+- Config to HTML file generation. Use this to create an html page that can be used to read/modify config files.
 	- Will generate a code at the bottom of the page that can be used to update all config items at once via a decompress method.
-	- For an example use-case, see ShipColors v0.2.0, example [here](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/ShipColors_Generated.cfg_generator.htm)
-- [NEW in 0.2.0] Faux Keywords are keywords that will only work in the terminal from within the TerminalNode they are assigned.
+	- For an example use-case, see ghostCodes v2.5.0, example [here](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/darmuh.ghostCodes.Setup.cfg_generator.htm)
+- Faux Keywords are keywords that will only work in the terminal from within the TerminalNode they are assigned.
 	- These will not overwrite existing keywords.
-	- Feature is still in testing, but is planned for use in LethalConstellations
-- [NEW in 0.2.0] Small hotfix for when terminalnodes have the acceptAnything property set to true without any valid compatible nouns.
+	- Feature is still WIP and is currently used in LethalConstellations
+- Small hotfix for when terminalnodes have the acceptAnything property set to true without any valid compatible nouns.
 	- will prevent soft locks from these particular nodes resulting in the terminal not accepting any further input.
-- [NEW in 0.2.0] Automatic info compatible nouns created for every new keyword added through this library.
-- [NEW in 0.2.0] New method for Adding compatible nouns.
-- [NEW in 0.2.0] Support methods for LethalConfig and OpenBodyCams.
+- Automatic info compatible nouns created for every new keyword added through this library.
+- New Player Update events for when a player is dead, in or out of the ship, etc. Must be enabled by the mod using
+- Add compatible nouns manually.
+- Support methods for LethalConfig and OpenBodyCams.
 
 *The plan is to have this library support all of my mods (darmuhsTerminalStuff, ghostCodes, and suitsTerminal). So this library will likely have more features in the future*
 
 Currently Supports:
- - darmuhsTerminalStuff version 3.3.0+
+ - darmuhsTerminalStuff 3.3.0+
  - suitsTerminal 1.4.0+
  - ShipColors 0.1.0+
  - LethalConstellations 0.1.0+
-
-Planned Additions:
- - ghostCodes
+ - ghostCodes 2.5.0+
 
 Icon Attribution:
 [Online library icons created by Ajmal Naha - Flaticon](https://www.flaticon.com/free-icons/online-library)

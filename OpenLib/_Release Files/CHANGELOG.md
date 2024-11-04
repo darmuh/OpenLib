@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.6]
+ - Changed GetNewDisplayText to be more useful and reference the terminal node so that you can manipulate it during the event.
+	- Was needed for filtering keywords to not run when using the CruiserTerminal in darmuhsTerminalStuff
+	- WARNING: This will break any mod that used the older version of this event! (darmuhsTerminalStuff versions 3.6.7 and earlier)
+ - Added SpecateNextPlayer event, fired when local player switches spectated player
+ - Added SpecatingPlayerIsInShip event in PlayerControllerB Update patch, fired when the currently specated player's inShip status changes
+
 ## [0.2.5]
  - Fixed confirmation keyword issue introudced in 0.2.1(?) which would result in typing confirm by itself loading a random confirmation result.
 	- Thanks _stormyy for the report via darmuhsTerminalStuff!

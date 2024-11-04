@@ -61,6 +61,7 @@ namespace OpenLib
         //InShipEvent
         public static bool usePatch = false;
         public static bool inShip = false;
+        public static bool spectate_inShip = false;
         public static bool isDead = false;
 
         public static void Postfix(PlayerControllerB __instance)
@@ -77,16 +78,37 @@ namespace OpenLib
             if (StartOfRound.Instance.localPlayerController != __instance) //stop from detecting other player's updates
                 return;
 
-            if(__instance.isInHangarShipRoom != inShip)
+            if(__instance.isInHangarShipRoom != inShip) //local player IsInShip update
             {
                 inShip = __instance.isInHangarShipRoom;
                 EventManager.PlayerIsInShip.Invoke();
             }
 
-            if(__instance.isPlayerDead != isDead)
+            if(__instance.isPlayerDead != isDead) //local player isPlayerDead update
             {
                 isDead = __instance.isPlayerDead;
                 EventManager.PlayerIsDead.Invoke();
+            }
+
+            if (__instance.isPlayerDead && __instance.spectatedPlayerScript != null) //local player is dead and spectatedPlayer is not null
+            {
+                if (__instance.spectatedPlayerScript.isInHangarShipRoom != spectate_inShip) //spectatedPlayer IsInShip update
+                {
+                    spectate_inShip = __instance.spectatedPlayerScript.isInHangarShipRoom;
+                    EventManager.SpecatingPlayerIsInShip.Invoke();
+                }
+            }
+        }
+    }
+
+    public class SpectateNextPatch
+    {
+        [HarmonyPatch(typeof(PlayerControllerB), "SpectateNextPlayer")]
+        public class PlayerSpawnPatch : MonoBehaviour
+        {
+            static void Postfix()
+            {
+                EventManager.SpecateNextPlayer.Invoke();
             }
         }
     }
