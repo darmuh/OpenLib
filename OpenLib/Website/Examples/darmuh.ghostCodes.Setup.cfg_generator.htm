@@ -1,0 +1,342 @@
+<html><title>darmuh.ghostCodes.Setup.cfg Generator</title><body class="body">
+<style>
+    .body {
+        background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
+        color: whitesmoke;
+        font: Monospace;
+        padding-top: 1px;
+        padding-right: 1px;
+        padding-bottom: 1px;
+        padding-left: 0px;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+
+    .slider {
+        margin-top: 3%;
+    }
+
+    .slider:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    .numberInput {
+        background: transparent;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4%;
+        vertical-align: super;
+    }
+
+    .checkbox {
+        margin-right: 0%;
+        margin-bottom: 1%;
+        display: inline-block;
+        margin-left: 0%;
+    }
+
+    .checkbox:focus {
+        outline: none;
+        box-shadow: 0 0 10px #fafff9;
+    }
+
+    textarea {
+        background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);
+        color: #C6A97C;
+        width: 80%;
+        height: 60px;
+        resize: vertical;
+    }
+
+    .stringInput {
+        background: #EDEFED;
+        background-color: #C6A97C;
+        text-align: left;
+        font-size: 12px;
+        border: 0px solid #ccc;
+        border-radius: 4%;
+        width: 40%;
+        padding: 2px;
+        margin-top: 1%;
+    }
+
+    .colorText {
+        width: 10%;
+        border: 1px solid #ddd;
+        border-radius: 5%;
+        box-shadow: 0 0 0px #ddd;
+    }
+
+    input[type=color] {
+        border-width: 0px;
+        border: none;
+        background: none;
+        height: 24px;
+        width: 24px;
+        vertical-align: sub;
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    input[type=color]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-width: 0px;
+        border: 1px solid #fafff9;
+        outline: none;
+    }
+    input[type=text]:focus {
+        box-shadow: 0 0 10px #fafff9;
+        border-color: #ddd;
+        outline: none;
+    }
+</style>
+<h1><center>darmuh.ghostCodes.Setup.cfg Generator</h1></center><center><p>Upload your config:<br><input type="file" id="fileInput" accept=".cfg"> <button type="button" onclick="loadFileAsText()"> Submit Config</button></p></center>
+<form id="configForm">
+<fieldset>
+<legend>Mode</legend>
+<p>PrimaryMode<br>Set the primary mode to load on all levels.<br />
+<input type="radio" id="PrimaryMode1" checked="checked" name="PrimaryMode" value="Hauntings">
+            <label for="PrimaryMode1">Hauntings</label><br>
+<input type="radio" id="PrimaryMode2" name="PrimaryMode" value="Intervals">
+            <label for="PrimaryMode2">Intervals</label><br>
+<input type="radio" id="PrimaryMode3" name="PrimaryMode" value="Insanity">
+            <label for="PrimaryMode3">Insanity</label><br>
+</p>
+<p>SecondaryMode<br>Set the secondary mode to load on all levels.<br />
+<input type="radio" id="SecondaryMode1" name="SecondaryMode" value="Hauntings">
+            <label for="SecondaryMode1">Hauntings</label><br>
+<input type="radio" id="SecondaryMode2" name="SecondaryMode" value="Intervals">
+            <label for="SecondaryMode2">Intervals</label><br>
+<input type="radio" id="SecondaryMode3" name="SecondaryMode" value="Insanity">
+            <label for="SecondaryMode3">Insanity</label><br>
+<input type="radio" id="SecondaryMode4" checked="checked" name="SecondaryMode" value="None">
+            <label for="SecondaryMode4">None</label><br>
+</p>
+<p><label for="SecondaryModeLevels">SecondaryModeLevels</label><br>Comma-separated listing of all levels that will use the mode listed in [SecondaryMode]<br /><input id="SecondaryModeLevels" name="SecondaryModeLevels" type="text" class="stringInput" value="" /><br /></p>
+<p><input id="RandomIntervals" name="RandomIntervals" class="checkbox" checked="checked" type="checkbox"/> <label for="RandomIntervals">RandomIntervals</label><br>Disable this to use the 'set' intervals, all modes use intervals on first load.<br></p>
+<p>RapidFireMaxHours<br>Set the maximum amount of hours for rapidFire to be active when on Max Insanity (Insanity Mode ONLY).
+Set to 0 to disable rapidFire<br />
+<input type="range" name="rapidfiremaxhours" id="number_slider0" value="1" min="0" max="24" oninput="number_text0.value = number_slider0.value">
+<input id="number_text0" type="text" class="numberInput" size="4" min="0" max="24" value="1" onkeypress="return /[0-9]/i.test(event.key)" oninput="number_slider0.value = number_text0.value">
+</p>
+<p><input id="SoloAssist" name="SoloAssist" class="checkbox" checked="checked" type="checkbox"/> <label for="SoloAssist">SoloAssist</label><br>Enable this to reduce sanity drain for single-player Insanity Mode<br></p>
+</fieldset>
+<fieldset>
+<legend>Codes</legend>
+<p>MinCodes<br>This is the minimum amount of ghost codes that WILL be sent in one round. If you'd like for there to be the possibility of no codes set this to 0.<br />
+<input name="mincodes" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="0" max="9999999" value="0" />
+</p>
+<p>MaxCodes<br>This is the maximum amount of ghost codes that CAN be sent in one round. If you'd like for there to be the possibility of no codes set this to 0.<br />
+<input name="maxcodes" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="0" max="9999999" value="100" />
+</p>
+<p><input id="HauntingsCountCodes" name="HauntingsCountCodes" class="checkbox" type="checkbox"/> <label for="HauntingsCountCodes">HauntingsCountCodes</label><br>Set this to true if you want hauntings to adhere to minimum/maximum code counts.<br></p>
+</fieldset>
+<fieldset>
+<legend>Misc</legend>
+<p><input id="FixGhostGirlBreakers" name="FixGhostGirlBreakers" class="checkbox" checked="checked" type="checkbox"/> <label for="FixGhostGirlBreakers">FixGhostGirlBreakers</label><br>Fix the vanilla code so that the ghost girl can flip the breakers at the start of a chase.<br></p>
+<p>VanillaBreakersChance<br>Percent chance the ghost girl will flip the breakers when beginning a chase.<br />
+<input type="range" name="vanillabreakerschance" id="number_slider3" value="20" min="0" max="100" oninput="number_text3.value = number_slider3.value">
+<input id="number_text3" type="text" class="numberInput" size="4" min="0" max="100" value="20" onkeypress="return /[0-9]/i.test(event.key)" oninput="number_slider3.value = number_text3.value">
+</p>
+<p><input id="IgnoreLandmines" name="IgnoreLandmines" class="checkbox" type="checkbox"/> <label for="IgnoreLandmines">IgnoreLandmines</label><br>Toggle whether ghostCodes ignore landmines<br></p>
+<p><input id="IgnoreTurrets" name="IgnoreTurrets" class="checkbox" type="checkbox"/> <label for="IgnoreTurrets">IgnoreTurrets</label><br>Toggle whether ghostCodes ignore turrets<br></p>
+<p><input id="IgnoreDoors" name="IgnoreDoors" class="checkbox" type="checkbox"/> <label for="IgnoreDoors">IgnoreDoors</label><br>Toggle whether ghostCodes ignore blast doors<br></p>
+</fieldset>
+<fieldset>
+<legend>Effects/Sound</legend>
+<p>AddInsanitySounds<br>How rare it is for ghostCodes to trigger insanity sounds in the facility<br />
+<input type="range" name="addinsanitysounds" id="number_slider4" value="75" min="0" max="100" oninput="number_text4.value = number_slider4.value">
+<input id="number_text4" type="text" class="numberInput" size="4" min="0" max="100" value="75" onkeypress="return /[0-9]/i.test(event.key)" oninput="number_slider4.value = number_text4.value">
+</p>
+<p>TerminalSoundChance<br>How rare it is for ghostCodes to play a sound over the terminal.<br />
+<input type="range" name="terminalsoundchance" id="number_slider5" value="100" min="0" max="100" oninput="number_text5.value = number_slider5.value">
+<input id="number_text5" type="text" class="numberInput" size="4" min="0" max="100" value="100" onkeypress="return /[0-9]/i.test(event.key)" oninput="number_slider5.value = number_text5.value">
+</p>
+<p><input id="BroadcastEffect" name="BroadcastEffect" class="checkbox" checked="checked" type="checkbox"/> <label for="BroadcastEffect">BroadcastEffect</label><br>Set this to false if you want to disable the code broadcast effect on the terminal during a ghost code event.<br></p>
+<p><input id="RapidLights" name="RapidLights" class="checkbox" checked="checked" type="checkbox"/> <label for="RapidLights">RapidLights</label><br>Disable this to remove light flashing effect during RapidFire event.
+(DISABLE THIS IF YOU HAVE SEVERE EPILEPSY)<br></p>
+<p>RapidLightsMin<br>Set shortest possible time between each light flickering effect during rapidFire event.<br />
+<input type="range" name="rapidlightsmin" id="number_slider6" value="0.2" step="0.001" min="0.1" max="10" oninput="number_text6.value = number_slider6.value">
+<input id="number_text6" type="text" class="numberInput" size="4" min="0.1" max="10" value="0.2" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider6.value = number_text6.value">
+</p>
+<p>RapidLightsMax<br>Set longest possible time between each light flickering effect during rapidFire event.<br />
+<input type="range" name="rapidlightsmax" id="number_slider7" value="0.6" step="0.001" min="0.1" max="20" oninput="number_text7.value = number_slider7.value">
+<input id="number_text7" type="text" class="numberInput" size="4" min="0.1" max="20" value="0.6" onkeypress="return /[0-9.]/i.test(event.key)" oninput="number_slider7.value = number_text7.value">
+</p>
+<p><label for="RapidLightsColorValue">RapidLightsColorValue</label><br>Determine color lights will change to during rapidFire event.
+Set to a valid hex code for color change or leave as nochange to disable color change<br /><input id="RapidLightsColorValue" name="RapidLightsColorValue" type="text" class="stringInput" value="nochange" /><br /></p>
+</fieldset>
+<fieldset>
+<legend>Intervals</legend>
+<p>FirstSetInterval<br>This is the initial time it takes to start loading codes after landing the ship<br />
+<input name="firstsetinterval" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="90" />
+</p>
+<p>SecondSetInterval<br>This is the time it takes to load the code once it has been picked<br />
+<input name="secondsetinterval" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="30" />
+</p>
+<p>SetIntervalAC<br>This is the time it waits to pick another code<br />
+<input name="setintervalac" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="180" />
+</p>
+<p>FirstRandIntervalMin<br>This is the minimum time it should take to start loading codes after landing the ship<br />
+<input name="firstrandintervalmin" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="15" />
+</p>
+<p>FirstRandIntervalMax<br>This is the maximum time it should take to start loading codes after landing the ship 
+NOTE: Must be higher than FirstRandIntervalMin!<br />
+<input name="firstrandintervalmax" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="120" />
+</p>
+<p>SecondRandIntervalMin<br>This is the minimum time it should take to load the code once it has been picked<br />
+<input name="secondrandintervalmin" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="5" />
+</p>
+<p>SecondRandIntervalMax<br>This is the maximum time it should take to load the code once it has been picked
+NOTE: Must be higher than SecondRandIntervalMin!<br />
+<input name="secondrandintervalmax" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="60" />
+</p>
+<p>RandIntervalACMin<br>This is the minimum time it should wait to pick another code<br />
+<input name="randintervalacmin" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="20" />
+</p>
+<p>RandIntervalACMax<br>This is the maximum time it should wait to pick another code
+NOTE: Must be higher than RandIntervalACMin!<br />
+<input name="randintervalacmax" type="number" onkeypress="return /[0-9.]/i.test(event.key)" class="stringInput" min="1" max="9999999" value="240" />
+</p>
+</fieldset><br /></form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+	<script>
+function serializeForm() {
+    const form = document.getElementById('configForm');
+    const elements = form.elements;
+    let result = [];
+
+    for (let element of elements) {
+                if (element.name) {
+                    if (element.type === 'radio') {
+                        if (element.checked) {
+        result.push(`${element.name}:${element.value}`);
+                        }
+                    } else if(element.type === 'checkbox') {
+                        if (element.checked) {
+        result.push(`${element.name}:true`);
+                        } else {
+        result.push(`${element.name}:false`);
+                        }
+                    } else {
+        result.push(`${element.name}:${element.value}`);
+                    }
+                }
+    }
+
+    const compressedData = compressData(result.join(';:; '));
+    document.getElementById('rawData').textContent = result.join(';:; ');
+    document.getElementById('compressedData').textContent = compressedData;
+}
+
+//MinCodes = 4
+function parseConfig(text) {
+    const lines = text.split('\n');
+    const notConfig = ['#', '['];
+
+    lines.forEach(str => {
+        if (!notConfig.some(char => str.startsWith(char))) {
+            const pair = str.split(" = ");
+            console.log("attempting to update config item on site for " + str);
+            if(pair[0] && pair[1]) //truthy
+                updateConfig(pair[0], pair[1]);
+        }
+        else {
+            console.log("below line is not a config item\n" + str);
+        }
+    });
+}
+
+function updateConfig(key, value) {
+    if (key === null || value === null) {
+        console.warn("Cannot update key-value pair, one item is NULL");
+        return;
+    }
+
+    key = key.trim();
+    value = value.trim();
+
+    const matching = document.getElementsByName(key);
+    if (matching.length === 1) {
+        const element = matching[0];
+        let typ = matching[0].getAttribute("type");
+        let next = element.nextElementSibling;
+        if (typ === "checkbox") {
+            if (value === "true")
+                element.setAttribute("checked", "checked");
+            else
+                element.removeAttribute("checked");
+        } else if (element.hasAttribute("value")) {
+            if (typ === "range") {
+                if (next !== null) {
+                    next.setAttribute("value", value);
+                    next.textContent = value;
+                }
+                element.setAttribute("value", value);
+            } else {
+                element.setAttribute("value", value);
+                element.textContent = value;
+                console.log("not a range setting values");
+            }
+            
+        } else {
+            console.warn("Unable to find attribute to update for: " + key + value);
+        }
+    } else {
+        matching.forEach(doc => {
+            if (doc.hasAttribute("type") && doc.hasAttribute("value")) {
+                let atr = doc.getAttribute("value");
+                let typ = doc.getAttribute("type");
+                if (typ === "radio") {
+                    if (atr === value) {
+                        doc.setAttribute("checked", "checked");
+                    } else {
+                        console.log("not the button we are looking for, skipping & removing attribute");
+                        doc.removeAttribute("checked");
+                    }
+                }
+            }
+        });
+    }
+}
+
+
+function loadFileAsText() {
+    var fileToLoad = document.getElementById("fileInput").files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function (fileLoadedEvent) {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        parseConfig(textFromFileLoaded);
+    };
+
+    fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+
+function clearText() {
+    document.getElementById('rawData').textContent = '';
+    document.getElementById('compressedData').textContent = '';
+		
+}
+
+
+function compressData(data) {
+
+		// Convert query string to a Uint8Array
+		const uint8Array = new TextEncoder().encode(data);
+
+    // Compress using pako
+    const compressed = pako.gzip(uint8Array);
+
+    // Convert compressed data to Base64
+    return btoa(String.fromCharCode(...new Uint8Array(compressed)));
+}
+</script>
+<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> <button type='button' onclick='clearText()'>Clear Results</button><br>
+<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br><br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>
+</body></html>
