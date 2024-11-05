@@ -10,11 +10,6 @@ namespace OpenLib.CoreMethods
     {
         public static bool GetNewDisplayText(MainListing providedListing, ref TerminalNode node)
         {
-            if (node == null)
-            {
-                Plugin.ERROR("NODE IS NULL @GetNewDisplayText");
-                return false;
-            }
 
             if (providedListing.Listing.Count == 0)
                 return false;
@@ -26,7 +21,11 @@ namespace OpenLib.CoreMethods
 
             Plugin.Spam("command dictionary is not null in provided listing");
 
-            node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
+            if (node == null)
+                return false;
+
+            if(EventManager.GetNewDisplayText.Listeners > 0) //only invoke if someone is listening to this event
+                node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
             //create event to subscribe to and perform other actions
             //like terminalstuff doing dynamic cost analysis for the store node
 
@@ -46,13 +45,11 @@ namespace OpenLib.CoreMethods
 
         public static bool GetNewDisplayText(List<MainListing> providedListing, ref TerminalNode node) //overload for multiple listings (terminalstuff)
         {
-            if (node == null)
-            {
-                Plugin.ERROR("NODE IS NULL @GetNewDisplayText");
-                return false;
-            }
 
             if (providedListing.Count == 0)
+                return false;
+
+            if (node == null)
                 return false;
 
             bool funcFound = false;
@@ -67,7 +64,8 @@ namespace OpenLib.CoreMethods
                 looptimes++;
                 Plugin.Spam($"command dictionary in this listing is not empty ({looptimes})");
 
-                node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
+                if(EventManager.GetNewDisplayText.Listeners > 0) //only invoke below if this event has listeners to avoid creating a null node!!
+                    node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
                 //create event to subscribe to and perform other actions
                 //like terminalstuff doing dynamic cost analysis for the store node
 

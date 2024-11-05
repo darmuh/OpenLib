@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.7]
+ - Fixed GetNewDisplayText event causing null terminal node errors also bricking the terminal if there were no listeners for the event (returning a null node).
+	- Will now only affect the node if the event has a listener.
+	- Thanks CoolLKKPS from github and shadow_glassen on discord for the reports!
+
 ## [0.2.6]
  - Changed GetNewDisplayText to be more useful and reference the terminal node so that you can manipulate it during the event.
 	- Was needed for filtering keywords to not run when using the CruiserTerminal in darmuhsTerminalStuff
