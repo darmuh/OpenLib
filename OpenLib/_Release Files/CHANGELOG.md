@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.8]
+ - Hotfix for OpenBodyCams API update
+
 ## [0.2.7]
  - Fixed GetNewDisplayText event causing null terminal node errors also bricking the terminal if there were no listeners for the event (returning a null node).
 	- Will now only affect the node if the event has a listener.

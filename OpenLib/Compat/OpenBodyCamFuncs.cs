@@ -249,8 +249,9 @@ namespace OpenLib.Compat
 
             TerminalMirrorCam = terminalMirrorCam;
             terminalMirrorCam.OnRenderTextureCreated += SetMirrorCamTexture;
-            Renderer[] termStuffToHide = GetStuffToHide();
-            terminalMirrorCam.OnRenderersToHideChanged += originalRenderers => [.. termStuffToHide];
+            //Renderer[] termStuffToHide = GetStuffToHide();
+            //terminalMirrorCam.OnRenderersToHideChanged += originalRenderers => [.. termStuffToHide];
+
             terminalMirrorCam.OnCameraCreated += ResetTransform;
             terminalMirrorCam.OnBlankedSet += CamIsBlanked;
 
