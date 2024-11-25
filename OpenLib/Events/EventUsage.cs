@@ -64,7 +64,7 @@ namespace OpenLib.Events
             Plugin.Spam("parsing sentence");
             if (node == null)
             {
-                Plugin.ERROR("node detected as NULL");
+                Plugin.WARNING("node detected as NULL, returning...");
                 return node;
             }
 

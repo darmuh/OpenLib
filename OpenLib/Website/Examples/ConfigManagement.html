@@ -1,0 +1,585 @@
+﻿<title>Bepinex Config Management</title>
+<html>
+<body class="body">
+    <style>
+        .body {
+            background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);
+            color: whitesmoke;
+            font: Monospace;
+            padding-top: 1px;
+            padding-right: 1px;
+            padding-bottom: 1px;
+            padding-left: 0px;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+
+        textarea {
+            padding: 5px;
+            text-align: left;
+            font-size: 12px;
+            width: 20%;
+            margin-top: 1%;
+            resize: none; /* disable resizing */
+        }
+
+        input[type=number] {
+            background: transparent;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4%;
+            vertical-align: super;
+        }
+
+        .no-spinners {
+            -moz-appearance: textfield;
+        }
+
+        .no-spinners::-webkit-outer-spin-button,
+        .no-spinners::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        legend {
+            font-size: 2em;
+        }
+
+        input[type=checkbox] {
+            margin-right: 0%;
+            margin-bottom: 1%;
+            display: inline-block;
+            margin-left: 1%;
+        }
+
+        .checkbox:focus {
+            outline: none;
+            box-shadow: 0 0 10px #fafff9;
+        }
+
+        .stringInput {
+            background: #EDEFED;
+            background-color: #C6A97C;
+            text-align: left;
+            font-size: 12px;
+            border: 0px solid #ccc;
+            border-radius: 4%;
+            width: 40%;
+            padding: 2px;
+            margin-top: 1%;
+        }
+
+        .colorText {
+            width: 10%;
+            border: 1px solid #ddd;
+            border-radius: 5%;
+            box-shadow: 0 0 0px #ddd;
+        }
+
+        input[type=color] {
+            border-width: 0px;
+            border: none;
+            background: none;
+            height: 24px;
+            width: 24px;
+            vertical-align: sub;
+            margin: 0;
+            -webkit-appearance: none;
+        }
+
+        input[type=color]:focus {
+            box-shadow: 0 0 10px #fafff9;
+            border-width: 0px;
+            border: 1px solid #fafff9;
+            outline: none;
+        }
+
+        input[type=range] {
+            margin: auto;
+            margin-right: 1%;
+            vertical-align: bottom;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+            box-shadow: 0 0 10px #fafff9;
+        }
+
+        input[type=text]:focus {
+            box-shadow: 0 0 10px #fafff9;
+            border-color: #ddd;
+            outline: none;
+            overflow-y: hidden;
+        }
+    </style>
+    <center><h1>Bepinex Config Management</h1>Only supports strings, booleans, floats, and integers at this time!</center><center><p>Upload your config:<br><input type="file" id="fileInput" accept=".cfg"> <button type="button" onclick="loadFileAsText()"> Submit Config</button></p></center>
+    <div id="form-container"></div>
+    <script>
+
+        
+
+        function loadFileAsText() {
+            console.log("loadFileAsText");
+            var fileToLoad = document.getElementById("fileInput").files[0];
+
+            var fileReader = new FileReader();
+            fileReader.onload = function (fileLoadedEvent) {
+                var textFromFileLoaded = fileLoadedEvent.target.result;
+                handleconfigFileUpload(textFromFileLoaded);
+            };
+
+            fileReader.readAsText(fileToLoad, "UTF-8");
+        }
+
+        function handleconfigFileReplace(text, fileName) {
+            console.log("handleconfigFileReplace");
+            const lines = text.split('\n');
+            let formData = ''; //replace original with this
+            let settingType = "";
+            let acceptableValues = false;
+
+            lines.forEach(line => {
+                line = line.trim();  // Remove leading and trailing whitespaces
+                console.log("checking line: " + line);
+                if (line) {  // Skip empty lines
+                    if (line.startsWith("# Setting type: ")) {
+                        settingType = line.replace("# Setting type: ", "");
+                        formData += line + "\n";
+                    }
+                    else if (line.startsWith("# Acceptable ")) {
+                        acceptableValues = true;
+                        formData += line + "\n";
+                    }
+                    else if (!line.startsWith("#") && !line.startsWith("[")) {
+                        console.log("Assuming we are at the key value pair section!");
+                        let settingPair = [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1)];
+                        settingPair[0] = settingPair[0].trim();
+                        settingPair[1] = settingPair[1].trim();
+
+                        let node = document.getElementById(settingPair[0]);
+                        if (node) {
+                            if (settingType === "Int32" || settingType === "Single") {
+                                let parsed = String(node.value);
+                                if (parsed !== settingPair[1]) {
+                                    formData += settingPair[0] + " = " + parsed + "\n";
+                                }
+                                else
+                                    formData += line + "\n";
+                            }
+                            else if (settingType === "Boolean") {
+                                let nodeVal = String(node.checked);
+                                nodeVal = nodeVal.replace("on", "true");
+                                nodeVal = nodeVal.replace("off", "false");
+
+                                if (nodeVal !== settingPair[1]) {
+                                    formData += settingPair[0] + " = " + nodeVal + "\n";
+                                }
+                                else
+                                    formData += line + "\n";
+                            }
+                            else {
+                                if (!acceptableValues) {
+                                    if (node.value !== settingPair[1]) {
+                                        formData += settingPair[0] + " = " + node.value + "\n";
+                                    }
+                                    else
+                                        formData += line + "\n";
+                                }
+                                else {
+                                    let stringValue = node.value;
+                                    if (stringValue !== settingPair[1]) {
+                                        formData += settingPair[0] + " = " + stringValue + "\n";
+                                    }
+                                    else
+                                        formData += line + "\n";
+                                }
+                            }
+                        }
+                        else
+                            console.error("Failed to get node from " + settingPair[0] + "!");
+                    }
+                    else
+                        formData += line + "\n";
+                }
+                else
+                    formData += "\n"
+            });
+
+            // Create a Blob with the form data and make it downloadable
+            let blob = new Blob([formData], { type: 'text/plain' });
+
+            // Create an anchor tag to trigger the download
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+        }
+
+        // Function to handle config file input and generate form dynamically
+        function handleconfigFileUpload(text) {
+            console.log("handleconfigFileUpload");
+            const lines = text.split('\n');
+            const formContainer = document.getElementById("form-container");
+            let description = "";
+            let defaultValue = "";
+            let settingType = "";
+
+            //bools
+            let hasDescription = false;
+            let acceptableValues = false;
+
+            //acceptableStrings
+            let acceptableStrings = [];
+
+            //acceptableIntRange
+            let intMax = 0;
+            let intMin = 0;
+
+            // Clear previous form content
+            formContainer.innerHTML = "";
+            let thisSection = document.createElement("fieldset");
+
+            // Loop through each line in the file
+            lines.forEach(line => {
+                line = line.trim();  // Remove leading and trailing whitespaces
+                console.log("checking line: " + line);
+                if (line) {  // Skip empty lines
+                    // Create a label for the form element
+                    if (line.startsWith("[")) {
+                        console.log("section detected!");
+                        thisSection = document.createElement("fieldset");
+                        thisSection.name = line;
+                        let section = document.createElement("legend");
+                        section.name = line;
+                        section.textContent = line;
+                        formContainer.appendChild(thisSection);
+                        thisSection.appendChild(section);
+                        return;
+                    }
+                    else if (line.startsWith("##")) {
+                        console.log("description detected!");
+                        description = line.replace("##", "");
+                        hasDescription = true;
+                        return;
+                    }
+                    else if (line.startsWith("# Setting type: ")) {
+                        console.log("settingType detected!");
+                        settingType = line.replace("# Setting type: ", "");
+                        return;
+                    }
+                    else if (line.startsWith("# Default value:")) {
+                        console.log("defaultValue detected!");
+                        defaultValue = line.replace("# Default value: ", "");
+                        return;
+                    }
+                    else if (line.startsWith("# Acceptable value range: From ")) {
+                        console.log("acceptableValues (numbers) detected!");
+                        acceptableValues = true;
+                        const values = line.replace("# Acceptable value range: From ", "").split("to", 2);
+                        intMin = Number(values[0].trim());
+                        intMax = Number(values[1].trim());
+                        return;
+                    }
+                    else if (line.startsWith("# Acceptable values: ")) {
+                        console.log("acceptableValues (strings) detected!");
+                        acceptableValues = true;
+                        acceptableStrings = line.replace("# Acceptable values: ", "").split(",");
+                        return;
+                    }
+                    else if (line.startsWith("#")) {
+                        console.log("ignoring further comments");
+                    }
+                    else {
+                        console.log("Assuming we are at the key value pair section!");
+                        let settingPair = [line.slice(0, line.indexOf('=')), line.slice(line.indexOf('=') + 1)];
+                        settingPair[0] = settingPair[0].trim();
+                        settingPair[1] = settingPair[1].trim();
+                        let configTitle = document.createElement("label");
+                        configTitle.style = "font-size: 1.4em;"
+                        configTitle.textContent = settingPair[0].trim();
+                        console.log("Creating configTitle label!");
+                        thisSection.appendChild(configTitle);
+
+                        if (settingType === "Boolean") {
+                            console.log("Creating checkboxes for boolean!");
+                            let checkbox = document.createElement("input");
+                            checkbox.name = settingPair[0];
+                            checkbox.id = settingPair[0];
+                            checkbox.type = "checkbox";
+
+                            if (settingPair[1].trim() === "true") {
+                                checkbox.checked = "checked";
+                                console.log("value is true!");
+                            }
+
+                            thisSection.appendChild(checkbox);
+
+                            if (hasDescription) {
+                                console.log("adding description element!");
+                                let desc = document.createElement("label");
+                                desc.textContent = description;
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(desc);
+                            }
+
+                            thisSection.appendChild(document.createElement("br"));
+
+                        }
+                        else if (settingType === "String") {
+
+                            if (hasDescription) {
+                                console.log("adding description element!");
+                                let desc = document.createElement("label");
+                                desc.textContent = description;
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(desc);
+                            }
+
+                            if (acceptableValues && acceptableStrings.length > 0) {
+                                console.log("Creating selection button for acceptable strings!");
+                                let select = document.createElement("select");
+                                select.id = settingPair[0];
+                                select.name = settingPair[0];
+
+                                for (let i = 0; i < acceptableStrings.length; i++) {
+                                    let option = document.createElement("option");
+                                    option.name = acceptableStrings[i].trim();
+                                    option.value = acceptableStrings[i].trim();
+                                    option.textContent = acceptableStrings[i].trim();
+                                    select.options.add(option);
+                                    select.appendChild(option);
+
+
+                                    if (settingPair[1].trim() === acceptableStrings[i].trim()) {
+                                        select.selected = "";
+                                        console.log("value is true!");
+                                    }
+                                }
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(select);
+                                thisSection.appendChild(document.createElement("br"));
+                            }
+                            else {
+                                console.log("Creating normal textbox for string!");
+                                let textInput = document.createElement("textarea");
+                                textInput.name = settingPair[0];
+                                textInput.id = settingPair[0];
+                                //textInput.type = "text";
+                                textInput.textContent = settingPair[1];
+                                textInput.value = settingPair[1];
+                                textInput.rows = 1;
+                                textInput.oninput = function () {
+                                    this.style.height = "auto";
+                                    this.style.height = this.scrollHeight + "px";
+                                };
+                                textInput.onfocus = function () {
+                                    this.style.height = "auto";
+                                    this.style.height = this.scrollHeight + "px";
+                                    this.style.width = "70%";
+                                };
+                                textInput.onblur = function () {
+                                    this.style.width = "20%";
+                                };
+
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(textInput);
+                                thisSection.appendChild(document.createElement("br"));
+                            }
+                        }
+                        else if (settingType === "Int32" || settingType === "Single") {
+
+                            if (hasDescription) {
+                                console.log("adding description element!");
+                                let desc = document.createElement("label");
+                                desc.textContent = description;
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(desc);
+                            }
+
+                            if (acceptableValues) {
+                                console.log("Creating sliders for acceptableValue numbers!");
+                                let range = document.createElement("input");
+                                let textInput = document.createElement("input");
+
+                                range.name = settingPair[0] + "slider";
+                                textInput.name = settingPair[0];
+                                textInput.id = settingPair[0];
+                                textInput.min = intMin;
+                                textInput.max = intMax;
+                                textInput.type = "number";
+                                textInput.className = "no-spinners";
+                                textInput.onkeypress = function (event) {
+                                    return /[0-9.]/i.test(event.key)
+                                };
+                                range.type = "range";
+                                range.min = intMin;
+                                range.max = intMax;
+                                range.value = Number(settingPair[1].trim());
+                                textInput.value = Number(settingPair[1].trim());
+                                range.oninput = function (event) {
+                                    textInput.value = event.target.value;
+                                };
+
+                                textInput.oninput = function (event) {
+                                    range.value = event.target.value;
+                                };
+
+                                if (settingType === "Single") {
+                                    range.step = "0.01";
+                                    textInput.step = "0.01";
+                                    console.log("setting step count to two decimal places for float!");
+                                }
+                                range.append("\u00A0");
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(range);
+                                thisSection.appendChild(textInput);
+                                thisSection.appendChild(document.createElement("br"));
+                            }
+                            else {
+                                console.log("Creating basic input for numbers!");
+                                let textInput = document.createElement("input");
+                                textInput.type = "number";
+                                textInput.name = settingPair[0];
+                                textInput.id = settingPair[0];
+                                textInput.className = "no-spinners";
+                                textInput.value = Number(settingPair[1].trim());
+                                textInput.onkeypress = function (event) {
+                                    return /[0-9.]/i.test(event.key)
+                                };
+
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(textInput);
+                                thisSection.appendChild(document.createElement("br"));
+                            }
+                        }
+                        else {
+                            if (hasDescription) {
+                                console.log("adding description element!");
+                                let desc = document.createElement("label");
+                                desc.textContent = description;
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(desc);
+                            }
+
+                            if (acceptableValues && acceptableStrings.length > 0) {
+                                console.log("adding description element for acceptable values!");
+                                let acceptableVals = document.createElement("label");
+                                acceptableVals.textContent = "Acceptable Values: " + acceptableStrings.toString();
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(acceptableVals);
+                            }
+
+                                
+                                console.log("Creating normal textbox for string!");
+                                let textInput = document.createElement("textarea");
+                                textInput.name = settingPair[0];
+                                textInput.id = settingPair[0];
+                                //textInput.type = "text";
+                                textInput.textContent = settingPair[1];
+                                textInput.value = settingPair[1];
+                                textInput.rows = 1;
+                                textInput.oninput = function () {
+                                    this.style.height = "auto";
+                                    this.style.height = this.scrollHeight + "px";
+                                };
+                                textInput.onfocus = function () {
+                                    this.style.height = "auto";
+                                    this.style.height = this.scrollHeight + "px";
+                                    this.style.width = "70%";
+                                };
+                                textInput.onblur = function () {
+                                    this.style.width = "20%";
+                                };
+
+                                thisSection.appendChild(document.createElement("br"));
+                                thisSection.appendChild(textInput);
+                                thisSection.appendChild(document.createElement("br"));
+                            }
+                        }
+                }
+                else {
+                    console.log("blank line detected! Resetting vars!");
+                    acceptableValues = false; //reset detection bools on empty lines
+                    hasDescription = false;
+                    defaultValue = "";
+                    settingType = "";
+                    description = "";
+                    thisSection.appendChild(document.createElement("br"));
+                }
+
+            });
+        }
+
+        function loadFileToReplace() {
+            console.log("loadFileToReplace");
+            var fileToLoad = document.getElementById("fileReplace").files[0];
+            var filename = document.getElementById("fileReplace").files[0].name;
+
+            var fileReader = new FileReader();
+            fileReader.onload = function (fileLoadedEvent) {
+                var textFromFileLoaded = fileLoadedEvent.target.result;
+                handleconfigFileReplace(textFromFileLoaded, filename);
+            };
+
+            fileReader.readAsText(fileToLoad, "UTF-8");
+        }
+
+        function createNewConfigFile(event) {
+            let formData = '';
+
+            // Loop through all fieldsets to capture legends, labels, and inputs
+            let fieldsets = document.querySelectorAll('fieldset');
+            fieldsets.forEach(function (fieldset) {
+                // Get the legend text (if any)
+                let legend = fieldset.querySelector('legend');
+                if (legend) {
+                    formData += `[${legend.textContent}]\n`;
+                }
+
+                let inputs = fieldset.querySelectorAll('input');
+                let textAreas = fieldset.querySelectorAll('textarea');
+                let formValues = [inputs, textAreas];
+                formValues.forEach(function (input) {
+                    if (input.name.includes("slider"))
+                        return;
+
+                    let settingName = input.name;
+                    let settingType = "";
+                    let settingDesc = "";
+                    if (input.type === "number") {
+                        if (input.step === "0.01") {
+                            settingType = "# Setting type: Single";
+                        }
+                        else
+                            settingType = "# Setting type: Int32";
+                    }
+                    else if (input === "textarea") {
+                        "# Setting type: String"
+                    }
+                        
+                        
+                });
+
+                // Add a separator between fieldsets
+                formData += '\n';
+            });
+
+            // Create a Blob with the form data and make it downloadable
+            let blob = new Blob([formData], { type: 'text/plain' });
+
+            // Create an anchor tag to trigger the download
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'form-data.txt';
+            link.click();
+        }
+
+    </script>
+    <br /><center>
+              <input type="file" id="fileReplace" accept=".cfg"><button type='button' onclick='loadFileToReplace()'>Choose File To Apply Changes</button><br>
+    </center>
+</body>
+</html>

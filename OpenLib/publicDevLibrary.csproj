@@ -222,6 +222,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Website\Examples\ConfigManagement.html" />
     <Content Include="Website\Examples\ShipColors_Generated.cfg_generator.htm" />
     <Content Include="Website\scripts.js" />
     <Content Include="Website\style.html" />
