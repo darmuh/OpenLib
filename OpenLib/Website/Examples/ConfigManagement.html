@@ -1,4 +1,4 @@
-﻿<title>Bepinex Config Management</title>
+﻿<title>Bepinex Config Management v0.1.1</title>
 <html>
 <body class="body">
     <style>
@@ -119,15 +119,18 @@
     <div id="form-container"></div>
     <script>
 
-        
+        let configFileText = "";
+        let configFileName = "";
 
         function loadFileAsText() {
             console.log("loadFileAsText");
             var fileToLoad = document.getElementById("fileInput").files[0];
+            configFileName = document.getElementById("fileInput").files[0].name;
 
             var fileReader = new FileReader();
             fileReader.onload = function (fileLoadedEvent) {
                 var textFromFileLoaded = fileLoadedEvent.target.result;
+                configFileText = textFromFileLoaded;
                 handleconfigFileUpload(textFromFileLoaded);
             };
 
@@ -138,6 +141,7 @@
             console.log("handleconfigFileReplace");
             const lines = text.split('\n');
             let formData = ''; //replace original with this
+            formData += "## This config file was modified/regenerated via OpenLib's Bepinex Config Management Webpage [v0.1.1]\n";
             let settingType = "";
             let acceptableValues = false;
 
@@ -272,7 +276,8 @@
                     }
                     else if (line.startsWith("# Default value:")) {
                         console.log("defaultValue detected!");
-                        defaultValue = line.replace("# Default value: ", "");
+                        defaultValue = line.replace("# Default value:", "").trim();
+                        console.log("default value: " + defaultValue);
                         return;
                     }
                     else if (line.startsWith("# Acceptable value range: From ")) {
@@ -363,30 +368,64 @@
                                 thisSection.appendChild(document.createElement("br"));
                             }
                             else {
-                                console.log("Creating normal textbox for string!");
-                                let textInput = document.createElement("textarea");
-                                textInput.name = settingPair[0];
-                                textInput.id = settingPair[0];
-                                //textInput.type = "text";
-                                textInput.textContent = settingPair[1];
-                                textInput.value = settingPair[1];
-                                textInput.rows = 1;
-                                textInput.oninput = function () {
-                                    this.style.height = "auto";
-                                    this.style.height = this.scrollHeight + "px";
-                                };
-                                textInput.onfocus = function () {
-                                    this.style.height = "auto";
-                                    this.style.height = this.scrollHeight + "px";
-                                    this.style.width = "70%";
-                                };
-                                textInput.onblur = function () {
-                                    this.style.width = "20%";
-                                };
+                                if (defaultValue.startsWith("#")) {
+                                    let colorInput = document.createElement("input");
+                                    colorInput.name = settingPair[0] + "colorPicker";
+                                    colorInput.id = settingPair[0] + "colorPicker";
+                                    colorInput.type = "color";
+                                    colorInput.value = settingPair[1];
+                                    let textInput = document.createElement("input");
+                                    textInput.name = settingPair[0];
+                                    textInput.id = settingPair[0];
+                                    textInput.type = "text";
 
-                                thisSection.appendChild(document.createElement("br"));
-                                thisSection.appendChild(textInput);
-                                thisSection.appendChild(document.createElement("br"));
+                                    colorInput.oninput = function (event) {
+                                        textInput.value = event.target.value;
+                                    };
+
+                                    textInput.textContent = settingPair[1];
+                                    textInput.value = settingPair[1];
+                                    textInput.rows = 1;
+                                    textInput.oninput = function () {
+                                        colorInput.value = event.target.value;
+                                    };
+                                    textInput.onkeypress = function () {
+                                        return /[0-9a-zA-Z#]/i.test(event.key)
+                                    }
+
+                                    thisSection.appendChild(document.createElement("br"));
+                                    thisSection.appendChild(colorInput);
+                                    thisSection.appendChild(textInput);
+                                    thisSection.appendChild(document.createElement("br"));
+                                }
+                                else {
+                                    console.log("Creating normal textbox for string!");
+                                    let textInput = document.createElement("textarea");
+                                    textInput.name = settingPair[0];
+                                    textInput.id = settingPair[0];
+                                    //textInput.type = "text";
+                                    textInput.textContent = settingPair[1];
+                                    textInput.value = settingPair[1];
+                                    textInput.rows = 1;
+                                    textInput.oninput = function () {
+                                        this.style.height = "auto";
+                                        this.style.height = this.scrollHeight + "px";
+                                    };
+                                    textInput.onfocus = function () {
+                                        this.style.height = "auto";
+                                        this.style.height = this.scrollHeight + "px";
+                                        this.style.width = "85%";
+                                    };
+                                    textInput.onblur = function () {
+                                        this.style.width = "20%";
+                                    };
+
+                                    thisSection.appendChild(document.createElement("br"));
+                                    thisSection.appendChild(textInput);
+                                    thisSection.appendChild(document.createElement("br"));
+                                }
+
+                                
                             }
                         }
                         else if (settingType === "Int32" || settingType === "Single") {
@@ -511,6 +550,28 @@
                 }
 
             });
+
+
+            let pgrah = document.createElement("p");
+            pgrah.textContent = "Click the button below to save your changes to a new file!";
+
+            //<button type='button' onclick='handleconfigFileReplace(configFileText, configFileName)'>Save Changes to New File</button><br>
+            let submit = document.createElement("button");
+            submit.type = "button";
+            submit.onclick = function (event) {
+                handleconfigFileReplace(configFileText, configFileName);
+            };
+
+            submit.textContent = "Save Changes to New File";
+
+            let centering = document.createElement("center");
+
+            formContainer.appendChild(centering);
+            centering.appendChild(document.createElement("br"));
+            centering.appendChild(pgrah);
+            centering.appendChild(submit);
+
+
         }
 
         function loadFileToReplace() {
@@ -578,8 +639,5 @@
         }
 
     </script>
-    <br /><center>
-              <input type="file" id="fileReplace" accept=".cfg"><button type='button' onclick='loadFileToReplace()'>Choose File To Apply Changes</button><br>
-    </center>
 </body>
 </html>
