@@ -268,7 +268,7 @@ namespace OpenLib.CoreMethods
 
             Plugin.Spam($"{nodeName} could not be found, result set to null.");
 
-            return null;
+            return null!;
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using BepInEx.Configuration;
+﻿using BepInEx.Bootstrap;
+using BepInEx.Configuration;
 using GameNetcodeStuff;
 using System;
 using UnityEngine;
+using Random = System.Random;
 
 namespace OpenLib.Common
 {
     public class Misc
     {
+        public static Random Random = new();
         public static bool TryGetPlayerFromName(string playerName, out PlayerControllerB thePlayer)
         {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
@@ -65,6 +68,16 @@ namespace OpenLib.Common
         {
             string hexColor = ColorUtility.ToHtmlStringRGB(color);
             Plugin.Log.LogDebug($"Previous Color noted as [{hexColor}] for configItem - {entry.Definition.Key}");
+        }
+
+        public static Version GetPluginVersion(string PluginGUID)
+        {
+            if (Chainloader.PluginInfos.TryGetValue(PluginGUID, out var info))
+            {
+                return info.Metadata.Version;
+            }
+            else
+                return null!;
         }
 
 

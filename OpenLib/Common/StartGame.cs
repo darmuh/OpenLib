@@ -20,7 +20,7 @@ namespace OpenLib.Common
             }
             if (SoftCompatibility("ainavt.lc.lethalconfig", ref Plugin.instance.LethalConfig))
             {
-                LethalConfigSoft.LethalConfigVersion = LethalConfigSoft.GetVersion("ainavt.lc.lethalconfig");
+                LethalConfigSoft.LethalConfigVersion = Misc.GetPluginVersion("ainavt.lc.lethalconfig");
                 Plugin.Spam("LethalConfig functions enabled!");
             }
             if (SoftCompatibility("Zaggy1024.OpenBodyCams", ref Plugin.instance.OpenBodyCamsMod))

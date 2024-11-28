@@ -188,7 +188,7 @@ namespace OpenLib.CoreMethods
             if (returnNode == null)
                 Plugin.WARNING("Returning NULL terminal node @AddNodeManual!!!");
 
-            return returnNode;
+            return returnNode!;
         }
 
         //when you want to refer to config items for management but also want a terminalnode returned to you

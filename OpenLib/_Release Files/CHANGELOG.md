@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.9]
+ - Added new events ShipReset, NextDayEvent, ShipLeft, and NewQuota
+ - Added public accessible System.Random at Common.Misc.Random
+ - Created Common.Misc.GetPluginVersion from method that was originally in LethalConfigCompat so it can be used with other plugins.
+ - Added CheckForConfigName bool function in ConfigSetup
+ - Check out the new web config management page - https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/ConfigManagement.html
+	- Updated to 0.1.2, now looks for a valid hexcode default value before creating color picker config input.
+	- Also did some styling cleanup, though I could definitely use help to make it cleaner :)
+
 ## [0.2.8]
  - Hotfix for OpenBodyCams API update
 

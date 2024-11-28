@@ -1,9 +1,9 @@
-﻿using BepInEx.Bootstrap;
-using BepInEx.Configuration;
+﻿using BepInEx.Configuration;
 using LethalConfig;
 using LethalConfig.ConfigItems;
 using System;
 using System.Reflection;
+using static OpenLib.Common.Misc;
 
 namespace OpenLib.Compat
 {
@@ -43,16 +43,6 @@ namespace OpenLib.Compat
             return true;
         }
 
-        public static Version GetVersion(string PluginGUID)
-        {
-            if (Chainloader.PluginInfos.TryGetValue(PluginGUID, out var info))
-            {
-                return info.Metadata.Version;
-            }
-            else
-                return null;
-        }
-
         public static void AddButton(string section, string name, string description, string buttonText, Action methodToCall)
         {
             if (!Plugin.instance.LethalConfig)
@@ -67,6 +57,12 @@ namespace OpenLib.Compat
                 Plugin.Spam($"LethalConfig button [{buttonText}] has been pressed");
                 methodToCall.Invoke();
             }), Caller);
+        }
+
+        [Obsolete("Use OpenLib.Common.Misc.GetPluginVersion() instead!")]
+        public static Version GetVersion(string PluginGUID)
+        {
+            return GetPluginVersion(PluginGUID);
         }
     }
 }

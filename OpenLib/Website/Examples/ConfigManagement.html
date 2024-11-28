@@ -1,4 +1,4 @@
-﻿<title>Bepinex Config Management v0.1.1</title>
+﻿<title>Bepinex Config Management v0.1.2</title>
 <html>
 <body class="body">
     <style>
@@ -15,10 +15,12 @@
         }
 
         textarea {
-            padding: 5px;
+            padding:0em;
             text-align: left;
             font-size: 12px;
             width: 20%;
+            min-height: 1.6em;
+            height: 1.6em;
             margin-top: 1%;
             resize: none; /* disable resizing */
         }
@@ -235,6 +237,9 @@
             let hasDescription = false;
             let acceptableValues = false;
 
+            //RegExp
+            let isColorString = /^#[0-9A-F]{6}$/i;
+
             //acceptableStrings
             let acceptableStrings = [];
 
@@ -368,7 +373,7 @@
                                 thisSection.appendChild(document.createElement("br"));
                             }
                             else {
-                                if (defaultValue.startsWith("#")) {
+                                if (defaultValue.startsWith("#") && isColorString.test(defaultValue)) {
                                     let colorInput = document.createElement("input");
                                     colorInput.name = settingPair[0] + "colorPicker";
                                     colorInput.id = settingPair[0] + "colorPicker";
@@ -418,6 +423,7 @@
                                     };
                                     textInput.onblur = function () {
                                         this.style.width = "20%";
+                                        this.style.height = "1.6em";
                                     };
 
                                     thisSection.appendChild(document.createElement("br"));

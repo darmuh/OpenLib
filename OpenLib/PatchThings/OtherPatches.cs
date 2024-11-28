@@ -35,6 +35,44 @@ namespace OpenLib
 
     }
 
+    [HarmonyPatch(typeof(StartOfRound), "ResetShip")]
+    public class ShipResetPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.ShipReset.Invoke();
+        }
+    }
+
+    [HarmonyPatch(typeof(StartOfRound), "PassTimeToNextDay")]
+    public class NextDayPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.NextDayEvent.Invoke();
+        }
+    }
+
+    //ShipHasLeft
+    [HarmonyPatch(typeof(StartOfRound), "ShipHasLeft")]
+    public class ShipLeftPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.ShipLeft.Invoke();
+        }
+    }
+
+    //SetNewProfitQuota
+    [HarmonyPatch(typeof(TimeOfDay), "SetNewProfitQuota")]
+    public class NewQuotaPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.NewQuota.Invoke();
+        }
+    }
+
     //ChangeLevel
     [HarmonyPatch(typeof(StartOfRound), "ChangeLevel")]
     public class RouteEvent

@@ -1,5 +1,11 @@
 # OpenLib
 
+### Want to modify a Bepinex Config File via a webpage?
+- Try [OpenLib's Bepinex Config Management Webpage (v0.1.2)](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/ConfigManagement.html)
+- Simply upload a config file to the page and it will generate a form for the given config file.
+- Once you are done modifying the form on the webpage you can then click the button at the bottom of the page to compare your changes to the original config file.
+- When the page is done comparing your changes, it will save/download a new config file to your device.
+
 ### Open-source development library for LethalCompany
 
 - This is a library of commonly used methods from darmuh's mods. Allowing for flexible additions to the terminal and unified game patching.
@@ -38,8 +44,6 @@
 - New Player Update events for when a player is dead, in or out of the ship, etc. Must be enabled by the mod using
 - Add compatible nouns manually.
 - Support methods for LethalConfig and OpenBodyCams.
-
-*The plan is to have this library support all of my mods (darmuhsTerminalStuff, ghostCodes, and suitsTerminal). So this library will likely have more features in the future*
 
 Currently Supports:
  - darmuhsTerminalStuff 3.3.0+

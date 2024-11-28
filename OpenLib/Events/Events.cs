@@ -42,7 +42,7 @@ namespace OpenLib.Events
             public TerminalNode NodeInvoke(ref TerminalNode original)
             {
                 TerminalNode node = OnEvent?.Invoke(ref original);
-                return node;
+                return node!;
             }
             public void AddListener(Event listener)
             {

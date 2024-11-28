@@ -1,6 +1,6 @@
 {
   "name": "OpenLib",
-  "version_number": "0.2.8",
+  "version_number": "0.2.9",
   "website_url": "https://github.com/darmuh/OpenLib",
   "description": "Open-source development library for LethalCompany, initially created for use with darmuh's Mods",
   "dependencies": [

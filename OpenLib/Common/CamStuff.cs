@@ -135,7 +135,7 @@ namespace OpenLib.Common
         public static Camera GetCam(GameObject Container)
         {
             if (Container == null)
-                return null;
+                return null!;
 
             return Container.GetComponent<Camera>();
         }

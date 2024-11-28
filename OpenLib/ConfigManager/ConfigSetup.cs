@@ -129,6 +129,17 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind(section, configItemName, defaultValue, configDescription);
         }
 
+        public static bool CheckForConfigName(string configName, ConfigFile ModConfig)
+        {
+            foreach (ConfigDefinition item in ModConfig.Keys)
+            {
+                if (item.Key == configName)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static void AddManagedString(ConfigEntry<String> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
         {
             ManagedConfig managedString = new()

@@ -2,7 +2,6 @@
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using static OpenLib.Common.CommonStringStuff;
 
@@ -344,7 +343,7 @@ namespace OpenLib.Menus
 
                 return menuItem;
             }
-            return null;
+            return null!;
         }
 
         public static TerminalMenuItem MakeMenuItem(string categoryText, List<string> keywordList, string configDescription, string itemName)
