@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OpenLib.Events;
+using UnityEngine.InputSystem;
 
 namespace OpenLib
 {
@@ -72,6 +73,9 @@ namespace OpenLib
         static void Postfix(ref TerminalNode __result)
         {
             //event
+            if (__result == null)
+                return;
+
             TerminalNode node = EventManager.TerminalParseSent.NodeInvoke(ref __result);
             __result = node;
             return;
@@ -94,6 +98,11 @@ namespace OpenLib
             {
                 inUse = __instance.placeableObject.inUse;
                 EventManager.SetTerminalInUse.Invoke();
+            }
+
+            if(Keyboard.current.anyKey.wasPressedThisFrame && __instance.terminalInUse)
+            {
+                EventManager.TerminalKeyPressed.Invoke();
             }
             
         }

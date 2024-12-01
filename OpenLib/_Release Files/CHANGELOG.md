@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.10]
+ - Small update to OpenBodyCams compatibility
+ - Added 2 new properties for FauxKeywords
+	- ``AllowOtherFauxWords`` will allow other FauxKeywords to be used from the result page of the current FauxKeyword
+	- ``requireExact`` will determine whether the FauxKeyword accepts partial matches or requires an exact match
+ - Added new event for detecting when a key has been pressed while using the terminal ``TerminalKeyPressed``
+ - Updated MenuBuild handling to allow for FauxKeyword menu categories & items.
+ - Updated ``ParsePlayerSentence`` Patch to not invoke the ``TerminalParseSent`` event when the node is null.
+	- This fixes an issue that was reported in darmuhsTerminalStuff with the vanilla view monitor relating to door codes.
+
 ## [0.2.9]
  - Added new events ShipReset, NextDayEvent, ShipLeft, and NewQuota
  - Added public accessible System.Random at Common.Misc.Random

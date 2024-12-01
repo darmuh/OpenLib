@@ -166,12 +166,14 @@ namespace OpenLib.Compat
             if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
                 Plugin.MoreLogs($"OBC - BodyCam Screen Enabled: [{enabled}]");
+                ((BodyCamComponent)TerminalBodyCam).ForceEnableCamera = enabled;
                 ToggleCamState(((BodyCamComponent)TerminalBodyCam).GetCamera(), enabled);
                 ShowingBodyCam = enabled;
             }
 
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void ToggleOpenCams(bool bodyCam, bool mirrorCam)
         {
             if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
@@ -195,6 +197,7 @@ namespace OpenLib.Compat
         {
             if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
             {
+                ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = enabled;
                 ToggleCamState(((BodyCamComponent)TerminalMirrorCam).GetCamera(), enabled);
                 Plugin.MoreLogs($"OBC - Setting Mirror Status: [{enabled}]");
             }

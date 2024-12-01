@@ -10,7 +10,6 @@ namespace OpenLib.Events
         public static Events.CustomEvent TerminalDisable = new();
         public static Events.CustomEvent TerminalStart = new();
         public static Events.CustomEvent TerminalBeginUsing = new();
-        public static Events.CustomEvent SetTerminalInUse = new();
         public static Events.CustomEvent TerminalQuit = new();
 
         //uses terminal instance
@@ -43,7 +42,11 @@ namespace OpenLib.Events
 
         //personal events
         public static Events.CustomEvent TerminalDelayStart = new();
-        
+
+        //TerminalUpdate Events
+        public static Events.CustomEvent SetTerminalInUse = new();
+        public static Events.CustomEvent TerminalKeyPressed = new ();
+
         //PlayerUpdate Events
         public static Events.CustomEvent PlayerIsInShip = new();
         public static Events.CustomEvent PlayerIsDead = new();

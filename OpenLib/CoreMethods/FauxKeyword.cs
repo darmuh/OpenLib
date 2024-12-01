@@ -13,6 +13,8 @@ namespace OpenLib.CoreMethods
         public string ConfirmText;
         public string DenyText;
         public bool GetConfirm;
+        public bool AllowOtherFauxWords = false;
+        public bool requireExact = false;
 
         public FauxKeyword(string mainWord, string keyword, Func<string> resultFunc)
         {

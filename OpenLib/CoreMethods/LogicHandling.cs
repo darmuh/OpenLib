@@ -2,6 +2,8 @@
 using OpenLib.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using UnityEngine;
 
 namespace OpenLib.CoreMethods
@@ -91,6 +93,7 @@ namespace OpenLib.CoreMethods
         public static bool GetDisplayFromFaux(List<FauxKeyword> fauxWords, string words, ref TerminalNode node)
         {
             Plugin.Spam($"GetDisplayFromFaux {words}");
+            string firstWord = words.Split(' ')[0];
             foreach (FauxKeyword keyword in fauxWords)
             {
                 if (keyword.ResultFunc == null || keyword.Keyword == null || keyword.MainPage == null)
@@ -98,8 +101,13 @@ namespace OpenLib.CoreMethods
 
                 keyword.thisNode.displayText = "";
 
-                if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, null) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
+                if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, CultureInfo.InvariantCulture) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
                 {
+                    if (keyword.requireExact && words.ToLower() != keyword.Keyword.ToLower())
+                        return false;
+
+                    Plugin.Spam("Using faux word associated with MainPage");
+
                     if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
                         keyword.GetConfirm = true;
                     keyword.thisNode.displayText = keyword.ResultFunc();
@@ -108,6 +116,8 @@ namespace OpenLib.CoreMethods
                 }
                 else if (Plugin.instance.Terminal.currentNode == keyword.thisNode && keyword.GetConfirm)
                 {
+                    Plugin.Spam("getting confirmation for this faux word");
+
                     if (words.StartsWith("c", false, null))
                     {
                         keyword.thisNode.displayText = keyword.ConfirmFunc();
@@ -129,6 +139,19 @@ namespace OpenLib.CoreMethods
                     else
                         return false;
 
+                    return true;
+                }
+                else if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, CultureInfo.InvariantCulture) && fauxWords.Any(f => f.thisNode == Plugin.instance.Terminal.currentNode && f.AllowOtherFauxWords))
+                {
+                    if (keyword.requireExact && words.ToLower() != keyword.Keyword.ToLower())
+                        return false;
+
+                    Plugin.Spam("Using faux word that can be called from other fauxwords");
+
+                    if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
+                        keyword.GetConfirm = true;
+                    keyword.thisNode.displayText = keyword.ResultFunc();
+                    node = keyword.thisNode;
                     return true;
                 }
             }

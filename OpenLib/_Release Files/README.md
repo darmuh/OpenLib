@@ -26,11 +26,13 @@
 - Terminal Menu System
 	- Create your own command menu listing with categories and a list of commands under each category.
 	- Ported from darmuhsTerminalStuff for general use
+	- Supports FauxKeywords usage as of version 0.2.10
 	- Optionally add a reference to this menu in the other commands listing
 - Modify already existing terminal node displayText
 	- Will gracefully remove new line spaces to add your content and then add newlines below your content.
 - Assign new keywords to already existing nodes.
-- Event system lets you subscribe to all manners of Terminal patches. See EventUsage for examples on how to subscribe to these events.
+- Comprehensive Event system allows for subscribing to a specific game-time event to run your own custom logic. 
+	- See EventUsage for examples on how to subscribe to these events.
 - Patches into the Awake method for the Teleporter class and provides referenceable Teleporter instances for both the normal teleporter and inverse teleporter
 - Config to HTML file generation. Use this to create an html page that can be used to read/modify config files.
 	- Will generate a code at the bottom of the page that can be used to update all config items at once via a decompress method.
@@ -41,7 +43,6 @@
 - Small hotfix for when terminalnodes have the acceptAnything property set to true without any valid compatible nouns.
 	- will prevent soft locks from these particular nodes resulting in the terminal not accepting any further input.
 - Automatic info compatible nouns created for every new keyword added through this library.
-- New Player Update events for when a player is dead, in or out of the ship, etc. Must be enabled by the mod using
 - Add compatible nouns manually.
 - Support methods for LethalConfig and OpenBodyCams.
 

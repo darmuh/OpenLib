@@ -2,6 +2,7 @@
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static OpenLib.Common.CommonStringStuff;
 
@@ -180,6 +181,30 @@ namespace OpenLib.Menus
             terminalMenu.terminalNodes.Add(nextNode);
         }
 
+        public static void CreateCategoryFauxCommands(TerminalMenu terminalMenu, MainListing yourModListing)
+        {
+            //Plugin.Spam("CreateCategoryCommands START");
+            List<Dictionary<string, List<string>>> categoryLists = [];
+
+            foreach (TerminalMenuCategory category in terminalMenu.Categories)
+            {
+                Plugin.Spam("checking category in terminalMenu.categories");
+                Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
+                if (!categoryLists.Contains(catListing))
+                    categoryLists.Add(catListing);
+                FauxKeyword menuFauxNode = new("more", category.CatName, GetFirstInList);
+                menuFauxNode.AllowOtherFauxWords = true;
+                menuFauxNode.requireExact = true;
+
+                AddingThings.AddToFauxListing(menuFauxNode, yourModListing);
+            }
+            terminalMenu.categoryLists = categoryLists;
+
+            FauxKeyword menuFauxNext = new("more", "next", NextInList);
+            menuFauxNext.AllowOtherFauxWords = true;
+            AddingThings.AddToFauxListing(menuFauxNext, yourModListing);
+        }
+
         public static void UpdateCategories(TerminalMenu myMenu)
         {
             List<Dictionary<string, List<string>>> categoryLists = [];
@@ -260,6 +285,7 @@ namespace OpenLib.Menus
             {
                 Plugin.Spam($"currentCategory = {currentCategory}");
                 nextCount++;
+                GetCategoryFromString(currentCategory);
                 List<string> currentList = GetCategoryList(currentCategory, out TerminalMenu menuName);
                 if (menuName == null)
                 {
@@ -281,7 +307,10 @@ namespace OpenLib.Menus
         {
             Plugin.Spam("1");
             nextCount = 1;
-            currentCategory = GetCategoryFromNode(CommonTerminal.parseNode); //grabbing the node currently being parsed
+            string screen = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
+            currentCategory = GetCategoryFromString(screen);
+            Plugin.Spam($"currentCategory detected as: [{currentCategory}]");
+            //currentCategory = GetCategoryFromNode(CommonTerminal.parseNode); //grabbing the node currently being parsed
             Plugin.Spam("2");
             List<string> currentList = GetCategoryList(currentCategory, out TerminalMenu menuName);
             menuName.isActive = true;
@@ -292,6 +321,29 @@ namespace OpenLib.Menus
             menuName.isNextEnabled = isNextEnabled;
             Plugin.Spam("4");
             return displayText;
+        }
+
+        public static string GetCategoryFromString(string input)
+        {
+            Plugin.Spam($"Getting Category from string: [{input}]");
+            foreach (TerminalMenu terminalMenu in allMenus)
+            {
+                if (terminalMenu.categoryLists.Any(c => c.Any(d => d.Key.ToLower() == input.ToLower())))
+                {
+                    Plugin.Spam($"detected menu with categoryList containing string {input}!!");
+                    terminalMenu.isActive = true;
+                    int dictIndex = terminalMenu.categoryLists.FindIndex(c => c.Any(d => d.Key.ToLower() == input.ToLower()));
+                    return terminalMenu.categoryLists[dictIndex].First(d => d.Key.ToLower() == input.ToLower()).Key;
+                }
+                else
+                {
+                    Plugin.Spam($"menu does not contain string {input}");
+                    terminalMenu.isActive = false;
+                    continue;
+                }
+            }
+
+            return "CategoryNameFailure";
         }
 
         public static string GetCategoryFromNode(TerminalNode givenNode)
