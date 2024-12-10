@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.11]
+ - Small change for OpenBodyCams compatibility
+	- will no longer delete cameras on camblanked event
+
 ## [0.2.10]
  - Small update to OpenBodyCams compatibility
  - Added 2 new properties for FauxKeywords

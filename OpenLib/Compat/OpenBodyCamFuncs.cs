@@ -268,36 +268,10 @@ namespace OpenLib.Compat
             Plugin.MoreLogs("OBC - TerminalStuff obc mirrorcam created!");
         }
 
-        private static Renderer[] GetStuffToHide()
-        {
-            Plugin.MoreLogs("OBC - Getting renderers (stuff) to hide from mirrorcam!");
-
-            Renderer termGameObject = Plugin.instance.Terminal.gameObject.GetComponent<MeshRenderer>();
-            Renderer[] allRenderers = [termGameObject];
-            if (GetTermObjects(out GameObject termCable, out GameObject termKeyboard))
-            {
-                Renderer termCableRender = termCable.GetComponent<MeshRenderer>();
-                Renderer termKeyboardRender = termKeyboard.GetComponent<MeshRenderer>();
-                allRenderers = [termGameObject, termCableRender, termKeyboardRender];
-            }
-
-            return allRenderers;
-        }
-
-        private static bool GetTermObjects(out GameObject termCable, out GameObject termKeyboard)
-        {
-            termCable = GameObject.Find("Environment/HangarShip/Terminal/BezierCurve.001");
-            termKeyboard = GameObject.Find("Environment/HangarShip/Terminal/Terminal.003");
-            if (termCable && termKeyboard != null)
-                return true;
-            else
-                return false;
-        }
-
         private static void CamIsBlanked(bool isBlanked)
         {
             Plugin.MoreLogs($"OBC - CamIsBlanked: {isBlanked}");
-            ResidualCamsCheck();
+            //ResidualCamsCheck();
         }
 
         private static void ResetTransform(Camera cam)
