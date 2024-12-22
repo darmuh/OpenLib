@@ -91,6 +91,9 @@ namespace OpenLib.Events
 
             public void Invoke()
             {
+                if (!HasListeners)
+                    return;
+
                 OnEvent?.Invoke();
             }
 

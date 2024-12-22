@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace OpenLib.Common
 {
@@ -133,6 +134,29 @@ namespace OpenLib.Common
             }
 
             return numbersList;
+        }
+
+        public static string BepinFriendlyString(string input)
+        {
+            char[] invalidChars = ['\'', '\n', '\t', '\\', '"', '[', ']'];
+            string result = "";
+
+            foreach (char c in input)
+            {
+                if (!invalidChars.Contains(c))
+                    result += c;
+                else
+                    continue;
+            }
+
+            return result;
+        }
+
+        public static bool TryGetKey(string query, out Key key)
+        {
+            if (Enum.TryParse(query, ignoreCase: true, out key))
+                return true;
+            return false;
         }
 
         public static List<float> GetFloatListFromStringList(List<string> stringList) //return list of floats from list of strings

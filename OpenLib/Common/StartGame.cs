@@ -39,6 +39,8 @@ namespace OpenLib.Common
 
             if (SoftCompatibility("quackandcheese.mirrordecor", ref Plugin.instance.MirrorDecor))
                 Plugin.Spam("MirrorDecor detected!");
+            if (SoftCompatibility("darmuh.TerminalStuff", ref Plugin.instance.TerminalStuff))
+                Plugin.Spam("TerminalStuff detected!");
         }
         internal static void OnGameStart()
         {

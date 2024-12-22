@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.12]
+ - Added support for easily creating InteractiveMenus like the suits menu from suitsTerminal or the Moons Plus page from darmuhsTerminalStuff.
+ - Added to CommonStringStuff:
+	- BepinFriendlyString - for getting a string that wont throw errors in a bepinex config.
+	- TryGetKey - for getting a Unity InputSystem key from a valid string
+ - Added to CommonTerminal:
+	- Added public color caretOriginal for other mods to set/read from when updating the terminal caret color
+	- Added ChangeCaretColor for modifying the terminal caret color (and the original via bool parameter)
+ - Added darmuhsTerminalStuff compatibility functions:
+	- NetSync, for syncing a node to other users when the node has already been loaded
+	- LoadAndSync, for loading a node and then attempting to sync the node if terminalstuff is present
+ - Added check for invoking customevents to see if the event has listeners, will early return if no listeners
+
 ## [0.2.11]
  - Small change for OpenBodyCams compatibility
 	- will no longer delete cameras on camblanked event

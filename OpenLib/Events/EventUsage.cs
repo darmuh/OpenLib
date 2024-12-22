@@ -3,6 +3,7 @@ using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenLib.Events
 {
@@ -22,6 +23,7 @@ namespace OpenLib.Events
             EventManager.TeleporterAwake.AddListener(Teleporter.CheckTeleporterTypeAndAssign);
             //EventManager.PlayerSpawn.AddListener(PlayerSpawned);
             //EventManager.PlayerEmote.AddListener(OnPlayerEmote);
+            EventManager.TerminalKeyPressed.AddListener(OnKeyPress);
         }
 
         public static void OnTerminalAwake(Terminal instance)
@@ -52,6 +54,16 @@ namespace OpenLib.Events
         public static void OnTerminalStart()
         {
             TerminalStart.TerminalStartGroupDelay();
+        }
+
+        public static void OnKeyPress()
+        {
+            if (AllInteractiveMenus.AllMenus.Count == 0)
+                return;
+
+            //check for interactive menus
+            InteractiveMenu anyMenu = AllInteractiveMenus.AllMenus.FirstOrDefault(x => x.inMenu && x.isMenuEnabled);
+            anyMenu?.HandleInput();
         }
 
         public static void OnUsingTerminal()

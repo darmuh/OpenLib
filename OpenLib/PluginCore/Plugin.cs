@@ -20,12 +20,13 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.2.11";
+            public const string PLUGIN_VERSION = "0.2.12";
         }
 
         internal static ManualLogSource Log;
 
         //Compatibility
+        public bool TerminalStuff = false;
         public bool LobbyCompat = false;
         public bool TerminalFormatter = false;
         public bool LethalConfig = false;
@@ -42,7 +43,6 @@ namespace OpenLib
         public Terminal Terminal;
         public static List<TerminalNode> ShopNodes = [];
 
-
         private void Awake()
         {
             instance = this;
@@ -55,6 +55,7 @@ namespace OpenLib
             Config.ConfigReloaded += OnConfigReloaded;
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
             EventUsage.Subscribers();
+            AllInteractiveMenus.AllMenus = [];
             Log.LogInfo($"{PluginInfo.PLUGIN_NAME} load complete!");
         }
 

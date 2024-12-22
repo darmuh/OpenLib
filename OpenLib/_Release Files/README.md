@@ -23,6 +23,9 @@
 	- Create shop nodes that will be added to the furniture rotation list
 	- Create complex commands that require confirmation
 	- All added keywords are tracked by this library and will be deleted upon Terminal Disable (closing the lobby)
+- (0.2.12) Interactive Terminal Menu creation helper
+	- Create your own interactive terminal menu (similar to suits menu in suitsTerminal)
+	- used by LethalConstellations 0.3.0+
 - Terminal Menu System
 	- Create your own command menu listing with categories and a list of commands under each category.
 	- Ported from darmuhsTerminalStuff for general use

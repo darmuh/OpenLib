@@ -71,6 +71,10 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\LobbyCompatibility\BMX.LobbyCompatibility.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="darmuhsTerminalStuff">
+      <HintPath>..\..\darmuhsTerminalStuff\darmuhsTerminalStuff\DarmuhsTerminalCommands\_Package\darmuhsTerminalStuff.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Facepunch.Steamworks.Win64, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Facepunch.Steamworks.Win64.dll</HintPath>
@@ -176,6 +180,7 @@
     <Compile Include="Compat\LethalConfigSoft.cs" />
     <Compile Include="Compat\ModelAPI.cs" />
     <Compile Include="Compat\OpenBodyCamFuncs.cs" />
+    <Compile Include="Compat\TerminalStuffMod.cs" />
     <Compile Include="ConfigManager\ConfigHelper.cs" />
     <Compile Include="ConfigManager\ConfigMisc.cs" />
     <Compile Include="ConfigManager\ConfigSync.cs" />
@@ -186,6 +191,7 @@
     <Compile Include="CoreMethods\BasicTerminal.cs" />
     <Compile Include="CoreMethods\CommonThings.cs" />
     <Compile Include="CoreMethods\FauxKeyword.cs" />
+    <Compile Include="CoreMethods\InteractiveMenu.cs" />
     <Compile Include="CoreMethods\ListManagement.cs" />
     <Compile Include="CoreMethods\MainListing.cs" />
     <Compile Include="Events\EventManager.cs" />

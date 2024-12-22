@@ -1,17 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace OpenLib.Common
 {
     public class CommonTerminal
     {
         public static TerminalNode parseNode = null!;
+        public static Color CaretOriginal;
 
         public static void ToggleScreen(bool status)
         {
             Plugin.instance.Terminal.StartCoroutine(Plugin.instance.Terminal.waitUntilFrameEndToSetActive(status));
             Plugin.Spam($"Screen set to {status}");
+        }
+
+        public static void ChangeCaretColor(Color newColor, bool saveOriginal)
+        {
+            if(saveOriginal)
+                CaretOriginal = Plugin.instance.Terminal.screenText.caretColor;
+
+            Plugin.instance.Terminal.screenText.caretColor = newColor;
         }
 
         public static bool TryGetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing, out TerminalNode returnNode)
