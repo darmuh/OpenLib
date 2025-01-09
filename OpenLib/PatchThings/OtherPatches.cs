@@ -1,7 +1,6 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using OpenLib.Events;
-using System;
 using UnityEngine;
 
 namespace OpenLib
@@ -44,12 +43,41 @@ namespace OpenLib
         }
     }
 
+    [HarmonyPatch(typeof(RoundManager), "SetBigDoorCodes")]
+    public class SetBigDoorCodes
+    {
+        public static void Postfix()
+        {
+            EventManager.SetBigDoorCodes.Invoke();
+        }
+    }
+
+    //SpawnMapObjects
+    [HarmonyPatch(typeof(RoundManager), "SpawnMapObjects")]
+    public class SpawnMapObjects
+    {
+        public static void Postfix()
+        {
+            EventManager.SpawnMapObjects.Invoke();
+        }
+    }
+
     [HarmonyPatch(typeof(StartOfRound), "PassTimeToNextDay")]
     public class NextDayPatch
     {
         public static void Postfix()
         {
             EventManager.NextDayEvent.Invoke();
+        }
+    }
+
+    //OnShipLandedMiscEvents
+    [HarmonyPatch(typeof(StartOfRound), "OnShipLandedMiscEvents")]
+    public class OnShipLandedMiscPatch
+    {
+        public static void Postfix()
+        {
+            EventManager.OnShipLandedMiscPatch.Invoke();
         }
     }
 

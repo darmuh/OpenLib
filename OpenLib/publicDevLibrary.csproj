@@ -71,7 +71,7 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\LobbyCompatibility\BMX.LobbyCompatibility.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="darmuhsTerminalStuff">
+    <Reference Include="darmuhsTerminalStuff" Publicize="true">
       <HintPath>..\..\darmuhsTerminalStuff\darmuhsTerminalStuff\DarmuhsTerminalCommands\_Package\darmuhsTerminalStuff.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -80,7 +80,7 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Facepunch.Steamworks.Win64.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="LethalConfig">
+    <Reference Include="LethalConfig" Publicize="true">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -92,7 +92,7 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\Zaggy1024-OpenBodyCams\OpenBodyCams.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="suitsTerminal">
+    <Reference Include="suitsTerminal" Publicize="true">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\suitsTerminal.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -194,6 +194,7 @@
     <Compile Include="CoreMethods\InteractiveMenu.cs" />
     <Compile Include="CoreMethods\ListManagement.cs" />
     <Compile Include="CoreMethods\MainListing.cs" />
+    <Compile Include="CoreMethods\TerminalCodeObject.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Events\Events.cs" />
     <Compile Include="Events\EventUsage.cs" />

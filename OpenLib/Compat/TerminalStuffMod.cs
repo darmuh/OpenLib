@@ -37,6 +37,18 @@ namespace OpenLib.Compat
             TerminalStuff.EventSub.TerminalParse.NetSync(node);
         }
 
+        public static bool TryLoadHomePage()
+        {
+            if (TerminalStuff.TerminalEvents.terminalSettings.startPageValue.Length < 1)
+                return false;
+
+            if (TerminalStuff.TerminalEvents.terminalSettings.startPage == null)
+                return false;
+
+            LoadAndSync(TerminalStuff.TerminalEvents.terminalSettings.startPage);
+            return true;
+        }
+
 
     }
 }
