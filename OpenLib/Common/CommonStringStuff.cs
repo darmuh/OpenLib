@@ -141,6 +141,8 @@ namespace OpenLib.Common
             char[] invalidChars = ['\'', '\n', '\t', '\\', '"', '[', ']'];
             string result = "";
 
+            input = input.Trim();
+
             foreach (char c in input)
             {
                 if (!invalidChars.Contains(c))

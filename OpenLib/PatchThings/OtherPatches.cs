@@ -112,6 +112,19 @@ namespace OpenLib
 
     }
 
+    //AutoParentGameObject
+    [HarmonyPatch(typeof(AutoParentToShip), "Awake")]
+    public class AutoParentGameObjectPatch
+    {
+        public static void Postfix(AutoParentToShip __instance)
+        {
+            if (__instance.gameObject == null)
+                return;
+
+            EventManager.AutoParentEvent.Invoke(__instance.gameObject);
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerControllerB), "StartPerformingEmoteServerRpc")]
     public class EmotePatch
     {

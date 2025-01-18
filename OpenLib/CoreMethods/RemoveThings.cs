@@ -16,6 +16,7 @@ namespace OpenLib.CoreMethods
             DeleteAllNouns(ref Plugin.nounsAdded); //keywords follows this method
             DeleteCams();
             ConfigSetup.defaultListing.DeleteAll();
+            DeleteAllTerminalCodes(ref Plugin.AllTerminalCodes);
         }
 
         private static void DeleteCams()
@@ -96,6 +97,22 @@ namespace OpenLib.CoreMethods
                 mainWord.compatibleNouns = [.. newList];
                 Plugin.Spam($"DeleteCompatibleNoun of {nounToRemove} from {mainWord.word} complete, word removed: {removedWord}");
             }
+        }
+
+        public static void DeleteAllTerminalCodes(ref List<TerminalAccessibleObject> codes)
+        {
+            if (codes.Count == 0)
+                return;
+
+            List<TerminalAccessibleObject> destroyList = codes;
+
+            for (int i = destroyList.Count - 1; i >= 0; i--)
+            {
+                Plugin.Spam($"Deleting TerminalAccessibleCode Object: {destroyList[i]}");
+                UnityEngine.Object.Destroy(destroyList[i]);
+            }
+
+            codes = [];
         }
 
         public static void DeleteAllNouns(ref List<CompatibleNoun> nounsToDelete)

@@ -205,6 +205,7 @@
     <Compile Include="Common\CommonTerminal.cs" />
     <Compile Include="Common\Misc.cs" />
     <Compile Include="Common\CommonStringStuff.cs" />
+    <Compile Include="Examples\Examples.cs" />
     <Compile Include="Menus\TerminalMenu.cs" />
     <Compile Include="Menus\MenuBuild.cs" />
     <Compile Include="PatchThings\OtherPatches.cs" />

@@ -1,4 +1,5 @@
-﻿using BepInEx.Configuration;
+﻿using static OpenLib.Common.CommonStringStuff;
+using BepInEx.Configuration;
 using OpenLib.Common;
 using OpenLib.CoreMethods;
 using System;
@@ -101,31 +102,49 @@ namespace OpenLib.ConfigManager
 
         public static ConfigEntry<bool> MakeBool(ConfigFile ModConfig, string section, string configItemName, bool defaultValue, string configDescription)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind<bool>(section, configItemName, defaultValue, configDescription);
         }
 
         public static ConfigEntry<int> MakeInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind<int>(section, configItemName, defaultValue, configDescription);
         }
 
         public static ConfigEntry<string> MakeClampedString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription, AcceptableValueList<string> acceptedValues)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, acceptedValues));
         }
 
         public static ConfigEntry<int> MakeClampedInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription, int minValue, int maxValue)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<int>(minValue, maxValue)));
         }
 
         public static ConfigEntry<float> MakeClampedFloat(ConfigFile ModConfig, string section, string configItemName, float defaultValue, string configDescription, float minValue, float maxValue)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<float>(minValue, maxValue)));
         }
 
         public static ConfigEntry<string> MakeString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription)
         {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
             return ModConfig.Bind(section, configItemName, defaultValue, configDescription);
         }
 

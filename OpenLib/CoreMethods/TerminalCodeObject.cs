@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using static OpenLib.Plugin;
 using Object = UnityEngine.Object;
 
 namespace OpenLib.CoreMethods
 {
-    public static class CodeCollection<T>
+    public class CodeCollection<T>
     {
         public static List<TerminalCodeObject<T>> terminalCodeObjects = [];
-        public static List<TerminalAccessibleObject> AllTerminalCodes = [];
     }
 
-    public class TerminalCodeObject<T>
+    public class TerminalCodeObject<T> : MonoBehaviour
     {
         public TerminalAccessibleObject TerminalCode;
         public bool DynamicMapIcon = false;
@@ -27,11 +27,11 @@ namespace OpenLib.CoreMethods
         //use isDoorOpen value to determine whether the game object's associated AnimatedObjectTrigger component is open or closed
         //set isDoorType to false unless you have this component part of your game object!
 
-        public TerminalCodeObject(T yourClass, GameObject gameObj, bool dynamicMapIcon = false, bool isDoorType = false)
+        public TerminalCodeObject(T itemClass, GameObject gameObj, bool dynamicMapIcon = false, bool isDoorType = false)
         {
             DynamicMapIcon = dynamicMapIcon;
             TerminalCode = AssignCodeToObject(gameObj, isDoorType);
-            obj = yourClass;
+            obj = itemClass;
 
             CodeCollection<T>.terminalCodeObjects.Add(this);
         }
@@ -55,12 +55,18 @@ namespace OpenLib.CoreMethods
             OnCooldownComplete.Invoke(TerminalCode, obj);
         }
 
+        public void OnDestroy()
+        {
+            Spam("CodeObject is destroyed! Removed from list");
+            CodeCollection<T>.terminalCodeObjects.Remove(this);
+        }
+
         public TerminalAccessibleObject AssignCodeToObject(GameObject gameObj, bool isDoorType = false)
         {
             Plugin.Spam("AssignCodeToObject");
 
-            if(CodeCollection<T>.AllTerminalCodes.Count == 0)
-                CodeCollection<T>.AllTerminalCodes = [.. Object.FindObjectsByType<TerminalAccessibleObject>(FindObjectsSortMode.None)];
+            if(AllTerminalCodes.Count == 0)
+                AllTerminalCodes = [.. Object.FindObjectsByType<TerminalAccessibleObject>(FindObjectsSortMode.None)];
 
             if (gameObj == null)
             {
@@ -92,12 +98,12 @@ namespace OpenLib.CoreMethods
                 loopCount++;
                 Plugin.Spam($"New index of [ {codeIndex} ] chosen!");
                 
-            } while (CodeCollection<T>.AllTerminalCodes.Any(x => x.objectCode == RoundManager.Instance.possibleCodesForBigDoors[codeIndex]) && loopCount < 5);
+            } while (AllTerminalCodes.Any(x => x.objectCode == RoundManager.Instance.possibleCodesForBigDoors[codeIndex]) && loopCount < 5);
             
             ObjectCode.SetCodeTo(codeIndex);
             ObjectCode.InitializeValues();
 
-            CodeCollection<T>.AllTerminalCodes.Add(ObjectCode);
+            AllTerminalCodes.Add(ObjectCode);
 
             Plugin.Log.LogInfo($"{gameObj.name} assigned code - {ObjectCode.objectCode}");
             TerminalCode = ObjectCode;

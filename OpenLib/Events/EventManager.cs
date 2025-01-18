@@ -1,6 +1,8 @@
 ﻿//https://github.com/AndreyMrovol/LethalMrovLib/blob/main/MrovLib/EventManager.cs
 //used above from mrov as inspiration
 
+using UnityEngine;
+
 namespace OpenLib.Events
 {
     public static class EventManager
@@ -54,6 +56,9 @@ namespace OpenLib.Events
         public static Events.CustomEvent PlayerIsInShip = new();
         public static Events.CustomEvent PlayerIsDead = new();
         public static Events.CustomEvent SpecatingPlayerIsInShip = new();
+
+        //GameObject Events
+        public static Events.CustomEvent<GameObject> AutoParentEvent = new();
 
     }
 }

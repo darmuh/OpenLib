@@ -20,7 +20,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.2.12";
+            public const string PLUGIN_VERSION = "0.2.13";
         }
 
         internal static ManualLogSource Log;
@@ -39,6 +39,7 @@ namespace OpenLib
         public static List<TerminalKeyword> keywordsAdded = [];
         public static List<TerminalNode> nodesAdded = [];
         public static List<CompatibleNoun> nounsAdded = [];
+        public static List<TerminalAccessibleObject> AllTerminalCodes = [];
 
         public Terminal Terminal;
         public static List<TerminalNode> ShopNodes = [];

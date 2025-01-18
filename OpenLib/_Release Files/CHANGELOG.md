@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.13]
+ - This update is being pushed for version 0.3.0 of ShipColors. There may be further updates to some of the experimental, unused features before use in other mods.
+ - Added TerminalAccessibleObject support with dynamic transforms that will follow a target.
+	- Still experimental, not in use in any public mod as of yet.
+ - Added some new events to subscribe to:
+	- AutoParentEvent (Requires GameObject parameter): This method is called whenever an object is spawned in the ship (furniture/upgrades)
+	- SetBigDoorCodes - called when big doors, turrets, mines etc. are assigned codes
+	- SpawnMapObjects - called when creating the other objects on the map
+	- OnShipLandedMiscPatch - called a little after the ship lands
+ - Added TryLoadHomePage compatibility method for when darmuhsTerminalStuff is present.
+	- Still experimental, not in use in any public mod as of yet.
+ - Created example class for code examples
+	- This code is not used actively in the mod
+
 ## [0.2.12]
  - Added support for easily creating InteractiveMenus like the suits menu from suitsTerminal or the Moons Plus page from darmuhsTerminalStuff.
  - Added to CommonStringStuff:
