@@ -18,6 +18,10 @@ namespace OpenLib.Common
             {
                 Plugin.Spam("Terminal Formatter by mrov detected!");
             }
+            if (SoftCompatibility("WhiteSpike.InteractiveTerminalAPI", ref Plugin.instance.ITAPI))
+            {
+                Plugin.Spam("InteractiveTerminalAPI by WhiteSpike detected!");
+            }
             if (SoftCompatibility("ainavt.lc.lethalconfig", ref Plugin.instance.LethalConfig))
             {
                 LethalConfigSoft.LethalConfigVersion = Misc.GetPluginVersion("ainavt.lc.lethalconfig");

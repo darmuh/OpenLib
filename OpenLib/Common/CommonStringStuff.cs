@@ -195,13 +195,7 @@ namespace OpenLib.Common
 
         public static List<string> GetListToLower(List<string> stringList) //remove punctuation from list<string>
         {
-            List<string> itemsToLower = [];
-
-            foreach (string item in stringList)
-            {
-                itemsToLower.Add(item.ToLower());
-            }
-            return itemsToLower;
+            return stringList.ConvertAll(s => s.ToLower());
         }
 
 

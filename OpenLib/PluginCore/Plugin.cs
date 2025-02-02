@@ -20,7 +20,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.2.13";
+            public const string PLUGIN_VERSION = "0.2.14";
         }
 
         internal static ManualLogSource Log;
@@ -29,6 +29,7 @@ namespace OpenLib
         public bool TerminalStuff = false;
         public bool LobbyCompat = false;
         public bool TerminalFormatter = false;
+        public bool ITAPI = false;
         public bool LethalConfig = false;
         public bool OpenBodyCamsMod = false;
         public bool TwoRadarMapsMod = false;

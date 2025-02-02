@@ -80,6 +80,9 @@
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Facepunch.Steamworks.Win64.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="InteractiveTerminalAPI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\WhiteSpike-Interactive_Terminal_API\InteractiveTerminalAPI\InteractiveTerminalAPI.dll</HintPath>
+    </Reference>
     <Reference Include="LethalConfig" Publicize="true">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
       <Private>False</Private>
@@ -177,6 +180,7 @@
   <ItemGroup>
     <Compile Include="Common\CamStuff.cs" />
     <Compile Include="Compat\BMX_LobbyCompat.cs" />
+    <Compile Include="Compat\InteractiveTermAPI.cs" />
     <Compile Include="Compat\LethalConfigSoft.cs" />
     <Compile Include="Compat\ModelAPI.cs" />
     <Compile Include="Compat\OpenBodyCamFuncs.cs" />

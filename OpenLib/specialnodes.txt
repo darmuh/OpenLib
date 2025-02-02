@@ -42,8 +42,4 @@ terminalNodes.specialNodes[20] <-
 
 
 TODO:
-
-terminalStuff:
--fix view command syncing with tworadarmaps
--switch command is fully broken
--previous is not synced between clients at all (with tworadarmaps)
+managedbools/managedconfig needs a complete rework it's so ugly

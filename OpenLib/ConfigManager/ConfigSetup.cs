@@ -5,6 +5,8 @@ using OpenLib.CoreMethods;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
+using HarmonyLib;
 
 namespace OpenLib.ConfigManager
 {
@@ -31,14 +33,14 @@ namespace OpenLib.ConfigManager
 
             if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
             {
-                resultBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+                resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
                 return resultBool;
             }
             else
             {
                 ManagedConfig managedBool = new();
-                managedBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+                managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
                 managedItems.Add(managedBool);
 
@@ -58,7 +60,7 @@ namespace OpenLib.ConfigManager
 
             if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
             {
-                resultBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+                resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
                 if (!isStringNull)
                 {
@@ -69,7 +71,7 @@ namespace OpenLib.ConfigManager
             else
             {
                 ManagedConfig managedBool = new();
-                managedBool.SetManagedBoolValues(boolEntry.Definition.Key, boolEntry.Value, boolEntry.Description.Description, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+                managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
 
                 managedItems.Add(managedBool);
@@ -150,13 +152,7 @@ namespace OpenLib.ConfigManager
 
         public static bool CheckForConfigName(string configName, ConfigFile ModConfig)
         {
-            foreach (ConfigDefinition item in ModConfig.Keys)
-            {
-                if (item.Key == configName)
-                    return true;
-            }
-
-            return false;
+            return ModConfig.Keys.Any(c => c.Key == configName);
         }
 
         public static void AddManagedString(ConfigEntry<String> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
@@ -227,16 +223,15 @@ namespace OpenLib.ConfigManager
                     Plugin.Spam($"entry is not a bool");
             }
 
-            foreach (ConfigEntry<bool> configItem in configBools)
-            {
-                if (configItem.Value)
-                {
-                    configItem.Value = false;
-                    Plugin.Log.LogWarning($"Setting {configItem.Definition.Key} to false. Networking is disabled and this setting requires networking!");
-                }
-            }
+            configBools.DoIf(b => b.Value == true, DisableConfigBool);
 
             ModConfig.Save(); // Save the config file
+        }
+
+        private static void DisableConfigBool(ConfigEntry<bool> entry)
+        {
+            entry.Value = false;
+            Plugin.Log.LogWarning($"Setting {entry.Definition.Key} to false. Networking is disabled and this setting requires networking!");
         }
 
         public static void ReadConfigAndAssignValues(ConfigFile ModConfig, List<ManagedConfig> managedBools) //good for config reload events

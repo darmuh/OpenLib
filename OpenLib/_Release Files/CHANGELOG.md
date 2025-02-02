@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.2.14]
+ - Updated for darmuhsTerminalStuff v3.8.0
+ - Updated TryGetNodeFromList from foreach loop to use two separate linqs.
+	- This should resolve issue noted in terminalstuff where, if two specialstrings were detected it would return the first in the list.
+	- Will now detect if the keywords provided starts with the special string before then going and finding the first matching keyword in the provided string.
+ - Optimized a few other methods to use linq in place of foreach loops
+ - Added InteractiveTerminalAPI compatibility method for checking if a menu is open (used by terminalstuff to avoid using shortcuts while a menu is open)
+ - Adjusted some things in ManagedConfig, to be honest I want to completely rewrite this code it's soooooo ugly (unfortunately it's a core function of this library)
+
 ## [0.2.13]
  - This update is being pushed for version 0.3.0 of ShipColors. There may be further updates to some of the experimental, unused features before use in other mods.
  - Added TerminalAccessibleObject support with dynamic transforms that will follow a target.

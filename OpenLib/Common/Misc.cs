@@ -2,6 +2,7 @@
 using BepInEx.Configuration;
 using GameNetcodeStuff;
 using System;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -12,49 +13,27 @@ namespace OpenLib.Common
         public static Random Random = new();
         public static bool TryGetPlayerFromName(string playerName, out PlayerControllerB thePlayer)
         {
-            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
-            {
-                if (player.playerUsername.ToLower() == playerName)
-                {
-                    thePlayer = player;
-                    return true;
-                }
-            }
-
-            thePlayer = null!;
-            return false;
+            thePlayer = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(p => p.playerUsername.ToLower() == playerName.ToLower());
+            return thePlayer != null;
         }
 
         public static bool TryGetPlayerUsingTerminal(out PlayerControllerB terminalUser)
         {
-            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
-            {
-                if (!player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger)
-                {
-                    Plugin.MoreLogs($"Player: {player.playerUsername} detected using terminal.");
-                    terminalUser = player;
-                    return true;
-                }
-            }
+            terminalUser = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(player => !player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger);
 
-            terminalUser = null!;
-            return false;
-        }
+            return terminalUser != null;        }
 
         public static bool TryGetHostClientID(out int HostClientID)
         {
-            foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
+            PlayerControllerB host = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(player => player.isHostPlayerObject);
+            if(host == null)
             {
-                if (player.isHostPlayerObject)
-                {
-                    Plugin.MoreLogs($"Player: {player.playerUsername} is the host, client ID: {player.playerClientId}.");
-                    HostClientID = ((int)player.playerClientId);
-                    return true;
-                }
+                HostClientID = -1;
+                return false;
             }
 
-            HostClientID = -1;
-            return false;
+            HostClientID = (int)host.playerClientId;
+            return true;
         }
 
         public static Color HexToColor(string hex)

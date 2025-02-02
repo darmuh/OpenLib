@@ -1,7 +1,9 @@
-﻿using OpenLib.Common;
+﻿using BepInEx.Configuration;
+using OpenLib.Common;
 using OpenLib.Menus;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenLib.ConfigManager
 {
@@ -41,6 +43,8 @@ namespace OpenLib.ConfigManager
         public Func<string> DenyAction;
         public Func<string> InfoAction;
         public string InfoText = "";
+        public ConfigEntry<bool> configBool;
+        public string section = "";
 
         //for menus
         public TerminalMenuItem menuItem;
@@ -115,6 +119,36 @@ namespace OpenLib.ConfigManager
             reuseFunc = reuseFnc;
         }
 
+        public void SetManagedBoolValues(ConfigEntry<bool> configItem, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clear = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
+        {
+            ConfigType = 0;
+            BoolValue = configItem.Value;
+            MainAction = mainAction;
+            KeywordList = keywordList;
+            ConfigItemName = configItem.Definition.Key;
+            RequiresNetworking = isNetworked;
+            price = value;
+            CommandType = commandType;
+            clearText = clear;
+            ConfirmAction = confirmAction;
+            DenyAction = denyAction;
+            confirmText = confirmTxt;
+            denyText = denyTxt;
+            specialNum = specialInt;
+            specialString = special;
+            itemList = items;
+            storeName = storeString;
+            alwaysInStock = inStock;
+            maxStock = stockMax;
+            nodeName = nodestring;
+            categoryText = category;
+            configDescription = configItem.Description.Description;
+            reuseFunc = reuseFnc;
+
+            configBool = configItem;
+            section = configItem.Definition.Section;
+        }
+
     }
 
     public class ManagedBoolGet
@@ -123,25 +157,32 @@ namespace OpenLib.ConfigManager
         {
             if (managedBools.Count == 0)
             {
-                Plugin.Spam("managedBools count = 0");
+                Plugin.Spam("managedConfigs count = 0");
                 result = null;
                 return false;
             }
 
             Plugin.Spam($"TryGetItemByName: {query}");
 
-            foreach (ManagedConfig item in managedBools)
+            result = managedBools.FirstOrDefault(item => item.ConfigItemName == query && item.ConfigType == configType);
+
+            return result != null;
+        }
+
+        public static bool TryGetBySection(List<ManagedConfig> managedBools, string query, int configType, out List<ManagedConfig> result)
+        {
+            if (managedBools.Count == 0)
             {
-                if (item.ConfigItemName == query && item.ConfigType == configType)
-                {
-                    result = item;
-                    Plugin.Spam($"{query} found with matching config type: {configType}, returning true");
-                    return true;
-                }
+                Plugin.Spam("managedConfigs count = 0");
+                result = [];
+                return false;
             }
-            Plugin.Spam($"{query} not found");
-            result = null;
-            return false;
+
+            Plugin.Spam($"TryGetBySection: {query}");
+
+            result = managedBools.FindAll(item => item.section == query && item.ConfigType == configType);
+
+            return result != null;
         }
 
         public static bool CanAddToManagedBoolList(List<ManagedConfig> managedBools, string nodeName)

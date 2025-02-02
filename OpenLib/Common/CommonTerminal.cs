@@ -36,16 +36,15 @@ namespace OpenLib.Common
             if (!nodeListing.Any(x => words.Contains(x.Key.ToLower())))
                 return false;
 
-            foreach (KeyValuePair<string, TerminalNode> pairValue in nodeListing)
-            {
-                if (words.Any(x => x.ToLower() == pairValue.Key.ToLower()))
-                {
-                    returnNode = pairValue.Value;
-                    return true;
-                }
-            }
+            returnNode = nodeListing.FirstOrDefault(x => x.Key.ToLower() == words[0].ToLower()).Value;
 
+            if(returnNode != null )
+                return true;
 
+            returnNode = nodeListing.FirstOrDefault(t => words.Any(x => x.ToLower() == t.Key.ToLower())).Value;
+
+            if (returnNode != null)
+                return true;
 
             return false; // No matching command found for the given query
         }
