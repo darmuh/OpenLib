@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="InteractiveTerminalAPI">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\WhiteSpike-Interactive_Terminal_API\InteractiveTerminalAPI\InteractiveTerminalAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="LethalConfig" Publicize="true">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\dontloadpls\AinaVT-LethalConfig\LethalConfig\LethalConfig.dll</HintPath>
