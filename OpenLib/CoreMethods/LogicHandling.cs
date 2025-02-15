@@ -26,13 +26,12 @@ namespace OpenLib.CoreMethods
             if (node == null)
                 return false;
 
-            if(EventManager.GetNewDisplayText.Listeners > 0) //only invoke if someone is listening to this event
-                node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
-            //create event to subscribe to and perform other actions
-            //like terminalstuff doing dynamic cost analysis for the store node
+            
 
             if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
             {
+                NewDisplayTextEventInvoke(ref node);
+
                 CommonTerminal.parseNode = node; // set this static node for usage elsewhere
                 Plugin.Spam($"Func<string> found for {node.name}");
                 node.displayText = newDisplayText();
@@ -43,6 +42,41 @@ namespace OpenLib.CoreMethods
                 Plugin.Spam("Not in special nodeListing dictionary");
                 return false;
             }
+        }
+
+        public static bool GetNewDisplayText2(ref TerminalNode node)
+        {
+            if (node == null || Plugin.AllCommands.Count == 0)
+                return false;
+
+            
+            TerminalNode current = node;
+            CommandManager match = Plugin.AllCommands.FirstOrDefault(f => f.terminalNode == current);
+            if (match != null)
+            {
+                NewDisplayTextEventInvoke(ref node);
+                node.displayText = match.MainAction();
+                return true;
+            }
+
+            CommandManager info = Plugin.AllCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
+            if(info != null)
+            {
+                NewDisplayTextEventInvoke(ref node);
+                node.displayText = info.InfoBase.InfoAction();
+                return true;
+            }
+
+            Plugin.Spam("No matches in GetNewDisplayText2");
+            return false;
+        }
+
+        private static void NewDisplayTextEventInvoke(ref TerminalNode node)
+        {
+            if (EventManager.GetNewDisplayText.Listeners > 0) //only invoke if someone is listening to this event
+                node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
+                                                                            //create event to subscribe to and perform other actions
+                                                                            //like terminalstuff doing dynamic cost analysis for the store node
         }
 
         public static bool GetNewDisplayText(List<MainListing> providedListing, ref TerminalNode node) //overload for multiple listings (terminalstuff)
@@ -66,13 +100,12 @@ namespace OpenLib.CoreMethods
                 looptimes++;
                 Plugin.Spam($"command dictionary in this listing is not empty ({looptimes})");
 
-                if(EventManager.GetNewDisplayText.Listeners > 0) //only invoke below if this event has listeners to avoid creating a null node!!
-                    node = EventManager.GetNewDisplayText.NodeInvoke(ref node); //updated to ref node in order to change/cancel the node at parse
-                //create event to subscribe to and perform other actions
-                //like terminalstuff doing dynamic cost analysis for the store node
+                
 
                 if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
                 {
+                    NewDisplayTextEventInvoke(ref node);
+
                     CommonTerminal.parseNode = node; // set this static node for usage elsewhere
                     Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
                     node.displayText = newDisplayText();
@@ -92,7 +125,7 @@ namespace OpenLib.CoreMethods
 
         public static bool GetDisplayFromFaux(List<FauxKeyword> fauxWords, string words, ref TerminalNode node)
         {
-            Plugin.Spam($"GetDisplayFromFaux {words}");
+            //Plugin.Spam($"GetDisplayFromFaux {words}");
             string firstWord = words.Split(' ')[0];
             foreach (FauxKeyword keyword in fauxWords)
             {

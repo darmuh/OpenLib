@@ -27,7 +27,7 @@ namespace OpenLib.CoreMethods
         public Key selectMenu = Key.Enter;
         public Key leaveMenu = Key.Backspace;
         public Dictionary<Key, Action> MainActions = [];
-        public Dictionary<Key,Action> OtherActions = [];
+        public Dictionary<Key, Action> OtherActions = [];
 
         //important
         public bool isMenuEnabled = false;
@@ -167,6 +167,14 @@ namespace OpenLib.CoreMethods
 
         public static bool AnyMenuActive()
         {
+            bool external = false;
+            
+            if (Plugin.instance.ITAPI)
+                external = Compat.InteractiveTermAPI.ApplicationInUse();
+
+            if(external)
+                return true;
+
             if(AllMenus.Count == 0) 
                 return false;
 

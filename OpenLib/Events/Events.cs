@@ -2,6 +2,10 @@
 // https://github.com/AndreyMrovol/LethalMrovLib/blob/main/MrovLib/Events/Events.cs
 // used above as template for this version of event creation
 
+using HarmonyLib;
+using System;
+using System.Collections.Generic;
+
 namespace OpenLib.Events
 {
     public class Events
@@ -107,6 +111,16 @@ namespace OpenLib.Events
             {
                 OnEvent -= listener;
                 Listeners--;
+            }
+
+            public void RemoveAllListeners()
+            {
+                if (Listeners == 0)
+                    return;
+
+                List<Delegate> allListeners = [.. OnEvent.GetInvocationList()];
+                allListeners.Do(x => OnEvent -= (Event)x);
+                Listeners = 0;
             }
         }
     }

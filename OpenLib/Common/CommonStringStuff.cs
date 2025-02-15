@@ -12,7 +12,7 @@ namespace OpenLib.Common
     {
         public static string GetNextPage(List<string> categoryItems, string categoryTitle, int pageSize, int currentPage, out bool isNextEnabled) //used to return menus from terminalstuff
         {
-            // Ensure currentPage is within valid range
+            // Ensure CurrentPage is within valid range
             currentPage = Mathf.Clamp(currentPage, 1, Mathf.CeilToInt((float)categoryItems.Count / pageSize));
 
             // Calculate the start and end indexes for the current page

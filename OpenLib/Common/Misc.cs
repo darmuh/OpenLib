@@ -17,6 +17,18 @@ namespace OpenLib.Common
             return thePlayer != null;
         }
 
+        //rather than clamping, this will take a value and return it to the opposite end of the index
+        public static int CycleIndex(int value, int min, int max)
+        {
+            if (value < min)
+                return max;
+
+            if (value > max)
+                return min;
+
+            return value;
+        }
+
         public static bool TryGetPlayerUsingTerminal(out PlayerControllerB terminalUser)
         {
             terminalUser = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(player => !player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger);
@@ -58,6 +70,8 @@ namespace OpenLib.Common
             else
                 return null!;
         }
+
+
 
 
         // ----------------- Obsolete Old Methods ----------------- //

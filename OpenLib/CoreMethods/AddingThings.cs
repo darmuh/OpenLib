@@ -123,6 +123,7 @@ namespace OpenLib.CoreMethods
             return terminalNode;
         }
 
+        //[Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddBasicCommand(string nodeName, string keyWord, string displayText, bool isVerb, bool clearText, string category = "", string keywordDescription = "") //menus
         {
             if (!LogicHandling.TryGetFromAllNodes("OtherCommands", out TerminalNode otherNode) && category.ToLower() == "other")
@@ -172,6 +173,7 @@ namespace OpenLib.CoreMethods
         }
 
         //for use without referring to specific config items
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
             TerminalNode returnNode = null;
@@ -192,6 +194,7 @@ namespace OpenLib.CoreMethods
         }
 
         //when you want to refer to config items for management but also want a terminalnode returned to you
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
             TerminalNode returnNode = null;
@@ -239,6 +242,7 @@ namespace OpenLib.CoreMethods
         }
 
         //base level node/keyword creation
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static TerminalNode CreateNode(TerminalMenu terminalMenu, string nodeName, string keyWord, Func<string> commandAction, MainListing yourModListing, bool isNextPageCommand = false)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -279,6 +283,7 @@ namespace OpenLib.CoreMethods
             return terminalNode;
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void InfoText(ManagedConfig managedBool, string keyWord, TerminalKeyword infoWord, MainListing yourModListing)
         {
             if (managedBool.InfoAction != null)
@@ -314,6 +319,7 @@ namespace OpenLib.CoreMethods
                 yourListing.fauxKeywords.Add(fauxWord);
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static TerminalNode CreateNode(ManagedConfig managedBool, string keyWord, MainListing yourModListing)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -343,6 +349,7 @@ namespace OpenLib.CoreMethods
             return terminalNode;
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddConfirm(string nodeName, ManagedConfig managedBool, Dictionary<TerminalNode, Func<string>> nodeListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
             confirm = BasicTerminal.CreateCompatibleNoun(nodeName, "confirm", managedBool.confirmText, managedBool.price, managedBool.ConfirmAction, nodeListing);
@@ -350,12 +357,14 @@ namespace OpenLib.CoreMethods
 
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddConfirm(string nodeName, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, Dictionary<TerminalNode, Func<string>> nodeListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
             confirm = BasicTerminal.CreateCompatibleNoun(nodeName, "confirm", confirmText, price, ConfirmAction, nodeListing);
             deny = BasicTerminal.CreateCompatibleNoun(nodeName, "deny", denyText, price, DenyAction, nodeListing);
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedConfig managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
             if (managedBool.TerminalNode == null)
@@ -380,6 +389,7 @@ namespace OpenLib.CoreMethods
             }
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddStoreCommand(string nodeName, string storeName, ref TerminalKeyword keyword, ref TerminalNode node, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, MainListing mainListing, bool alwaysInStock, int maxStock, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
 
@@ -405,6 +415,7 @@ namespace OpenLib.CoreMethods
             }
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void StoreStuff(string nodeName, string storeName, ref TerminalKeyword keyword, ref TerminalNode node, int price, bool alwaysInStock, int maxStock, ref CompatibleNoun confirm, ref CompatibleNoun deny)
         {
 
@@ -542,6 +553,7 @@ namespace OpenLib.CoreMethods
 
         }
 
+        [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static TerminalNode BaseCommandCreation(string nodeName, string keyWord, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, bool alwaysInStock, int maxStock, string storeName, bool reuseFunc, string itemList)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];

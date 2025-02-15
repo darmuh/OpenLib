@@ -4,6 +4,48 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.3.0] (The refactor begins)
+ - As mentioned in last version, there is some pretty old/ugly core code in this library now. Starting now I'll be working to migrate to some new classes from legacy code such as:
+	- ManagedConfig/ManagedBool/ManagedString -> ConfigWatch
+		- Hoping to get away from methods with 7+ params each with all different niche use-cases. Starting with my managedconfig items
+		- ConfigWatch uses a generic to work with any config item and will ONLY be used to watch the config item. Nothing else.
+		- Currently only really need this class to watch for networking required booleans, but who knows maybe the other config types will be needed in the future.
+	- AddingThings/MainListing -> CommandManager & the various Node Classes
+		- Part of detangling everything starts here
+		- CommandManager can/will be created/initialized in awake, no need to define a listing per mod either
+		- OpenLib listing can be opted out of ofc
+		- The various "node" classes such as NodeConfirmation, NodeInfo, NodeSpecial allows for further complex command creation without adding a bunch of parameters/properties in one class.
+		- Default CommandManager listing will create terminal commands conditionally based on setup of each CommandManager item at terminal awake
+		- Optional constructors for commands that are defined during runtime or do not have config items for their keywords etc. are available
+		- should allow same or better flexibility in the future without being a tangled mess
+	- InteractiveMenu -> BetterMenu/MenusContainer/MenuItem
+		- As with the theme, untangled one class into a few different ones and added a more standardized menu base for all OpenLib mods to potentially use.
+		- Provides a bunch of different events based on keypress, menu page load, menu item load, etc.
+		- BetterMenu uses a generic type so that each mod can define their own type of BetterMenu to inherit from.
+		- suitsTerminal is the first test example which is using a BetterMenu type of SuitMenuItem (which inherits from MenuItem, this will probably be necessary for all uses of this menu system)
+		- this implementation should hopefully reduce the redundant code between mods while still allowing a great deal of flexibility with each different menu type
+ - While I plan to move all existing mods to these new classes, it will take me a while to migrate everything.
+	- In order to not break shit between updates I am leaving the older classes in tact with just an obsolete tag noting they have been replaced.
+	- Eventually all methods will be replaced, but as I've been testing with suitsTerminal there is the possibility I will need to expand on the new classes for other mods
+ - Added new method to Events.cs class ``RemoveAllListeners()``
+	- This method is used by the new BetterMenus class for situations where an event may want to completely replace any existing listeners for a new one.
+ - Added new method to Misc.cs class ``CycleIndex``
+	- This method is used by the new BetterMenus feature to cycle the index rather than clamp it
+	- when cycled, this will take a value and return it to the opposite end of the index
+	- in BetterMenus, that means when you try to go past the last page or last item, it will take you to the first page or first item rather than keeping you at your current spot in the index.
+ - Added new methods to CommonTerminal.cs
+	- LoadNewNode - will load the provided terminal node and, if terminalstuff is present, run the compatibility method to then sync that node
+	- TryLoadKeyword - will try to load the terminal node matching a provided keyword
+	- TryGetCommand - will try to find a matching CommandManager item in this library's listing (used to load the command manager command)
+ - Also started caching some common keywords in CommonTerminal with a getter
+ - Updated TerminalStuff compatibility methods
+	- TryLoadHomePage now actually loads the home page rather than trying to load the start page
+	- Added TryLoadStartPage to load the start page (if it's not null)
+ - Added GetNewDisplayText2 to LogicHandling.cs for updating CommandManager commands' displaytext at terminal parse
+ - Some other various changes as part of the beginning of the refactoring process
+
+### If you experience issues with OpenLib version 0.3.0, please report the issues with logs and revert to version 0.2.14.	
+
 ## [0.2.14]
  - Updated for darmuhsTerminalStuff v3.8.0
  - Updated TryGetNodeFromList from foreach loop to use two separate linqs.

@@ -155,7 +155,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Keys.Any(c => c.Key == configName);
         }
 
-        public static void AddManagedString(ConfigEntry<String> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
+        public static void AddManagedString(ConfigEntry<string> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
         {
             ManagedConfig managedString = new()
             {

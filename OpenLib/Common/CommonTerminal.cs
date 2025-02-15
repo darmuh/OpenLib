@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenLib.Compat;
+using OpenLib.CoreMethods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +11,54 @@ namespace OpenLib.Common
     {
         public static TerminalNode parseNode = null!;
         public static Color CaretOriginal;
+        public static Color transparent = new(0, 0, 0, 0);
+
+        //cached common
+        public static TerminalKeyword InfoKeyword
+        {
+            get
+            {
+                if (DynamicBools.TryGetKeyword("info", out TerminalKeyword keyword))
+                {
+                    return keyword;
+                }
+                else
+                {
+                    Plugin.WARNING("InfoKeyword reference could not be found! [NULL]");
+                    return null!;
+                }
+            }
+        }
+        public static TerminalKeyword BuyKeyword
+        {
+            get
+            {
+                if (DynamicBools.TryGetKeyword("buy", out TerminalKeyword keyword))
+                {
+                    return keyword;
+                }
+                else
+                {
+                    Plugin.WARNING("BuyKeyword reference could not be found! [NULL]");
+                    return null!;
+                }
+            }
+        }
+        public static TerminalKeyword OtherKeyword
+        {
+            get
+            {
+                if (DynamicBools.TryGetKeyword("other", out TerminalKeyword keyword))
+                {
+                    return keyword;
+                }
+                else
+                {
+                    Plugin.WARNING("OtherKeyword reference could not be found! [NULL]");
+                    return null!;
+                }
+            }
+        }
 
         public static void ToggleScreen(bool status)
         {
@@ -22,6 +72,55 @@ namespace OpenLib.Common
                 CaretOriginal = Plugin.instance.Terminal.screenText.caretColor;
 
             Plugin.instance.Terminal.screenText.caretColor = newColor;
+        }
+
+        public static void LoadNewNode(TerminalNode node)
+        {
+            if (Plugin.instance.TerminalStuff)
+                TerminalStuffMod.LoadAndSync(node);
+            else
+                Plugin.instance.Terminal.LoadNewNode(node);
+        }
+
+        public static bool TryLoadKeyword(string keyword)
+        {
+            if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword word))
+            {
+                TerminalNode node = word.specialKeywordResult;
+                Plugin.Spam($"TryLoadKeyword found keyword [ {word.word} ]");
+                LoadNewNode(node);
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool TryGetCommand(string words, out TerminalNode returnNode)
+        {
+            returnNode = null!;
+            
+            if (words.Length == 0)
+                return false;
+
+            CommandManager special = Plugin.AllCommands.FirstOrDefault(x => x.AcceptAdditionalText && x.KeywordList.Any(s => words.ToLowerInvariant().StartsWith(s.ToLowerInvariant())));
+            
+            if (special != null)
+            {
+                returnNode = special.terminalNode;
+                return returnNode != null;
+            }
+
+            CommandManager normal = Plugin.AllCommands.FirstOrDefault(x => x.KeywordList.Any(s => words.ToLowerInvariant() == s.ToLowerInvariant()));
+            
+            if (normal != null)
+            {
+                returnNode = normal.terminalNode;
+                return returnNode != null;
+            }
+
+            Plugin.Spam("No matching commands in Plugin.AllCommands");
+            return false;
+
         }
 
         public static bool TryGetNodeFromList(string query, Dictionary<string, TerminalNode> nodeListing, out TerminalNode returnNode)

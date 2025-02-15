@@ -39,6 +39,21 @@ namespace OpenLib.Compat
 
         public static bool TryLoadHomePage()
         {
+            if (!Plugin.instance.TerminalStuff)
+                return false;
+
+            if (TerminalStuff.EventSub.TerminalStart.startNode == null)
+                return false;
+
+            LoadAndSync(TerminalStuff.EventSub.TerminalStart.startNode);
+            return true;
+        }
+
+        public static bool TryLoadStartPage()
+        {
+            if (!Plugin.instance.TerminalStuff)
+                return false;
+
             if (TerminalStuff.TerminalEvents.terminalSettings.startPageValue.Length < 1)
                 return false;
 

@@ -1,7 +1,9 @@
 ﻿using BepInEx.Configuration;
+using HarmonyLib;
 using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
+using OpenLib.InteractiveMenus;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,10 +13,11 @@ namespace OpenLib.Events
     {
         public static List<ConfigFile> configsToReload = [];
 
-        public static void Subscribers()
+        internal static void Subscribers()
         {
             EventManager.TerminalAwake.AddListener(OnTerminalAwake);
             EventManager.TerminalStart.AddListener(OnTerminalStart);
+            EventManager.TerminalQuit.AddListener(OnTerminalQuit);
             EventManager.TerminalDisable.AddListener(OnTerminalDisable);
             EventManager.TerminalLoadNewNode.AddListener(OnLoadNewNode);
             EventManager.TerminalParseSent.AddListener(OnParseSent);
@@ -29,20 +32,22 @@ namespace OpenLib.Events
             //EventManager.OnShipLandedMiscPatch.AddListener(Examples.Examples.TestMyTAO);
         }
 
-        public static void OnTerminalAwake(Terminal instance)
+        private static void OnTerminalAwake(Terminal instance)
         {
             Plugin.instance.Terminal = instance;
             Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
             CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
+            CommandManager.AddAllCommandsToTerminal();
         }
 
-        public static void OnTerminalDisable()
+        private static void OnTerminalDisable()
         {
             if (Plugin.instance.OpenBodyCamsMod)
                 Compat.OpenBodyCamFuncs.ResidualCamsCheck();
             RemoveThings.OnTerminalDisable();
             TerminalStart.delayStartEnum = false;
             ListManagement.ClearLists();
+            Plugin.AllCommands.Do(x => x.TerminalDisabled());
 
             foreach (ConfigFile config in configsToReload)
             {
@@ -54,19 +59,37 @@ namespace OpenLib.Events
             configsToReload.Clear();
         }
 
-        public static void OnTerminalStart()
+        private static void OnTerminalStart()
         {
             TerminalStart.TerminalStartGroupDelay();
         }
 
-        public static void OnKeyPress()
+        private static void OnTerminalQuit()
         {
-            if (AllInteractiveMenus.AllMenus.Count == 0)
+            if (MenusContainer.AllMenus.Count == 0)
                 return;
 
-            //check for interactive menus
-            InteractiveMenu anyMenu = AllInteractiveMenus.AllMenus.FirstOrDefault(x => x.inMenu && x.isMenuEnabled);
-            anyMenu?.HandleInput();
+            BetterMenuBase anyMenu = MenusContainer.AllMenus.FirstOrDefault(x => x.InMenu);
+            anyMenu?.ExitTerminal.Invoke();
+        }
+
+        internal static void OnKeyPress()
+        {
+            if (AllInteractiveMenus.AllMenus.Count != 0)
+            {
+                //check for interactive menus
+                InteractiveMenu anyMenu = AllInteractiveMenus.AllMenus.FirstOrDefault(x => x.inMenu && x.isMenuEnabled);
+                anyMenu?.HandleInput();
+            }
+
+            if(MenusContainer.AllMenus.Count != 0)
+            {
+                //check for BETTER menus
+                BetterMenuBase anyMenu = MenusContainer.AllMenus.FirstOrDefault(x => x.InMenu);
+                anyMenu?.InputEvent.Invoke();
+            }
+
+            
         }
 
         public static void OnUsingTerminal()
@@ -96,11 +119,22 @@ namespace OpenLib.Events
                     node = retrieveNode;
                     Plugin.Spam($"node found matching specialListString in text - {screenText}");
                 }
+
+                if(CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
+                {
+                    node = commandNode;
+                    Plugin.Spam($"node found matching CommandManager listing in text - {screenText}");
+                }
             }
 
             if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
             {
                 Plugin.MoreLogs($"node found: {node.name}");
+            }
+
+            if(LogicHandling.GetNewDisplayText2(ref node)) //update displaytext for matching node
+            {
+                Plugin.MoreLogs($"command found: {node.name}");
             }
 
             return node;

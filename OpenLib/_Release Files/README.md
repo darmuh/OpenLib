@@ -6,11 +6,14 @@
 - Once you are done modifying the form on the webpage you can then click the button at the bottom of the page to compare your changes to the original config file.
 - When the page is done comparing your changes, it will save/download a new config file to your device.
 
+---
+
 ### Open-source development library for LethalCompany
 
 - This is a library of commonly used methods from darmuh's mods. Allowing for flexible additions to the terminal and unified game patching.
 - This will remain open to the public for collaborative efforts. All I ask is that you maintain compatibility with any mod that uses this library.
 
+---
 
 ### Current Features:
 - ManagedConfig class will let you watch and assign values to certain config items.
@@ -49,7 +52,9 @@
 - Add compatible nouns manually.
 - Support methods for LethalConfig and OpenBodyCams.
 
-Currently Supports:
+---
+
+### Currently Supports:
  - darmuhsTerminalStuff 3.3.0+
  - suitsTerminal 1.4.0+
  - ShipColors 0.1.0+
@@ -58,3 +63,9 @@ Currently Supports:
 
 Icon Attribution:
 [Online library icons created by Ajmal Naha - Flaticon](https://www.flaticon.com/free-icons/online-library)
+
+---
+
+### Last update to this page:
+December 21st, 2024 (version 0.2.12)  
+*Changelog may have more up-to-date information than this page at times.*
