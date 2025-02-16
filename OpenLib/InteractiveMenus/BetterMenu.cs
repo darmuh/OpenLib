@@ -85,7 +85,7 @@ namespace OpenLib.InteractiveMenus
         //important
         public bool IsMenuEnabled = false;
         
-        public bool AcceptAnything = false;
+        public bool AcceptAnything = false; //should probably set this via menuitem
         public int ActiveSelection = 0;
         public int CurrentPage = 1;
         public int PageSize = 8;
@@ -182,6 +182,13 @@ namespace OpenLib.InteractiveMenus
         public void DefaultAcceptAnything()
         {
             AcceptAnything = false;
+            
+            MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
+            if(current.NestedMenus.Count == 0)
+            {
+                ExitInTerminal();
+                return;
+            }
             Load();
         }
 
@@ -304,7 +311,7 @@ namespace OpenLib.InteractiveMenus
             {
                 Plugin.Spam("Setting to ParentMenu!");
                 ActiveSelection = 0;
-                CurrentPage = 0;
+                CurrentPage = 1;
                 current.IsActive = false;
                 current.Parent.IsActive = true;
                 LoadPage.Invoke();
@@ -322,6 +329,12 @@ namespace OpenLib.InteractiveMenus
         {
             OnExit.Invoke();
             Plugin.instance.Terminal.StartCoroutine(MenuClose(enableInput));
+        }
+
+        public void EnterAtPage(MenuItem menuItem)
+        {
+            OnEnter.Invoke();
+            Plugin.instance.Terminal.StartCoroutine(MenuStart(menuItem));
         }
 
         public void EnterMenu()
@@ -355,24 +368,29 @@ namespace OpenLib.InteractiveMenus
             yield break;
         }
 
-        internal IEnumerator MenuStart()
+        internal IEnumerator MenuStart(MenuItem Start = null!)
         {
             if (InMenu)
                 yield break;
 
-            
-            MainMenu.IsActive = true;
+            Start ??= MainMenu;
+
+            Start.IsActive = true;
             AcceptAnything = false;
             yield return new WaitForEndOfFrame();
             InMenu = true;
             CommonTerminal.ChangeCaretColor(CommonTerminal.transparent, true);
             ActiveSelection = 0;
-            CurrentPage = 0;
+            CurrentPage = 1;
             yield return new WaitForEndOfFrame();
             Plugin.instance.Terminal.screenText.DeactivateInputField();
             Plugin.instance.Terminal.screenText.interactable = false;
             yield return new WaitForEndOfFrame();
-            LoadPage.Invoke();
+            Start.SelectionEvent?.Invoke();
+            
+            if (Start.LoadPageOnSelect)
+                LoadPage.Invoke();
+
             yield break;
         }
 

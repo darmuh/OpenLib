@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## (0.3.1) hotfixes
+## [0.3.2]
+ - Added EnterAtPage method to BetterMenu for loading a different menu item at load-in
+	- for suitsTerminal config item in 1.6.2 of suitsTerminal
+
+## [0.3.1] hotfixes
  - BetterMenu UpdateMainActions method added/publicized for updated main keys of a menu
 	- should fix configurable keys not working in latest suitsTerminal
 	- does need to be called when changing any main action key to update the dictionary of actions related to the key
