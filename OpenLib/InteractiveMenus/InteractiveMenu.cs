@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenLib.InteractiveMenus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
@@ -165,17 +166,18 @@ namespace OpenLib.CoreMethods
                 return true;
         }
 
+        [Obsolete("Use MenusContainer.AnyMenuActive instead")]
         public static bool AnyMenuActive()
         {
-            bool external = false;
-            
-            if (Plugin.instance.ITAPI)
-                external = Compat.InteractiveTermAPI.ApplicationInUse();
-
-            if(external)
+            if (MenusContainer.AnyMenuActive()) //BetterMenus & ITAPI compatibility
                 return true;
 
-            if(AllMenus.Count == 0) 
+            return false;
+        }
+
+        public static bool AnyInteractiveMenuActive()
+        {
+            if (AllMenus.Count == 0)
                 return false;
 
             if (AllMenus.Any(x => x.inMenu))

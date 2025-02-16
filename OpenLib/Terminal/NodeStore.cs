@@ -2,7 +2,6 @@
 using HarmonyLib;
 using OpenLib.Common;
 using static OpenLib.CoreMethods.AddingThings;
-using static OpenLib.CoreMethods.DynamicBools;
 
 namespace OpenLib.CoreMethods
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using OpenLib.CoreMethods;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +27,9 @@ namespace OpenLib.InteractiveMenus
                 external = Compat.InteractiveTermAPI.ApplicationInUse();
 
             if (external)
+                return true;
+
+            if (AllInteractiveMenus.AnyInteractiveMenuActive()) //required for interactive menus compatibility
                 return true;
 
             if (AllMenus.Count == 0)

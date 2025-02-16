@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## (0.3.1) hotfixes
+ - BetterMenu UpdateMainActions method added/publicized for updated main keys of a menu
+	- should fix configurable keys not working in latest suitsTerminal
+	- does need to be called when changing any main action key to update the dictionary of actions related to the key
+	- Thanks IAmSympathy for the report
+ - Updated AnyMenuActive in InteractiveMenus with an obsolete tag and having it redirect the results from MenusContainer.AnyMenuActive
+	- Also updated MenusContainer.AnyMenuActive to check for InteractiveMenus to keep things all working together
+	- should fix darmuhsTerminalStuff shortcuts not respecting the new BetterMenus system
+	- Thanks Lunxara for the report
+
 ## [0.3.0] (The refactor begins)
  - As mentioned in last version, there is some pretty old/ugly core code in this library now. Starting now I'll be working to migrate to some new classes from legacy code such as:
 	- ManagedConfig/ManagedBool/ManagedString -> ConfigWatch

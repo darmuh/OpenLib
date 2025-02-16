@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
+using OpenLib.Common;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +9,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static OpenLib.Events.Events;
 using static OpenLib.InteractiveMenus.MenusContainer;
-using OpenLib.Common;
-using HarmonyLib;
 
 namespace OpenLib.InteractiveMenus
 {
@@ -103,7 +103,7 @@ namespace OpenLib.InteractiveMenus
             InputEvent.AddListener(HandleInput);
             ExitTerminal.AddListener(ExitTerminalLeave);
             AcceptAnyKeyEvent.AddListener(DefaultAcceptAnything);
-            SetupMainActions();
+            UpdateMainActions();
 
             if (MoreMenuActions != null)
                 OtherActions = MoreMenuActions;
@@ -127,7 +127,8 @@ namespace OpenLib.InteractiveMenus
             OtherActions.Add(key, action);
         }
 
-        private void SetupMainActions()
+        //can be called to update main actions with new keys
+        public void UpdateMainActions()
         {
             MainActions.Clear();
             MainActions.Add(upMenu, UpMenu);
