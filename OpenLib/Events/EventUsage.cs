@@ -26,7 +26,7 @@ namespace OpenLib.Events
             EventManager.TeleporterAwake.AddListener(Teleporter.CheckTeleporterTypeAndAssign);
             //EventManager.PlayerSpawn.AddListener(PlayerSpawned);
             //EventManager.PlayerEmote.AddListener(OnPlayerEmote);
-            EventManager.TerminalKeyPressed.AddListener(OnKeyPress);
+            EventManager.TerminalMenuKeyPressed.AddListener(OnMenuKeyPress);
 
             //testing
             //EventManager.OnShipLandedMiscPatch.AddListener(Examples.Examples.TestMyTAO);
@@ -73,7 +73,7 @@ namespace OpenLib.Events
             anyMenu?.ExitTerminal.Invoke();
         }
 
-        internal static void OnKeyPress()
+        internal static void OnMenuKeyPress()
         {
             if (AllInteractiveMenus.AllMenus.Count != 0)
             {
@@ -82,14 +82,14 @@ namespace OpenLib.Events
                 anyMenu?.HandleInput();
             }
 
-            if(MenusContainer.AllMenus.Count != 0)
+            if (MenusContainer.AllMenus.Count != 0)
             {
                 //check for BETTER menus
                 BetterMenuBase anyMenu = MenusContainer.AllMenus.FirstOrDefault(x => x.InMenu);
                 anyMenu?.InputEvent.Invoke();
             }
 
-            
+
         }
 
         public static void OnUsingTerminal()
@@ -120,7 +120,7 @@ namespace OpenLib.Events
                     Plugin.Spam($"node found matching specialListString in text - {screenText}");
                 }
 
-                if(CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
+                if (CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
                 {
                     node = commandNode;
                     Plugin.Spam($"node found matching CommandManager listing in text - {screenText}");
@@ -132,7 +132,7 @@ namespace OpenLib.Events
                 Plugin.MoreLogs($"node found: {node.name}");
             }
 
-            if(LogicHandling.GetNewDisplayText2(ref node)) //update displaytext for matching node
+            if (LogicHandling.GetNewDisplayText2(ref node)) //update displaytext for matching node
             {
                 Plugin.MoreLogs($"command found: {node.name}");
             }

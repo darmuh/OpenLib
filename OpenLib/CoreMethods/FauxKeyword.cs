@@ -23,7 +23,7 @@ namespace OpenLib.CoreMethods
                 Plugin.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
                 return;
             }
-                
+
             if (DynamicBools.TryGetKeyword(mainWord, out TerminalKeyword mainPage))
             {
                 this.MainPage = mainPage.specialKeywordResult;

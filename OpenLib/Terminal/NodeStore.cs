@@ -5,14 +5,14 @@ using static OpenLib.CoreMethods.AddingThings;
 
 namespace OpenLib.CoreMethods
 {
-    public class NodeStore(CommandManager cmd, string name, ConfigEntry<int> configInt, int maxStock = 0, bool alwaysInStock = false)
+    public class NodeStore(CommandManager cmd)
     {
-        public bool AlwaysInStock = alwaysInStock;
-        public int MaxStock = maxStock;
-        public ConfigEntry<int> PriceConfig = configInt;
-        public string Name = name;
+        public bool AlwaysInStock = false;
+        public int MaxStock = 0;
+        public ConfigEntry<int> PriceConfig = null!;
         public CommandManager Command = cmd;
-
+        public string Name = cmd.Name;
+        public int ManualPrice = 0;
 
         public void AddToStore()
         {
@@ -21,6 +21,13 @@ namespace OpenLib.CoreMethods
 
             if (Command.ConfirmBase == null)
                 Command.ConfirmBase.CreateConfirmation();
+
+            int price;
+
+            if (PriceConfig == null)
+                price = ManualPrice;
+            else
+                price = PriceConfig.Value;
 
             TerminalKeyword buy = CommonTerminal.BuyKeyword;
 
@@ -33,10 +40,10 @@ namespace OpenLib.CoreMethods
 
             Command.terminalNode.creatureName = Name; //too lazy to define this at the top level
             Command.terminalNode.shipUnlockableID = unlockableID;
-            Command.terminalNode.itemCost = PriceConfig.Value;
+            Command.terminalNode.itemCost = price;
             Command.ConfirmBase.Confirm.result.shipUnlockableID = unlockableID;
             Command.ConfirmBase.Confirm.result.buyUnlockable = false;
-            Command.ConfirmBase.Confirm.result.itemCost = PriceConfig.Value;
+            Command.ConfirmBase.Confirm.result.itemCost = price;
 
             Command.terminalKeywords.Do(x => AddToBuyWord(ref buy, ref x, storeItem));
 

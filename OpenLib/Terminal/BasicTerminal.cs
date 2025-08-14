@@ -11,11 +11,14 @@ namespace OpenLib.CoreMethods
 {
     public class BasicTerminal
     {
-        public static TerminalKeyword CreateNewTerminalKeyword(string name, string keyword, bool checkForExisting = false)
+        public static TerminalKeyword CreateNewTerminalKeyword(string name, string keyword, bool ReplaceExisting = false)
         {
-            if (checkForExisting)
+            if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword existing))
             {
-                CheckForAndDeleteKeyWord(keyword);
+                if (ReplaceExisting)
+                    CheckForAndDeleteKeyWord(keyword);
+                else
+                    return existing;
             }
 
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
@@ -77,7 +80,7 @@ namespace OpenLib.CoreMethods
         public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null, Dictionary<TerminalNode, Func<string>> nodeListing = null)
         {
             CompatibleNoun thisNoun = new();
-            if(word.ToLower() == "deny" ||  word.ToLower() == "confirm") //catch confirmation words from being re-used
+            if (word.ToLower() == "deny" || word.ToLower() == "confirm") //catch confirmation words from being re-used
                 thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
             else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
                 thisNoun.noun = thisWord;

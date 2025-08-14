@@ -3,9 +3,10 @@
 
 namespace OpenLib.CoreMethods
 {
-    public class NodeConfirmation(string name, Func<string> confirmAction = null, Func<string> denyAction = null)
+    public class NodeConfirmation(CommandManager manager, Func<string> confirmAction = null, Func<string> denyAction = null)
     {
-        public string Name = name;
+        public CommandManager Manager = manager;
+        public string Name = manager.Name;
         public Func<string> ConfirmFunc = confirmAction;
         public Func<string> DenyFunc = denyAction;
         public string DenyTxt = "DenyFunc";

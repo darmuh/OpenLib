@@ -10,7 +10,7 @@ namespace OpenLib.CoreMethods
     public class InteractiveMenu
     {
         public string MenuName = "";
-        
+
         public Action LoadPage;
         public Action EnterMenu;
         public Action LeaveMenu;
@@ -38,7 +38,7 @@ namespace OpenLib.CoreMethods
         public int currentPage = 1;
 
         //should only run once per game launch
-        public InteractiveMenu(string name, Action pageLoader, Action enter, Action leave, Dictionary<Key,Action> MoreMenuActions = null)
+        public InteractiveMenu(string name, Action pageLoader, Action enter, Action leave, Dictionary<Key, Action> MoreMenuActions = null)
         {
             if (TerminalUpdatePatch.usePatch == false)
                 TerminalUpdatePatch.usePatch = true;
@@ -57,7 +57,7 @@ namespace OpenLib.CoreMethods
 
         public void AddToOtherActions(Key key, Action action)
         {
-            if(OtherActions.ContainsKey(key))
+            if (OtherActions.ContainsKey(key))
                 OtherActions.Remove(key);
 
             OtherActions.Add(key, action);
@@ -79,7 +79,7 @@ namespace OpenLib.CoreMethods
             if (!inMenu)
                 return;
 
-            if(acceptAnything && AcceptAnyKeyEvent.HasListeners)
+            if (acceptAnything && AcceptAnyKeyEvent.HasListeners)
             {
                 AcceptAnyKeyEvent.Invoke();
                 return;
@@ -158,7 +158,7 @@ namespace OpenLib.CoreMethods
 
         public static bool TryGetMenu(string menuName, out InteractiveMenu menu)
         {
-            menu = AllMenus.FirstOrDefault(x=>x.MenuName == menuName);
+            menu = AllMenus.FirstOrDefault(x => x.MenuName == menuName);
 
             if (menu == null)
                 return false;

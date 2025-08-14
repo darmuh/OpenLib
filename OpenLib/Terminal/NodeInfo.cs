@@ -21,7 +21,7 @@ namespace OpenLib
         public void GetDefaultInfo(CommandManager command)
         {
             string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(command.KeywordList) + " ]\r\n";
-            if(command.IsEnabled != null)
+            if (command.IsEnabled != null)
                 text += command.IsEnabled.ConfigItem.Description.Description + "\r\n\r\n";
             else
                 text += "No further information on this command!\r\n\r\n";
@@ -40,7 +40,7 @@ namespace OpenLib
             terminalNode.displayText = InfoText;
             terminalNode.clearPreviousText = true;
             command.KeywordList.Do(Keyword => AddingThings.AddCompatibleNoun(ref info, Keyword, terminalNode));
-                
+
             Plugin.Spam("info node created and assigned to command!");
         }
     }

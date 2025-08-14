@@ -11,10 +11,11 @@ namespace OpenLib.CoreMethods
     public class CommandManager
     {
         public string Name = string.Empty;
-        public ConfigWatch<bool> IsEnabled;
+        public ConfigWatch<bool> IsEnabled = null!;
+        public bool IsCreated = false;
         public ConfigEntry<string> KeywordsConfig;
 
-        public List<string> KeywordList;
+        public List<string> KeywordList = [];
         public Func<string> MainAction;
         public bool ClearText = true;
         public bool AddAtAwake = true;
@@ -24,7 +25,7 @@ namespace OpenLib.CoreMethods
 
         public NodeInfo InfoBase;
         public NodeConfirmation ConfirmBase;
-        public NodeSpecial SpecialBase; //might replace this with an individual property (class has one singular property at the moment)
+        public int VerySpecialNum = -1; //for use with terminalstuff visual commands
 
         //Store Things
         public NodeStore StoreBase;
@@ -38,11 +39,26 @@ namespace OpenLib.CoreMethods
         {
             Name = commandName;
             IsEnabled = new(CommandBool);
-            KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(keywords.Value);
+            KeywordsConfig = keywords;
             MainAction = commandFunc;
-            CommandType = Mathf.Clamp(type, 0, 2); 
-            if(addToMain)
+            CommandType = Mathf.Clamp(type, 0, 2);
+            if (addToMain)
                 Plugin.AllCommands.Add(this);
+
+            InfoBase = new(this); //prevents errors from command not being added
+        }
+
+        //should be able to call in awake, no config watch
+        public CommandManager(string commandName, ConfigEntry<string> keywords, Func<string> commandFunc, int type = 0, bool addToMain = true)
+        {
+            Name = commandName;
+            KeywordsConfig = keywords;
+            MainAction = commandFunc;
+            CommandType = Mathf.Clamp(type, 0, 2);
+            if (addToMain)
+                Plugin.AllCommands.Add(this);
+
+            InfoBase = new(this); //prevents errors from command not being added
         }
 
         //should be able to call in awake
@@ -64,8 +80,8 @@ namespace OpenLib.CoreMethods
             KeywordList = manualWords;
             MainAction = commandFunc;
             CommandType = Mathf.Clamp(type, 0, 2);
-            
-            if(CommandBool != null)
+
+            if (CommandBool != null)
             {
                 IsEnabled = new(CommandBool);
             }
@@ -108,7 +124,7 @@ namespace OpenLib.CoreMethods
         //call this if you need to add your command to the default listing and didnt on creation for some reason
         public void AddToDefaultListing()
         {
-            if(!Plugin.AllCommands.Contains(this))
+            if (!Plugin.AllCommands.Contains(this))
                 Plugin.AllCommands.Add(this);
         }
 
@@ -122,18 +138,22 @@ namespace OpenLib.CoreMethods
         }
 
         //gets default info text from related config item if info is null or text is empty
+        //then create info node
+        //called after command has been created with keywords
         internal void GetInfo()
         {
-            if(InfoBase == null)
+            if (InfoBase == null)
             {
                 InfoBase = new(this);
                 InfoBase.GetDefaultInfo(this);
             }
             else
             {
-                if(InfoBase.InfoAction == null && InfoBase.InfoText.Length < 1)
+                if (InfoBase.InfoAction == null && InfoBase.InfoText.Length < 1)
                     InfoBase.GetDefaultInfo(this);
             }
+
+            InfoBase.CreateInfoNode();
         }
 
         public void TerminalDisabled()
@@ -152,16 +172,19 @@ namespace OpenLib.CoreMethods
             terminalNode.name = Name;
             terminalNode.displayText = string.Empty;
             terminalNode.clearPreviousText = ClearText;
-            GetInfo();
+
+            if (KeywordList.Count == 0 && KeywordsConfig != null)
+                KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(KeywordsConfig.Value);
 
             KeywordList.Do(w => AddKeyword(w));
+            IsCreated = true;
 
-            if(CommandType > 0) //confirm base
+            if (CommandType > 0) //confirm base
             {
                 ConfirmBase.CreateConfirmation();
             }
 
-            if(CommandType == 2) //store base
+            if (CommandType == 2) //store base
             {
                 if (StoreBase == null)
                 {
@@ -171,18 +194,82 @@ namespace OpenLib.CoreMethods
                 StoreBase.AddToStore();
             }
 
-            InfoBase.CreateInfoNode();
+            GetInfo();
+        }
 
+        public void RegisterCommand(bool replaceExistingKW)
+        {
+            if (!IsCommandEnabled())
+                return;
+
+            terminalNode = BasicTerminal.CreateNewTerminalNode();
+            terminalNode.name = Name;
+            terminalNode.displayText = string.Empty;
+            terminalNode.clearPreviousText = ClearText;
+
+
+            if (KeywordList.Count == 0 && KeywordsConfig != null)
+                KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(KeywordsConfig.Value);
+
+            KeywordList.Do(w => AddKeyword(w));
+            IsCreated = true;
+
+            if (CommandType > 0) //confirm base
+            {
+                ConfirmBase.CreateConfirmation();
+            }
+
+            if (CommandType == 2) //store base
+            {
+                if (StoreBase == null)
+                {
+                    Plugin.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
+                    return;
+                }
+                StoreBase.AddToStore();
+            }
+
+            GetInfo();
+        }
+
+        public void RegisterKeywords(bool check)
+        {
+            KeywordList.Do(w => AddKeyword(w, check));
+
+            IsCreated = true;
+        }
+
+        //will not create store/confirmation/info items for you due to no keyword
+        public void RegisterNodeOnly()
+        {
+            if (!IsCommandEnabled())
+                return;
+
+            terminalNode = BasicTerminal.CreateNewTerminalNode();
+            terminalNode.name = Name;
+            terminalNode.displayText = string.Empty;
+            terminalNode.clearPreviousText = ClearText;
+
+            IsCreated = true;
         }
 
         internal void AddKeyword(string keyword)
         {
             Plugin.Spam($"adding {keyword}");
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, true);
+            terminalKeyword.specialKeywordResult = terminalNode;
+            terminalKeywords.Add(terminalKeyword);
+        }
+
+        internal void AddKeyword(string keyword, bool replaceExistingKW)
+        {
+            Plugin.Spam($"adding {keyword}");
+            TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, replaceExistingKW);
+            terminalKeyword.specialKeywordResult = terminalNode;
             terminalKeywords.Add(terminalKeyword);
         }
 
     }
 
-    
+
 }

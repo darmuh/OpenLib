@@ -306,7 +306,7 @@ namespace OpenLib.Menus
         {
             Plugin.Spam("1");
             nextCount = 1;
-            string screen = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
+            string screen = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
             currentCategory = GetCategoryFromString(screen);
             Plugin.Spam($"currentCategory detected as: [{currentCategory}]");
             //currentCategory = GetCategoryFromNode(CommonTerminal.parseNode); //grabbing the node currently being parsed

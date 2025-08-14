@@ -68,7 +68,7 @@ namespace OpenLib.Common
 
         public static void ChangeCaretColor(Color newColor, bool saveOriginal)
         {
-            if(saveOriginal)
+            if (saveOriginal)
                 CaretOriginal = Plugin.instance.Terminal.screenText.caretColor;
 
             Plugin.instance.Terminal.screenText.caretColor = newColor;
@@ -98,12 +98,12 @@ namespace OpenLib.Common
         public static bool TryGetCommand(string words, out TerminalNode returnNode)
         {
             returnNode = null!;
-            
+
             if (words.Length == 0)
                 return false;
 
             CommandManager special = Plugin.AllCommands.FirstOrDefault(x => x.AcceptAdditionalText && x.KeywordList.Any(s => words.ToLowerInvariant().StartsWith(s.ToLowerInvariant())));
-            
+
             if (special != null)
             {
                 returnNode = special.terminalNode;
@@ -111,7 +111,7 @@ namespace OpenLib.Common
             }
 
             CommandManager normal = Plugin.AllCommands.FirstOrDefault(x => x.KeywordList.Any(s => words.ToLowerInvariant() == s.ToLowerInvariant()));
-            
+
             if (normal != null)
             {
                 returnNode = normal.terminalNode;
@@ -137,7 +137,7 @@ namespace OpenLib.Common
 
             returnNode = nodeListing.FirstOrDefault(x => x.Key.ToLower() == words[0].ToLower()).Value;
 
-            if(returnNode != null )
+            if (returnNode != null)
                 return true;
 
             returnNode = nodeListing.FirstOrDefault(t => words.Any(x => x.ToLower() == t.Key.ToLower())).Value;

@@ -33,12 +33,13 @@ namespace OpenLib.Common
         {
             terminalUser = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(player => !player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger);
 
-            return terminalUser != null;        }
+            return terminalUser != null;
+        }
 
         public static bool TryGetHostClientID(out int HostClientID)
         {
             PlayerControllerB host = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(player => player.isHostPlayerObject);
-            if(host == null)
+            if (host == null)
             {
                 HostClientID = -1;
                 return false;

@@ -65,7 +65,7 @@ namespace OpenLib.CoreMethods
         {
             Plugin.Spam("AssignCodeToObject");
 
-            if(AllTerminalCodes.Count == 0)
+            if (AllTerminalCodes.Count == 0)
                 AllTerminalCodes = [.. Object.FindObjectsByType<TerminalAccessibleObject>(FindObjectsSortMode.None)];
 
             if (gameObj == null)
@@ -97,9 +97,9 @@ namespace OpenLib.CoreMethods
                 codeIndex = GetFreshCode(); //ensure unique code!!!
                 loopCount++;
                 Plugin.Spam($"New index of [ {codeIndex} ] chosen!");
-                
+
             } while (AllTerminalCodes.Any(x => x.objectCode == RoundManager.Instance.possibleCodesForBigDoors[codeIndex]) && loopCount < 5);
-            
+
             ObjectCode.SetCodeTo(codeIndex);
             ObjectCode.InitializeValues();
 
@@ -121,8 +121,8 @@ namespace OpenLib.CoreMethods
         public static int GetFreshCode()
         {
             System.Random random = new();
-            return random.Next(RoundManager.Instance.possibleCodesForBigDoors.Length);  
-        }   
+            return random.Next(RoundManager.Instance.possibleCodesForBigDoors.Length);
+        }
     }
 
     public class RadarTransform : MonoBehaviour

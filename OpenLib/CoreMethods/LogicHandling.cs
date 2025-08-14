@@ -26,7 +26,7 @@ namespace OpenLib.CoreMethods
             if (node == null)
                 return false;
 
-            
+
 
             if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
             {
@@ -49,9 +49,10 @@ namespace OpenLib.CoreMethods
             if (node == null || Plugin.AllCommands.Count == 0)
                 return false;
 
-            
+            List<CommandManager> activeCommands = Plugin.AllCommands.FindAll(x => x.IsCreated);
+
             TerminalNode current = node;
-            CommandManager match = Plugin.AllCommands.FirstOrDefault(f => f.terminalNode == current);
+            CommandManager match = activeCommands.FirstOrDefault(f => f.terminalNode == current);
             if (match != null)
             {
                 NewDisplayTextEventInvoke(ref node);
@@ -59,8 +60,8 @@ namespace OpenLib.CoreMethods
                 return true;
             }
 
-            CommandManager info = Plugin.AllCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
-            if(info != null)
+            CommandManager info = activeCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
+            if (info != null)
             {
                 NewDisplayTextEventInvoke(ref node);
                 node.displayText = info.InfoBase.InfoAction();
@@ -100,7 +101,7 @@ namespace OpenLib.CoreMethods
                 looptimes++;
                 Plugin.Spam($"command dictionary in this listing is not empty ({looptimes})");
 
-                
+
 
                 if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
                 {

@@ -50,7 +50,8 @@ namespace OpenLib.Events
 
         //TerminalUpdate Events
         public static Events.CustomEvent SetTerminalInUse = new();
-        public static Events.CustomEvent TerminalKeyPressed = new ();
+        public static Events.CustomEvent TerminalKeyPressed = new();
+        public static Events.CustomEvent TerminalMenuKeyPressed = new();
 
         //PlayerUpdate Events
         public static Events.CustomEvent PlayerIsInShip = new();
@@ -59,6 +60,7 @@ namespace OpenLib.Events
 
         //GameObject Events
         public static Events.CustomEvent<GameObject> AutoParentEvent = new();
+        public static Events.CustomEvent<GameObject> NetworkObjectSpawn = new();
 
     }
 }

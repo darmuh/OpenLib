@@ -22,6 +22,12 @@ namespace OpenLib.InteractiveMenus
         public abstract CustomEvent InputEvent { get; set; }
         public abstract CustomEvent ExitTerminal { get; set; }
         public abstract MenuItem MainMenu { get; set; }
+        public List<MenuItem> AllMenuItemsOfType = [];
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public class BetterMenu<T> : BetterMenuBase
@@ -61,7 +67,8 @@ namespace OpenLib.InteractiveMenus
         }
 
         public TerminalNode MenuNode;
-        public TerminalNode ExitPage = null!;
+        public Action ExitAction = null!;
+        //public TerminalNode ExitPage = null!;
         public CustomEvent OnExit = new();
         public CustomEvent OnEnter = new();
         public CustomEvent OnLoad = new();
@@ -84,13 +91,43 @@ namespace OpenLib.InteractiveMenus
 
         //important
         public bool IsMenuEnabled = false;
-        
-        public bool AcceptAnything = false; //should probably set this via menuitem
-        public int ActiveSelection = 0;
+
+        //Set these via custom events in the menu item
+        public bool AcceptAnything = false;
+        public bool AdjustScrollInMenu = false;
+
+        private int _activeIndex = 0;
+        public int ActiveSelection
+        {
+            get
+            {
+                return _activeIndex;
+            }
+            set
+            {
+                _activeIndex = value;
+            }
+        }
+        private int _endIndex = 0;
+        public int EndIndex
+        {
+            get
+            {
+                return _endIndex;
+            }
+            set
+            {
+                _endIndex = value;
+            }
+        }
         public int CurrentPage = 1;
         public int PageSize = 8;
-        public List<MenuItem> AllMenuItemsOfType = [];
         public List<MenuItem> DisplayMenuItemsOfType = [];
+
+        public override string ToString()
+        {
+            return Name;
+        }
 
         //should only run once per game launch
         public BetterMenu(string name, Dictionary<Key, Action> MoreMenuActions = null)
@@ -174,6 +211,18 @@ namespace OpenLib.InteractiveMenus
         public void Load()
         {
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
+            if (current == null)
+            {
+                Plugin.ERROR("Unable to load current page! Nothing is active!");
+                return;
+            }
+
+            if (MenuNode == null)
+            {
+                Plugin.ERROR("NRE detected at MenuNode! This menu did not set it's terminal node correctly!");
+                return;
+            }
+
             current.OnPageLoad?.Invoke();
             OnLoad.Invoke();
             Plugin.instance.Terminal.StartCoroutine(DelayUpdateText());
@@ -182,38 +231,53 @@ namespace OpenLib.InteractiveMenus
         public void DefaultAcceptAnything()
         {
             AcceptAnything = false;
-            
+
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
-            if(current.NestedMenus.Count == 0)
+            if (current.NestedMenus.Count == 0)
             {
                 ExitInTerminal();
                 return;
             }
-            Load();
+            LoadPage.Invoke();
         }
 
         private IEnumerator DelayUpdateText()
         {
             yield return new WaitForEndOfFrame();
 
-            if(!AcceptAnything) //AcceptAnything set to true is expecting displaytext to be updated externally
+            if (!AcceptAnything) //AcceptAnything set to true is expecting displaytext to be updated externally
                 MenuNode.displayText = GetPageText();
+
+            if (string.IsNullOrEmpty(MenuNode.displayText))
+                ExitInTerminal();
 
             yield return new WaitForEndOfFrame();
             CommonTerminal.LoadNewNode(MenuNode);
             yield return new WaitForEndOfFrame();
+            if (AdjustScrollInMenu)
+                ScrollAdjust();
+        }
 
+        private void ScrollAdjust()
+        {
+            float scrollbar = ((float)EndIndex - (float)ActiveSelection) / (float)EndIndex;
+            if (scrollbar >= 1f)
+                Plugin.instance.Terminal.StartCoroutine(Plugin.instance.Terminal.forceScrollbarUp());
+            else if (scrollbar == 0f)
+                Plugin.instance.Terminal.StartCoroutine(Plugin.instance.Terminal.forceScrollbarDown());
+            else
+                Plugin.instance.Terminal.scrollBarVertical.value = scrollbar;
         }
 
         public string GetPageText()
         {
             StringBuilder message = new();
-            
+
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
             if (current == null)
             {
                 Plugin.WARNING("Unable to get current menu page!!");
-                return "Unable to get current page!\r\n\r\n";
+                return "";
             }
 
             if (current == null)
@@ -235,6 +299,7 @@ namespace OpenLib.InteractiveMenus
             CurrentPage = Misc.CycleIndex(CurrentPage, 1, Mathf.CeilToInt((float)DisplayMenuItemsOfType.Count / PageSize));
             int startIndex = (CurrentPage - 1) * PageSize;
             int endIndex = Mathf.Min(startIndex + PageSize, DisplayMenuItemsOfType.Count);
+            EndIndex = endIndex;
             ActiveSelection = Misc.CycleIndex(ActiveSelection, startIndex, endIndex - 1);
             Plugin.Spam($"{Name} menu activeselection: {ActiveSelection}");
 
@@ -291,11 +356,17 @@ namespace OpenLib.InteractiveMenus
                 ActiveSelection = 0;
                 AllMenuItemsOfType.Do(x => x.IsActive = false);
                 selected.IsActive = true;
-                
+
             }
 
             if (selected.LoadPageOnSelect)
                 LoadPage.Invoke();
+        }
+
+        public void AddMenuItem(MenuItem menuItem)
+        {
+            if (!AllMenuItemsOfType.Contains(menuItem))
+                AllMenuItemsOfType.Add(menuItem);
         }
 
         public void ExitInTerminal()
@@ -327,7 +398,6 @@ namespace OpenLib.InteractiveMenus
 
         public void ExitMenu(bool enableInput)
         {
-            OnExit.Invoke();
             Plugin.instance.Terminal.StartCoroutine(MenuClose(enableInput));
         }
 
@@ -345,16 +415,17 @@ namespace OpenLib.InteractiveMenus
 
         internal IEnumerator MenuClose(bool enableInput)
         {
+            OnExit.Invoke();
             yield return new WaitForEndOfFrame();
             InMenu = false;
             AcceptAnything = false;
             AllMenuItemsOfType.Do(x => x.IsActive = false);
             yield return new WaitForEndOfFrame();
 
-            if (ExitPage == null)
-                ExitPage = Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[1]; //home
-
-            CommonTerminal.LoadNewNode(ExitPage);
+            if (ExitAction == null)
+                CommonTerminal.LoadNewNode(Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[1]); //load home
+            else
+                ExitAction.Invoke();
 
             yield return new WaitForEndOfFrame();
             CommonTerminal.ChangeCaretColor(CommonTerminal.CaretOriginal, false);
@@ -387,7 +458,7 @@ namespace OpenLib.InteractiveMenus
             Plugin.instance.Terminal.screenText.interactable = false;
             yield return new WaitForEndOfFrame();
             Start.SelectionEvent?.Invoke();
-            
+
             if (Start.LoadPageOnSelect)
                 LoadPage.Invoke();
 
@@ -413,7 +484,7 @@ namespace OpenLib.InteractiveMenus
             ActiveSelection++;
             DownMenuEvent.Invoke();
             LoadPage.Invoke();
-            
+
         }
 
         public void LeftMenu()
@@ -423,7 +494,7 @@ namespace OpenLib.InteractiveMenus
 
             CurrentPage--;
             LeftMenuEvent.Invoke();
-            LoadPage.Invoke(); 
+            LoadPage.Invoke();
         }
 
         public void RightMenu()

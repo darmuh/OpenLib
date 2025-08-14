@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RootNamespace>OpenLib</RootNamespace>
+		<AssemblyName>OpenLib</AssemblyName>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>embedded</DebugType>
+		<PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OpenLibFolder>OpenLib</OpenLibFolder>
+		<WikiFiles>OpenLib\Wiki</WikiFiles>
+		<RestoreAdditionalProjectSources>
+			https://api.nuget.org/v3/index.json;
+			https://nuget.samboy.dev/v3/index.json;
+			https://nuget.bepinex.dev/v3/index.json;
+			https://nuget.windows10ce.com/nuget/v3/index.json
+		</RestoreAdditionalProjectSources>
+	</PropertyGroup>
+
+	<!-- References -->
+
+	<ItemGroup>
+	  <None Remove="OpenLib.csproj.old" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.Core" Version="5.*" />
+		<PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="UnityEngine.Modules" Version="2022.3.21" IncludeAssets="compile" PrivateAssets="all" />
+		<PackageReference Include="LethalCompany.GameLibs.Steam" Version="70.0.0-ngd.0" Private="False" Publicize="true" />
+		<PackageReference Include="BunyaPineTree-ModelReplacementAPI" Version="*" Private="False" />
+		<PackageReference Include="WhiteSpike-Interactive_Terminal_API" Version="*" Private="False" />
+		<PackageReference Include="BMX-LobbyCompatibility" Version="*" Private="False" />
+		<PackageReference Include="AinaVT-LethalConfig" Version="*" Private="False" />
+		<PackageReference Include="Zaggy1024-OpenBodyCams" Version="*" Private="False" />
+		<PackageReference Include="Zaggy1024-TwoRadarMaps" Version="*" Private="False" />
+		<Reference Include="darmuhsTerminalStuff" Publicize="true">
+			<HintPath>..\..\darmuhsTerminalStuff\darmuhsTerminalStuff\DarmuhsTerminalCommands\_Package\darmuhsTerminalStuff.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+</Project>

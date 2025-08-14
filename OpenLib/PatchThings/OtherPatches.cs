@@ -1,6 +1,7 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
 using OpenLib.Events;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace OpenLib
@@ -125,6 +126,22 @@ namespace OpenLib
         }
     }
 
+    //NetworkObjectSpawn
+    [HarmonyPatch(typeof(NetworkObject), nameof(NetworkObject.Spawn))]
+    public class ObjectSpawnPatch
+    {
+        public static void Postfix(NetworkObject __instance)
+        {
+            if (__instance == null)
+                return;
+
+            if (__instance.gameObject == null)
+                return;
+
+            EventManager.NetworkObjectSpawn.Invoke(__instance.gameObject);
+        }
+    }
+
     [HarmonyPatch(typeof(PlayerControllerB), "StartPerformingEmoteServerRpc")]
     public class EmotePatch
     {
@@ -157,13 +174,13 @@ namespace OpenLib
             if (StartOfRound.Instance.localPlayerController != __instance) //stop from detecting other player's updates
                 return;
 
-            if(__instance.isInHangarShipRoom != inShip) //local player IsInShip update
+            if (__instance.isInHangarShipRoom != inShip) //local player IsInShip update
             {
                 inShip = __instance.isInHangarShipRoom;
                 EventManager.PlayerIsInShip.Invoke();
             }
 
-            if(__instance.isPlayerDead != isDead) //local player isPlayerDead update
+            if (__instance.isPlayerDead != isDead) //local player isPlayerDead update
             {
                 isDead = __instance.isPlayerDead;
                 EventManager.PlayerIsDead.Invoke();

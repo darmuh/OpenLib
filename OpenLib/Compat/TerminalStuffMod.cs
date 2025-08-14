@@ -21,7 +21,7 @@ namespace OpenLib.Compat
 
         public static void LoadAndSync(TerminalNode node)
         {
-            if (node == null) 
+            if (node == null)
                 return;
 
             Plugin.instance.Terminal.LoadNewNode(node);

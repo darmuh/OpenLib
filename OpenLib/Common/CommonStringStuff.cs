@@ -198,10 +198,14 @@ namespace OpenLib.Common
             return stringList.ConvertAll(s => s.ToLower());
         }
 
-
-
         public static string GetKeywordsForMenuItem(List<string> itemKeywords) //return a single string separated by commas
         {
+            if (itemKeywords.Count == 0)
+                return "";
+
+            if (itemKeywords.Count == 1)
+                return itemKeywords[0];
+
             StringBuilder menuItem = new();
             foreach (string key in itemKeywords)
             {
@@ -209,7 +213,7 @@ namespace OpenLib.Common
             }
             string finalList = menuItem.ToString();
             string listFixed = finalList.Remove(finalList.Length - 2);
-            return listFixed; //used in terminalstuff menus setup
+            return listFixed; //used for strings that return the list separated by commas
         }
 
         public static string GetCleanedScreenText(Terminal __instance) //copied from vanilla game, useful to get terminal friendly output
