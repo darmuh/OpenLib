@@ -15,7 +15,7 @@ namespace OpenLib
 
     public class Plugin : BaseUnityPlugin
     {
-        public static Plugin instance;
+        public static Plugin instance = null!;
         public static class PluginInfo
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
@@ -23,7 +23,7 @@ namespace OpenLib
             public const string PLUGIN_VERSION = "0.3.2";
         }
 
-        internal static ManualLogSource Log;
+        internal static ManualLogSource Log = null!;
 
         //Compatibility
         public bool TerminalStuff = false;
@@ -43,7 +43,7 @@ namespace OpenLib
         public static List<CompatibleNoun> nounsAdded = [];
         public static List<TerminalAccessibleObject> AllTerminalCodes = [];
 
-        public Terminal Terminal;
+        public Terminal Terminal = null!;
         public static List<TerminalNode> ShopNodes = [];
 
         private void Awake()
