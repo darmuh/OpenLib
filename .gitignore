@@ -376,3 +376,4 @@ FodyWeavers.xsd
 /OpenLib/_Release Files/darmuhsTerminalStuff.dll.config
 /OpenLib/_Release Files/darmuhsTerminalStuff.dll
 /OpenLib/OpenLib.csproj.old
+/OpenLib/Config.Build.user.props
