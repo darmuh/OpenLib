@@ -18,7 +18,7 @@ namespace OpenLib.Compat
             if (!IsLethalConfigUpdated())
                 return;
 
-            Plugin.Spam($"Queuing file {configName.ConfigFilePath}");
+            Loggers.LogDebug($"Queuing file {configName.ConfigFilePath}");
             LethalConfigManager.QueueCustomConfigFileForLateAutoGeneration(configName);
 
         }
@@ -30,13 +30,13 @@ namespace OpenLib.Compat
 
             if (LethalConfigVersion == null)
             {
-                Plugin.ERROR("Unable to get version of LethalConfig!");
+                Loggers.FATAL("Unable to get version of LethalConfig!");
                 return false;
             }
 
             if (LethalConfigVersion < MinVer)
             {
-                Plugin.WARNING($"Cannot queue config! LethalConfig version is {LethalConfigVersion}, which is below the minimum required for this function {MinVer}");
+                Loggers.WARNING($"Cannot queue config! LethalConfig version is {LethalConfigVersion}, which is below the minimum required for this function {MinVer}");
                 return false;
             }
 
@@ -48,13 +48,13 @@ namespace OpenLib.Compat
             if (!Plugin.instance.LethalConfig)
                 return;
             Assembly Caller = Assembly.GetCallingAssembly();
-            Plugin.MoreLogs($"AddLoadCodeButton called from {Caller.GetName().Name}!\nName: {name}\nDescription: {description}\nButtonText: {buttonText}");
+            Loggers.LogInfo($"AddLoadCodeButton called from {Caller.GetName().Name}!\nName: {name}\nDescription: {description}\nButtonText: {buttonText}");
 
 
             LethalConfigManager.AddConfigItem(new GenericButtonConfigItem(section, name, description, buttonText, () =>
             {
                 //code
-                Plugin.Spam($"LethalConfig button [{buttonText}] has been pressed");
+                Loggers.LogDebug($"LethalConfig button [{buttonText}] has been pressed");
                 methodToCall.Invoke();
             }), Caller);
         }

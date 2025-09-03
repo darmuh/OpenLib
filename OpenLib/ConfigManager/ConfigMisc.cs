@@ -19,11 +19,11 @@ namespace OpenLib.ConfigManager
                             if (item.BoolValue != entry.Value)
                             {
                                 item.ConfigChange(entry.Value);
-                                Plugin.Spam($"Updating config item: {entry.Definition.Key} in managedItems");
+                                Loggers.LogDebug($"Updating config item: {entry.Definition.Key} in managedItems");
                                 return true;
                             }
                             else
-                                Plugin.Spam($"item value matches config item: {entry.Definition.Key}");
+                                Loggers.LogDebug($"item value matches config item: {entry.Definition.Key}");
                         }
                     }
                     else if (entryBase.BoxedValue.GetType() == typeof(string))
@@ -33,20 +33,20 @@ namespace OpenLib.ConfigManager
                             if (item.StringValue != entry.Value)
                             {
                                 item.ConfigChange(entry.Value);
-                                Plugin.Spam($"Updating config item: {entry.Definition.Key} in managedItems");
+                                Loggers.LogDebug($"Updating config item: {entry.Definition.Key} in managedItems");
                                 List<string> newKeywordList = Common.CommonStringStuff.GetKeywordsPerConfigItem(entry.Value);
                                 item.relatedConfigItem.KeywordList = newKeywordList;
 
                                 return true;
                             }
                             else
-                                Plugin.Spam($"item value matches config item: {entry.Definition.Key}");
+                                Loggers.LogDebug($"item value matches config item: {entry.Definition.Key}");
                         }
                     }
                 }
             }
 
-            Plugin.Spam("could not match changed config setting to any managed config items");
+            Loggers.LogDebug("could not match changed config setting to any managed config items");
             return false;
         }
 

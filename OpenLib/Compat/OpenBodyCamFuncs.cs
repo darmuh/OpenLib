@@ -18,7 +18,7 @@ namespace OpenLib.Compat
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static void UpdateCamsTarget(string resolution)
         {
-            Plugin.MoreLogs("OBC - Getting ZaggyCam texture");
+            Loggers.LogInfo("OBC - Getting ZaggyCam texture");
             if (TerminalBodyCam == null || TerminalBodyCam.gameObject == null || ((BodyCamComponent)TerminalBodyCam) == null)
             {
                 CreateTerminalBodyCam(resolution);
@@ -27,7 +27,7 @@ namespace OpenLib.Compat
             else
             {
                 ToggleOpenCams(true, false);
-                Plugin.MoreLogs($"OBC - camera already created, assigning targetTexture and enabling camera");
+                Loggers.LogInfo($"OBC - camera already created, assigning targetTexture and enabling camera");
             }
         }
 
@@ -48,7 +48,7 @@ namespace OpenLib.Compat
                 return bodycam.GetCamera();
             else
             {
-                Plugin.WARNING("Unable to grab bodycamcomponent @GetCam");
+                Loggers.WARNING("Unable to grab bodycamcomponent @GetCam");
                 return null;
             }
         }
@@ -61,14 +61,14 @@ namespace OpenLib.Compat
                 return bodycam.GetCamera().targetTexture;
             else
             {
-                Plugin.WARNING("Unable to grab bodycamcomponent @GetTexture");
+                Loggers.WARNING("Unable to grab bodycamcomponent @GetTexture");
                 return null;
             }
         }
 
         private static void CameraEvent(Camera cam)
         {
-            Plugin.MoreLogs($"OBC - Camera {cam.name} created.");
+            Loggers.LogInfo($"OBC - Camera {cam.name} created.");
             //UpdateCamsTarget();
         }
 
@@ -76,7 +76,7 @@ namespace OpenLib.Compat
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static void CreateTerminalBodyCam(string resolution)
         {
-            Plugin.MoreLogs("OBC - CreateTerminalBodyCam()");
+            Loggers.LogInfo("OBC - CreateTerminalBodyCam()");
 
             if (!Plugin.instance.OpenBodyCamsMod)
                 return;
@@ -85,7 +85,7 @@ namespace OpenLib.Compat
 
             if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
-                Plugin.MoreLogs("OBC - bodycam already created and should be enabled, returning");
+                Loggers.LogInfo("OBC - bodycam already created and should be enabled, returning");
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace OpenLib.Compat
             }
             else
             {
-                Plugin.MoreLogs("OBC - Creating bodycam synced to mapScreen");
+                Loggers.LogInfo("OBC - Creating bodycam synced to mapScreen");
                 var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, StartOfRound.Instance.mapScreen);
 
                 TerminalBodyCam = terminalBodyCam;
@@ -110,7 +110,7 @@ namespace OpenLib.Compat
                 terminalBodyCam.SetTargetToPlayer(StartOfRound.Instance.mapScreen.targetedPlayer);
             }
 
-            Plugin.MoreLogs("OBC - darmuhsTerminalStuff OBC termcam updated!");
+            Loggers.LogInfo("OBC - darmuhsTerminalStuff OBC termcam updated!");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -120,14 +120,14 @@ namespace OpenLib.Compat
             {
                 Object.Destroy(((BodyCamComponent)TerminalBodyCam));
                 TerminalBodyCam = null;
-                Plugin.MoreLogs("Attempting to destroy residual TerminalBodyCam");
+                Loggers.LogInfo("Attempting to destroy residual TerminalBodyCam");
             }
 
             if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
             {
                 Object.Destroy(((BodyCamComponent)TerminalMirrorCam));
                 TerminalMirrorCam = null;
-                Plugin.MoreLogs("Attempting to destroy residual TerminalMirrorCam");
+                Loggers.LogInfo("Attempting to destroy residual TerminalMirrorCam");
             }
         }
 
@@ -141,11 +141,11 @@ namespace OpenLib.Compat
 
             if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
-                Plugin.MoreLogs("OBC - bodycam already created and should be enabled, returning");
+                Loggers.LogInfo("OBC - bodycam already created and should be enabled, returning");
                 return;
             }
 
-            Plugin.MoreLogs("OBC - Tying bodycam to tworadarmaps radarview");
+            Loggers.LogInfo("OBC - Tying bodycam to tworadarmaps radarview");
             var terminalBodyCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null, TwoRadarMaps.Plugin.TerminalMapRenderer);
 
             TerminalBodyCam = terminalBodyCam;
@@ -165,7 +165,7 @@ namespace OpenLib.Compat
         {
             if (TerminalBodyCam != null || ((BodyCamComponent)TerminalBodyCam) != null)
             {
-                Plugin.MoreLogs($"OBC - BodyCam Screen Enabled: [{enabled}]");
+                Loggers.LogInfo($"OBC - BodyCam Screen Enabled: [{enabled}]");
                 ((BodyCamComponent)TerminalBodyCam).ForceEnableCamera = enabled;
                 ToggleCamState(((BodyCamComponent)TerminalBodyCam).GetCamera(), enabled);
                 ShowingBodyCam = enabled;
@@ -180,7 +180,7 @@ namespace OpenLib.Compat
             {
                 ((BodyCamComponent)TerminalBodyCam).ForceEnableCamera = bodyCam;
                 ToggleCamState(((BodyCamComponent)TerminalBodyCam).GetCamera(), bodyCam);
-                Plugin.MoreLogs($"OBC - BodyCam detected and set to [{bodyCam}]");
+                Loggers.LogInfo($"OBC - BodyCam detected and set to [{bodyCam}]");
                 ShowingBodyCam = bodyCam;
             }
 
@@ -188,7 +188,7 @@ namespace OpenLib.Compat
             {
                 ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = mirrorCam;
                 ToggleCamState(((BodyCamComponent)TerminalMirrorCam).GetCamera(), mirrorCam);
-                Plugin.MoreLogs($"OBC - MirrorCam detected and set to [{mirrorCam}]");
+                Loggers.LogInfo($"OBC - MirrorCam detected and set to [{mirrorCam}]");
             }
         }
 
@@ -199,7 +199,7 @@ namespace OpenLib.Compat
             {
                 ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = enabled;
                 ToggleCamState(((BodyCamComponent)TerminalMirrorCam).GetCamera(), enabled);
-                Plugin.MoreLogs($"OBC - Setting Mirror Status: [{enabled}]");
+                Loggers.LogInfo($"OBC - Setting Mirror Status: [{enabled}]");
             }
 
         }
@@ -210,11 +210,11 @@ namespace OpenLib.Compat
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static void OpenBodyCamsMirror(string res, float zoom, bool ortho, ref GameObject CamHolder)
         {
-            Plugin.MoreLogs("OBC - Getting ZaggyCam texture OpenBodyCamsMirror()");
+            Loggers.LogInfo("OBC - Getting ZaggyCam texture OpenBodyCamsMirror()");
             if ((TerminalMirrorCam == null || TerminalMirrorCam.gameObject == null || ((BodyCamComponent)TerminalMirrorCam) == null))
                 CreateTerminalMirror(res, zoom, ortho, CamHolder);
 
-            Plugin.MoreLogs($"OBC - Attempting to grab targetTexture");
+            Loggers.LogInfo($"OBC - Attempting to grab targetTexture");
             SetMirrorCamTexture(((BodyCamComponent)TerminalMirrorCam).GetCamera().targetTexture);
             ((BodyCamComponent)TerminalMirrorCam).ForceEnableCamera = true;
 
@@ -223,7 +223,7 @@ namespace OpenLib.Compat
         [MethodImpl(MethodImplOptions.NoInlining)]
         public static void OpenBodyCamsMirrorStatus(bool state, string res, float zoom, bool ortho, ref GameObject CamHolder)
         {
-            Plugin.MoreLogs($"OBC - OpenBodyCamsMirrorStatus() state: {state}");
+            Loggers.LogInfo($"OBC - OpenBodyCamsMirrorStatus() state: {state}");
             if (state)
                 OpenBodyCamsMirror(res, zoom, ortho, ref CamHolder);
             else
@@ -243,11 +243,11 @@ namespace OpenLib.Compat
 
             if (TerminalMirrorCam != null || ((BodyCamComponent)TerminalMirrorCam) != null)
             {
-                Plugin.MoreLogs("OBC - MirrorCam already created and should be enabled, returning");
+                Loggers.LogInfo("OBC - MirrorCam already created and should be enabled, returning");
                 return;
             }
 
-            Plugin.MoreLogs("OBC - CreateTerminalMirror called");
+            Loggers.LogInfo("OBC - CreateTerminalMirror called");
             var terminalMirrorCam = BodyCam.CreateBodyCam(Plugin.instance.Terminal.gameObject, screenMaterial: null);
 
             TerminalMirrorCam = terminalMirrorCam;
@@ -265,18 +265,18 @@ namespace OpenLib.Compat
             SetMirrorCamTexture(cam.targetTexture);
 
             CamInitMirror(CameraHolder, cam, zoom, ortho);
-            Plugin.MoreLogs("OBC - TerminalStuff obc mirrorcam created!");
+            Loggers.LogInfo("OBC - TerminalStuff obc mirrorcam created!");
         }
 
         private static void CamIsBlanked(bool isBlanked)
         {
-            Plugin.MoreLogs($"OBC - CamIsBlanked: {isBlanked}");
+            Loggers.LogInfo($"OBC - CamIsBlanked: {isBlanked}");
             //ResidualCamsCheck();
         }
 
         private static void ResetTransform(Camera cam)
         {
-            Plugin.MoreLogs("OBC - ResetTransform Called!");
+            Loggers.LogInfo("OBC - ResetTransform Called!");
             CamInitMirror(((BodyCamComponent)TerminalMirrorCam).gameObject, cam, -1, false);
         }
 

@@ -187,7 +187,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
  - Added RemoveCompatibleNoun method in RemoveThings.cs
  - Added new patch/event StartOfRoundChangeLevel
  - Added AssembleMainMenuText overload for when you're not using ManagedConfig stuff
- - Added Plugin.WARNING shortcut for LogWarning messages
+ - Added Loggers.WARNING shortcut for LogWarning messages
 
 ## [0.1.6]
  - Added soft compatibility method in Common.StartGame

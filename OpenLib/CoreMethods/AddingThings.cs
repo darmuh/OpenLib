@@ -23,7 +23,7 @@ namespace OpenLib.CoreMethods
             if (existingNode.terminalOptions != null)
             {
                 existingNounList = [.. existingNode.terminalOptions];
-                Plugin.Spam($"{existingNode.name} has existing terminalOptions");
+                Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
             }
 
             CompatibleNoun noun = new() //not added to noun list as no keyword associated to it
@@ -37,9 +37,9 @@ namespace OpenLib.CoreMethods
             allKeywordsList.Add(terminalKeyword);
 
             if (addToList)
-                Plugin.keywordsAdded.Add(terminalKeyword);
+                Plugin.KeywordsAdded.Add(terminalKeyword);
 
-            Plugin.Spam($"Adding {keyWord} to existing node {existingNode.name}");
+            Loggers.LogDebug($"Adding {keyWord} to existing node {existingNode.name}");
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
         }
 
@@ -54,7 +54,7 @@ namespace OpenLib.CoreMethods
             if (existingNode.terminalOptions != null)
             {
                 existingNounList = [.. existingNode.terminalOptions];
-                Plugin.Spam($"{existingNode.name} has existing terminalOptions");
+                Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
             }
 
             CompatibleNoun noun = new() //no associated keyword, not adding to noun list
@@ -68,9 +68,9 @@ namespace OpenLib.CoreMethods
             allKeywordsList.Add(terminalKeyword);
 
             if (addToList)
-                Plugin.keywordsAdded.Add(terminalKeyword);
+                Plugin.KeywordsAdded.Add(terminalKeyword);
 
-            Plugin.Spam($"Adding {keyWord} to existing node {existingNode.name}");
+            Loggers.LogDebug($"Adding {keyWord} to existing node {existingNode.name}");
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
             return terminalKeyword;
         }
@@ -81,7 +81,7 @@ namespace OpenLib.CoreMethods
 
             if (helpNode.displayText.Contains(textToAdd))
             {
-                Plugin.WARNING($"Help command already contains this text: {textToAdd}");
+                Loggers.WARNING($"Help command already contains this text: {textToAdd}");
                 return;
             }
 
@@ -97,12 +97,12 @@ namespace OpenLib.CoreMethods
                 return;
             }
 
-            Plugin.Spam($"oldtext length {existingNode.displayText.Length}");
-            Plugin.Spam(existingNode.displayText);
+            Loggers.LogDebug($"oldtext length {existingNode.displayText.Length}");
+            Loggers.LogDebug(existingNode.displayText);
             string newText = existingNode.displayText.TrimEnd(NewLineChars);
             newText += $"\n{textToAdd}\r\n\r\n";
             existingNode.displayText = newText;
-            Plugin.Spam($"{existingNode.name} text updated!!!");
+            Loggers.LogDebug($"{existingNode.name} text updated!!!");
         }
 
         public static TerminalNode CreateDummyNode(string nodeName, bool clearPrevious, string displayText)
@@ -128,7 +128,7 @@ namespace OpenLib.CoreMethods
         {
             if (!LogicHandling.TryGetFromAllNodes("OtherCommands", out TerminalNode otherNode) && category.ToLower() == "other")
             {
-                Plugin.WARNING($"Unable to add {keyWord} to {category}\n{category} TerminalNode could not be found!");
+                Loggers.WARNING($"Unable to add {keyWord} to {category}\n{category} TerminalNode could not be found!");
                 return;
             }
 
@@ -159,16 +159,16 @@ namespace OpenLib.CoreMethods
             allKeywordsList.Add(terminalKeyword);
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
 
-            if (!Plugin.nodesAdded.Contains(terminalNode))
-                Plugin.nodesAdded.Add(terminalNode);
+            if (!Plugin.NodesAdded.Contains(terminalNode))
+                Plugin.NodesAdded.Add(terminalNode);
 
-            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
-                Plugin.keywordsAdded.Add(terminalKeyword);
+            if (!Plugin.KeywordsAdded.Contains(terminalKeyword))
+                Plugin.KeywordsAdded.Add(terminalKeyword);
 
             if (category.ToLower() == "other" && otherNode != null)
             {
                 AddToExistingNodeText($"{keywordDescription}", ref otherNode);
-                Plugin.Spam("adding node to other listing");
+                Loggers.LogDebug("adding node to other listing");
             }
         }
 
@@ -188,7 +188,7 @@ namespace OpenLib.CoreMethods
 
 
             if (returnNode == null)
-                Plugin.WARNING("Returning NULL terminal node @AddNodeManual!!!");
+                Loggers.WARNING("Returning NULL terminal node @AddNodeManual!!!");
 
             return returnNode!;
         }
@@ -212,7 +212,7 @@ namespace OpenLib.CoreMethods
             }
 
             if (returnNode == null)
-                Plugin.WARNING("Returning NULL terminal node @AddNodeManual!!!");
+                Loggers.WARNING("Returning NULL terminal node @AddNodeManual!!!");
 
             if (ManagedBoolGet.CanAddToManagedBoolList(managedBools, nodeName))
             {
@@ -246,8 +246,8 @@ namespace OpenLib.CoreMethods
         public static TerminalNode CreateNode(TerminalMenu terminalMenu, string nodeName, string keyWord, Func<string> commandAction, MainListing yourModListing, bool isNextPageCommand = false)
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
-            Plugin.Spam($"{nodeName}");
-            Plugin.Spam(keyWord);
+            Loggers.LogDebug($"{nodeName}");
+            Loggers.LogDebug(keyWord);
 
             bool clearText = true; //menus will always clear text for now
 
@@ -259,27 +259,27 @@ namespace OpenLib.CoreMethods
             terminalNode.clearPreviousText = clearText;
             terminalNode.buyUnlockable = false;
 
-            Plugin.Spam("node created");
+            Loggers.LogDebug("node created");
 
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(nodeName + "_keyword", keyWord.ToLower());
             terminalKeyword.isVerb = false;
             terminalKeyword.specialKeywordResult = terminalNode;
 
-            Plugin.Spam("keyword created");
+            Loggers.LogDebug("keyword created");
 
             yourModListing.Listing.Add(terminalNode, commandAction);
-            Plugin.Spam("func added to listing");
+            Loggers.LogDebug("func added to listing");
 
             if (!isNextPageCommand)
             {
                 terminalMenu.terminalNodePerCategory.Add(keyWord, terminalNode);
-                Plugin.Spam("added terminalNode to menus nodelisting");
+                Loggers.LogDebug("added terminalNode to menus nodelisting");
             }
 
             allKeywordsList.Add(terminalKeyword);
-            Plugin.keywordsAdded.Add(terminalKeyword);
+            Plugin.KeywordsAdded.Add(terminalKeyword);
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
-            Plugin.Spam("added to all keyword lists");
+            Loggers.LogDebug("added to all keyword lists");
             return terminalNode;
         }
 
@@ -294,7 +294,7 @@ namespace OpenLib.CoreMethods
                 yourModListing.Listing.Add(infoNode, managedBool.InfoAction);
                 infoNode.clearPreviousText = true;
                 AddCompatibleNoun(ref infoWord, keyWord, infoNode);
-                Plugin.Spam("info node created with infoAction!");
+                Loggers.LogDebug("info node created with infoAction!");
             }
             else if (managedBool.InfoText.Length > 1)
             {
@@ -303,7 +303,7 @@ namespace OpenLib.CoreMethods
                 infoNode.displayText = managedBool.InfoText;
                 infoNode.clearPreviousText = true;
                 AddCompatibleNoun(ref infoWord, keyWord, infoNode);
-                Plugin.Spam("info node created");
+                Loggers.LogDebug("info node created");
             }
         }
 
@@ -331,12 +331,12 @@ namespace OpenLib.CoreMethods
             if (managedBool.nodeName.Length < 2)
             {
                 nodeName = managedBool.ConfigItemName;
-                Plugin.Spam("managedBool nodename is blank, using configitemname");
+                Loggers.LogDebug("managedBool nodename is blank, using configitemname");
             }
             else
             {
                 nodeName = managedBool.nodeName;
-                Plugin.Spam($"using nodeName: {nodeName}");
+                Loggers.LogDebug($"using nodeName: {nodeName}");
             }
 
             bool clearText = managedBool.clearText;
@@ -344,7 +344,7 @@ namespace OpenLib.CoreMethods
             TerminalNode terminalNode = BaseCommandCreation(nodeName, keyWord, commandAction, managedBool.clearText, managedBool.CommandType, yourModListing, managedBool.price, managedBool.ConfirmAction, managedBool.DenyAction, managedBool.confirmText, managedBool.denyText, managedBool.alwaysInStock, managedBool.maxStock, managedBool.storeName, managedBool.reuseFunc, managedBool.itemList);
 
             if (terminalNode == null)
-                Plugin.WARNING("terminalNode is NULL at CreateNode!!!");
+                Loggers.WARNING("terminalNode is NULL at CreateNode!!!");
 
             return terminalNode;
         }
@@ -369,7 +369,7 @@ namespace OpenLib.CoreMethods
         {
             if (managedBool.TerminalNode == null)
             {
-                Plugin.ERROR("node is null when adding store command!!!");
+                Loggers.ERROR("node is null when adding store command!!!");
                 confirm = null;
                 deny = null;
                 return;
@@ -382,7 +382,7 @@ namespace OpenLib.CoreMethods
             }
             else
             {
-                Plugin.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
+                Loggers.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
                 confirm = null;
                 deny = null;
                 return;
@@ -395,7 +395,7 @@ namespace OpenLib.CoreMethods
 
             if (node == null)
             {
-                Plugin.ERROR("node is null when adding store command!!!");
+                Loggers.ERROR("node is null when adding store command!!!");
                 confirm = null;
                 deny = null;
                 return;
@@ -408,7 +408,7 @@ namespace OpenLib.CoreMethods
             }
             else
             {
-                Plugin.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
+                Loggers.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
                 confirm = null;
                 deny = null;
                 return;
@@ -438,7 +438,7 @@ namespace OpenLib.CoreMethods
             }
 
             Plugin.ShopNodes.Add(node);
-            Plugin.Spam($"Store nodes created for {nodeName}");
+            Loggers.LogDebug($"Store nodes created for {nodeName}");
         }
 
         public static UnlockableItem AddUnlockable(string storeName, TerminalNode node, bool alwaysInStock, int maxStock)
@@ -447,7 +447,7 @@ namespace OpenLib.CoreMethods
 
             if (TryGetAndReturnUnlockable(storeName, out UnlockableItem returnedItem))
             {
-                Plugin.Spam($"found matching item for {storeName}");
+                Loggers.LogDebug($"found matching item for {storeName}");
                 returnedItem.unlockableType = 1; //0 = suits, 1 = everything else that is not an actual item
                 returnedItem.shopSelectionNode = node;
                 returnedItem.alwaysInStock = alwaysInStock;
@@ -458,7 +458,7 @@ namespace OpenLib.CoreMethods
             }
             else
             {
-                Plugin.Spam($"Creating unlockable item manually for item: {storeName}");
+                Loggers.LogDebug($"Creating unlockable item manually for item: {storeName}");
 
                 itemToReturn = new()
                 {
@@ -479,7 +479,7 @@ namespace OpenLib.CoreMethods
         public static void AddToBuyWord(ref TerminalKeyword buyKeyword, ref TerminalKeyword terminalKeyword, UnlockableItem item)
         {
             terminalKeyword.defaultVerb = buyKeyword;
-            Plugin.Spam($"Added buy verb to {buyKeyword.word}");
+            Loggers.LogDebug($"Added buy verb to {buyKeyword.word}");
             CompatibleNoun wordIsCompatNoun = new()
             {
                 noun = terminalKeyword,
@@ -487,7 +487,7 @@ namespace OpenLib.CoreMethods
             };
             List<CompatibleNoun> buyKeywordList = [.. buyKeyword.compatibleNouns];
             buyKeywordList.Add(wordIsCompatNoun);
-            Plugin.nounsAdded.Add(wordIsCompatNoun);
+            Plugin.NounsAdded.Add(wordIsCompatNoun);
             buyKeyword.compatibleNouns = [.. buyKeywordList];
 
         }
@@ -502,7 +502,7 @@ namespace OpenLib.CoreMethods
             }
 
             newWord.defaultVerb = originalKeyword;
-            Plugin.Spam($"Added verb {originalKeyword.word} to {newWord.word}");
+            Loggers.LogDebug($"Added verb {originalKeyword.word} to {newWord.word}");
 
             CompatibleNoun wordIsCompatNoun = new()
             {
@@ -511,7 +511,7 @@ namespace OpenLib.CoreMethods
             };
             List<CompatibleNoun> compatibleNouns = [.. originalKeyword.compatibleNouns];
             compatibleNouns.Add(wordIsCompatNoun);
-            Plugin.nounsAdded.Add(wordIsCompatNoun);
+            Plugin.NounsAdded.Add(wordIsCompatNoun);
             originalKeyword.compatibleNouns = [.. compatibleNouns];
         }
 
@@ -519,7 +519,7 @@ namespace OpenLib.CoreMethods
         {
             if (!originalWord.isVerb)
             {
-                Plugin.WARNING($"{originalWord.word} is NOT a verb");
+                Loggers.WARNING($"{originalWord.word} is NOT a verb");
                 return;
             }
 
@@ -529,7 +529,7 @@ namespace OpenLib.CoreMethods
             {
                 if (compatibleNoun.noun.word.ToLower() == word.ToLower())
                 {
-                    Plugin.WARNING($"NOUN: {compatibleNoun.noun.word} already exists for WORD: {originalWord.word}");
+                    Loggers.WARNING($"NOUN: {compatibleNoun.noun.word} already exists for WORD: {originalWord.word}");
                     return;
                 }
             }
@@ -542,13 +542,13 @@ namespace OpenLib.CoreMethods
 
                 originalNouns.Add(newNoun);
                 originalWord.compatibleNouns = [.. originalNouns];
-                Plugin.Spam($"Added NOUN: {newNoun.noun.word} to WORD: {originalWord.word} compatible nouns");
-                Plugin.nounsAdded.Add(newNoun);
+                Loggers.LogDebug($"Added NOUN: {newNoun.noun.word} to WORD: {originalWord.word} compatible nouns");
+                Plugin.NounsAdded.Add(newNoun);
                 return;
             }
             else
             {
-                Plugin.WARNING($"word: {word} does not exist, unable to add as compatible noun");
+                Loggers.WARNING($"word: {word} does not exist, unable to add as compatible noun");
             }
 
         }
@@ -566,7 +566,7 @@ namespace OpenLib.CoreMethods
             if (DoesNodeExist(yourModListing.Listing, commandAction, out TerminalNode existingNode) && !reuseFunc)
             {
                 AddKeywordToExistingNode(keyWord, existingNode, true);
-                Plugin.Spam($"existing node found {existingNode.name}, reusing associated func and adding additional keyword {keyWord}");
+                Loggers.LogDebug($"existing node found {existingNode.name}, reusing associated func and adding additional keyword {keyWord}");
                 return existingNode;
             }
 
@@ -587,12 +587,12 @@ namespace OpenLib.CoreMethods
             {
                 AddConfirm(nodeName, price, ConfirmAction, DenyAction, confirmText, denyText, yourModListing.Listing, out confirm, out deny);
                 terminalNode.acceptAnything = false;
-                Plugin.Spam("command type 1 detected, adding basic confirmation");
+                Loggers.LogDebug("command type 1 detected, adding basic confirmation");
             }
             else if (CommandType == 2) //store command
             {
                 AddStoreCommand(nodeName, storeName, ref terminalKeyword, ref terminalNode, price, ConfirmAction, DenyAction, confirmText, denyText, yourModListing, alwaysInStock, maxStock, out confirm, out deny);
-                Plugin.Spam("command type 2 detected, adding store logic");
+                Loggers.LogDebug("command type 2 detected, adding store logic");
                 terminalNode.acceptAnything = false;
                 yourModListing.shopNodes.Add(confirm.result);
                 yourModListing.shopNodes.Add(terminalNode);
@@ -601,33 +601,33 @@ namespace OpenLib.CoreMethods
                 {
                     confirm.result.buyUnlockable = false;
                     yourModListing.storePacks.Add(terminalNode, itemList);
-                    Plugin.Spam("storepack detected, adding itemlist");
+                    Loggers.LogDebug("storepack detected, adding itemlist");
                 }
             }
 
             if (confirm != null && deny != null)
             {
                 allKeywordsList.Add(confirm.noun);
-                Plugin.keywordsAdded.Add(confirm.noun);
+                Plugin.KeywordsAdded.Add(confirm.noun);
 
                 allKeywordsList.Add(deny.noun);
-                Plugin.keywordsAdded.Add(deny.noun);
+                Plugin.KeywordsAdded.Add(deny.noun);
 
                 terminalNode.terminalOptions = [confirm, deny];
                 terminalNode.overrideOptions = true;
 
             }
             else
-                Plugin.Spam($"no confirmation logic added for {keyWord}");
+                Loggers.LogDebug($"no confirmation logic added for {keyWord}");
 
             yourModListing.Listing.Add(terminalNode, commandAction);
             allKeywordsList.Add(terminalKeyword);
 
-            if (!Plugin.nodesAdded.Contains(terminalNode))
-                Plugin.nodesAdded.Add(terminalNode);
+            if (!Plugin.NodesAdded.Contains(terminalNode))
+                Plugin.NodesAdded.Add(terminalNode);
 
-            if (!Plugin.keywordsAdded.Contains(terminalKeyword))
-                Plugin.keywordsAdded.Add(terminalKeyword);
+            if (!Plugin.KeywordsAdded.Contains(terminalKeyword))
+                Plugin.KeywordsAdded.Add(terminalKeyword);
 
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
 

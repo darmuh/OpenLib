@@ -39,13 +39,13 @@ namespace OpenLib.Events
         public class TerminalNodeEvent
         {
             public delegate TerminalNode Event(ref TerminalNode original);
-            private event Event OnEvent;
+            private event Event OnEvent = null!;
             public bool HasListeners => (Listeners != 0);
             public int Listeners { get; internal set; }
 
             public TerminalNode NodeInvoke(ref TerminalNode original)
             {
-                TerminalNode node = OnEvent?.Invoke(ref original);
+                TerminalNode? node = OnEvent?.Invoke(ref original);
                 return node!;
             }
             public void AddListener(Event listener)

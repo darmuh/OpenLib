@@ -14,7 +14,7 @@ namespace OpenLib.CoreMethods
                 if (node.name.ToLower().Equals(nodeName.ToLower()))
                 {
                     returnNode = node;
-                    Plugin.Spam($"Existing terminalNode [{nodeName}] found, using it rather than making a new one for this command");
+                    Loggers.LogDebug($"Existing terminalNode [{nodeName}] found, using it rather than making a new one for this command");
                     return true;
                 }
             }
@@ -31,7 +31,7 @@ namespace OpenLib.CoreMethods
             {
                 if (keyword.word.ToLower().Equals(keyWord.ToLower()))
                 {
-                    //Plugin.MoreLogs($"Keyword: [{keyWord}] found!");
+                    //Loggers.LogInfo($"Keyword: [{keyWord}] found!");
                     return true;
                 }
             }
@@ -47,7 +47,7 @@ namespace OpenLib.CoreMethods
             {
                 if (keyword.word.ToLower().Equals(keyWord.ToLower()))
                 {
-                    Plugin.Spam($"Keyword: [{keyWord}] found!");
+                    Loggers.LogDebug($"Keyword: [{keyWord}] found!");
                     terminalKeyword = keyword;
                     return true;
                 }
@@ -95,7 +95,7 @@ namespace OpenLib.CoreMethods
             {
                 if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult.displayText == displayText)
                 {
-                    Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                    Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                     return true;
                 }
             }
@@ -116,7 +116,7 @@ namespace OpenLib.CoreMethods
                     {
                         if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
                         {
-                            Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                            Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                             return true;
                         }
                     }
@@ -141,7 +141,7 @@ namespace OpenLib.CoreMethods
                     {
                         if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
                         {
-                            Plugin.Spam($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                            Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
                             outKeyword = terminalKeyword;
                             return true;
                         }

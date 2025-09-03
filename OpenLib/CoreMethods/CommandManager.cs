@@ -188,7 +188,7 @@ namespace OpenLib.CoreMethods
             {
                 if (StoreBase == null)
                 {
-                    Plugin.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
+                    Loggers.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
                     return;
                 }
                 StoreBase.AddToStore();
@@ -223,7 +223,7 @@ namespace OpenLib.CoreMethods
             {
                 if (StoreBase == null)
                 {
-                    Plugin.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
+                    Loggers.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
                     return;
                 }
                 StoreBase.AddToStore();
@@ -255,7 +255,7 @@ namespace OpenLib.CoreMethods
 
         internal void AddKeyword(string keyword)
         {
-            Plugin.Spam($"adding {keyword}");
+            Loggers.LogDebug($"adding {keyword}");
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, true);
             terminalKeyword.specialKeywordResult = terminalNode;
             terminalKeywords.Add(terminalKeyword);
@@ -263,7 +263,7 @@ namespace OpenLib.CoreMethods
 
         internal void AddKeyword(string keyword, bool replaceExistingKW)
         {
-            Plugin.Spam($"adding {keyword}");
+            Loggers.LogDebug($"adding {keyword}");
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, replaceExistingKW);
             terminalKeyword.specialKeywordResult = terminalNode;
             terminalKeywords.Add(terminalKeyword);

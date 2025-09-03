@@ -57,8 +57,8 @@ namespace OpenLib.Common
 
         public static string[] GetWords() //get a word list from terminal input
         {
-            string cleanedText = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
-            string[] words = cleanedText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string cleanedText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
+            string[] words = cleanedText.Split([' '], StringSplitOptions.RemoveEmptyEntries);
             return words;
         }
 
@@ -69,14 +69,14 @@ namespace OpenLib.Common
 
             foreach (string word in words)
             {
-                Plugin.MoreLogs($"checking {word}");
+                Loggers.LogInfo($"checking {word}");
                 foreach (string keyword in configItemWords)
                 {
                     if (keyword.Contains(word))
                     {
                         filteredWords.Add(keyword);
                         keywordFound = true;
-                        Plugin.MoreLogs($"adding {keyword} to list");
+                        Loggers.LogInfo($"adding {keyword} to list");
                         break;
                     }
                 }
@@ -84,7 +84,7 @@ namespace OpenLib.Common
                 if (!keywordFound)
                 {
                     filteredWords.Add(word);
-                    Plugin.MoreLogs($"adding non-keyword, word: {word}");
+                    Loggers.LogInfo($"adding non-keyword, word: {word}");
                 }
 
             }
@@ -96,26 +96,16 @@ namespace OpenLib.Common
         {
             List<string> keywordsInConfig = [];
             if (configItem.Length > 0)
-            {
-                keywordsInConfig = configItem.Split(';')
-                                      .Select(item => item.TrimStart())
-                                      .ToList();
-                //Plugin.MoreLogs("GetKeywordsPerConfigItem split complete");
-            }
+                keywordsInConfig = [.. configItem.Split(';').Select(item => item.TrimStart())];
 
             return keywordsInConfig;
         }
 
-        public static List<string> GetKeywordsPerConfigItem(string configItem, char separator) //config item separated by semicolon only
+        public static List<string> GetKeywordsPerConfigItem(string configItem, char separator) //config item separated by defined char
         {
             List<string> keywordsInConfig = [];
             if (configItem.Length > 0)
-            {
-                keywordsInConfig = configItem.Split(separator)
-                                      .Select(item => item.TrimStart())
-                                      .ToList();
-                //Plugin.MoreLogs("GetKeywordsPerConfigItem split complete");
-            }
+                keywordsInConfig = [.. configItem.Split(separator).Select(item => item.TrimStart())];
 
             return keywordsInConfig;
         }
@@ -130,7 +120,7 @@ namespace OpenLib.Common
                     numbersList.Add(number);
                 }
                 else
-                    Plugin.WARNING($"Could not parse {item} to integer");
+                    Loggers.WARNING($"Could not parse {item} to integer");
             }
 
             return numbersList;
@@ -174,7 +164,7 @@ namespace OpenLib.Common
                     numbersList.Add(number);
                 }
                 else
-                    Plugin.WARNING($"Could not parse {item} to float");
+                    Loggers.WARNING($"Could not parse {item} to float");
             }
 
             return numbersList;
@@ -185,9 +175,7 @@ namespace OpenLib.Common
             List<string> itemList = [];
             if (rawList.Length > 0)
             {
-                itemList = rawList.Split(',')
-                                      .Select(item => item.TrimStart())
-                                      .ToList();
+                itemList = [.. rawList.Split(',').Select(item => item.TrimStart())];
             }
 
             return itemList;
@@ -212,13 +200,13 @@ namespace OpenLib.Common
                 menuItem.Append($"{key}, ");
             }
             string finalList = menuItem.ToString();
-            string listFixed = finalList.Remove(finalList.Length - 2);
+            string listFixed = finalList[..^2];
             return listFixed; //used for strings that return the list separated by commas
         }
 
         public static string GetCleanedScreenText(Terminal __instance) //copied from vanilla game, useful to get terminal friendly output
         {
-            string s = __instance.screenText.text.Substring(__instance.screenText.text.Length - __instance.textAdded);
+            string s = __instance.screenText.text[^__instance.textAdded..];
 
             return RemovePunctuation(s);
         }

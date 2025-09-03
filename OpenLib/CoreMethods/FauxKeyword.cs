@@ -20,7 +20,7 @@ namespace OpenLib.CoreMethods
         {
             if (keyword.Length < 3)
             {
-                Plugin.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
+                Loggers.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
                 return;
             }
 
@@ -31,11 +31,11 @@ namespace OpenLib.CoreMethods
                 this.ResultFunc = resultFunc;
                 this.thisNode.clearPreviousText = true;
                 this.thisNode.name = keyword;
-                Plugin.Spam($"FauxKeyword - {keyword} created!");
+                Loggers.LogDebug($"FauxKeyword - {keyword} created!");
                 return;
             }
             else
-                Plugin.WARNING($"Could not find main page at word - {mainWord}");
+                Loggers.WARNING($"Could not find main page at word - {mainWord}");
 
             this.MainPage = null;
             this.Keyword = keyword;

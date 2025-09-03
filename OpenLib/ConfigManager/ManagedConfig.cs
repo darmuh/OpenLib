@@ -74,7 +74,7 @@ namespace OpenLib.ConfigManager
             if (newValue != this.StringValue)
             {
                 StringValue = newValue;
-                Plugin.Spam($"Updating string value for managed item {this.ConfigItemName}");
+                Loggers.LogDebug($"Updating string value for managed item {this.ConfigItemName}");
             }
         }
 
@@ -157,12 +157,12 @@ namespace OpenLib.ConfigManager
         {
             if (managedBools.Count == 0)
             {
-                Plugin.Spam("managedConfigs count = 0");
+                Loggers.LogDebug("managedConfigs count = 0");
                 result = null;
                 return false;
             }
 
-            Plugin.Spam($"TryGetItemByName: {query}");
+            Loggers.LogDebug($"TryGetItemByName: {query}");
 
             result = managedBools.FirstOrDefault(item => item.ConfigItemName == query && item.ConfigType == configType);
 
@@ -173,12 +173,12 @@ namespace OpenLib.ConfigManager
         {
             if (managedBools.Count == 0)
             {
-                Plugin.Spam("managedConfigs count = 0");
+                Loggers.LogDebug("managedConfigs count = 0");
                 result = [];
                 return false;
             }
 
-            Plugin.Spam($"TryGetBySection: {query}");
+            Loggers.LogDebug($"TryGetBySection: {query}");
 
             result = managedBools.FindAll(item => item.section == query && item.ConfigType == configType);
 
@@ -195,7 +195,7 @@ namespace OpenLib.ConfigManager
                     return false;
                 }
             }
-            Plugin.Spam("node is not in managedbool list and can be added!");
+            Loggers.LogDebug("node is not in managedbool list and can be added!");
             return true;
         }
 

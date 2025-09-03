@@ -11,11 +11,11 @@ namespace OpenLib.CoreMethods
     {
         public static void OnTerminalDisable()
         {
-            Plugin.Spam("OnTerminalDisable called");
-            DeleteAllNodes(ref Plugin.nodesAdded);
-            DeleteAllNouns(ref Plugin.nounsAdded); //keywords follows this method
+            Loggers.LogDebug("OnTerminalDisable called");
+            DeleteAllNodes(ref Plugin.NodesAdded);
+            DeleteAllNouns(ref Plugin.NounsAdded); //keywords follows this method
             DeleteCams();
-            ConfigSetup.defaultListing.DeleteAll();
+            ConfigSetup.DefaultListing.DeleteAll();
             DeleteAllTerminalCodes(ref Plugin.AllTerminalCodes);
         }
 
@@ -45,7 +45,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = nounsToRemove.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting noun: {nounsToRemove[i].noun.word} from word: {keyWord.word}");
+                Loggers.LogDebug($"Deleting noun: {nounsToRemove[i].noun.word} from word: {keyWord.word}");
                 UnityEngine.Object.Destroy(nounsToRemove[i].noun);
             }
 
@@ -67,11 +67,11 @@ namespace OpenLib.CoreMethods
                     else
                     {
                         removedWord = true;
-                        Plugin.Spam($"Removing {wordToRemove.word}");
+                        Loggers.LogDebug($"Removing {wordToRemove.word}");
                     }
                 }
                 mainWord.compatibleNouns = [.. newList];
-                Plugin.Spam($"DeleteCompatibleNoun of {wordToRemove.word} from {mainWord.word} complete, word removed: {removedWord}");
+                Loggers.LogDebug($"DeleteCompatibleNoun of {wordToRemove.word} from {mainWord.word} complete, word removed: {removedWord}");
             }
         }
 
@@ -91,11 +91,11 @@ namespace OpenLib.CoreMethods
                     {
                         //noun.noun.defaultVerb =;
                         removedWord = true;
-                        Plugin.Spam($"Removing {nounToRemove}");
+                        Loggers.LogDebug($"Removing {nounToRemove}");
                     }
                 }
                 mainWord.compatibleNouns = [.. newList];
-                Plugin.Spam($"DeleteCompatibleNoun of {nounToRemove} from {mainWord.word} complete, word removed: {removedWord}");
+                Loggers.LogDebug($"DeleteCompatibleNoun of {nounToRemove} from {mainWord.word} complete, word removed: {removedWord}");
             }
         }
 
@@ -108,7 +108,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = destroyList.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting TerminalAccessibleCode Object: {destroyList[i]}");
+                Loggers.LogDebug($"Deleting TerminalAccessibleCode Object: {destroyList[i]}");
                 UnityEngine.Object.Destroy(destroyList[i]);
             }
 
@@ -119,8 +119,8 @@ namespace OpenLib.CoreMethods
         {
             if (nounsToDelete.Count == 0)
             {
-                Plugin.Spam("no nouns detected to delete");
-                DeleteAllKeywords(ref Plugin.keywordsAdded);
+                Loggers.LogDebug("no nouns detected to delete");
+                DeleteAllKeywords(ref Plugin.KeywordsAdded);
                 return;
             }
 
@@ -138,21 +138,21 @@ namespace OpenLib.CoreMethods
                         if (newList.Remove(noun))
                         {
                             keyword.compatibleNouns = [.. newList];
-                            Plugin.Spam($"{noun.noun.word} removed from word: {keyword.word}");
+                            Loggers.LogDebug($"{noun.noun.word} removed from word: {keyword.word}");
                         }
 
                         else
-                            Plugin.WARNING($"Unable to remove compatible noun: {noun.noun.word} from word: {keyword.word}");
+                            Loggers.WARNING($"Unable to remove compatible noun: {noun.noun.word} from word: {keyword.word}");
                     }
                 }
                 else
-                    Plugin.WARNING($"Unable to find any words {noun.noun.word} is associated to");
+                    Loggers.WARNING($"Unable to find any words {noun.noun.word} is associated to");
             }
 
-            Plugin.nounsAdded.Clear();
-            Plugin.Spam("DeleteAllNouns Completed");
+            Plugin.NounsAdded.Clear();
+            Loggers.LogDebug("DeleteAllNouns Completed");
 
-            DeleteAllKeywords(ref Plugin.keywordsAdded);
+            DeleteAllKeywords(ref Plugin.KeywordsAdded);
         }
 
         public static void DeleteAllKeywords(ref List<TerminalKeyword> keywordList)
@@ -169,7 +169,7 @@ namespace OpenLib.CoreMethods
                 {
                     if (allKeywords[i] == keyword)
                     {
-                        Plugin.Spam($"Removing {keyword.word} from all keywords list");
+                        Loggers.LogDebug($"Removing {keyword.word} from all keywords list");
                         allKeywords.RemoveAt(i);
                         break;
                     }
@@ -178,7 +178,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = wordsToDelete.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting keyword Object: {wordsToDelete[i].word}");
+                Loggers.LogDebug($"Deleting keyword Object: {wordsToDelete[i].word}");
                 UnityEngine.Object.Destroy(wordsToDelete[i]);
             }
 
@@ -199,7 +199,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = nodesToDelete.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting node: {nodesToDelete[i].name}");
+                Loggers.LogDebug($"Deleting node: {nodesToDelete[i].name}");
                 UnityEngine.Object.Destroy(nodesToDelete[i]);
             }
         }
@@ -220,7 +220,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = nodesToDelete.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting node: {nodesToDelete[i].name}");
+                Loggers.LogDebug($"Deleting node: {nodesToDelete[i].name}");
                 UnityEngine.Object.Destroy(nodesToDelete[i]);
             }
         }
@@ -241,7 +241,7 @@ namespace OpenLib.CoreMethods
 
             for (int i = nodesToDelete.Count - 1; i >= 0; i--)
             {
-                Plugin.Spam($"Deleting node: {nodesToDelete[i].name}");
+                Loggers.LogDebug($"Deleting node: {nodesToDelete[i].name}");
                 UnityEngine.Object.Destroy(nodesToDelete[i]);
             }
         }
@@ -255,7 +255,7 @@ namespace OpenLib.CoreMethods
                 if (allNodesList[i].name.Equals(nodeName))
                 {
                     UnityEngine.Object.Destroy(allNodesList[i]);
-                    Plugin.Spam($"Node: [{nodeName}] removed");
+                    Loggers.LogDebug($"Node: [{nodeName}] removed");
                     break;
                 }
             }
@@ -269,7 +269,7 @@ namespace OpenLib.CoreMethods
             {
                 if (unlockableList[i].unlockableName.Equals(unlockableName))
                 {
-                    Plugin.Spam($"Unlockable: [{unlockableName}] found! Removing unlockable and noting index position");
+                    Loggers.LogDebug($"Unlockable: [{unlockableName}] found! Removing unlockable and noting index position");
                     StartOfRound.Instance.unlockablesList.unlockables.Remove(unlockableList[i]);
                     indexPos = i;
                     return true;

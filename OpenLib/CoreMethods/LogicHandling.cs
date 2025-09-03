@@ -21,7 +21,7 @@ namespace OpenLib.CoreMethods
             if (CommandDictionary.Count < 1)
                 return false;
 
-            Plugin.Spam("command dictionary is not null in provided listing");
+            Loggers.LogDebug("command dictionary is not null in provided listing");
 
             if (node == null)
                 return false;
@@ -33,13 +33,13 @@ namespace OpenLib.CoreMethods
                 NewDisplayTextEventInvoke(ref node);
 
                 CommonTerminal.parseNode = node; // set this static node for usage elsewhere
-                Plugin.Spam($"Func<string> found for {node.name}");
+                Loggers.LogDebug($"Func<string> found for {node.name}");
                 node.displayText = newDisplayText();
                 return true;
             }
             else
             {
-                Plugin.Spam("Not in special nodeListing dictionary");
+                Loggers.LogDebug("Not in special nodeListing dictionary");
                 return false;
             }
         }
@@ -68,7 +68,7 @@ namespace OpenLib.CoreMethods
                 return true;
             }
 
-            Plugin.Spam("No matches in GetNewDisplayText2");
+            Loggers.LogDebug("No matches in GetNewDisplayText2");
             return false;
         }
 
@@ -99,7 +99,7 @@ namespace OpenLib.CoreMethods
                 Dictionary<TerminalNode, Func<string>> CommandDictionary = listing.Listing;
 
                 looptimes++;
-                Plugin.Spam($"command dictionary in this listing is not empty ({looptimes})");
+                Loggers.LogDebug($"command dictionary in this listing is not empty ({looptimes})");
 
 
 
@@ -108,25 +108,25 @@ namespace OpenLib.CoreMethods
                     NewDisplayTextEventInvoke(ref node);
 
                     CommonTerminal.parseNode = node; // set this static node for usage elsewhere
-                    Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
+                    Loggers.LogInfo($"Func<string> found for {node.name} in one of provided listings");
                     node.displayText = newDisplayText();
                     funcFound = true;
                     break;
                 }
                 else
                 {
-                    Plugin.Spam("Not in special nodeListing dictionary");
+                    Loggers.LogDebug("Not in special nodeListing dictionary");
                     continue;
                 }
             }
 
-            Plugin.MoreLogs("provided listings do not contain this node");
+            Loggers.LogInfo("provided listings do not contain this node");
             return funcFound;
         }
 
         public static bool GetDisplayFromFaux(List<FauxKeyword> fauxWords, string words, ref TerminalNode node)
         {
-            //Plugin.Spam($"GetDisplayFromFaux {words}");
+            //Loggers.LogDebug($"GetDisplayFromFaux {words}");
             string firstWord = words.Split(' ')[0];
             foreach (FauxKeyword keyword in fauxWords)
             {
@@ -135,12 +135,12 @@ namespace OpenLib.CoreMethods
 
                 keyword.thisNode.displayText = "";
 
-                if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, CultureInfo.InvariantCulture) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
+                if (Misc.StringStartsWithInvariant(words, keyword.Keyword[..3]) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
                 {
-                    if (keyword.requireExact && words.ToLower() != keyword.Keyword.ToLower())
+                    if (keyword.requireExact && Misc.CompareStringsInvariant(words, keyword.Keyword))
                         return false;
 
-                    Plugin.Spam("Using faux word associated with MainPage");
+                    Loggers.LogDebug("Using faux word associated with MainPage");
 
                     if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
                         keyword.GetConfirm = true;
@@ -150,22 +150,22 @@ namespace OpenLib.CoreMethods
                 }
                 else if (Plugin.instance.Terminal.currentNode == keyword.thisNode && keyword.GetConfirm)
                 {
-                    Plugin.Spam("getting confirmation for this faux word");
+                    Loggers.LogDebug("getting confirmation for this faux word");
 
-                    if (words.StartsWith("c", false, null))
+                    if (Misc.StringStartsWithInvariant(words, 'c'))
                     {
                         keyword.thisNode.displayText = keyword.ConfirmFunc();
                         node = keyword.thisNode;
                         keyword.GetConfirm = false;
                     }
 
-                    else if (words.StartsWith("d", false, null))
+                    else if (Misc.StringStartsWithInvariant(words, 'd'))
                     {
                         keyword.thisNode.displayText = keyword.DenyFunc();
                         node = keyword.thisNode;
                         keyword.GetConfirm = false;
                     }
-                    else if (words.StartsWith(keyword.Keyword, false, null))
+                    else if (Misc.StringStartsWithInvariant(words, keyword.Keyword))
                     {
                         keyword.thisNode.displayText = keyword.ResultFunc();
                         node = keyword.thisNode;
@@ -175,12 +175,12 @@ namespace OpenLib.CoreMethods
 
                     return true;
                 }
-                else if (words.StartsWith(keyword.Keyword.Substring(0, 3), true, CultureInfo.InvariantCulture) && fauxWords.Any(f => f.thisNode == Plugin.instance.Terminal.currentNode && f.AllowOtherFauxWords))
+                else if (Misc.StringStartsWithInvariant(words, keyword.Keyword[..3]) && fauxWords.Any(f => f.thisNode == Plugin.instance.Terminal.currentNode && f.AllowOtherFauxWords))
                 {
-                    if (keyword.requireExact && words.ToLower() != keyword.Keyword.ToLower())
+                    if (keyword.requireExact && Misc.CompareStringsInvariant(words, keyword.Keyword))
                         return false;
 
-                    Plugin.Spam("Using faux word that can be called from other fauxwords");
+                    Loggers.LogDebug("Using faux word that can be called from other fauxwords");
 
                     if (keyword.ConfirmFunc != null && !keyword.GetConfirm)
                         keyword.GetConfirm = true;
@@ -197,7 +197,7 @@ namespace OpenLib.CoreMethods
         {
             if (node == null || providedListing.Count == 0)
             {
-                Plugin.WARNING("node is null or listings do not exist");
+                Loggers.WARNING("node is null or listings do not exist");
                 returnFunc = null!;
                 return false;
             }
@@ -212,22 +212,22 @@ namespace OpenLib.CoreMethods
                     continue;
 
                 looptimes++;
-                Plugin.Spam($"command dictionary in this listing is not null ({looptimes})");
+                Loggers.LogDebug($"command dictionary in this listing is not null ({looptimes})");
 
                 if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
                 {
-                    Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
+                    Loggers.LogInfo($"Func<string> found for {node.name} in one of provided listings");
                     returnFunc = newDisplayText;
                     return true;
                 }
                 else
                 {
-                    Plugin.Spam("Not in this special nodeListing dictionary");
+                    Loggers.LogDebug("Not in this special nodeListing dictionary");
                     continue;
                 }
             }
 
-            Plugin.MoreLogs("provided listings do not contain this node");
+            Loggers.LogInfo("provided listings do not contain this node");
             returnFunc = null!;
             return false;
         }
@@ -244,13 +244,13 @@ namespace OpenLib.CoreMethods
 
                 if (node.name == nodeName)
                 {
-                    Plugin.Spam($"{nodeName} found!");
+                    Loggers.LogDebug($"{nodeName} found!");
                     outNode = node;
                     return true;
                 }
             }
 
-            Plugin.Spam($"{nodeName} could not be found, result set to null.");
+            Loggers.LogDebug($"{nodeName} could not be found, result set to null.");
             return false;
         }
 
@@ -262,7 +262,7 @@ namespace OpenLib.CoreMethods
 
         public static void SetTerminalInput(string terminalInput)
         {
-            Plugin.instance.Terminal.TextChanged(Plugin.instance.Terminal.currentText.Substring(0, Plugin.instance.Terminal.currentText.Length - Plugin.instance.Terminal.textAdded) + terminalInput);
+            Plugin.instance.Terminal.TextChanged(Plugin.instance.Terminal.currentText[..^Plugin.instance.Terminal.textAdded] + terminalInput);
             Plugin.instance.Terminal.screenText.text = Plugin.instance.Terminal.currentText;
             Plugin.instance.Terminal.textAdded = terminalInput.Length;
         }
@@ -274,7 +274,7 @@ namespace OpenLib.CoreMethods
         {
             if (node == null || providedListing.Count == 0)
             {
-                Plugin.WARNING("node is null or listings do not exist");
+                Loggers.WARNING("node is null or listings do not exist");
                 return null!;
             }
 
@@ -288,21 +288,21 @@ namespace OpenLib.CoreMethods
                     continue;
 
                 looptimes++;
-                Plugin.Spam($"command dictionary in this listing is not null ({looptimes})");
+                Loggers.LogDebug($"command dictionary in this listing is not null ({looptimes})");
 
                 if (CommandDictionary.TryGetValue(node, out Func<string> newDisplayText))
                 {
-                    Plugin.MoreLogs($"Func<string> found for {node.name} in one of provided listings");
+                    Loggers.LogInfo($"Func<string> found for {node.name} in one of provided listings");
                     return newDisplayText;
                 }
                 else
                 {
-                    Plugin.Spam("Not in this special nodeListing dictionary");
+                    Loggers.LogDebug("Not in this special nodeListing dictionary");
                     continue;
                 }
             }
 
-            Plugin.MoreLogs("provided listings do not contain this node");
+            Loggers.LogInfo("provided listings do not contain this node");
             return null;
         }
 
@@ -318,12 +318,12 @@ namespace OpenLib.CoreMethods
 
                 if (node.name == nodeName)
                 {
-                    Plugin.Spam($"{nodeName} found!");
+                    Loggers.LogDebug($"{nodeName} found!");
                     return node;
                 }
             }
 
-            Plugin.Spam($"{nodeName} could not be found, result set to null.");
+            Loggers.LogDebug($"{nodeName} could not be found, result set to null.");
 
             return null!;
         }

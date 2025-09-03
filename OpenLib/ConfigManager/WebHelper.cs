@@ -17,7 +17,7 @@ namespace OpenLib.ConfigManager
 
             if (isDefaultValue)
             {
-                Plugin.Spam($"{configName} is default value, setting this to checked");
+                Loggers.LogDebug($"{configName} is default value, setting this to checked");
                 return $"<input type=\"radio\" id=\"{configName}{num}\" checked=\"checked\" name=\"{configName}\" value=\"{value}\">\r\n            <label for=\"{configName}{num}\">{value}</label><br>";
             }
 
@@ -34,7 +34,7 @@ namespace OpenLib.ConfigManager
 
             if (values[1] > 999)
             {
-                Plugin.Spam($"clamped number-type max value too high for slider - {values[1]}");
+                Loggers.LogDebug($"clamped number-type max value too high for slider - {values[1]}");
                 return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";
             }
 
@@ -67,7 +67,7 @@ namespace OpenLib.ConfigManager
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
                 configItems.Add(value.Definition, value);
-                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
             }
 
 
@@ -86,15 +86,15 @@ namespace OpenLib.ConfigManager
 
                 if (pair.Value.BoxedValue.GetType() == typeof(bool))
                 {
-                    Plugin.Spam($"bool config detected - {pair.Key.Key}");
+                    Loggers.LogDebug($"bool config detected - {pair.Key.Key}");
                     if ((bool)pair.Value.DefaultValue)
                     {
-                        Plugin.Spam("default is TRUE");
+                        Loggers.LogDebug("default is TRUE");
                         lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                     }
                     else
                     {
-                        Plugin.Spam("default is FALSE");
+                        Loggers.LogDebug("default is FALSE");
                         lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                     }
 
@@ -119,7 +119,7 @@ namespace OpenLib.ConfigManager
                             num++;
                         }
                         lines.Add("</p>");
-                        Plugin.Spam($"clamped string config detected - {pair.Key.Key}");
+                        Loggers.LogDebug($"clamped string config detected - {pair.Key.Key}");
                     }
                     else
                     {
@@ -134,7 +134,7 @@ namespace OpenLib.ConfigManager
                         {
                             lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
                         }
-                        Plugin.Spam($"string config detected - {pair.Key.Key}");
+                        Loggers.LogDebug($"string config detected - {pair.Key.Key}");
                     }
 
                 }
@@ -147,12 +147,12 @@ namespace OpenLib.ConfigManager
                         lines.Add(AddValueToHTMLCode(acceptableValues, pair.Key.Key, pair.Value.DefaultValue.ToString(), sliderItem));
                         sliderItem++;
                         lines.Add("</p>");
-                        Plugin.Spam($"clamped number-type config detected - {pair.Key.Key}");
+                        Loggers.LogDebug($"clamped number-type config detected - {pair.Key.Key}");
                     }
                     else
                     {
                         lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" class=\"numberInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
-                        Plugin.Spam($"number-type config detected - {pair.Key.Key}");
+                        Loggers.LogDebug($"number-type config detected - {pair.Key.Key}");
                     }
                 }
             }

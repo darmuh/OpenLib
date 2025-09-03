@@ -2,8 +2,10 @@
 using BepInEx.Configuration;
 using GameNetcodeStuff;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 using Random = System.Random;
 
 namespace OpenLib.Common
@@ -13,7 +15,7 @@ namespace OpenLib.Common
         public static Random Random = new();
         public static bool TryGetPlayerFromName(string playerName, out PlayerControllerB thePlayer)
         {
-            thePlayer = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(p => p.playerUsername.ToLower() == playerName.ToLower());
+            thePlayer = StartOfRound.Instance.allPlayerScripts.FirstOrDefault(p => CompareStringsInvariant(p.playerUsername, playerName));
             return thePlayer != null;
         }
 
@@ -52,8 +54,13 @@ namespace OpenLib.Common
         public static Color HexToColor(string hex)
         {
             // Convert hex color code to Color
-            ColorUtility.TryParseHtmlString(hex, out Color color);
-            return color;
+            if(ColorUtility.TryParseHtmlString(hex, out Color color))
+                return color;
+            else
+            {
+                Loggers.WARNING($"Unable to get color from hex: {hex}\nReturning color - white");
+                return Color.white;
+            }
         }
 
         public static void LogColorBeforeChange(Color color, ConfigEntry<string> entry)
@@ -72,7 +79,48 @@ namespace OpenLib.Common
                 return null!;
         }
 
+        //This is a commonly used method throughout the library
+        public static bool CompareStringsInvariant(string str1, string str2, bool ignoreCase = true)
+        {
+            StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
+                                        : StringComparison.InvariantCulture;
 
+                return str1.Equals(str2, comparison);
+        }
+
+        //check if a whole list is equal to the original string
+        public static bool CompareStringsInvariant(List<string> stringList, bool ignoreCase = true)
+        {
+            if (stringList == null || stringList.Count < 2)
+                return true; // Empty or single-element lists are "all same"
+
+            string first = stringList[0];
+            StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
+                                        : StringComparison.InvariantCulture;
+
+            for (int i = 1; i < stringList.Count; i++)
+            {
+                if (!string.Equals(first, stringList[i], comparison))
+                    return false; // Immediate exit on mismatch
+            }
+
+            return true;
+        }
+
+        public static bool StringStartsWithInvariant(string fullstring, char ch, bool ignoreCase = true)
+        {
+            StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
+                                        : StringComparison.InvariantCulture;
+
+            return fullstring.StartsWith($"{ch}", comparison);
+        }
+
+        public static bool StringStartsWithInvariant(string fullstring, string str, bool ignoreCase = true)
+        {
+            StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
+                                        : StringComparison.InvariantCulture;
+            return fullstring.StartsWith(str, comparison);
+        }
 
 
         // ----------------- Obsolete Old Methods ----------------- //
@@ -84,7 +132,7 @@ namespace OpenLib.Common
             {
                 if (player.isHostPlayerObject)
                 {
-                    Plugin.MoreLogs($"Player: {player.playerUsername} is the host, client ID: {player.playerClientId}.");
+                    Loggers.LogInfo($"Player: {player.playerUsername} is the host, client ID: {player.playerClientId}.");
                     return ((int)player.playerClientId);
                 }
             }
@@ -97,7 +145,7 @@ namespace OpenLib.Common
         {
             foreach (PlayerControllerB player in StartOfRound.Instance.allPlayerScripts)
             {
-                if (player.playerUsername.ToLower() == playerName)
+                if (CompareStringsInvariant(player.playerUsername, playerName))
                 {
                     return player;
                 }
@@ -113,7 +161,7 @@ namespace OpenLib.Common
             {
                 if (!player.isPlayerDead && player.currentTriggerInAnimationWith == Plugin.instance.Terminal.terminalTrigger)
                 {
-                    Plugin.MoreLogs($"Player: {player.playerUsername} detected using terminal.");
+                    Loggers.LogInfo($"Player: {player.playerUsername} detected using terminal.");
                     return player;
                 }
             }

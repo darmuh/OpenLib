@@ -17,7 +17,7 @@ namespace OpenLib.CoreMethods
     {
         public TerminalAccessibleObject TerminalCode;
         public bool DynamicMapIcon = false;
-        public RadarTransform RadarTransform = null;
+        public RadarTransform RadarTransform = null!;
         public UnityEvent<TerminalAccessibleObject, T> OnCodeUsed = new();
         public UnityEvent<TerminalAccessibleObject, T> OnCooldownComplete = new();
         public T obj;
@@ -38,40 +38,40 @@ namespace OpenLib.CoreMethods
 
         public void SetTimers(float codeAccessCooldownTimer, float currentCooldownTimer)
         {
-            Plugin.Spam("SetTimers!");
+            Loggers.LogDebug("SetTimers!");
             TerminalCode.codeAccessCooldownTimer = codeAccessCooldownTimer;
             TerminalCode.currentCooldownTimer = currentCooldownTimer;
         }
 
         public void CodeUsed(PlayerControllerB thisPlayer)
         {
-            Plugin.Spam("CodeUsed!");
+            Loggers.LogDebug("CodeUsed!");
             OnCodeUsed.Invoke(TerminalCode, obj);
         }
 
         public void CooldownComplete(PlayerControllerB thisPlayer)
         {
-            Plugin.Spam("CooldownComplete!");
+            Loggers.LogDebug("CooldownComplete!");
             OnCooldownComplete.Invoke(TerminalCode, obj);
         }
 
         public void OnDestroy()
         {
-            Spam("CodeObject is destroyed! Removed from list");
+            Loggers.LogDebug("CodeObject is destroyed! Removed from list");
             CodeCollection<T>.terminalCodeObjects.Remove(this);
         }
 
         public TerminalAccessibleObject AssignCodeToObject(GameObject gameObj, bool isDoorType = false)
         {
-            Plugin.Spam("AssignCodeToObject");
+            Loggers.LogDebug("AssignCodeToObject");
 
             if (AllTerminalCodes.Count == 0)
                 AllTerminalCodes = [.. Object.FindObjectsByType<TerminalAccessibleObject>(FindObjectsSortMode.None)];
 
             if (gameObj == null)
             {
-                Plugin.ERROR("NULL GAME OBJECT PROVIDED!!");
-                return null;
+                Loggers.ERROR("NULL GAME OBJECT PROVIDED!!");
+                return null!;
             }
 
             TerminalAccessibleObject ObjectCode;
@@ -93,10 +93,10 @@ namespace OpenLib.CoreMethods
 
             do
             {
-                Plugin.Spam($"Object code at index [ {codeIndex} ] in use!");
+                Loggers.LogDebug($"Object code at index [ {codeIndex} ] in use!");
                 codeIndex = GetFreshCode(); //ensure unique code!!!
                 loopCount++;
-                Plugin.Spam($"New index of [ {codeIndex} ] chosen!");
+                Loggers.LogDebug($"New index of [ {codeIndex} ] chosen!");
 
             } while (AllTerminalCodes.Any(x => x.objectCode == RoundManager.Instance.possibleCodesForBigDoors[codeIndex]) && loopCount < 5);
 
@@ -134,23 +134,23 @@ namespace OpenLib.CoreMethods
 
         public void UpdateValues()
         {
-            Plugin.Spam("RadarTransform - UpdateValues");
+            Loggers.LogDebug("RadarTransform - UpdateValues");
             CodeObj = theCode.mapRadarBox.transform.parent.GetComponent<RectTransform>();
 
             if (CodeObj == null)
-                Plugin.ERROR("Unable to get mapcode RectTransform!");
+                Loggers.ERROR("Unable to get mapcode RectTransform!");
         }
 
         private void OnDestroy()
         {
-            Plugin.Spam("RadarTransform destroyed!!!");
-            Plugin.Spam("RadarTransform destroyed!!!");
-            Plugin.Spam("RadarTransform destroyed!!!");
+            Loggers.LogDebug("RadarTransform destroyed!!!");
+            Loggers.LogDebug("RadarTransform destroyed!!!");
+            Loggers.LogDebug("RadarTransform destroyed!!!");
         }
 
         private void Start()
         {
-            Plugin.Spam("RadarTransform created!");
+            Loggers.LogDebug("RadarTransform created!");
             UpdateValues();
         }
 

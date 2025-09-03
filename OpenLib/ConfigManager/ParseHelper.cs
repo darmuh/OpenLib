@@ -51,7 +51,7 @@ namespace OpenLib.ConfigManager
                 }
                 else
                 {
-                    Plugin.WARNING($"Invalid pair format: {pair}");
+                    Loggers.WARNING($"Invalid pair format: {pair}");
                 }
             }
 

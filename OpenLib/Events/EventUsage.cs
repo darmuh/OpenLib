@@ -35,8 +35,8 @@ namespace OpenLib.Events
         private static void OnTerminalAwake(Terminal instance)
         {
             Plugin.instance.Terminal = instance;
-            Plugin.MoreLogs($"Setting Plugin.instance.Terminal");
-            CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
+            Loggers.LogInfo($"Setting Plugin.instance.Terminal");
+            CommandRegistry.GetCommandsToAdd(ConfigSetup.DefaultManaged, ConfigSetup.DefaultListing);
             CommandManager.AddAllCommandsToTerminal();
         }
 
@@ -51,7 +51,7 @@ namespace OpenLib.Events
 
             foreach (ConfigFile config in configsToReload)
             {
-                Plugin.Spam("reloading config from list");
+                Loggers.LogDebug("reloading config from list");
                 config.Save();
                 config.Reload();
             }
@@ -94,47 +94,47 @@ namespace OpenLib.Events
 
         public static void OnUsingTerminal()
         {
-            Plugin.MoreLogs("Start Using Terminal Postfix");
+            Loggers.LogInfo("Start Using Terminal Postfix");
         }
 
         public static TerminalNode OnParseSent(ref TerminalNode node)
         {
-            Plugin.Spam("parsing sentence");
+            Loggers.LogDebug("parsing sentence");
             if (node == null)
             {
-                Plugin.WARNING("node detected as NULL, returning...");
+                Loggers.WARNING("node detected as NULL, returning...");
                 return node;
             }
 
             string screenText = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
             if (screenText.Length > 0) //prevent errors being thrown from invalid text
             {
-                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
+                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.DefaultListing.fauxKeywords, screenText, ref node))
                 {
-                    Plugin.MoreLogs($"faux word detected on current node!");
+                    Loggers.LogInfo($"faux word detected on current node!");
                 }
 
-                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
+                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.DefaultListing.specialListString, out TerminalNode retrieveNode))
                 {
                     node = retrieveNode;
-                    Plugin.Spam($"node found matching specialListString in text - {screenText}");
+                    Loggers.LogDebug($"node found matching specialListString in text - {screenText}");
                 }
 
                 if (CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
                 {
                     node = commandNode;
-                    Plugin.Spam($"node found matching CommandManager listing in text - {screenText}");
+                    Loggers.LogDebug($"node found matching CommandManager listing in text - {screenText}");
                 }
             }
 
-            if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
+            if (LogicHandling.GetNewDisplayText(ConfigSetup.DefaultListing, ref node))
             {
-                Plugin.MoreLogs($"node found: {node.name}");
+                Loggers.LogInfo($"node found: {node.name}");
             }
 
             if (LogicHandling.GetNewDisplayText2(ref node)) //update displaytext for matching node
             {
-                Plugin.MoreLogs($"command found: {node.name}");
+                Loggers.LogInfo($"command found: {node.name}");
             }
 
             return node;
@@ -142,17 +142,17 @@ namespace OpenLib.Events
 
         public static void OnLoadNewNode(TerminalNode node)
         {
-            Plugin.Spam($"listing count: {ConfigSetup.defaultListing.Listing.Count}");
+            Loggers.LogDebug($"listing count: {ConfigSetup.DefaultListing.Listing.Count}");
 
             if (node == null)
                 return;
 
-            Plugin.Spam($"{node.name} has been loaded");
+            Loggers.LogDebug($"{node.name} has been loaded");
 
             if (node.acceptAnything && node.terminalOptions.Length < 1)
             {
                 node.acceptAnything = false;
-                Plugin.Spam("fixing node property to avoid errors! (eg. LLL route locked)");
+                Loggers.LogDebug("fixing node property to avoid errors! (eg. LLL route locked)");
             }
         }
 

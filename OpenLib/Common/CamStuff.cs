@@ -15,13 +15,13 @@ namespace OpenLib.Common
         public static void SetBodyCamTexture(RenderTexture texture)
         {
             BodyCamTextureSet.Invoke(texture);
-            Plugin.MoreLogs("Assigning bodycam texture");
+            Loggers.LogInfo("Assigning bodycam texture");
         }
 
         public static void SetMirrorCamTexture(RenderTexture texture)
         {
             MirrorCamTextureSet.Invoke(texture);
-            Plugin.MoreLogs("Assigning mirror texture");
+            Loggers.LogInfo("Assigning mirror texture");
 
             if (Plugin.instance.OpenBodyCamsMod)
                 Compat.OpenBodyCamFuncs.TerminalMirrorStatus(true);
@@ -33,7 +33,7 @@ namespace OpenLib.Common
                 return;
 
             playerCam.gameObject.SetActive(state);
-            Plugin.MoreLogs($"{playerCam.gameObject.name} set to state: {state}");
+            Loggers.LogInfo($"{playerCam.gameObject.name} set to state: {state}");
 
             if (state)
                 SetBodyCamTexture(playerCam.targetTexture);
@@ -58,13 +58,13 @@ namespace OpenLib.Common
 
             Quaternion newRotation = Quaternion.LookRotation(-termTransform.transform.forward, termTransform.up);
 
-            Plugin.MoreLogs("camTransform assigned to MirrorObject, which is assigned to termTransform");
+            Loggers.LogInfo("camTransform assigned to MirrorObject, which is assigned to termTransform");
             CameraHolder.transform.SetParent(termTransform);
 
             // Set camera's rotation and position
             CameraHolder.transform.rotation = newRotation;
             CameraHolder.transform.position = termTransform.position;
-            Plugin.MoreLogs($"initCamHeight: {CameraHolder.transform.position.y}");
+            Loggers.LogInfo($"initCamHeight: {CameraHolder.transform.position.y}");
 
 
         }
@@ -103,7 +103,7 @@ namespace OpenLib.Common
                     HDAdditionalCameraData original = StartOfRound.Instance.localPlayerController.gameplayCamera.GetComponent<HDAdditionalCameraData>();
                     if (original.customRenderingSettings)
                     {
-                        Plugin.Spam("Using original customRenderingSettings for OpenLib cams");
+                        Loggers.LogDebug("Using original customRenderingSettings for OpenLib cams");
                         CameraData.customRenderingSettings = true;
                         CameraData.renderingPathCustomFrameSettings = original.renderingPathCustomFrameSettings;
                         CameraData.renderingPathCustomFrameSettingsOverrideMask = original.renderingPathCustomFrameSettingsOverrideMask;
@@ -118,7 +118,7 @@ namespace OpenLib.Common
             playerCam.cullingMask = cullingMaskInt;
 
             CamObject.SetActive(false);
-            Plugin.MoreLogs("playerCam instantiated");
+            Loggers.LogInfo("playerCam instantiated");
             return playerCam;
         }
 

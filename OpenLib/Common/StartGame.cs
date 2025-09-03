@@ -11,40 +11,40 @@ namespace OpenLib.Common
         {
             if (SoftCompatibility("BMX.LobbyCompatibility", ref Plugin.instance.LobbyCompat))
             {
-                Plugin.Spam("LobbyCompatibility detected, setting appropriate Lobby Compatibility Level depending on networking status");
+                Loggers.LogDebug("LobbyCompatibility detected, setting appropriate Lobby Compatibility Level depending on networking status");
                 BMX_LobbyCompat.SetCompat(false);
             }
             if (SoftCompatibility("TerminalFormatter", ref Plugin.instance.TerminalFormatter))
             {
-                Plugin.Spam("Terminal Formatter by mrov detected!");
+                Loggers.LogDebug("Terminal Formatter by mrov detected!");
             }
             if (SoftCompatibility("WhiteSpike.InteractiveTerminalAPI", ref Plugin.instance.ITAPI))
             {
-                Plugin.Spam("InteractiveTerminalAPI by WhiteSpike detected!");
+                Loggers.LogDebug("InteractiveTerminalAPI by WhiteSpike detected!");
             }
             if (SoftCompatibility("ainavt.lc.lethalconfig", ref Plugin.instance.LethalConfig))
             {
                 LethalConfigSoft.LethalConfigVersion = Misc.GetPluginVersion("ainavt.lc.lethalconfig");
-                Plugin.Spam("LethalConfig functions enabled!");
+                Loggers.LogDebug("LethalConfig functions enabled!");
             }
             if (SoftCompatibility("Zaggy1024.OpenBodyCams", ref Plugin.instance.OpenBodyCamsMod))
             {
-                Plugin.Spam("OpenBodyCams by Zaggy1024 detected!");
+                Loggers.LogDebug("OpenBodyCams by Zaggy1024 detected!");
             }
             if (SoftCompatibility("Zaggy1024.TwoRadarMaps", ref Plugin.instance.TwoRadarMapsMod))
             {
-                Plugin.Spam("TwoRadarMaps by Zaggy1024 detected!");
+                Loggers.LogDebug("TwoRadarMaps by Zaggy1024 detected!");
             }
             if (SoftCompatibility("meow.ModelReplacementAPI", ref Plugin.instance.ModelReplacement))
-                Plugin.Spam("ModelReplacementAPI detected!");
+                Loggers.LogDebug("ModelReplacementAPI detected!");
 
             if (SoftCompatibility("FlipMods.TooManyEmotes", ref Plugin.instance.TooManyEmotes))
-                Plugin.Spam("TooManyEmotes by FlipMods detected!");
+                Loggers.LogDebug("TooManyEmotes by FlipMods detected!");
 
             if (SoftCompatibility("quackandcheese.mirrordecor", ref Plugin.instance.MirrorDecor))
-                Plugin.Spam("MirrorDecor detected!");
+                Loggers.LogDebug("MirrorDecor detected!");
             if (SoftCompatibility("darmuh.TerminalStuff", ref Plugin.instance.TerminalStuff))
-                Plugin.Spam("TerminalStuff detected!");
+                Loggers.LogDebug("TerminalStuff detected!");
         }
         internal static void OnGameStart()
         {

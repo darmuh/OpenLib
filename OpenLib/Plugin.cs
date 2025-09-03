@@ -38,9 +38,9 @@ namespace OpenLib
         public bool MirrorDecor = false;
 
         public static List<CommandManager> AllCommands = [];
-        public static List<TerminalKeyword> keywordsAdded = [];
-        public static List<TerminalNode> nodesAdded = [];
-        public static List<CompatibleNoun> nounsAdded = [];
+        public static List<TerminalKeyword> KeywordsAdded = [];
+        public static List<TerminalNode> NodesAdded = [];
+        public static List<CompatibleNoun> NounsAdded = [];
         public static List<TerminalAccessibleObject> AllTerminalCodes = [];
 
         public Terminal Terminal = null!;
@@ -51,9 +51,8 @@ namespace OpenLib
             instance = this;
             Log = base.Logger;
             Log.LogInfo($"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
-            ConfigSetup.defaultManaged = [];
-            ConfigSetup.defaultListing = new();
-            CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
+            ConfigSetup.DefaultManaged = [];
+            CommandRegistry.InitListing(ref ConfigSetup.DefaultListing);
             ConfigSetup.BindConfigSettings();
             Config.ConfigReloaded += OnConfigReloaded;
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
@@ -65,33 +64,7 @@ namespace OpenLib
         internal void OnConfigReloaded(object sender, EventArgs e)
         {
             Log.LogInfo("Config has been reloaded!");
-            ConfigSetup.ReadConfigAndAssignValues(Plugin.instance.Config, ConfigSetup.defaultManaged);
-        }
-
-        internal static void MoreLogs(string message)
-        {
-            if (ConfigSetup.ExtensiveLogging.Value)
-                Log.LogInfo(message);
-            else
-                return;
-        }
-
-        internal static void Spam(string message)
-        {
-            if (ConfigSetup.DeveloperLogging.Value)
-                Log.LogDebug(message);
-            else
-                return;
-        }
-
-        internal static void ERROR(string message)
-        {
-            Log.LogError(message);
-        }
-
-        internal static void WARNING(string message)
-        {
-            Log.LogWarning(message);
+            ConfigSetup.ReadConfigAndAssignValues(Plugin.instance.Config, ConfigSetup.DefaultManaged);
         }
     }
 

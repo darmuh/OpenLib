@@ -41,7 +41,7 @@ namespace OpenLib
             terminalNode.clearPreviousText = true;
             command.KeywordList.Do(Keyword => AddingThings.AddCompatibleNoun(ref info, Keyword, terminalNode));
 
-            Plugin.Spam("info node created and assigned to command!");
+            Loggers.LogDebug("info node created and assigned to command!");
         }
     }
 }

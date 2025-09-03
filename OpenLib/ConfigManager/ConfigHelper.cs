@@ -30,7 +30,7 @@ namespace OpenLib.ConfigManager
             else
             {
                 string description = acceptableValueBase.ToDescriptionString();
-                Plugin.Spam(description);
+                Loggers.LogDebug(description);
                 //# Acceptable value range: From 0 to 100
                 //# Acceptable value range: From 0.1 to 10
                 description = description.Replace("# Acceptable value range: From ", "").Replace("to", "").Replace(" ", ",");
@@ -92,7 +92,7 @@ namespace OpenLib.ConfigManager
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
                 configItems.Add(value.Definition, value);
-                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
             }
             foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
             {

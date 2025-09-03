@@ -10,7 +10,7 @@ namespace OpenLib.Common
 
         internal static void TerminalStartGroupDelay()
         {
-            Plugin.Spam("Starting TerminalDelayStartEnumerator");
+            Loggers.LogDebug("Starting TerminalDelayStartEnumerator");
             Plugin.instance.Terminal.StartCoroutine(TerminalDelayStartEnumerator());
         }
 
@@ -22,7 +22,7 @@ namespace OpenLib.Common
             delayStartEnum = true;
 
             yield return new WaitForSeconds(1);
-            Plugin.MoreLogs("1 Second delay methods starting.");
+            Loggers.LogInfo("1 Second delay methods starting.");
             EventManager.TerminalDelayStart.Invoke();
             AddStoreItems(); //adding after delay for storerotation mod
             delayStartEnum = false;
@@ -44,15 +44,15 @@ namespace OpenLib.Common
                 if (!Plugin.instance.Terminal.ShipDecorSelection.Contains(shopNode))
                 {
                     Plugin.instance.Terminal.ShipDecorSelection.Add(shopNode);
-                    Plugin.Spam($"adding {shopNode.creatureName} to shipdecorselection");
+                    Loggers.LogDebug($"adding {shopNode.creatureName} to shipdecorselection");
                 }
                 else
                 {
-                    Plugin.Spam($"{shopNode.creatureName} already in shipdecorselection");
+                    Loggers.LogDebug($"{shopNode.creatureName} already in shipdecorselection");
                 }
             }
 
-            Plugin.Spam("nodes have been added");
+            Loggers.LogDebug("nodes have been added");
         }
     }
 }

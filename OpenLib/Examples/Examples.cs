@@ -17,7 +17,7 @@ namespace OpenLib.Examples
         {
             if (Code == null)
             {
-                Plugin.WARNING("Code is NULL!");
+                Loggers.WARNING("Code is NULL!");
                 return;
             }
             else
@@ -32,7 +32,7 @@ namespace OpenLib.Examples
         {
             if (Code == null)
             {
-                Plugin.WARNING("Code is NULL!");
+                Loggers.WARNING("Code is NULL!");
                 return;
             }
             else

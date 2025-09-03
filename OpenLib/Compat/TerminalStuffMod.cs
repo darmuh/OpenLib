@@ -15,7 +15,7 @@ namespace OpenLib.Compat
             if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
                 return;
 
-            Plugin.Spam($"Syncing node with TerminalStuff");
+            Loggers.LogDebug($"Syncing node with TerminalStuff");
             TerminalStuff.EventSub.TerminalParse.NetSync(node);
         }
 
@@ -25,7 +25,7 @@ namespace OpenLib.Compat
                 return;
 
             Plugin.instance.Terminal.LoadNewNode(node);
-            Plugin.Spam($"Loading node!");
+            Loggers.LogDebug($"Loading node!");
 
             if (!Plugin.instance.TerminalStuff)
                 return;
@@ -33,7 +33,7 @@ namespace OpenLib.Compat
             if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
                 return;
 
-            Plugin.Spam($"Syncing with TerminalStuff!");
+            Loggers.LogDebug($"Syncing with TerminalStuff!");
             TerminalStuff.EventSub.TerminalParse.NetSync(node);
         }
 

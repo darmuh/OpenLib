@@ -48,7 +48,7 @@ namespace OpenLib.CoreMethods
             Command.terminalKeywords.Do(x => AddToBuyWord(ref buy, ref x, storeItem));
 
             Plugin.ShopNodes.Add(Command.terminalNode);
-            Plugin.Spam($"Store nodes created for {Name}");
+            Loggers.LogDebug($"Store nodes created for {Name}");
         }
     }
 }

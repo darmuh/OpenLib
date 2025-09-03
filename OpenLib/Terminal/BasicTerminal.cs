@@ -3,6 +3,7 @@
 // some minor modifications for use in this project
 // if you dont know what you're doing with terminalkeywords/terminalnodes I recommend using the methods i've created in AddingThings.cs
 
+using OpenLib.Common;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace OpenLib.CoreMethods
         public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "")
         {
             CompatibleNoun thisNoun = new();
-            if (word.ToLower() == "deny" || word.ToLower() == "confirm") //catch confirmation words from being re-used
+            if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
                 thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
             else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
                 thisNoun.noun = thisWord;
@@ -80,7 +81,7 @@ namespace OpenLib.CoreMethods
         public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null, Dictionary<TerminalNode, Func<string>> nodeListing = null)
         {
             CompatibleNoun thisNoun = new();
-            if (word.ToLower() == "deny" || word.ToLower() == "confirm") //catch confirmation words from being re-used
+            if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
                 thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
             else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
                 thisNoun.noun = thisWord;
@@ -103,22 +104,22 @@ namespace OpenLib.CoreMethods
 
         public static void CheckForAndDeleteKeyWord(string keyWord)
         {
-            Plugin.Spam($"Checking for {keyWord}");
+            Loggers.LogDebug($"Checking for {keyWord}");
             List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
 
             for (int i = keyWordList.Count - 1; i >= 0; i--)
             {
                 if (keyWordList[i].word.Equals(keyWord))
                 {
-                    Plugin.Spam($"removing {keyWordList[i].word}");
+                    Loggers.LogDebug($"removing {keyWordList[i].word}");
                     keyWordList.RemoveAt(i);
-                    //Plugin.MoreLogs($"Keyword: [{keyWord}] removed");
+                    //Loggers.LogInfo($"Keyword: [{keyWord}] removed");
                     break;
                 }
             }
 
             Plugin.instance.Terminal.terminalNodes.allKeywords = [.. keyWordList];
-            //Plugin.Spam($"keyword list adjusted");
+            //Loggers.LogDebug($"keyword list adjusted");
             return;
         }
     }

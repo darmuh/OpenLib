@@ -213,13 +213,13 @@ namespace OpenLib.InteractiveMenus
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
             if (current == null)
             {
-                Plugin.ERROR("Unable to load current page! Nothing is active!");
+                Loggers.ERROR("Unable to load current page! Nothing is active!");
                 return;
             }
 
             if (MenuNode == null)
             {
-                Plugin.ERROR("NRE detected at MenuNode! This menu did not set it's terminal node correctly!");
+                Loggers.ERROR("NRE detected at MenuNode! This menu did not set it's terminal node correctly!");
                 return;
             }
 
@@ -276,12 +276,12 @@ namespace OpenLib.InteractiveMenus
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
             if (current == null)
             {
-                Plugin.WARNING("Unable to get current menu page!!");
+                Loggers.WARNING("Unable to get current menu page!!");
                 return "";
             }
 
             if (current == null)
-                Plugin.WARNING("Unable to get current menu page!!");
+                Loggers.WARNING("Unable to get current menu page!!");
             else
                 message.Append($"{current.Header.Invoke()}");
 
@@ -301,7 +301,7 @@ namespace OpenLib.InteractiveMenus
             int endIndex = Mathf.Min(startIndex + PageSize, DisplayMenuItemsOfType.Count);
             EndIndex = endIndex;
             ActiveSelection = Misc.CycleIndex(ActiveSelection, startIndex, endIndex - 1);
-            Plugin.Spam($"{Name} menu activeselection: {ActiveSelection}");
+            Loggers.LogDebug($"{Name} menu activeselection: {ActiveSelection}");
 
             DisplayMenuItemsOfType.DoIf(x => x.OnPageLoad != null, x => x.OnPageLoad());
 
@@ -322,11 +322,11 @@ namespace OpenLib.InteractiveMenus
             if (emptySpace < 0)
             {
                 for (int i = emptySpace; i < 0; i++)
-                    message.Append("\n");
+                    message.Append('\n');
             }
 
             if (current == null)
-                Plugin.WARNING("Unable to select current menu item!!");
+                Loggers.WARNING("Unable to select current menu item!!");
             else
                 message.Append($"{current.Footer.Invoke()}");
 
@@ -341,17 +341,17 @@ namespace OpenLib.InteractiveMenus
 
             if (current == null)
             {
-                Plugin.WARNING("Unable to select current menu item!!");
+                Loggers.WARNING("Unable to select current menu item!!");
                 return;
             }
 
-            Plugin.Spam($"Selecting Nested Menu Item!");
+            Loggers.LogDebug($"Selecting Nested Menu Item!");
             MenuItem selected = DisplayMenuItemsOfType[ActiveSelection];
             selected.SelectionEvent?.Invoke();
 
             if (selected.NestedMenus.Count > 0)
             {
-                Plugin.Spam("Setting to nested menu item!");
+                Loggers.LogDebug("Setting to nested menu item!");
                 CurrentPage = 1;
                 ActiveSelection = 0;
                 AllMenuItemsOfType.Do(x => x.IsActive = false);
@@ -374,13 +374,13 @@ namespace OpenLib.InteractiveMenus
             MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
 
             if (current == null)
-                Plugin.WARNING("Unable to get current menu page!!");
+                Loggers.WARNING("Unable to get current menu page!!");
 
             if (current == null)
                 ExitMenu(true);
             else if (current.Parent != null)
             {
-                Plugin.Spam("Setting to ParentMenu!");
+                Loggers.LogDebug("Setting to ParentMenu!");
                 ActiveSelection = 0;
                 CurrentPage = 1;
                 current.IsActive = false;

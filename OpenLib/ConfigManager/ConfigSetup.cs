@@ -12,18 +12,15 @@ namespace OpenLib.ConfigManager
 {
     public static class ConfigSetup
     {
-        public static List<ManagedConfig> defaultManaged = [];
-        public static MainListing defaultListing;
-        public static ConfigEntry<bool> ExtensiveLogging { get; internal set; }
-        public static ConfigEntry<bool> DeveloperLogging { get; internal set; }
+        public static List<ManagedConfig> DefaultManaged = [];
+        public static MainListing DefaultListing = new();
+        public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
 
         public static void BindConfigSettings()
         {
             Plugin.Log.LogInfo("Binding configuration settings");
 
-            ExtensiveLogging = MakeBool(Plugin.instance.Config, "Debug", "ExtensiveLogging", false, "Enable or Disable extensive logging for this mod.");
-            DeveloperLogging = MakeBool(Plugin.instance.Config, "Debug", "DeveloperLogging", false, "Enable or Disable developer logging for this mod. (this will fill your log file FAST)");
-
+            LogLevel = MakeGeneric<Loggers.LoggingLevel>(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.Info, "Set OpenLib logging level");
             //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
         }
 
@@ -102,6 +99,23 @@ namespace OpenLib.ConfigManager
             }
         }
 
+        public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string ConfigDescription)
+        {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
+            return ModConfig.Bind<T>(section, configItemName, defaultValue, ConfigDescription);
+        }
+
+        public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, AcceptableValueList<T> acceptableValues = null!) where T : IEquatable<T>, IComparable<T>
+        {
+            section = BepinFriendlyString(section);
+            configItemName = BepinFriendlyString(configItemName);
+
+            return ModConfig.Bind<T>(section, configItemName, defaultValue, new ConfigDescription(description, acceptableValues));
+        }
+
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<bool> MakeBool(ConfigFile ModConfig, string section, string configItemName, bool defaultValue, string configDescription)
         {
             section = BepinFriendlyString(section);
@@ -110,6 +124,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind<bool>(section, configItemName, defaultValue, configDescription);
         }
 
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<int> MakeInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription)
         {
             section = BepinFriendlyString(section);
@@ -118,6 +133,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind<int>(section, configItemName, defaultValue, configDescription);
         }
 
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<string> MakeClampedString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription, AcceptableValueList<string> acceptedValues)
         {
             section = BepinFriendlyString(section);
@@ -126,6 +142,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, acceptedValues));
         }
 
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<int> MakeClampedInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription, int minValue, int maxValue)
         {
             section = BepinFriendlyString(section);
@@ -134,6 +151,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<int>(minValue, maxValue)));
         }
 
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<float> MakeClampedFloat(ConfigFile ModConfig, string section, string configItemName, float defaultValue, string configDescription, float minValue, float maxValue)
         {
             section = BepinFriendlyString(section);
@@ -142,6 +160,7 @@ namespace OpenLib.ConfigManager
             return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<float>(minValue, maxValue)));
         }
 
+        [Obsolete("Should use MakeGeneric instead")]
         public static ConfigEntry<string> MakeString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription)
         {
             section = BepinFriendlyString(section);
@@ -171,7 +190,7 @@ namespace OpenLib.ConfigManager
 
         public static void RemoveOrphanedEntries(ConfigFile ModConfig)
         {
-            Plugin.MoreLogs("removing orphaned entries (credits to Kittenji)");
+            Loggers.LogInfo("removing orphaned entries (credits to Kittenji)");
             PropertyInfo orphanedEntriesProp = ModConfig.GetType().GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
 
             var orphanedEntries = (Dictionary<ConfigDefinition, string>)orphanedEntriesProp.GetValue(ModConfig, null);
@@ -193,7 +212,7 @@ namespace OpenLib.ConfigManager
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
                 configItems.Add(value.Definition, value);
-                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
             }
 
             foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
@@ -205,22 +224,22 @@ namespace OpenLib.ConfigManager
                         if (ManagedBoolGet.TryGetItemByName(managedBools, pair.Key.Key, 0, out ManagedConfig result))
                         {
                             if (result.ConfigType != 0)
-                                Plugin.Spam("ManagedItem is type 0, bool");
+                                Loggers.LogDebug("ManagedItem is type 0, bool");
 
                             if (result.RequiresNetworking)
                             {
                                 configBools.Add(entry);
-                                Plugin.Spam($"Adding {pair.Key.Key} to bools list to check against networking");
+                                Loggers.LogDebug($"Adding {pair.Key.Key} to bools list to check against networking");
                             }
                             else
-                                Plugin.Spam($"{pair.Key.Key} is not listed as requiring networking");
+                                Loggers.LogDebug($"{pair.Key.Key} is not listed as requiring networking");
                         }
                         else
-                            Plugin.Spam($"entry is not a managed bool");
+                            Loggers.LogDebug($"entry is not a managed bool");
                     }
                 }
                 else
-                    Plugin.Spam($"entry is not a bool");
+                    Loggers.LogDebug($"entry is not a bool");
             }
 
             configBools.DoIf(b => b.Value == true, DisableConfigBool);
@@ -243,22 +262,22 @@ namespace OpenLib.ConfigManager
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
                 configItems.Add(value.Definition, value);
-                Plugin.Spam($"added {value.Definition} to list of configItems to check");
+                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
             }
 
             foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
             {
-                Plugin.Spam("checking item");
+                Loggers.LogDebug("checking item");
                 if (pair.Value.BoxedValue.GetType() == typeof(bool))
                 {
                     if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
                     {
-                        Plugin.Spam("bool entry found");
-                        Plugin.Spam($"{entry.Definition.Key}");
+                        Loggers.LogDebug("bool entry found");
+                        Loggers.LogDebug($"{entry.Definition.Key}");
                         if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 0, out ManagedConfig match))
                         {
                             match.BoolValue = entry.Value;
-                            Plugin.Spam($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
+                            Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
                         }
                         else
                             Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");
@@ -268,12 +287,12 @@ namespace OpenLib.ConfigManager
                 {
                     if (ModConfig.TryGetEntry<string>(pair.Key, out ConfigEntry<string> entry))
                     {
-                        Plugin.Spam("string entry found");
-                        Plugin.Spam($"{entry.Definition.Key}");
+                        Loggers.LogDebug("string entry found");
+                        Loggers.LogDebug($"{entry.Definition.Key}");
                         if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 1, out ManagedConfig match))
                         {
                             match.StringValue = entry.Value;
-                            Plugin.Spam($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
+                            Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
                         }
                         else
                             Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");

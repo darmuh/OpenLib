@@ -60,14 +60,14 @@ namespace OpenLib.InteractiveMenus
         [Obsolete("Added for compatibility with older versions, please use the constructor with the bettermenubase")]
         protected MenuItem()
         {
-            Plugin.MoreLogs("MenuItem created from obsolete constructor! Please use constructor with BetterMenuBase!");
+            Loggers.LogInfo("MenuItem created from obsolete constructor! Please use constructor with BetterMenuBase!");
         }
 
         protected MenuItem(BetterMenuBase betterMenu)
         {
             if (betterMenu == null)
             {
-                Plugin.ERROR("Unable to assign menu item to NULL betterMenu!");
+                Loggers.ERROR("Unable to assign menu item to NULL betterMenu!");
                 return;
             }
 

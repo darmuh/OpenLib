@@ -22,14 +22,14 @@ namespace OpenLib.Common
         public static void TPexists(ShipTeleporter instance)
         {
             NormalTP = instance;
-            Plugin.MoreLogs("NormalTP instance detected and set.");
+            Loggers.LogInfo("NormalTP instance detected and set.");
             EventManager.NormalTPFound.Invoke();
         }
 
         public static void ITPexists(ShipTeleporter instance)
         {
             InverseTP = instance;
-            Plugin.MoreLogs("InverseTP instance detected and set.");
+            Loggers.LogInfo("InverseTP instance detected and set.");
             EventManager.InverseTPFound.Invoke();
         }
     }

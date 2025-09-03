@@ -1,4 +1,5 @@
-﻿using OpenLib.ConfigManager;
+﻿using OpenLib.Common;
+using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace OpenLib.Menus
         public static bool isNextEnabled = false;
         public static int nextCount = 1;
         public static string currentCategory = "";
-        public static TerminalMenu currentMenu;
+        public static TerminalMenu currentMenu = null!;
         public static List<TerminalMenu> allMenus = [];
 
         public static List<TerminalMenuCategory> InitCategories(Dictionary<string, string> CategoryItems)
         {
-            Plugin.Spam("InitCategories START");
+            Loggers.LogDebug("InitCategories START");
             List<TerminalMenuCategory> myCategories = [];
 
             if (CategoryItems.Count < 1)
@@ -32,7 +33,7 @@ namespace OpenLib.Menus
                 };
                 myCategories.Add(newCategory);
             }
-            Plugin.Spam("InitCategories SUCCESS");
+            Loggers.LogDebug("InitCategories SUCCESS");
             return myCategories;
         }
 
@@ -68,9 +69,9 @@ namespace OpenLib.Menus
                     myMenuItems.Add(m.menuItem);
                 }
             }
-            Plugin.Spam("\n\n\n");
-            Plugin.Spam($"myMenuItems count: {myMenuItems.Count}");
-            Plugin.Spam("\n\n\n");
+            Loggers.LogDebug("\n\n\n");
+            Loggers.LogDebug($"myMenuItems count: {myMenuItems.Count}");
+            Loggers.LogDebug("\n\n\n");
             return myMenuItems;
         }
 
@@ -106,7 +107,7 @@ namespace OpenLib.Menus
         {
             if (terminalMenu == null)
             {
-                Plugin.ERROR("ERROR: OpenLib menu is NULL, most likely failed to create!");
+                Loggers.ERROR("ERROR: OpenLib menu is NULL, most likely failed to create!");
                 return false;
             }
 
@@ -115,12 +116,12 @@ namespace OpenLib.Menus
                 terminalMenu.isActive = true;
                 terminalMenu.nextCount = 1;
                 terminalMenu.currentCategory = "";
-                Plugin.Spam($"In main menu of {terminalMenu.MenuName}");
+                Loggers.LogDebug($"In main menu of {terminalMenu.MenuName}");
                 return true;
             }
             else if (terminalMenu.isNextEnabled && terminalMenu.terminalNodes.Contains(terminalNode))
             {
-                Plugin.Spam("Still in menus but not main, next is enabled");
+                Loggers.LogDebug("Still in menus but not main, next is enabled");
                 return false;
             }
             else
@@ -163,12 +164,12 @@ namespace OpenLib.Menus
 
         public static void CreateCategoryCommands(TerminalMenu terminalMenu, MainListing yourModListing)
         {
-            //Plugin.Spam("CreateCategoryCommands START");
+            //Loggers.LogDebug("CreateCategoryCommands START");
             List<Dictionary<string, List<string>>> categoryLists = [];
 
             foreach (TerminalMenuCategory category in terminalMenu.Categories)
             {
-                Plugin.Spam("checking category in terminalMenu.categories");
+                Loggers.LogDebug("checking category in terminalMenu.categories");
                 Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
                 if (!categoryLists.Contains(catListing))
                     categoryLists.Add(catListing);
@@ -182,25 +183,29 @@ namespace OpenLib.Menus
 
         public static void CreateCategoryFauxCommands(TerminalMenu terminalMenu, MainListing yourModListing)
         {
-            //Plugin.Spam("CreateCategoryCommands START");
+            //Loggers.LogDebug("CreateCategoryCommands START");
             List<Dictionary<string, List<string>>> categoryLists = [];
 
             foreach (TerminalMenuCategory category in terminalMenu.Categories)
             {
-                Plugin.Spam("checking category in terminalMenu.categories");
+                Loggers.LogDebug("checking category in terminalMenu.categories");
                 Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
                 if (!categoryLists.Contains(catListing))
                     categoryLists.Add(catListing);
-                FauxKeyword menuFauxNode = new("more", category.CatName, GetFirstInList);
-                menuFauxNode.AllowOtherFauxWords = true;
-                menuFauxNode.requireExact = true;
+                FauxKeyword menuFauxNode = new("more", category.CatName, GetFirstInList)
+                {
+                    AllowOtherFauxWords = true,
+                    requireExact = true
+                };
 
                 AddingThings.AddToFauxListing(menuFauxNode, yourModListing);
             }
             terminalMenu.categoryLists = categoryLists;
 
-            FauxKeyword menuFauxNext = new("more", "next", NextInList);
-            menuFauxNext.AllowOtherFauxWords = true;
+            FauxKeyword menuFauxNext = new("more", "next", NextInList)
+            {
+                AllowOtherFauxWords = true
+            };
             AddingThings.AddToFauxListing(menuFauxNext, yourModListing);
         }
 
@@ -210,7 +215,7 @@ namespace OpenLib.Menus
 
             foreach (TerminalMenuCategory category in myMenu.Categories)
             {
-                Plugin.Spam("checking category in myMenu.categories");
+                Loggers.LogDebug("checking category in myMenu.categories");
                 Dictionary<string, List<string>> catListing = MakeCategoryList(category, myMenu.menuItems);
                 if (!categoryLists.Contains(catListing))
                     categoryLists.Add(catListing);
@@ -220,21 +225,21 @@ namespace OpenLib.Menus
 
         public static List<string> GetCategoryList(string catName, out TerminalMenu menuName)
         {
-            Plugin.Spam("2.1");
+            Loggers.LogDebug("2.1");
             List<string> empty = [];
             foreach (TerminalMenu terminalMenu in allMenus)
             {
-                Plugin.Spam("2.2");
+                Loggers.LogDebug("2.2");
                 if (!terminalMenu.isActive)
                     continue;
                 for (int i = 0; i < terminalMenu.Categories.Count; i++)
                 {
-                    Plugin.Spam("2.3");
+                    Loggers.LogDebug("2.3");
                     foreach (KeyValuePair<string, List<string>> catList in terminalMenu.categoryLists[i])
                     {
-                        if (catList.Key.ToLower() == catName.ToLower())
+                        if (Misc.CompareStringsInvariant(catList.Key, catName))
                         {
-                            Plugin.Spam("categorylist found!!!");
+                            Loggers.LogDebug("categorylist found!!!");
                             menuName = terminalMenu;
                             return catList.Value;
                         }
@@ -243,33 +248,33 @@ namespace OpenLib.Menus
 
             }
 
-            Plugin.Spam("2.1 FAIL");
+            Loggers.LogDebug("2.1 FAIL");
             menuName = null;
             return empty;
         }
 
         public static Dictionary<string, List<string>> MakeCategoryList(TerminalMenuCategory category, List<TerminalMenuItem> terminalMenuItems)
         {
-            Plugin.Spam("MakeCategoryList START");
+            Loggers.LogDebug("MakeCategoryList START");
             string catName = category.CatName;
-            Plugin.Spam(catName);
+            Loggers.LogDebug(catName);
             List<string> catItems = [];
             Dictionary<string, List<string>> categoryList = [];
-            Plugin.Spam($"count: {terminalMenuItems.Count}");
+            Loggers.LogDebug($"count: {terminalMenuItems.Count}");
 
             foreach (TerminalMenuItem menuItem in terminalMenuItems)
             {
-                Plugin.Spam($"checking {menuItem.ItemName}");
-                if (menuItem.Category.ToLower() == catName.ToLower())
+                Loggers.LogDebug($"checking {menuItem.ItemName}");
+                if (Misc.CompareStringsInvariant(menuItem.Category, catName))
                 {
                     catItems.Add($"> {GetKeywordsForMenuItem(menuItem.itemKeywords)}\r\n{menuItem.itemDescription}\r\n");
-                    Plugin.Spam($"{GetKeywordsForMenuItem(menuItem.itemKeywords)} added");
-                    Plugin.Spam($"{menuItem.itemDescription} added too!");
+                    Loggers.LogDebug($"{GetKeywordsForMenuItem(menuItem.itemKeywords)} added");
+                    Loggers.LogDebug($"{menuItem.itemDescription} added too!");
                 }
             }
-            Plugin.Spam("setting catName list");
+            Loggers.LogDebug("setting catName list");
             categoryList.Add(catName, catItems);
-            Plugin.Spam("MakeCategoryList END");
+            Loggers.LogDebug("MakeCategoryList END");
             return categoryList;
         }
 
@@ -282,7 +287,7 @@ namespace OpenLib.Menus
             }
             else
             {
-                Plugin.Spam($"currentCategory = {currentCategory}");
+                Loggers.LogDebug($"currentCategory = {currentCategory}");
                 nextCount++;
                 GetCategoryFromString(currentCategory);
                 List<string> currentList = GetCategoryList(currentCategory, out TerminalMenu menuName);
@@ -296,7 +301,7 @@ namespace OpenLib.Menus
                 menuName.nextCount = nextCount;
                 menuName.currentCategory = currentCategory;
                 string displayText = GetNextPage(currentList, currentCategory, 4, nextCount, out isNextEnabled);
-                Plugin.Spam($"currentCategory:{currentCategory} nextCount: {nextCount} isNextEnabled: {isNextEnabled}");
+                Loggers.LogDebug($"currentCategory:{currentCategory} nextCount: {nextCount} isNextEnabled: {isNextEnabled}");
                 menuName.isNextEnabled = isNextEnabled;
                 return displayText;
             }
@@ -304,39 +309,39 @@ namespace OpenLib.Menus
 
         public static string GetFirstInList()
         {
-            Plugin.Spam("1");
+            Loggers.LogDebug("1");
             nextCount = 1;
             string screen = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
             currentCategory = GetCategoryFromString(screen);
-            Plugin.Spam($"currentCategory detected as: [{currentCategory}]");
+            Loggers.LogDebug($"currentCategory detected as: [{currentCategory}]");
             //currentCategory = GetCategoryFromNode(CommonTerminal.parseNode); //grabbing the node currently being parsed
-            Plugin.Spam("2");
+            Loggers.LogDebug("2");
             List<string> currentList = GetCategoryList(currentCategory, out TerminalMenu menuName);
             menuName.isActive = true;
             menuName.nextCount = nextCount;
             menuName.currentCategory = currentCategory;
-            Plugin.Spam("3");
+            Loggers.LogDebug("3");
             string displayText = GetNextPage(currentList, currentCategory, 4, 1, out isNextEnabled);
             menuName.isNextEnabled = isNextEnabled;
-            Plugin.Spam("4");
+            Loggers.LogDebug("4");
             return displayText;
         }
 
         public static string GetCategoryFromString(string input)
         {
-            Plugin.Spam($"Getting Category from string: [{input}]");
+            Loggers.LogDebug($"Getting Category from string: [{input}]");
             foreach (TerminalMenu terminalMenu in allMenus)
             {
-                if (terminalMenu.categoryLists.Any(c => c.Any(d => d.Key.ToLower() == input.ToLower())))
+                if (terminalMenu.categoryLists.Any(c => c.Any(d => Misc.CompareStringsInvariant(d.Key, input))))
                 {
-                    Plugin.Spam($"detected menu with categoryList containing string {input}!!");
+                    Loggers.LogDebug($"detected menu with categoryList containing string {input}!!");
                     terminalMenu.isActive = true;
-                    int dictIndex = terminalMenu.categoryLists.FindIndex(c => c.Any(d => d.Key.ToLower() == input.ToLower()));
-                    return terminalMenu.categoryLists[dictIndex].First(d => d.Key.ToLower() == input.ToLower()).Key;
+                    int dictIndex = terminalMenu.categoryLists.FindIndex(c => c.Any(d => Misc.CompareStringsInvariant(d.Key, input)));
+                    return terminalMenu.categoryLists[dictIndex].First(d => Misc.CompareStringsInvariant(d.Key, input)).Key;
                 }
                 else
                 {
-                    Plugin.Spam($"menu does not contain string {input}");
+                    Loggers.LogDebug($"menu does not contain string {input}");
                     terminalMenu.isActive = false;
                     continue;
                 }
@@ -347,17 +352,17 @@ namespace OpenLib.Menus
 
         public static string GetCategoryFromNode(TerminalNode givenNode)
         {
-            Plugin.Spam("1.1");
+            Loggers.LogDebug("1.1");
             if (givenNode == null)
             {
-                Plugin.ERROR("givenNode is null!!!!");
+                Loggers.ERROR("GetCategoryFromNode: givenNode is null!!!!");
                 return "";
             }
             foreach (TerminalMenu terminalMenu in allMenus)
             {
                 if (!terminalMenu.terminalNodePerCategory.ContainsValue(givenNode))
                 {
-                    Plugin.Spam($"menu does not contain node {givenNode.name}");
+                    Loggers.LogDebug($"menu does not contain node {givenNode.name}");
                     terminalMenu.isActive = false;
                     continue;
                 }
@@ -368,7 +373,7 @@ namespace OpenLib.Menus
                     {
                         if (pair.Value == givenNode)
                         {
-                            Plugin.Spam($"FOUND NODE AND PAIR {pair.Key}");
+                            Loggers.LogDebug($"FOUND NODE AND PAIR {pair.Key}");
                             terminalMenu.isActive = true;
                             return pair.Key;
                         }
@@ -376,7 +381,7 @@ namespace OpenLib.Menus
                 }
             }
 
-            Plugin.ERROR("COULD NOT FIND NODE???");
+            Loggers.ERROR("GetCategoryFromNode FAILURE: COULD NOT FIND NODE???");
             return "";
         }
 
@@ -412,7 +417,7 @@ namespace OpenLib.Menus
                 return menuItem;
             }
 
-            Plugin.WARNING("Empty categoryText, Unable to create TerminalMenuItem! (null return)");
+            Loggers.WARNING("Empty categoryText, Unable to create TerminalMenuItem! (null return)");
             return null;
         }
     }

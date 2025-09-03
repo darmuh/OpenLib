@@ -24,7 +24,7 @@ namespace OpenLib.Common
                 }
                 else
                 {
-                    Plugin.WARNING("InfoKeyword reference could not be found! [NULL]");
+                    Loggers.WARNING("InfoKeyword reference could not be found! [NULL]");
                     return null!;
                 }
             }
@@ -39,7 +39,7 @@ namespace OpenLib.Common
                 }
                 else
                 {
-                    Plugin.WARNING("BuyKeyword reference could not be found! [NULL]");
+                    Loggers.WARNING("BuyKeyword reference could not be found! [NULL]");
                     return null!;
                 }
             }
@@ -54,7 +54,7 @@ namespace OpenLib.Common
                 }
                 else
                 {
-                    Plugin.WARNING("OtherKeyword reference could not be found! [NULL]");
+                    Loggers.WARNING("OtherKeyword reference could not be found! [NULL]");
                     return null!;
                 }
             }
@@ -63,7 +63,7 @@ namespace OpenLib.Common
         public static void ToggleScreen(bool status)
         {
             Plugin.instance.Terminal.StartCoroutine(Plugin.instance.Terminal.waitUntilFrameEndToSetActive(status));
-            Plugin.Spam($"Screen set to {status}");
+            Loggers.LogDebug($"Screen set to {status}");
         }
 
         public static void ChangeCaretColor(Color newColor, bool saveOriginal)
@@ -87,7 +87,7 @@ namespace OpenLib.Common
             if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword word))
             {
                 TerminalNode node = word.specialKeywordResult;
-                Plugin.Spam($"TryLoadKeyword found keyword [ {word.word} ]");
+                Loggers.LogDebug($"TryLoadKeyword found keyword [ {word.word} ]");
                 LoadNewNode(node);
                 return true;
             }
@@ -102,7 +102,7 @@ namespace OpenLib.Common
             if (words.Length == 0)
                 return false;
 
-            CommandManager special = Plugin.AllCommands.FirstOrDefault(x => x.AcceptAdditionalText && x.KeywordList.Any(s => words.ToLowerInvariant().StartsWith(s.ToLowerInvariant())));
+            CommandManager special = Plugin.AllCommands.FirstOrDefault(x => x.AcceptAdditionalText && x.KeywordList.Any(s => Misc.StringStartsWithInvariant(words, s)));
 
             if (special != null)
             {
@@ -110,7 +110,7 @@ namespace OpenLib.Common
                 return returnNode != null;
             }
 
-            CommandManager normal = Plugin.AllCommands.FirstOrDefault(x => x.KeywordList.Any(s => words.ToLowerInvariant() == s.ToLowerInvariant()));
+            CommandManager normal = Plugin.AllCommands.FirstOrDefault(x => x.KeywordList.Any(s => Misc.StringStartsWithInvariant(words, s)));
 
             if (normal != null)
             {
@@ -118,7 +118,7 @@ namespace OpenLib.Common
                 return returnNode != null;
             }
 
-            Plugin.Spam("No matching commands in Plugin.AllCommands");
+            Loggers.LogDebug("No matching commands in Plugin.AllCommands");
             return false;
 
         }
@@ -158,21 +158,21 @@ namespace OpenLib.Common
                 if (!Plugin.instance.Terminal.ShipDecorSelection.Contains(shopNode))
                 {
                     Plugin.instance.Terminal.ShipDecorSelection.Add(shopNode);
-                    Plugin.Spam($"adding {shopNode.creatureName} to shipdecorselection");
+                    Loggers.LogDebug($"adding {shopNode.creatureName} to shipdecorselection");
                 }
                 else
                 {
-                    Plugin.Spam($"{shopNode.creatureName} already in shipdecorselection");
+                    Loggers.LogDebug($"{shopNode.creatureName} already in shipdecorselection");
                 }
             }
 
-            Plugin.Spam("nodes have been added");
+            Loggers.LogDebug("nodes have been added");
         }
 
         public static string ClearText() //function used in terminalstuff clear command
         {
             string displayText = "\n";
-            Plugin.Spam("display text cleared for real this time!!!");
+            Loggers.LogDebug("display text cleared for real this time!!!");
             return displayText;
         }
 
