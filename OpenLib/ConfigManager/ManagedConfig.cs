@@ -5,210 +5,208 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OpenLib.ConfigManager
+namespace OpenLib.ConfigManager;
+
+public class ManagedConfig
 {
-    public class ManagedConfig
+    //MAIN
+    public string ConfigItemName = string.Empty;
+    public bool RequiresNetworking;
+    public int ConfigType = -1; //0 = bool, 1 = string, 2 = int
+
+    //ManagedString
+    public string? StringValue; //for string config items
+
+    //ManagedInt
+    public int IntValue;
+
+    //ManagedBool
+    public bool BoolValue = false;
+    public List<string> KeywordList { get; set; } = [];
+    public Func<string>? MainAction;
+    public int CommandType; //0 base, 1 base confirm, 2 store node
+    public bool clearText;
+    public bool alwaysInStock;
+    public bool reuseFunc;
+    public int maxStock;
+    public int price;
+    public int specialNum;
+    public string nodeName = string.Empty;
+    public string storeName = string.Empty;
+    public string itemList = string.Empty;
+    public string specialString = string.Empty;
+    public string confirmText = string.Empty;
+    public string denyText = string.Empty;
+    public string categoryText = string.Empty;
+    public string configDescription = string.Empty;
+    public Func<string>? ConfirmAction;
+    public Func<string>? DenyAction;
+    public Func<string>? InfoAction;
+    public string InfoText = "";
+    public ConfigEntry<bool>? configBool;
+    public string section = "";
+
+    //for menus
+    public TerminalMenuItem? menuItem;
+
+    //resulting possible objects from this managedItem
+    public TerminalNode? TerminalNode;
+    public UnlockableItem? UnlockableItem;
+
+    //related items
+    public ManagedConfig? relatedConfigItem;
+
+    public void ConfigChange(bool newValue)
     {
-        //MAIN
-        public string ConfigItemName = string.Empty;
-        public bool RequiresNetworking;
-        public int ConfigType = -1; //0 = bool, 1 = string, 2 = int
-
-        //ManagedString
-        public string? StringValue; //for string config items
-
-        //ManagedInt
-        public int IntValue;
-
-        //ManagedBool
-        public bool BoolValue = false;
-        public List<string> KeywordList { get; set; } = [];
-        public Func<string>? MainAction;
-        public int CommandType; //0 base, 1 base confirm, 2 store node
-        public bool clearText;
-        public bool alwaysInStock;
-        public bool reuseFunc;
-        public int maxStock;
-        public int price;
-        public int specialNum;
-        public string nodeName = string.Empty;
-        public string storeName = string.Empty;
-        public string itemList = string.Empty;
-        public string specialString = string.Empty;
-        public string confirmText = string.Empty;
-        public string denyText = string.Empty;
-        public string categoryText = string.Empty;
-        public string configDescription = string.Empty;
-        public Func<string>? ConfirmAction;
-        public Func<string>? DenyAction;
-        public Func<string>? InfoAction;
-        public string InfoText = "";
-        public ConfigEntry<bool>? configBool;
-        public string section = "";
-
-        //for menus
-        public TerminalMenuItem? menuItem;
-
-        //resulting possible objects from this managedItem
-        public TerminalNode? TerminalNode;
-        public UnlockableItem? UnlockableItem;
-
-        //related items
-        public ManagedConfig? relatedConfigItem;
-
-        public void ConfigChange(bool newValue)
+        if (newValue)
         {
-            if (newValue)
-            {
-                BoolValue = newValue;
-            }
-            else
-            {
-                BoolValue = newValue;
-            }
+            BoolValue = newValue;
         }
-
-        public void ConfigChange(string newValue)
+        else
         {
-            if (newValue != StringValue)
-            {
-                StringValue = newValue;
-                Loggers.LogDebug($"Updating string value for managed item {ConfigItemName}");
-            }
+            BoolValue = newValue;
         }
-
-        public void DefaultInfoText()
-        {
-            if (menuItem != null!)
-            {
-                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(menuItem.itemKeywords) + " ]\r\n" + menuItem.itemDescription + "\r\n\r\n";
-                InfoText = text;
-            }
-        }
-
-        public void AddInfoAction(Func<string> action) //update for info commands
-        {
-            InfoAction = action;
-        }
-
-        public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
-        {
-            ConfigType = 0;
-            BoolValue = isEnabled;
-            MainAction = mainAction;
-            KeywordList = keywordList;
-            ConfigItemName = configItemName;
-            RequiresNetworking = isNetworked;
-            price = value;
-            CommandType = commandType;
-            clearText = clear;
-            ConfirmAction = confirmAction;
-            DenyAction = denyAction;
-            confirmText = confirmTxt;
-            denyText = denyTxt;
-            specialNum = specialInt;
-            specialString = special;
-            itemList = items;
-            storeName = storeString;
-            alwaysInStock = inStock;
-            maxStock = stockMax;
-            nodeName = nodestring;
-            categoryText = category;
-            configDescription = descrip;
-            reuseFunc = reuseFnc;
-        }
-
-        public void SetManagedBoolValues(ConfigEntry<bool> configItem, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
-        {
-            ConfigType = 0;
-            BoolValue = configItem.Value;
-            MainAction = mainAction;
-            KeywordList = keywordList;
-            ConfigItemName = configItem.Definition.Key;
-            RequiresNetworking = isNetworked;
-            price = value;
-            CommandType = commandType;
-            clearText = clear;
-            ConfirmAction = confirmAction;
-            DenyAction = denyAction;
-            confirmText = confirmTxt;
-            denyText = denyTxt;
-            specialNum = specialInt;
-            specialString = special;
-            itemList = items;
-            storeName = storeString;
-            alwaysInStock = inStock;
-            maxStock = stockMax;
-            nodeName = nodestring;
-            categoryText = category;
-            configDescription = configItem.Description.Description;
-            reuseFunc = reuseFnc;
-
-            configBool = configItem;
-            section = configItem.Definition.Section;
-        }
-
     }
 
-    public class ManagedBoolGet
+    public void ConfigChange(string newValue)
     {
-        public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query, int configType, out ManagedConfig result)
+        if (newValue != StringValue)
         {
-            if (managedBools.Count == 0)
-            {
-                Loggers.LogDebug("managedConfigs count = 0");
-                result = null!;
-                return false;
-            }
-
-            Loggers.LogDebug($"TryGetItemByName: {query}");
-
-            result = managedBools.FirstOrDefault(item => item.ConfigItemName == query && item.ConfigType == configType);
-
-            return result != null!;
+            StringValue = newValue;
+            Loggers.LogDebug($"Updating string value for managed item {ConfigItemName}");
         }
+    }
 
-        public static bool TryGetBySection(List<ManagedConfig> managedBools, string query, int configType, out List<ManagedConfig> result)
+    public void DefaultInfoText()
+    {
+        if (menuItem != null!)
         {
-            if (managedBools.Count == 0)
-            {
-                Loggers.LogDebug("managedConfigs count = 0");
-                result = [];
-                return false;
-            }
-
-            Loggers.LogDebug($"TryGetBySection: {query}");
-
-            result = managedBools.FindAll(item => item.section == query && item.ConfigType == configType);
-
-            return result != null!;
+            string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(menuItem.itemKeywords) + " ]\r\n" + menuItem.itemDescription + "\r\n\r\n";
+            InfoText = text;
         }
+    }
 
-        public static bool CanAddToManagedBoolList(List<ManagedConfig> managedBools, string nodeName)
-        {
-            foreach (ManagedConfig m in managedBools)
-            {
-                if (m.ConfigItemName == nodeName)
-                {
-                    Plugin.Log.LogWarning($"Tried to add {nodeName} to managedBools list when it's already in it!");
-                    return false;
-                }
-            }
-            Loggers.LogDebug("node is not in managedbool list and can be added!");
-            return true;
-        }
+    public void AddInfoAction(Func<string> action) //update for info commands
+    {
+        InfoAction = action;
+    }
 
-        public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query) //no out needed overload
+    public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
+    {
+        ConfigType = 0;
+        BoolValue = isEnabled;
+        MainAction = mainAction;
+        KeywordList = keywordList;
+        ConfigItemName = configItemName;
+        RequiresNetworking = isNetworked;
+        price = value;
+        CommandType = commandType;
+        clearText = clear;
+        ConfirmAction = confirmAction;
+        DenyAction = denyAction;
+        confirmText = confirmTxt;
+        denyText = denyTxt;
+        specialNum = specialInt;
+        specialString = special;
+        itemList = items;
+        storeName = storeString;
+        alwaysInStock = inStock;
+        maxStock = stockMax;
+        nodeName = nodestring;
+        categoryText = category;
+        configDescription = descrip;
+        reuseFunc = reuseFnc;
+    }
+
+    public void SetManagedBoolValues(ConfigEntry<bool> configItem, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
+    {
+        ConfigType = 0;
+        BoolValue = configItem.Value;
+        MainAction = mainAction;
+        KeywordList = keywordList;
+        ConfigItemName = configItem.Definition.Key;
+        RequiresNetworking = isNetworked;
+        price = value;
+        CommandType = commandType;
+        clearText = clear;
+        ConfirmAction = confirmAction;
+        DenyAction = denyAction;
+        confirmText = confirmTxt;
+        denyText = denyTxt;
+        specialNum = specialInt;
+        specialString = special;
+        itemList = items;
+        storeName = storeString;
+        alwaysInStock = inStock;
+        maxStock = stockMax;
+        nodeName = nodestring;
+        categoryText = category;
+        configDescription = configItem.Description.Description;
+        reuseFunc = reuseFnc;
+
+        configBool = configItem;
+        section = configItem.Definition.Section;
+    }
+
+}
+
+public class ManagedBoolGet
+{
+    public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query, int configType, out ManagedConfig result)
+    {
+        if (managedBools.Count == 0)
         {
-            foreach (ManagedConfig item in managedBools)
-            {
-                if (item.ConfigItemName == query)
-                {
-                    return true;
-                }
-            }
+            Loggers.LogDebug("managedConfigs count = 0");
+            result = null!;
             return false;
         }
+
+        Loggers.LogDebug($"TryGetItemByName: {query}");
+
+        result = managedBools.FirstOrDefault(item => item.ConfigItemName == query && item.ConfigType == configType);
+
+        return result != null!;
     }
 
+    public static bool TryGetBySection(List<ManagedConfig> managedBools, string query, int configType, out List<ManagedConfig> result)
+    {
+        if (managedBools.Count == 0)
+        {
+            Loggers.LogDebug("managedConfigs count = 0");
+            result = [];
+            return false;
+        }
+
+        Loggers.LogDebug($"TryGetBySection: {query}");
+
+        result = managedBools.FindAll(item => item.section == query && item.ConfigType == configType);
+
+        return result != null!;
+    }
+
+    public static bool CanAddToManagedBoolList(List<ManagedConfig> managedBools, string nodeName)
+    {
+        foreach (ManagedConfig m in managedBools)
+        {
+            if (m.ConfigItemName == nodeName)
+            {
+                Plugin.Log.LogWarning($"Tried to add {nodeName} to managedBools list when it's already in it!");
+                return false;
+            }
+        }
+        Loggers.LogDebug("node is not in managedbool list and can be added!");
+        return true;
+    }
+
+    public static bool TryGetItemByName(List<ManagedConfig> managedBools, string query) //no out needed overload
+    {
+        foreach (ManagedConfig item in managedBools)
+        {
+            if (item.ConfigItemName == query)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

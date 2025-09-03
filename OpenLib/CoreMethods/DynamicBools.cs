@@ -1,179 +1,178 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OpenLib.CoreMethods
+namespace OpenLib.CoreMethods;
+
+public class DynamicBools
 {
-    public class DynamicBools
+    public static bool UseMatchingNode(string nodeName, out TerminalNode returnNode)
     {
-        public static bool UseMatchingNode(string nodeName, out TerminalNode returnNode)
+        TerminalNode[] allTerminalNodes = UnityEngine.Object.FindObjectsOfType<TerminalNode>();
+
+        foreach (TerminalNode node in allTerminalNodes)
         {
-            TerminalNode[] allTerminalNodes = UnityEngine.Object.FindObjectsOfType<TerminalNode>();
-
-            foreach (TerminalNode node in allTerminalNodes)
+            if (node.name.ToLower().Equals(nodeName.ToLower()))
             {
-                if (node.name.ToLower().Equals(nodeName.ToLower()))
-                {
-                    returnNode = node;
-                    Loggers.LogDebug($"Existing terminalNode [{nodeName}] found, using it rather than making a new one for this command");
-                    return true;
-                }
+                returnNode = node;
+                Loggers.LogDebug($"Existing terminalNode [{nodeName}] found, using it rather than making a new one for this command");
+                return true;
             }
-
-            returnNode = null!;
-            return false;
         }
 
-        public static bool TryGetKeyword(string keyWord)
+        returnNode = null!;
+        return false;
+    }
+
+    public static bool TryGetKeyword(string keyWord)
+    {
+        List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+
+        foreach (TerminalKeyword keyword in keyWordList)
         {
-            List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
-
-            foreach (TerminalKeyword keyword in keyWordList)
+            if (keyword.word.ToLower().Equals(keyWord.ToLower()))
             {
-                if (keyword.word.ToLower().Equals(keyWord.ToLower()))
-                {
-                    //Loggers.LogInfo($"Keyword: [{keyWord}] found!");
-                    return true;
-                }
+                //Loggers.LogInfo($"Keyword: [{keyWord}] found!");
+                return true;
             }
-
-            return false;
         }
 
-        public static bool TryGetKeyword(string keyWord, out TerminalKeyword terminalKeyword)
+        return false;
+    }
+
+    public static bool TryGetKeyword(string keyWord, out TerminalKeyword terminalKeyword)
+    {
+        List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+
+        foreach (TerminalKeyword keyword in keyWordList)
         {
-            List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
-
-            foreach (TerminalKeyword keyword in keyWordList)
+            if (keyword.word.ToLower().Equals(keyWord.ToLower()))
             {
-                if (keyword.word.ToLower().Equals(keyWord.ToLower()))
-                {
-                    Loggers.LogDebug($"Keyword: [{keyWord}] found!");
-                    terminalKeyword = keyword;
-                    return true;
-                }
+                Loggers.LogDebug($"Keyword: [{keyWord}] found!");
+                terminalKeyword = keyword;
+                return true;
             }
-
-            terminalKeyword = null!;
-            return false;
         }
 
-        public static bool TryGetAndReturnUnlockable(string unlockableName, out UnlockableItem itemOut)
-        {
-            List<UnlockableItem> unlockableList = [.. StartOfRound.Instance.unlockablesList.unlockables];
-            foreach (UnlockableItem item in unlockableList)
-            {
-                if (item.unlockableName.Equals(unlockableName))
-                {
-                    itemOut = item;
-                    return true;
-                }
-            }
+        terminalKeyword = null!;
+        return false;
+    }
 
-            itemOut = null!;
-            return false;
+    public static bool TryGetAndReturnUnlockable(string unlockableName, out UnlockableItem itemOut)
+    {
+        List<UnlockableItem> unlockableList = [.. StartOfRound.Instance.unlockablesList.unlockables];
+        foreach (UnlockableItem item in unlockableList)
+        {
+            if (item.unlockableName.Equals(unlockableName))
+            {
+                itemOut = item;
+                return true;
+            }
         }
 
-        public static bool TryGetAndReturnItem(string unlockableName, out Item itemOut)
-        {
-            List<Item> unlockableList = [.. Plugin.instance.Terminal.buyableItemsList];
-            foreach (Item item in unlockableList)
-            {
-                if (item.itemName.ToLower().Equals(unlockableName.ToLower()))
-                {
-                    itemOut = item;
-                    return true;
-                }
-            }
+        itemOut = null!;
+        return false;
+    }
 
-            itemOut = null!;
-            return false;
+    public static bool TryGetAndReturnItem(string unlockableName, out Item itemOut)
+    {
+        List<Item> unlockableList = [.. Plugin.instance.Terminal.buyableItemsList];
+        foreach (Item item in unlockableList)
+        {
+            if (item.itemName.ToLower().Equals(unlockableName.ToLower()))
+            {
+                itemOut = item;
+                return true;
+            }
         }
 
-        public static bool IsCommandCreatedAlready(string keyWord, string displayText, List<TerminalKeyword> terminalKeywords)
-        {
-            foreach (TerminalKeyword terminalKeyword in terminalKeywords)
-            {
-                if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult.displayText == displayText)
-                {
-                    Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
-                    return true;
-                }
-            }
+        itemOut = null!;
+        return false;
+    }
 
-            return false;
+    public static bool IsCommandCreatedAlready(string keyWord, string displayText, List<TerminalKeyword> terminalKeywords)
+    {
+        foreach (TerminalKeyword terminalKeyword in terminalKeywords)
+        {
+            if (Common.Misc.CompareStringsInvariant(terminalKeyword.word, keyWord) && terminalKeyword.specialKeywordResult.displayText == displayText)
+            {
+                Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                return true;
+            }
         }
 
-        public static bool IsCommandCreatedAlready(Dictionary<TerminalNode, Func<string>> MainCommandListing, string keyWord, Func<string> commandAction, List<TerminalKeyword> terminalKeywords)
-        {
-            if (MainCommandListing.Count == 0)
-                return false;
+        return false;
+    }
 
-            foreach (KeyValuePair<TerminalNode, Func<string>> entry in MainCommandListing)
+    public static bool IsCommandCreatedAlready(Dictionary<TerminalNode, Func<string>> MainCommandListing, string keyWord, Func<string> commandAction, List<TerminalKeyword> terminalKeywords)
+    {
+        if (MainCommandListing.Count == 0)
+            return false;
+
+        foreach (KeyValuePair<TerminalNode, Func<string>> entry in MainCommandListing)
+        {
+            if (entry.Value == commandAction)
             {
-                if (entry.Value == commandAction)
+                foreach (TerminalKeyword terminalKeyword in terminalKeywords)
                 {
-                    foreach (TerminalKeyword terminalKeyword in terminalKeywords)
+                    if (Common.Misc.CompareStringsInvariant(terminalKeyword.word, keyWord) && terminalKeyword.specialKeywordResult == entry.Key)
                     {
-                        if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
-                        {
-                            Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
-                            return true;
-                        }
+                        Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                        return true;
                     }
                 }
             }
-
-            return false;
-
         }
 
-        public static bool IsCommandCreatedAlready(Dictionary<TerminalNode, Func<string>> MainCommandListing, string keyWord, Func<string> commandAction, List<TerminalKeyword> terminalKeywords, out TerminalKeyword outKeyword)
-        {
-            outKeyword = null!;
-            if (MainCommandListing.Count == 0)
-                return false;
+        return false;
 
-            foreach (KeyValuePair<TerminalNode, Func<string>> entry in MainCommandListing)
+    }
+
+    public static bool IsCommandCreatedAlready(Dictionary<TerminalNode, Func<string>> MainCommandListing, string keyWord, Func<string> commandAction, List<TerminalKeyword> terminalKeywords, out TerminalKeyword outKeyword)
+    {
+        outKeyword = null!;
+        if (MainCommandListing.Count == 0)
+            return false;
+
+        foreach (KeyValuePair<TerminalNode, Func<string>> entry in MainCommandListing)
+        {
+            if (entry.Value == commandAction)
             {
-                if (entry.Value == commandAction)
+                foreach (TerminalKeyword terminalKeyword in terminalKeywords)
                 {
-                    foreach (TerminalKeyword terminalKeyword in terminalKeywords)
+                    if (Common.Misc.CompareStringsInvariant(terminalKeyword.word, keyWord) && terminalKeyword.specialKeywordResult == entry.Key)
                     {
-                        if (terminalKeyword.word.ToLower() == keyWord.ToLower() && terminalKeyword.specialKeywordResult == entry.Key)
-                        {
-                            Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
-                            outKeyword = terminalKeyword;
-                            return true;
-                        }
+                        Loggers.LogDebug($"word: {keyWord} found with valid node: {terminalKeyword.specialKeywordResult.name}");
+                        outKeyword = terminalKeyword;
+                        return true;
                     }
                 }
             }
-
-            return false;
-
         }
 
+        return false;
 
-        public static bool DoesNodeExist(Dictionary<TerminalNode, Func<string>> MainCommandListing, Func<string> commandAction, out TerminalNode node)
+    }
+
+
+    public static bool DoesNodeExist(Dictionary<TerminalNode, Func<string>> MainCommandListing, Func<string> commandAction, out TerminalNode node)
+    {
+        node = null!;
+
+        if (MainCommandListing.Count == 0)
+            return false;
+
+        foreach (KeyValuePair<TerminalNode, Func<string>> item in MainCommandListing)
         {
-            node = null!;
+            if (item.Key == null!)
+                continue;
 
-            if (MainCommandListing.Count == 0)
-                return false;
-
-            foreach (KeyValuePair<TerminalNode, Func<string>> item in MainCommandListing)
+            if (item.Value == commandAction)
             {
-                if (item.Key == null!)
-                    continue;
-
-                if (item.Value == commandAction)
-                {
-                    node = item.Key;
-                    return true;
-                }
+                node = item.Key;
+                return true;
             }
-
-            return false;
         }
+
+        return false;
     }
 }

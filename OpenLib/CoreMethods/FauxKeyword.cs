@@ -1,59 +1,58 @@
 ﻿using System;
 
-namespace OpenLib.CoreMethods
+namespace OpenLib.CoreMethods;
+
+public class FauxKeyword
 {
-    public class FauxKeyword
+    public TerminalNode? MainPage;
+    public TerminalNode? thisNode = BasicTerminal.CreateNewTerminalNode();
+    public string? Keyword;
+    public Func<string>? ResultFunc;
+    public Func<string>? ConfirmFunc;
+    public Func<string>? DenyFunc;
+    public string? ConfirmText;
+    public string? DenyText;
+    public bool? GetConfirm;
+    public bool AllowOtherFauxWords = false;
+    public bool requireExact = false;
+
+    public FauxKeyword(string mainWord, string keyword, Func<string> resultFunc)
     {
-        public TerminalNode? MainPage;
-        public TerminalNode? thisNode = BasicTerminal.CreateNewTerminalNode();
-        public string? Keyword;
-        public Func<string>? ResultFunc;
-        public Func<string>? ConfirmFunc;
-        public Func<string>? DenyFunc;
-        public string? ConfirmText;
-        public string? DenyText;
-        public bool? GetConfirm;
-        public bool AllowOtherFauxWords = false;
-        public bool requireExact = false;
-
-        public FauxKeyword(string mainWord, string keyword, Func<string> resultFunc)
+        if (keyword.Length < 3)
         {
-            if (keyword.Length < 3)
-            {
-                Loggers.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
-                return;
-            }
+            Loggers.WARNING("Unable to create FauxKeyword for {keyword}! It's too short!");
+            return;
+        }
 
-            if (DynamicBools.TryGetKeyword(mainWord, out TerminalKeyword mainPage))
-            {
-                MainPage = mainPage.specialKeywordResult;
-                Keyword = keyword;
-                ResultFunc = resultFunc;
-                thisNode.clearPreviousText = true;
-                thisNode.name = keyword;
-                Loggers.LogDebug($"FauxKeyword - {keyword} created!");
-                return;
-            }
-            else
-                Loggers.WARNING($"Could not find main page at word - {mainWord}");
-
-            MainPage = null!;
+        if (DynamicBools.TryGetKeyword(mainWord, out TerminalKeyword mainPage))
+        {
+            MainPage = mainPage.specialKeywordResult;
             Keyword = keyword;
+            ResultFunc = resultFunc;
+            thisNode.clearPreviousText = true;
+            thisNode.name = keyword;
+            Loggers.LogDebug($"FauxKeyword - {keyword} created!");
+            return;
         }
+        else
+            Loggers.WARNING($"Could not find main page at word - {mainWord}");
 
-        public void AddConfirm(Func<string> confirmFunc, Func<string> denyFunc = null!)
-        {
-            this.GetConfirm = false;
-            this.ConfirmFunc = confirmFunc;
-            if (denyFunc != null!)
-                this.DenyFunc = denyFunc;
-        }
+        MainPage = null!;
+        Keyword = keyword;
+    }
 
-        public void AddText(string denyText, string confirmText = "")
-        {
-            this.GetConfirm = false;
-            this.ConfirmText = confirmText;
-            this.DenyText = denyText;
-        }
+    public void AddConfirm(Func<string> confirmFunc, Func<string> denyFunc = null!)
+    {
+        this.GetConfirm = false;
+        this.ConfirmFunc = confirmFunc;
+        if (denyFunc != null!)
+            this.DenyFunc = denyFunc;
+    }
+
+    public void AddText(string denyText, string confirmText = "")
+    {
+        this.GetConfirm = false;
+        this.ConfirmText = confirmText;
+        this.DenyText = denyText;
     }
 }
