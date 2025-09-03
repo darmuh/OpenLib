@@ -45,7 +45,7 @@ function parseConfig(text) {
 }
 
 function updateConfig(key, value) {
-    if (key === null || value === null) {
+    if (key === null || value === null!) {
         console.warn("Cannot update key-value pair, one item is NULL");
         return;
     }
@@ -65,7 +65,7 @@ function updateConfig(key, value) {
                 element.removeAttribute("checked");
         } else if (element.hasAttribute("value")) {
             if (typ === "range") {
-                if (next !== null) {
+                if (next !== null!) {
                     next.setAttribute("value", value);
                     next.textContent = value;
                 }

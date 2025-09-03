@@ -10,20 +10,20 @@ namespace OpenLib.ConfigManager
     public class ManagedConfig
     {
         //MAIN
-        public string ConfigItemName;
+        public string ConfigItemName = string.Empty;
         public bool RequiresNetworking;
         public int ConfigType = -1; //0 = bool, 1 = string, 2 = int
 
         //ManagedString
-        public string StringValue; //for string config items
+        public string? StringValue; //for string config items
 
         //ManagedInt
         public int IntValue;
 
         //ManagedBool
         public bool BoolValue = false;
-        public List<string> KeywordList;
-        public Func<string> MainAction;
+        public List<string> KeywordList { get; set; } = [];
+        public Func<string>? MainAction;
         public int CommandType; //0 base, 1 base confirm, 2 store node
         public bool clearText;
         public bool alwaysInStock;
@@ -31,30 +31,30 @@ namespace OpenLib.ConfigManager
         public int maxStock;
         public int price;
         public int specialNum;
-        public string nodeName;
-        public string storeName;
-        public string itemList;
-        public string specialString;
-        public string confirmText;
-        public string denyText;
-        public string categoryText;
-        public string configDescription;
-        public Func<string> ConfirmAction;
-        public Func<string> DenyAction;
-        public Func<string> InfoAction;
+        public string nodeName = string.Empty;
+        public string storeName = string.Empty;
+        public string itemList = string.Empty;
+        public string specialString = string.Empty;
+        public string confirmText = string.Empty;
+        public string denyText = string.Empty;
+        public string categoryText = string.Empty;
+        public string configDescription = string.Empty;
+        public Func<string>? ConfirmAction;
+        public Func<string>? DenyAction;
+        public Func<string>? InfoAction;
         public string InfoText = "";
-        public ConfigEntry<bool> configBool;
+        public ConfigEntry<bool>? configBool;
         public string section = "";
 
         //for menus
-        public TerminalMenuItem menuItem;
+        public TerminalMenuItem? menuItem;
 
         //resulting possible objects from this managedItem
-        public TerminalNode TerminalNode;
-        public UnlockableItem UnlockableItem;
+        public TerminalNode? TerminalNode;
+        public UnlockableItem? UnlockableItem;
 
         //related items
-        public ManagedConfig relatedConfigItem;
+        public ManagedConfig? relatedConfigItem;
 
         public void ConfigChange(bool newValue)
         {
@@ -65,24 +65,23 @@ namespace OpenLib.ConfigManager
             else
             {
                 BoolValue = newValue;
-                //this.menuItem?.Delete(); //remove menu item
             }
         }
 
         public void ConfigChange(string newValue)
         {
-            if (newValue != this.StringValue)
+            if (newValue != StringValue)
             {
                 StringValue = newValue;
-                Loggers.LogDebug($"Updating string value for managed item {this.ConfigItemName}");
+                Loggers.LogDebug($"Updating string value for managed item {ConfigItemName}");
             }
         }
 
         public void DefaultInfoText()
         {
-            if (menuItem != null)
+            if (menuItem != null!)
             {
-                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(this.menuItem.itemKeywords) + " ]\r\n" + this.menuItem.itemDescription + "\r\n\r\n";
+                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(menuItem.ItemKeywords) + " ]\r\n" + menuItem.ItemDescription + "\r\n\r\n";
                 InfoText = text;
             }
         }
@@ -92,7 +91,7 @@ namespace OpenLib.ConfigManager
             InfoAction = action;
         }
 
-        public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clear = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
+        public void SetManagedBoolValues(string configItemName, bool isEnabled, string descrip, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
         {
             ConfigType = 0;
             BoolValue = isEnabled;
@@ -119,7 +118,7 @@ namespace OpenLib.ConfigManager
             reuseFunc = reuseFnc;
         }
 
-        public void SetManagedBoolValues(ConfigEntry<bool> configItem, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clear = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
+        public void SetManagedBoolValues(ConfigEntry<bool> configItem, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clear = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmTxt = "confirm", string denyTxt = "deny", string special = "", int specialInt = -1, string nodestring = "", string items = "", int value = 0, string storeString = "", bool inStock = true, int stockMax = 0, bool reuseFnc = false)
         {
             ConfigType = 0;
             BoolValue = configItem.Value;
@@ -158,7 +157,7 @@ namespace OpenLib.ConfigManager
             if (managedBools.Count == 0)
             {
                 Loggers.LogDebug("managedConfigs count = 0");
-                result = null;
+                result = null!;
                 return false;
             }
 
@@ -166,7 +165,7 @@ namespace OpenLib.ConfigManager
 
             result = managedBools.FirstOrDefault(item => item.ConfigItemName == query && item.ConfigType == configType);
 
-            return result != null;
+            return result != null!;
         }
 
         public static bool TryGetBySection(List<ManagedConfig> managedBools, string query, int configType, out List<ManagedConfig> result)
@@ -182,7 +181,7 @@ namespace OpenLib.ConfigManager
 
             result = managedBools.FindAll(item => item.section == query && item.ConfigType == configType);
 
-            return result != null;
+            return result != null!;
         }
 
         public static bool CanAddToManagedBoolList(List<ManagedConfig> managedBools, string nodeName)

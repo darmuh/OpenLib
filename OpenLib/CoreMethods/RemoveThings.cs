@@ -21,12 +21,12 @@ namespace OpenLib.CoreMethods
 
         private static void DeleteCams()
         {
-            if (CamStuff.CameraData != null)
+            if (CamStuff.CameraData != null!)
                 GameObject.Destroy(CamStuff.CameraData);
 
-            if (CamStuff.ObcCameraHolder != null)
+            if (CamStuff.ObcCameraHolder != null!)
                 GameObject.Destroy(CamStuff.ObcCameraHolder);
-            if (CamStuff.ObcCameraHolder != null)
+            if (CamStuff.ObcCameraHolder != null!)
                 GameObject.Destroy(CamStuff.ObcCameraHolder);
         }
 
@@ -57,7 +57,7 @@ namespace OpenLib.CoreMethods
         {
             bool removedWord = false;
 
-            if (mainWord.compatibleNouns != null)
+            if (mainWord.compatibleNouns != null!)
             {
                 List<CompatibleNoun> newList = [];
                 foreach (CompatibleNoun noun in mainWord.compatibleNouns)
@@ -80,7 +80,7 @@ namespace OpenLib.CoreMethods
         {
             bool removedWord = false;
 
-            if (mainWord.compatibleNouns != null)
+            if (mainWord.compatibleNouns != null!)
             {
                 List<CompatibleNoun> newList = [];
                 foreach (CompatibleNoun noun in mainWord.compatibleNouns)

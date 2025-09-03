@@ -2,142 +2,140 @@
 using UnityEngine.Rendering.HighDefinition;
 
 
-namespace OpenLib.Common
+namespace OpenLib.Common;
+public class CamStuff
 {
-    public class CamStuff
+    public static Events.Events.CustomEvent<RenderTexture> BodyCamTextureSet = new();
+    public static Events.Events.CustomEvent<RenderTexture> MirrorCamTextureSet = new();
+    public static GameObject MyCameraHolder = null!;
+    public static GameObject ObcCameraHolder = null!;
+    public static HDAdditionalCameraData CameraData = null!;
+
+    public static void SetBodyCamTexture(RenderTexture texture)
     {
-        public static Events.Events.CustomEvent<RenderTexture> BodyCamTextureSet = new();
-        public static Events.Events.CustomEvent<RenderTexture> MirrorCamTextureSet = new();
-        public static GameObject MyCameraHolder = null!;
-        public static GameObject ObcCameraHolder = null!;
-        public static HDAdditionalCameraData CameraData = null!;
+        BodyCamTextureSet.Invoke(texture);
+        Loggers.LogInfo("Assigning bodycam texture");
+    }
 
-        public static void SetBodyCamTexture(RenderTexture texture)
+    public static void SetMirrorCamTexture(RenderTexture texture)
+    {
+        MirrorCamTextureSet.Invoke(texture);
+        Loggers.LogInfo("Assigning mirror texture");
+
+        if (Plugin.instance.OpenBodyCamsMod)
+            Compat.OpenBodyCamFuncs.TerminalMirrorStatus(true);
+    }
+
+    public static void ToggleCamState(Camera playerCam, bool state)
+    {
+        if (playerCam == null!)
+            return;
+
+        playerCam.gameObject.SetActive(state);
+        Loggers.LogInfo($"{playerCam.gameObject.name} set to state: {state}");
+
+        if (state)
+            SetBodyCamTexture(playerCam.targetTexture);
+    }
+
+    public static void CamInitMirror(GameObject CameraHolder, Camera playerCam, float zoom, bool ortho)
+    {
+        if (zoom > 0)
         {
-            BodyCamTextureSet.Invoke(texture);
-            Loggers.LogInfo("Assigning bodycam texture");
+            playerCam.cameraType = CameraType.Game;
+            playerCam.orthographic = ortho;
+            playerCam.orthographicSize = zoom;
+            playerCam.usePhysicalProperties = false;
+            playerCam.farClipPlane = 30f;
+            playerCam.nearClipPlane = 0.05f;
+            playerCam.fieldOfView = 130f;
         }
 
-        public static void SetMirrorCamTexture(RenderTexture texture)
+        CameraHolder.SetActive(true);
+        playerCam.transform.SetParent(CameraHolder.transform);
+        Transform termTransform = Plugin.instance.Terminal.terminalImage.transform;
+
+        Quaternion newRotation = Quaternion.LookRotation(-termTransform.transform.forward, termTransform.up);
+
+        Loggers.LogInfo("camTransform assigned to MirrorObject, which is assigned to termTransform");
+        CameraHolder.transform.SetParent(termTransform);
+
+        // Set camera's rotation and position
+        CameraHolder.transform.rotation = newRotation;
+        CameraHolder.transform.position = termTransform.position;
+        Loggers.LogInfo($"initCamHeight: {CameraHolder.transform.position.y}");
+
+
+    }
+
+    public static Camera HomebrewCam(ref RenderTexture mycamTexture, ref GameObject CamObject)
+    {
+        if (CamObject == null!)
+            CamObject = new("OpenLib Cam (Homebrew)");
+
+        Camera playerCam;
+        if (CamObject.GetComponent<Camera>() != null!)
+            playerCam = CamObject.GetComponent<Camera>();
+        else
+            playerCam = CamObject.AddComponent<Camera>();
+
+        if (mycamTexture == null!)
+            mycamTexture = new(StartOfRound.Instance.localPlayerController.gameplayCamera.targetTexture);
+
+        int cullingMaskInt = StartOfRound.Instance.localPlayerController.gameplayCamera.cullingMask & ~LayerMask.GetMask(["Ignore Raycast", "UI", "HelmetVisor"]);
+
+        if (Plugin.instance.ModelReplacement)
+            cullingMaskInt = Compat.ModelAPI.GetThirdPersonMask(cullingMaskInt);
+        else
         {
-            MirrorCamTextureSet.Invoke(texture);
-            Loggers.LogInfo("Assigning mirror texture");
+            cullingMaskInt |= (1 << 23); //show this bit since every mod likes to make the player this layer
 
-            if (Plugin.instance.OpenBodyCamsMod)
-                Compat.OpenBodyCamFuncs.TerminalMirrorStatus(true);
-        }
+            StartOfRound.Instance.localPlayerController.thisPlayerModelArms.gameObject.layer = 5;
+            //always set model arms to UI layer when using homebrew cams (except for modelreplacementAPI)
 
-        public static void ToggleCamState(Camera playerCam, bool state)
-        {
-            if (playerCam == null)
-                return;
-
-            playerCam.gameObject.SetActive(state);
-            Loggers.LogInfo($"{playerCam.gameObject.name} set to state: {state}");
-
-            if (state)
-                SetBodyCamTexture(playerCam.targetTexture);
-        }
-
-        public static void CamInitMirror(GameObject CameraHolder, Camera playerCam, float zoom, bool ortho)
-        {
-            if (zoom > 0)
+            if (CamObject.GetComponent<HDAdditionalCameraData>() == null!)
             {
-                playerCam.cameraType = CameraType.Game;
-                playerCam.orthographic = ortho;
-                playerCam.orthographicSize = zoom;
-                playerCam.usePhysicalProperties = false;
-                playerCam.farClipPlane = 30f;
-                playerCam.nearClipPlane = 0.05f;
-                playerCam.fieldOfView = 130f;
-            }
+                CameraData = CamObject.AddComponent<HDAdditionalCameraData>();
+                CameraData.volumeLayerMask = 1;
+                CameraData.hasPersistentHistory = true;
 
-            CameraHolder.SetActive(true);
-            playerCam.transform.SetParent(CameraHolder.transform);
-            Transform termTransform = Plugin.instance.Terminal.terminalImage.transform;
-
-            Quaternion newRotation = Quaternion.LookRotation(-termTransform.transform.forward, termTransform.up);
-
-            Loggers.LogInfo("camTransform assigned to MirrorObject, which is assigned to termTransform");
-            CameraHolder.transform.SetParent(termTransform);
-
-            // Set camera's rotation and position
-            CameraHolder.transform.rotation = newRotation;
-            CameraHolder.transform.position = termTransform.position;
-            Loggers.LogInfo($"initCamHeight: {CameraHolder.transform.position.y}");
-
-
-        }
-
-        public static Camera HomebrewCam(ref RenderTexture mycamTexture, ref GameObject CamObject)
-        {
-            if (CamObject == null)
-                CamObject = new("OpenLib Cam (Homebrew)");
-
-            Camera playerCam;
-            if (CamObject.GetComponent<Camera>() != null)
-                playerCam = CamObject.GetComponent<Camera>();
-            else
-                playerCam = CamObject.AddComponent<Camera>();
-
-            if (mycamTexture == null)
-                mycamTexture = new(StartOfRound.Instance.localPlayerController.gameplayCamera.targetTexture);
-
-            int cullingMaskInt = StartOfRound.Instance.localPlayerController.gameplayCamera.cullingMask & ~LayerMask.GetMask(["Ignore Raycast", "UI", "HelmetVisor"]);
-
-            if (Plugin.instance.ModelReplacement)
-                cullingMaskInt = Compat.ModelAPI.GetThirdPersonMask(cullingMaskInt);
-            else
-            {
-                cullingMaskInt |= (1 << 23); //show this bit since every mod likes to make the player this layer
-
-                StartOfRound.Instance.localPlayerController.thisPlayerModelArms.gameObject.layer = 5;
-                //always set model arms to UI layer when using homebrew cams (except for modelreplacementAPI)
-
-                if (CamObject.GetComponent<HDAdditionalCameraData>() == null)
+                HDAdditionalCameraData original = StartOfRound.Instance.localPlayerController.gameplayCamera.GetComponent<HDAdditionalCameraData>();
+                if (original.customRenderingSettings)
                 {
-                    CameraData = CamObject.AddComponent<HDAdditionalCameraData>();
-                    CameraData.volumeLayerMask = 1;
-                    CameraData.hasPersistentHistory = true;
+                    Loggers.LogDebug("Using original customRenderingSettings for OpenLib cams");
+                    CameraData.customRenderingSettings = true;
+                    CameraData.renderingPathCustomFrameSettings = original.renderingPathCustomFrameSettings;
+                    CameraData.renderingPathCustomFrameSettingsOverrideMask = original.renderingPathCustomFrameSettingsOverrideMask;
 
-                    HDAdditionalCameraData original = StartOfRound.Instance.localPlayerController.gameplayCamera.GetComponent<HDAdditionalCameraData>();
-                    if (original.customRenderingSettings)
-                    {
-                        Loggers.LogDebug("Using original customRenderingSettings for OpenLib cams");
-                        CameraData.customRenderingSettings = true;
-                        CameraData.renderingPathCustomFrameSettings = original.renderingPathCustomFrameSettings;
-                        CameraData.renderingPathCustomFrameSettingsOverrideMask = original.renderingPathCustomFrameSettingsOverrideMask;
-
-                    }
                 }
-
             }
 
-            playerCam.targetTexture = mycamTexture;
-
-            playerCam.cullingMask = cullingMaskInt;
-
-            CamObject.SetActive(false);
-            Loggers.LogInfo("playerCam instantiated");
-            return playerCam;
         }
 
-        //States
-        public static void HomebrewCameraState(bool active, Camera playerCam)
-        {
-            if (playerCam == null)
-                return;
+        playerCam.targetTexture = mycamTexture;
 
-            playerCam.gameObject.SetActive(active);
+        playerCam.cullingMask = cullingMaskInt;
 
-        }
+        CamObject.SetActive(false);
+        Loggers.LogInfo("playerCam instantiated");
+        return playerCam;
+    }
 
-        public static Camera GetCam(GameObject Container)
-        {
-            if (Container == null)
-                return null!;
+    //States
+    public static void HomebrewCameraState(bool active, Camera playerCam)
+    {
+        if (playerCam == null!)
+            return;
 
-            return Container.GetComponent<Camera>();
-        }
+        playerCam.gameObject.SetActive(active);
+
+    }
+
+    public static Camera GetCam(GameObject Container)
+    {
+        if (Container == null!)
+            return null!;
+
+        return Container.GetComponent<Camera>();
     }
 }

@@ -21,7 +21,7 @@ namespace OpenLib
         public void GetDefaultInfo(CommandManager command)
         {
             string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(command.KeywordList) + " ]\r\n";
-            if (command.IsEnabled != null)
+            if (command.IsEnabled != null!)
                 text += command.IsEnabled.ConfigItem.Description.Description + "\r\n\r\n";
             else
                 text += "No further information on this command!\r\n\r\n";
@@ -30,7 +30,7 @@ namespace OpenLib
 
         public void CreateInfoNode()
         {
-            if (CommonTerminal.InfoKeyword == null)
+            if (CommonTerminal.InfoKeyword == null!)
                 return;
 
             TerminalKeyword info = CommonTerminal.InfoKeyword;

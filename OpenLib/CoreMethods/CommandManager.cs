@@ -10,28 +10,28 @@ namespace OpenLib.CoreMethods
 {
     public class CommandManager
     {
-        public string Name = string.Empty;
-        public ConfigWatch<bool> IsEnabled = null!;
-        public bool IsCreated = false;
-        public ConfigEntry<string> KeywordsConfig;
+        public string Name { get; private set; } = string.Empty;
+        public ConfigWatch<bool> IsEnabled { get; private set; } = null!;
+        public bool IsCreated { get; private set; } = false;
+        public ConfigEntry<string> KeywordsConfig { get; internal set; } = null!;
 
-        public List<string> KeywordList = [];
-        public Func<string> MainAction;
+        public List<string> KeywordList { get; internal set; } = null!;
+        public Func<string> MainAction { get; internal set; } = null!;
         public bool ClearText = true;
         public bool AddAtAwake = true;
         public bool AcceptAdditionalText = false;
 
         public int CommandType = 0; //0 base, 1 base confirm, 2 store node
 
-        public NodeInfo InfoBase;
-        public NodeConfirmation ConfirmBase;
+        public NodeInfo InfoBase { get; internal set; } = null!;
+        public NodeConfirmation ConfirmBase { get; internal set; } = null!;
         public int VerySpecialNum = -1; //for use with terminalstuff visual commands
 
         //Store Things
-        public NodeStore StoreBase;
+        public NodeStore StoreBase { get; internal set; } = null!;
 
         //Terminal Things
-        public TerminalNode terminalNode;
+        public TerminalNode TerminalNode { get; internal set; } = null!;
         public List<TerminalKeyword> terminalKeywords = [];
 
         //should be able to call in awake
@@ -45,7 +45,10 @@ namespace OpenLib.CoreMethods
             if (addToMain)
                 Plugin.AllCommands.Add(this);
 
-            InfoBase = new(this); //prevents errors from command not being added
+            //prevents null errors
+            InfoBase = new(this);
+            ConfirmBase = new(this);
+            StoreBase = new(this);
         }
 
         //should be able to call in awake, no config watch
@@ -74,14 +77,14 @@ namespace OpenLib.CoreMethods
         }
 
         //manual, with optional config watch
-        public CommandManager(string commandName, List<string> manualWords, Func<string> commandFunc, ConfigEntry<bool> CommandBool = null, int type = 0, bool addToMain = true)
+        public CommandManager(string commandName, List<string> manualWords, Func<string> commandFunc, ConfigEntry<bool> CommandBool = null!, int type = 0, bool addToMain = true)
         {
             Name = commandName;
             KeywordList = manualWords;
             MainAction = commandFunc;
             CommandType = Mathf.Clamp(type, 0, 2);
 
-            if (CommandBool != null)
+            if (CommandBool != null!)
             {
                 IsEnabled = new(CommandBool);
             }
@@ -92,10 +95,10 @@ namespace OpenLib.CoreMethods
 
         public bool IsCommandEnabled()
         {
-            if (IsEnabled == null)
+            if (IsEnabled == null!)
                 return true;
 
-            if (!IsEnabled.NetworkingReq || IsEnabled.networkingConfig == null)
+            if (!IsEnabled.NetworkingReq || IsEnabled.networkingConfig == null!)
                 return IsEnabled.ConfigItem.Value;
 
             if (IsEnabled.NetworkingReq)
@@ -121,6 +124,24 @@ namespace OpenLib.CoreMethods
             InfoBase.InfoAction = action;
         }
 
+        public void SetupConfirmation(Func<string> confirm, Func<string> deny)
+        {
+            if (confirm != null)
+                ConfirmBase.SetConfirmAction(confirm);
+
+            if (deny != null)
+                ConfirmBase.SetDenyAction(deny);
+        }
+
+        public void SetupConfirmation(string confirmText, string denyText)
+        {
+            if (!string.IsNullOrEmpty(confirmText))
+                ConfirmBase.SetConfirmText(confirmText);
+
+            if (!string.IsNullOrEmpty(denyText))
+                ConfirmBase.SetDenyText(denyText);
+        }
+
         //call this if you need to add your command to the default listing and didnt on creation for some reason
         public void AddToDefaultListing()
         {
@@ -142,7 +163,7 @@ namespace OpenLib.CoreMethods
         //called after command has been created with keywords
         internal void GetInfo()
         {
-            if (InfoBase == null)
+            if (InfoBase == null!)
             {
                 InfoBase = new(this);
                 InfoBase.GetDefaultInfo(this);
@@ -159,42 +180,14 @@ namespace OpenLib.CoreMethods
         public void TerminalDisabled()
         {
             terminalKeywords = [];
-            terminalNode = null!;
+            TerminalNode = null!;
         }
 
         //register command to terminal (should only be called after terminal exists
         public void RegisterCommand()
         {
-            if (!IsCommandEnabled())
-                return;
-
-            terminalNode = BasicTerminal.CreateNewTerminalNode();
-            terminalNode.name = Name;
-            terminalNode.displayText = string.Empty;
-            terminalNode.clearPreviousText = ClearText;
-
-            if (KeywordList.Count == 0 && KeywordsConfig != null)
-                KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(KeywordsConfig.Value);
-
-            KeywordList.Do(w => AddKeyword(w));
-            IsCreated = true;
-
-            if (CommandType > 0) //confirm base
-            {
-                ConfirmBase.CreateConfirmation();
-            }
-
-            if (CommandType == 2) //store base
-            {
-                if (StoreBase == null)
-                {
-                    Loggers.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
-                    return;
-                }
-                StoreBase.AddToStore();
-            }
-
-            GetInfo();
+            //Have to have this overload since this is used already without the bool
+            RegisterCommand(true);
         }
 
         public void RegisterCommand(bool replaceExistingKW)
@@ -202,32 +195,23 @@ namespace OpenLib.CoreMethods
             if (!IsCommandEnabled())
                 return;
 
-            terminalNode = BasicTerminal.CreateNewTerminalNode();
-            terminalNode.name = Name;
-            terminalNode.displayText = string.Empty;
-            terminalNode.clearPreviousText = ClearText;
+            TerminalNode = BasicTerminal.CreateNewTerminalNode();
+            TerminalNode.name = Name;
+            TerminalNode.displayText = string.Empty;
+            TerminalNode.clearPreviousText = ClearText;
 
 
-            if (KeywordList.Count == 0 && KeywordsConfig != null)
+            if (KeywordList.Count == 0 && KeywordsConfig != null!)
                 KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(KeywordsConfig.Value);
 
-            KeywordList.Do(w => AddKeyword(w));
+            KeywordList.Do(w => AddKeyword(w, replaceExistingKW));
             IsCreated = true;
 
             if (CommandType > 0) //confirm base
-            {
                 ConfirmBase.CreateConfirmation();
-            }
 
             if (CommandType == 2) //store base
-            {
-                if (StoreBase == null)
-                {
-                    Loggers.WARNING("UNABLE TO ADD STORE ITEM, StoreBase is undefined!");
-                    return;
-                }
                 StoreBase.AddToStore();
-            }
 
             GetInfo();
         }
@@ -245,27 +229,19 @@ namespace OpenLib.CoreMethods
             if (!IsCommandEnabled())
                 return;
 
-            terminalNode = BasicTerminal.CreateNewTerminalNode();
-            terminalNode.name = Name;
-            terminalNode.displayText = string.Empty;
-            terminalNode.clearPreviousText = ClearText;
+            TerminalNode = BasicTerminal.CreateNewTerminalNode();
+            TerminalNode.name = Name;
+            TerminalNode.displayText = string.Empty;
+            TerminalNode.clearPreviousText = ClearText;
 
             IsCreated = true;
-        }
-
-        internal void AddKeyword(string keyword)
-        {
-            Loggers.LogDebug($"adding {keyword}");
-            TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, true);
-            terminalKeyword.specialKeywordResult = terminalNode;
-            terminalKeywords.Add(terminalKeyword);
         }
 
         internal void AddKeyword(string keyword, bool replaceExistingKW)
         {
             Loggers.LogDebug($"adding {keyword}");
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, replaceExistingKW);
-            terminalKeyword.specialKeywordResult = terminalNode;
+            terminalKeyword.specialKeywordResult = TerminalNode;
             terminalKeywords.Add(terminalKeyword);
         }
 

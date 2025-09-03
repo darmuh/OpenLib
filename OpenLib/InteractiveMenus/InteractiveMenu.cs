@@ -11,9 +11,9 @@ namespace OpenLib.CoreMethods
     {
         public string MenuName = "";
 
-        public Action LoadPage;
-        public Action EnterMenu;
-        public Action LeaveMenu;
+        public Action LoadPage = null!;
+        public Action EnterMenu = null!;
+        public Action LeaveMenu = null!;
         public CustomEvent UpMenuEvent = new();
         public CustomEvent DownMenuEvent = new();
         public CustomEvent LeftMenuEvent = new();
@@ -38,7 +38,7 @@ namespace OpenLib.CoreMethods
         public int currentPage = 1;
 
         //should only run once per game launch
-        public InteractiveMenu(string name, Action pageLoader, Action enter, Action leave, Dictionary<Key, Action> MoreMenuActions = null)
+        public InteractiveMenu(string name, Action pageLoader, Action enter, Action leave, Dictionary<Key, Action> MoreMenuActions = null!)
         {
             if (TerminalUpdatePatch.usePatch == false)
                 TerminalUpdatePatch.usePatch = true;
@@ -49,7 +49,7 @@ namespace OpenLib.CoreMethods
             LeaveMenu = leave;
             SetupMainActions();
 
-            if (MoreMenuActions != null)
+            if (MoreMenuActions != null!)
                 OtherActions = MoreMenuActions;
 
             AllInteractiveMenus.AllMenus.Add(this);
@@ -87,7 +87,7 @@ namespace OpenLib.CoreMethods
 
             Key? main = MainActions.FirstOrDefault(x => Keyboard.current[x.Key].isPressed).Key;
 
-            if (main != null)
+            if (main != null!)
             {
                 Action act = MainActions.FirstOrDefault(x => x.Key == main).Value;
                 act?.Invoke();
@@ -98,7 +98,7 @@ namespace OpenLib.CoreMethods
 
             Key? other = OtherActions.FirstOrDefault(x => Keyboard.current[x.Key].isPressed).Key;
 
-            if (other != null)
+            if (other != null!)
             {
                 Action act = OtherActions.FirstOrDefault(x => x.Key == other).Value;
                 act?.Invoke();
@@ -154,13 +154,13 @@ namespace OpenLib.CoreMethods
 
     public static class AllInteractiveMenus
     {
-        public static List<InteractiveMenu> AllMenus { get; internal set; }
+        public static List<InteractiveMenu> AllMenus { get; internal set; } = [];
 
         public static bool TryGetMenu(string menuName, out InteractiveMenu menu)
         {
             menu = AllMenus.FirstOrDefault(x => x.MenuName == menuName);
 
-            if (menu == null)
+            if (menu == null!)
                 return false;
             else
                 return true;

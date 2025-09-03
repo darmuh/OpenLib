@@ -8,158 +8,158 @@ using System.Text;
 using static OpenLib.ConfigManager.ConfigHelper;
 
 
-namespace OpenLib.ConfigManager
+namespace OpenLib.ConfigManager;
+public class WebHelper
 {
-    public class WebHelper
+    public static string AddValueToHTMLCode(string value, string configName, int num, bool isDefaultValue)
     {
-        public static string AddValueToHTMLCode(string value, string configName, int num, bool isDefaultValue)
+
+        if (isDefaultValue)
         {
-
-            if (isDefaultValue)
-            {
-                Loggers.LogDebug($"{configName} is default value, setting this to checked");
-                return $"<input type=\"radio\" id=\"{configName}{num}\" checked=\"checked\" name=\"{configName}\" value=\"{value}\">\r\n            <label for=\"{configName}{num}\">{value}</label><br>";
-            }
-
-            return $"<input type=\"radio\" id=\"{configName}{num}\" name=\"{configName}\" value=\"{value}\">\r\n            <label for=\"{configName}{num}\">{value}</label><br>";
+            Loggers.LogDebug($"{configName} is default value, setting this to checked");
+            return $"<input type=\"radio\" id=\"{configName}{num}\" checked=\"checked\" name=\"{configName}\" value=\"{value}\">\r\n            <label for=\"{configName}{num}\">{value}</label><br>";
         }
 
-        public static string AddValueToHTMLCode(List<float> values, string configName, string defaultValue, int sliderItem)
+        return $"<input type=\"radio\" id=\"{configName}{num}\" name=\"{configName}\" value=\"{value}\">\r\n            <label for=\"{configName}{num}\">{value}</label><br>";
+    }
+
+    public static string AddValueToHTMLCode(List<float> values, string configName, string defaultValue, int sliderItem)
+    {
+
+        if (values.Count != 2)
+            return "";
+
+        configName = Common.CommonStringStuff.RemovePunctuation(configName).Replace(" ", "");
+
+        if (values[1] > 999)
         {
-
-            if (values.Count != 2)
-                return "";
-
-            configName = Common.CommonStringStuff.RemovePunctuation(configName).Replace(" ", "");
-
-            if (values[1] > 999)
-            {
-                Loggers.LogDebug($"clamped number-type max value too high for slider - {values[1]}");
-                return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";
-            }
-
-            if (values[0].ToString().Contains('.') || values[1] <= 1)
-                return $"<input type=\"range\" name=\"{configName}\" id=\"number_slider{sliderItem}\" value=\"{defaultValue}\" step=\"0.001\" min=\"{values[0]}\" max=\"{values[1]}\" oninput=\"number_text{sliderItem}.value = number_slider{sliderItem}.value\">\r\n" +
-                    $"<input id=\"number_text{sliderItem}\" type=\"text\" class=\"numberInput\" size=\"4\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" onkeypress=\"return /[0-9.]/i.test(event.key)\" oninput=\"number_slider{sliderItem}.value = number_text{sliderItem}.value\">";
-
-
-
-            return $"<input type=\"range\" name=\"{configName}\" id=\"number_slider{sliderItem}\" value=\"{defaultValue}\" min=\"{values[0]}\" max=\"{values[1]}\" oninput=\"number_text{sliderItem}.value = number_slider{sliderItem}.value\">\r\n" +
-                $"<input id=\"number_text{sliderItem}\" type=\"text\" class=\"numberInput\" size=\"4\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" onkeypress=\"return /[0-9]/i.test(event.key)\" oninput=\"number_slider{sliderItem}.value = number_text{sliderItem}.value\">";
+            Loggers.LogDebug($"clamped number-type max value too high for slider - {values[1]}");
+            return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";
         }
 
-        public static void WebConfig(ConfigFile ModConfig)
+        if (values[0].ToString().Contains('.') || values[1] <= 1)
+            return $"<input type=\"range\" name=\"{configName}\" id=\"number_slider{sliderItem}\" value=\"{defaultValue}\" step=\"0.001\" min=\"{values[0]}\" max=\"{values[1]}\" oninput=\"number_text{sliderItem}.value = number_slider{sliderItem}.value\">\r\n" +
+                $"<input id=\"number_text{sliderItem}\" type=\"text\" class=\"numberInput\" size=\"4\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" onkeypress=\"return /[0-9.]/i.test(event.key)\" oninput=\"number_slider{sliderItem}.value = number_text{sliderItem}.value\">";
+
+
+
+        return $"<input type=\"range\" name=\"{configName}\" id=\"number_slider{sliderItem}\" value=\"{defaultValue}\" min=\"{values[0]}\" max=\"{values[1]}\" oninput=\"number_text{sliderItem}.value = number_slider{sliderItem}.value\">\r\n" +
+            $"<input id=\"number_text{sliderItem}\" type=\"text\" class=\"numberInput\" size=\"4\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" onkeypress=\"return /[0-9]/i.test(event.key)\" oninput=\"number_slider{sliderItem}.value = number_text{sliderItem}.value\">";
+    }
+
+    public static void WebConfig(ConfigFile ModConfig)
+    {
+        List<string> lines = [];
+        int colorItem = 0;
+        int sliderItem = 0;
+        string configName = ModConfig.ConfigFilePath[ModConfig.ConfigFilePath.LastIndexOf('\\')..];
+        lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body class=\"body\">");
+
+        //css style, dont bother editing this in C# just cut/paste
+        lines.Add("<style>\r\n    .body {\r\n        background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);\r\n        color: whitesmoke;\r\n        font: Monospace;\r\n        padding-top: 1px;\r\n        padding-right: 1px;\r\n        padding-bottom: 1px;\r\n        padding-left: 0px;\r\n        margin-left: 20%;\r\n        margin-right: 20%;\r\n    }\r\n\r\n    .slider {\r\n        margin-top: 3%;\r\n    }\r\n\r\n    .slider:focus {\r\n        outline: none;\r\n        box-shadow: 0 0 10px #fafff9;\r\n    }\r\n\r\n    .numberInput {\r\n        background: transparent;\r\n        color: white;\r\n        text-align: center;\r\n        font-weight: bold;\r\n        font-size: 12px;\r\n        border: 1px solid #ccc;\r\n        border-radius: 4%;\r\n        vertical-align: super;\r\n    }\r\n\r\n    .checkbox {\r\n        margin-right: 0%;\r\n        margin-bottom: 1%;\r\n        display: inline-block;\r\n        margin-left: 0%;\r\n    }\r\n\r\n    .checkbox:focus {\r\n        outline: none;\r\n        box-shadow: 0 0 10px #fafff9;\r\n    }\r\n\r\n    textarea {\r\n        background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);\r\n        color: #C6A97C;\r\n        width: 80%;\r\n        height: 60px;\r\n        resize: vertical;\r\n    }\r\n\r\n    .stringInput {\r\n        background: #EDEFED;\r\n        background-color: #C6A97C;\r\n        text-align: left;\r\n        font-size: 12px;\r\n        border: 0px solid #ccc;\r\n        border-radius: 4%;\r\n        width: 40%;\r\n        padding: 2px;\r\n        margin-top: 1%;\r\n    }\r\n\r\n    .colorText {\r\n        width: 10%;\r\n        border: 1px solid #ddd;\r\n        border-radius: 5%;\r\n        box-shadow: 0 0 0px #ddd;\r\n    }\r\n\r\n    input[type=color] {\r\n        border-width: 0px;\r\n        border: none;\r\n        background: none;\r\n        height: 24px;\r\n        width: 24px;\r\n        vertical-align: sub;\r\n        margin: 0;\r\n        -webkit-appearance: none;\r\n    }\r\n\r\n    input[type=color]:focus {\r\n        box-shadow: 0 0 10px #fafff9;\r\n        border-width: 0px;\r\n        border: 1px solid #fafff9;\r\n        outline: none;\r\n    }\r\n    input[type=text]:focus {\r\n        box-shadow: 0 0 10px #fafff9;\r\n        border-color: #ddd;\r\n        outline: none;\r\n    }\r\n</style>");
+
+        lines.Add($"<h1><center>{configName.Replace("\\", "")} Generator</h1></center><center><p>Upload your config:<br><input type=\"file\" id=\"fileInput\" accept=\".cfg\"> <button type=\"button\" onclick=\"loadFileAsText()\"> Submit Config</button></p></center>");
+
+        lines.Add("<form id=\"configForm\">");
+
+        Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+        foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
         {
-            List<string> lines = [];
-            int colorItem = 0;
-            int sliderItem = 0;
-            string configName = ModConfig.ConfigFilePath[ModConfig.ConfigFilePath.LastIndexOf('\\')..];
-            lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body class=\"body\">");
+            configItems.Add(value.Definition, value);
+            Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
+        }
 
-            //css style, dont bother editing this in C# just cut/paste
-            lines.Add("<style>\r\n    .body {\r\n        background-image: linear-gradient(to bottom right,#1a1919, #0a0a0a);\r\n        color: whitesmoke;\r\n        font: Monospace;\r\n        padding-top: 1px;\r\n        padding-right: 1px;\r\n        padding-bottom: 1px;\r\n        padding-left: 0px;\r\n        margin-left: 20%;\r\n        margin-right: 20%;\r\n    }\r\n\r\n    .slider {\r\n        margin-top: 3%;\r\n    }\r\n\r\n    .slider:focus {\r\n        outline: none;\r\n        box-shadow: 0 0 10px #fafff9;\r\n    }\r\n\r\n    .numberInput {\r\n        background: transparent;\r\n        color: white;\r\n        text-align: center;\r\n        font-weight: bold;\r\n        font-size: 12px;\r\n        border: 1px solid #ccc;\r\n        border-radius: 4%;\r\n        vertical-align: super;\r\n    }\r\n\r\n    .checkbox {\r\n        margin-right: 0%;\r\n        margin-bottom: 1%;\r\n        display: inline-block;\r\n        margin-left: 0%;\r\n    }\r\n\r\n    .checkbox:focus {\r\n        outline: none;\r\n        box-shadow: 0 0 10px #fafff9;\r\n    }\r\n\r\n    textarea {\r\n        background-image: linear-gradient(to bottom right, #1B231A, #0a0a0a);\r\n        color: #C6A97C;\r\n        width: 80%;\r\n        height: 60px;\r\n        resize: vertical;\r\n    }\r\n\r\n    .stringInput {\r\n        background: #EDEFED;\r\n        background-color: #C6A97C;\r\n        text-align: left;\r\n        font-size: 12px;\r\n        border: 0px solid #ccc;\r\n        border-radius: 4%;\r\n        width: 40%;\r\n        padding: 2px;\r\n        margin-top: 1%;\r\n    }\r\n\r\n    .colorText {\r\n        width: 10%;\r\n        border: 1px solid #ddd;\r\n        border-radius: 5%;\r\n        box-shadow: 0 0 0px #ddd;\r\n    }\r\n\r\n    input[type=color] {\r\n        border-width: 0px;\r\n        border: none;\r\n        background: none;\r\n        height: 24px;\r\n        width: 24px;\r\n        vertical-align: sub;\r\n        margin: 0;\r\n        -webkit-appearance: none;\r\n    }\r\n\r\n    input[type=color]:focus {\r\n        box-shadow: 0 0 10px #fafff9;\r\n        border-width: 0px;\r\n        border: 1px solid #fafff9;\r\n        outline: none;\r\n    }\r\n    input[type=text]:focus {\r\n        box-shadow: 0 0 10px #fafff9;\r\n        border-color: #ddd;\r\n        outline: none;\r\n    }\r\n</style>");
 
-            lines.Add($"<h1><center>{configName.Replace("\\", "")} Generator</h1></center><center><p>Upload your config:<br><input type=\"file\" id=\"fileInput\" accept=\".cfg\"> <button type=\"button\" onclick=\"loadFileAsText()\"> Submit Config</button></p></center>");
+        string lastSection = "";
 
-            lines.Add("<form id=\"configForm\">");
-
-            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
-            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+        foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+        {            
+            if (pair.Key.Section != lastSection)
             {
-                configItems.Add(value.Definition, value);
-                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
+                if (lastSection != "")
+                    lines.Add($"</fieldset>");
+                lines.Add($"<fieldset>\r\n<legend>{pair.Key.Section}</legend>");
+                lastSection = pair.Key.Section;
             }
 
-
-            string lastSection = "";
-
-            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            if (pair.Value.BoxedValue.GetType() == typeof(bool))
             {
-
-                if (pair.Key.Section != lastSection)
+                Loggers.LogDebug($"bool config detected - {pair.Key.Key}");
+                if ((bool)pair.Value.DefaultValue)
                 {
-                    if (lastSection != "")
-                        lines.Add($"</fieldset>");
-                    lines.Add($"<fieldset>\r\n<legend>{pair.Key.Section}</legend>");
-                    lastSection = pair.Key.Section;
+                    Loggers.LogDebug("default is TRUE");
+                    lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
+                }
+                else
+                {
+                    Loggers.LogDebug("default is FALSE");
+                    lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
                 }
 
-                if (pair.Value.BoxedValue.GetType() == typeof(bool))
+
+            }
+            else if (pair.Value.BoxedValue.GetType() == typeof(string))
+            {
+                if (pair.Value.Description.AcceptableValues != null!)
                 {
-                    Loggers.LogDebug($"bool config detected - {pair.Key.Key}");
-                    if ((bool)pair.Value.DefaultValue)
+                    lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
+                    List<string> acceptableValues = GetAcceptableValues(pair.Value.Description.AcceptableValues);
+                    int num = 1;
+                    foreach (string value in acceptableValues)
                     {
-                        Loggers.LogDebug("default is TRUE");
-                        lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" checked=\"checked\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
-                    }
-                    else
-                    {
-                        Loggers.LogDebug("default is FALSE");
-                        lines.Add($"<p><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" class=\"checkbox\" type=\"checkbox\"/> <label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br></p>");
-                    }
-
-
-                }
-                else if (pair.Value.BoxedValue.GetType() == typeof(string))
-                {
-                    if (pair.Value.Description.AcceptableValues != null)
-                    {
-                        lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
-                        List<string> acceptableValues = GetAcceptableValues(pair.Value.Description.AcceptableValues);
-                        int num = 1;
-                        foreach (string value in acceptableValues)
-                        {
-                            string ToHtml = "";
-                            if (value == (string)pair.Value.DefaultValue)
-                                ToHtml = AddValueToHTMLCode(value, pair.Key.Key, num, true);
-                            else
-                                ToHtml = AddValueToHTMLCode(value, pair.Key.Key, num, false);
-
-                            lines.Add(ToHtml);
-                            num++;
-                        }
-                        lines.Add("</p>");
-                        Loggers.LogDebug($"clamped string config detected - {pair.Key.Key}");
-                    }
-                    else
-                    {
-                        string defaultValue = pair.Value.DefaultValue as string;
-                        if (defaultValue.StartsWith('#') && defaultValue.Length == 7)
-                        {
-                            lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br><input type=\"color\" id=\"color{colorItem}\" name=\"{pair.Key.Key}\" value=\"{defaultValue}\" oninput=\"color{colorItem}_text.value = color{colorItem}.value\"> " +
-                                $"<input type=\"text\" class=\"colorText\" name=\"{pair.Key.Key}_text\" id=\"color{colorItem}_text\" value=\"{defaultValue}\" onkeypress=\"return /[0-9a-zA-Z#]/i.test(event.key)\" pattern=\"#[0-9a-fA-F]{{3}}([0-9a-fA-F]{{3}})?\" oninput=\"color{colorItem}.value = color{colorItem}_text.value\"></p>");
-                            colorItem++;
-                        }
+                        string ToHtml = "";
+                        if (value == (string)pair.Value.DefaultValue)
+                            ToHtml = AddValueToHTMLCode(value, pair.Key.Key, num, true);
                         else
-                        {
-                            lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
-                        }
-                        Loggers.LogDebug($"string config detected - {pair.Key.Key}");
-                    }
+                            ToHtml = AddValueToHTMLCode(value, pair.Key.Key, num, false);
 
+                        lines.Add(ToHtml);
+                        num++;
+                    }
+                    lines.Add("</p>");
+                    Loggers.LogDebug($"clamped string config detected - {pair.Key.Key}");
                 }
-                else if (pair.Value.BoxedValue.GetType() == typeof(int) || pair.Value.BoxedValue.GetType() == typeof(float))
+                else
                 {
-                    if (pair.Value.Description.AcceptableValues != null)
+                    if (pair.Value.DefaultValue is not string defaultValue)
+                        continue;
+
+                    if (defaultValue.StartsWith('#') && defaultValue.Length == 7)
                     {
-                        lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
-                        List<float> acceptableValues = GetAcceptableValueF(pair.Value.Description.AcceptableValues);
-                        lines.Add(AddValueToHTMLCode(acceptableValues, pair.Key.Key, pair.Value.DefaultValue.ToString(), sliderItem));
-                        sliderItem++;
-                        lines.Add("</p>");
-                        Loggers.LogDebug($"clamped number-type config detected - {pair.Key.Key}");
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br><input type=\"color\" id=\"color{colorItem}\" name=\"{pair.Key.Key}\" value=\"{defaultValue}\" oninput=\"color{colorItem}_text.value = color{colorItem}.value\"> " +
+                            $"<input type=\"text\" class=\"colorText\" name=\"{pair.Key.Key}_text\" id=\"color{colorItem}_text\" value=\"{defaultValue}\" onkeypress=\"return /[0-9a-zA-Z#]/i.test(event.key)\" pattern=\"#[0-9a-fA-F]{{3}}([0-9a-fA-F]{{3}})?\" oninput=\"color{colorItem}.value = color{colorItem}_text.value\"></p>");
+                        colorItem++;
                     }
                     else
                     {
-                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" class=\"numberInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
-                        Loggers.LogDebug($"number-type config detected - {pair.Key.Key}");
+                        lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input id=\"{pair.Key.Key}\" name=\"{pair.Key.Key}\" type=\"text\" class=\"stringInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
                     }
+                    Loggers.LogDebug($"string config detected - {pair.Key.Key}");
+                }
+
+            }
+            else if (pair.Value.BoxedValue.GetType() == typeof(int) || pair.Value.BoxedValue.GetType() == typeof(float))
+            {
+                if (pair.Value.Description.AcceptableValues != null!)
+                {
+                    lines.Add($"<p>{pair.Key.Key}<br>{pair.Value.Description.Description}<br />");
+                    List<float> acceptableValues = GetAcceptableValueF(pair.Value.Description.AcceptableValues);
+                    lines.Add(AddValueToHTMLCode(acceptableValues, pair.Key.Key, pair.Value.DefaultValue.ToString(), sliderItem));
+                    sliderItem++;
+                    lines.Add("</p>");
+                    Loggers.LogDebug($"clamped number-type config detected - {pair.Key.Key}");
+                }
+                else
+                {
+                    lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br>{pair.Value.Description.Description}<br /><input name=\"{pair.Key.Key}\" type=\"number\" class=\"numberInput\" value=\"{pair.Value.DefaultValue}\" /><br /></p>");
+                    Loggers.LogDebug($"number-type config detected - {pair.Key.Key}");
                 }
             }
-            lines.Add($"</fieldset><br /></form>");
+        }
+        lines.Add($"</fieldset><br /></form>");
 
-            // Add the compression script
-            lines.Add(@"<script src=""https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js""></script>
+        // Add the compression script
+        lines.Add(@"<script src=""https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js""></script>
 	<script>
 function serializeForm() {
     const form = document.getElementById('configForm');
@@ -208,7 +208,7 @@ function parseConfig(text) {
 }
 
 function updateConfig(key, value) {
-    if (key === null || value === null) {
+    if (key === null || value === null!) {
         console.warn(""Cannot update key-value pair, one item is NULL"");
         return;
     }
@@ -228,7 +228,7 @@ function updateConfig(key, value) {
                 element.removeAttribute(""checked"");
         } else if (element.hasAttribute(""value"")) {
             if (typ === ""range"") {
-                if (next !== null) {
+                if (next !== null!) {
                     next.setAttribute(""value"", value);
                     next.textContent = value;
                 }
@@ -294,61 +294,60 @@ function compressData(data) {
 }
 </script>");
 
-            lines.Add("<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> " +
-                "<button type='button' onclick='clearText()'>Clear Results</button><br>");
-            lines.Add("<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br>" +
-                "<br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>");
+        lines.Add("<br /><center><button type='button' onclick='serializeForm()'>Get Form Code</button> " +
+            "<button type='button' onclick='clearText()'>Clear Results</button><br>");
+        lines.Add("<br>Raw data:<br><textarea id='rawData' readonly=true></textarea><br>" +
+            "<br>Code:<br><textarea id='compressedData' readonly=true></textarea></center>");
 
-            lines.Add("</body></html>");
-            if (!Directory.Exists($"{Paths.ConfigPath}/webconfig"))
-                Directory.CreateDirectory($"{Paths.ConfigPath}/webconfig");
-            File.WriteAllLines($"{Paths.ConfigPath}/webconfig/{configName}_generator.htm", lines);
-        }
+        lines.Add("</body></html>");
+        if (!Directory.Exists($"{Paths.ConfigPath}/webconfig"))
+            Directory.CreateDirectory($"{Paths.ConfigPath}/webconfig");
+        File.WriteAllLines($"{Paths.ConfigPath}/webconfig/{configName}_generator.htm", lines);
+    }
 
-        static string DecompressBase64Gzip(string base64)
+    static string DecompressBase64Gzip(string base64)
+    {
+        byte[] gzipBytes = Convert.FromBase64String(base64);
+
+        using var compressedStream = new MemoryStream(gzipBytes);
+        using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
+        using var reader = new StreamReader(gzipStream, Encoding.UTF8);
+        return reader.ReadToEnd();
+    }
+
+    public static void ReadCompressedConfig(ref ConfigEntry<string> configEntry, ConfigFile ModConfig)
+    {
+        string compressedDataBase64 = configEntry.Value;
+        string decompressed = DecompressBase64Gzip(compressedDataBase64);
+
+        Dictionary<string, string> fromString = ParseHelper.ParseKeyValuePairs(decompressed);
+
+        if (fromString.Count == 0)
+            return;
+
+        foreach (KeyValuePair<string, string> pair in fromString)
         {
-            byte[] gzipBytes = Convert.FromBase64String(base64);
-
-            using var compressedStream = new MemoryStream(gzipBytes);
-            using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
-            using var reader = new StreamReader(gzipStream, Encoding.UTF8);
-            return reader.ReadToEnd();
-        }
-
-        public static void ReadCompressedConfig(ref ConfigEntry<string> configEntry, ConfigFile ModConfig)
-        {
-            string compressedDataBase64 = configEntry.Value;
-            string decompressed = DecompressBase64Gzip(compressedDataBase64);
-
-            Dictionary<string, string> fromString = ParseHelper.ParseKeyValuePairs(decompressed);
-
-            if (fromString.Count == 0)
-                return;
-
-            foreach (KeyValuePair<string, string> pair in fromString)
+            if (TryFindConfigItem(pair.Key, ModConfig, out ConfigEntryBase configItem))
             {
-                if (TryFindConfigItem(pair.Key, ModConfig, out ConfigEntryBase configItem))
+                if (configItem.BoxedValue.GetType() == typeof(bool))
                 {
-                    if (configItem.BoxedValue.GetType() == typeof(bool))
-                    {
-                        ChangeBool(ModConfig, configItem, pair.Value.ToLower());
-                    }
-                    else if (configItem.BoxedValue.GetType() == typeof(string))
-                    {
-                        ChangeString(ModConfig, configItem, pair.Value);
-                    }
-                    else if (configItem.BoxedValue.GetType() == typeof(int))
-                    {
-                        ChangeInt(ModConfig, configItem, pair.Value);
-                    }
-                    else if (configItem.BoxedValue.GetType() == typeof(float))
-                    {
-                        ChangeFloat(ModConfig, configItem, pair.Value);
-                    }
+                    ChangeBool(ModConfig, configItem, pair.Value.ToLower());
+                }
+                else if (configItem.BoxedValue.GetType() == typeof(string))
+                {
+                    ChangeString(ModConfig, configItem, pair.Value);
+                }
+                else if (configItem.BoxedValue.GetType() == typeof(int))
+                {
+                    ChangeInt(ModConfig, configItem, pair.Value);
+                }
+                else if (configItem.BoxedValue.GetType() == typeof(float))
+                {
+                    ChangeFloat(ModConfig, configItem, pair.Value);
                 }
             }
-
-            configEntry.Value = "";
         }
+
+        configEntry.Value = "";
     }
 }

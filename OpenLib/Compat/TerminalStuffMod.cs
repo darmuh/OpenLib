@@ -6,7 +6,7 @@ namespace OpenLib.Compat
     {
         public static void NetSync(TerminalNode node)
         {
-            if (node == null)
+            if (node == null!)
                 return;
 
             if (!Plugin.instance.TerminalStuff)
@@ -21,7 +21,7 @@ namespace OpenLib.Compat
 
         public static void LoadAndSync(TerminalNode node)
         {
-            if (node == null)
+            if (node == null!)
                 return;
 
             Plugin.instance.Terminal.LoadNewNode(node);
@@ -42,7 +42,7 @@ namespace OpenLib.Compat
             if (!Plugin.instance.TerminalStuff)
                 return false;
 
-            if (TerminalStuff.EventSub.TerminalStart.startNode == null)
+            if (TerminalStuff.EventSub.TerminalStart.startNode == null!)
                 return false;
 
             LoadAndSync(TerminalStuff.EventSub.TerminalStart.startNode);
@@ -57,7 +57,7 @@ namespace OpenLib.Compat
             if (TerminalStuff.TerminalEvents.terminalSettings.startPageValue.Length < 1)
                 return false;
 
-            if (TerminalStuff.TerminalEvents.terminalSettings.startPage == null)
+            if (TerminalStuff.TerminalEvents.terminalSettings.startPage == null!)
                 return false;
 
             LoadAndSync(TerminalStuff.TerminalEvents.terminalSettings.startPage);

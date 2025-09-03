@@ -53,7 +53,7 @@ namespace OpenLib.ConfigManager
         public static bool ShouldReloadConfigNow(ConfigEntry<string> entry)
         {
 
-            if (Plugin.instance.Terminal != null)
+            if (Plugin.instance.Terminal != null!)
             {
                 if (!EventUsage.configsToReload.Contains(entry.ConfigFile))
                     EventUsage.configsToReload.Add(entry.ConfigFile);

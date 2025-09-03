@@ -8,299 +8,297 @@ using System.Linq;
 using System.Reflection;
 using static OpenLib.Common.CommonStringStuff;
 
-namespace OpenLib.ConfigManager
+namespace OpenLib.ConfigManager;
+public static class ConfigSetup
 {
-    public static class ConfigSetup
-    {
-        public static List<ManagedConfig> defaultManaged = []; //must remain lowercase or risk breaking terminalstuff
-        public static MainListing defaultListing = new(); //must remain lowercase or risk breaking terminalstuff
-        public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
+    public static List<ManagedConfig> defaultManaged = []; //must remain lowercase or risk breaking terminalstuff
+    public static MainListing defaultListing = new(); //must remain lowercase or risk breaking terminalstuff
+    public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
 
-        public static void BindConfigSettings()
-        {
-            Plugin.Log.LogInfo("Binding configuration settings");
+    public static void BindConfigSettings()
+    {
+        Plugin.Log.LogInfo("Binding configuration settings");
 
             LogLevel = MakeGeneric(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.WarningsPlus, "Set OpenLib logging level");
-            //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
+        //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
+    }
+
+    public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", string configString = "", Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+    {
+        List<string> keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString);
+
+        if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
+        {
+            resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+
+            return resultBool;
+        }
+        else
+        {
+            ManagedConfig managedBool = new();
+            managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+
+            managedItems.Add(managedBool);
+
+            return managedBool;
+        }
+    }
+
+    public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", ConfigEntry<string> configString = null!, Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+    {
+        List<string> keywordList = [];
+        bool isStringNull = true;
+        if (configString != null)
+        {
+            isStringNull = false;
+            keywordList = GetKeywordsPerConfigItem(configString.Value);
         }
 
-        public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", string configString = "", Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+        if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
         {
-            List<string> keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString);
+            resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
 
-            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
+            if (!isStringNull)
             {
-                resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-
-                return resultBool;
+                AddManagedString(configString!, ref managedItems, resultBool);
             }
-            else
+            return resultBool;
+        }
+        else
+        {
+            ManagedConfig managedBool = new();
+            managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+
+
+            managedItems.Add(managedBool);
+
+            if (!isStringNull)
             {
-                ManagedConfig managedBool = new();
-                managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-
-                managedItems.Add(managedBool);
-
-                return managedBool;
+                AddManagedString(configString!, ref managedItems, managedBool);
             }
+
+            return managedBool;
+        }
+    }
+
+    public static ManagedConfig NewManagedBool(ref List<ManagedConfig> managedItems, string configItemName, bool isEnabled, string configDescription, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+    {
+        if (ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
+        {
+            resultBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+            return resultBool;
+        }
+        else
+        {
+            ManagedConfig managedBool = new();
+            managedBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
+
+            managedItems.Add(managedBool);
+            return managedBool;
+        }
+    }
+
+    public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string ConfigDescription)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind<T>(section, configItemName, defaultValue, ConfigDescription);
+    }
+
+    public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, AcceptableValueList<T> acceptableValues = null!) where T : IEquatable<T>, IComparable<T>
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind<T>(section, configItemName, defaultValue, new ConfigDescription(description, acceptableValues));
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<bool> MakeBool(ConfigFile ModConfig, string section, string configItemName, bool defaultValue, string configDescription)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind<bool>(section, configItemName, defaultValue, configDescription);
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<int> MakeInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind<int>(section, configItemName, defaultValue, configDescription);
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<string> MakeClampedString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription, AcceptableValueList<string> acceptedValues)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, acceptedValues));
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<int> MakeClampedInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription, int minValue, int maxValue)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<int>(minValue, maxValue)));
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<float> MakeClampedFloat(ConfigFile ModConfig, string section, string configItemName, float defaultValue, string configDescription, float minValue, float maxValue)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<float>(minValue, maxValue)));
+    }
+
+    [Obsolete("Should use MakeGeneric instead")]
+    public static ConfigEntry<string> MakeString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription)
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+
+        return ModConfig.Bind(section, configItemName, defaultValue, configDescription);
+    }
+
+    public static bool CheckForConfigName(string configName, ConfigFile ModConfig)
+    {
+        return ModConfig.Keys.Any(c => c.Key == configName);
+    }
+
+    public static void AddManagedString(ConfigEntry<string> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
+    {
+        ManagedConfig managedString = new()
+        {
+            ConfigItemName = configItem.Definition.Key,
+            configDescription = configItem.Description.Description,
+            StringValue = configItem.Value,
+            relatedConfigItem = relatedConfigItem,
+            ConfigType = 1
+        };
+
+        managedItems.Add(managedString);
+    }
+
+    public static void RemoveOrphanedEntries(ConfigFile ModConfig)
+    {
+        Loggers.LogInfo("removing orphaned entries (credits to Kittenji)");
+        PropertyInfo orphanedEntriesProp = ModConfig.GetType().GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        var orphanedEntries = (Dictionary<ConfigDefinition, string>)orphanedEntriesProp.GetValue(ModConfig, null);
+
+        orphanedEntries.Clear(); // Clear orphaned entries (Unbinded/Abandoned entries)
+        ModConfig.Save(); // Save the config file
+    }
+
+    public static void NetworkingCheck(bool NetworkConfigOption, ConfigFile ModConfig, List<ManagedConfig> managedBools)
+    {
+        Plugin.Log.LogInfo("Checking if networking is disabled...");
+
+        if (NetworkConfigOption)
+            return;
+
+        List<ConfigEntry<bool>> configBools = [];
+
+        Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+        foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+        {
+            configItems.Add(value.Definition, value);
+            Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
         }
 
-        public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", ConfigEntry<string> configString = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
+        foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
         {
-            List<string> keywordList = [];
-            bool isStringNull = true;
-            if (configString != null)
+            if (pair.Value.BoxedValue.GetType() == typeof(bool))
             {
-                isStringNull = false;
-                keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString.Value);
-            }
-
-            if (ManagedBoolGet.TryGetItemByName(managedItems, boolEntry.Definition.Key, 0, out ManagedConfig resultBool))
-            {
-                resultBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-
-                if (!isStringNull)
+                if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
                 {
-                    AddManagedString(configString, ref managedItems, resultBool);
-                }
-                return resultBool;
-            }
-            else
-            {
-                ManagedConfig managedBool = new();
-                managedBool.SetManagedBoolValues(boolEntry, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-
-
-                managedItems.Add(managedBool);
-
-                if (!isStringNull)
-                {
-                    AddManagedString(configString, ref managedItems, managedBool);
-                }
-
-                return managedBool;
-            }
-        }
-
-        public static ManagedConfig NewManagedBool(ref List<ManagedConfig> managedItems, string configItemName, bool isEnabled, string configDescription, bool isNetworked = false, string category = "", List<string> keywordList = null, Func<string> mainAction = null, int commandType = 0, bool clearText = true, Func<string> confirmAction = null, Func<string> denyAction = null, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
-        {
-            if (ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
-            {
-                resultBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-                return resultBool;
-            }
-            else
-            {
-                ManagedConfig managedBool = new();
-                managedBool.SetManagedBoolValues(configItemName, isEnabled, configDescription, isNetworked, category, keywordList, mainAction, commandType, clearText, confirmAction, denyAction, confirmText, denyText, special, specialNum, nodeName, itemList, price, storeName, alwaysInStock, maxStock, reuseFunc);
-
-                managedItems.Add(managedBool);
-                return managedBool;
-            }
-        }
-
-        public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string ConfigDescription)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind<T>(section, configItemName, defaultValue, ConfigDescription);
-        }
-
-        public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, AcceptableValueList<T> acceptableValues = null!) where T : IEquatable<T>, IComparable<T>
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind<T>(section, configItemName, defaultValue, new ConfigDescription(description, acceptableValues));
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<bool> MakeBool(ConfigFile ModConfig, string section, string configItemName, bool defaultValue, string configDescription)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind<bool>(section, configItemName, defaultValue, configDescription);
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<int> MakeInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind<int>(section, configItemName, defaultValue, configDescription);
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<string> MakeClampedString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription, AcceptableValueList<string> acceptedValues)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, acceptedValues));
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<int> MakeClampedInt(ConfigFile ModConfig, string section, string configItemName, int defaultValue, string configDescription, int minValue, int maxValue)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<int>(minValue, maxValue)));
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<float> MakeClampedFloat(ConfigFile ModConfig, string section, string configItemName, float defaultValue, string configDescription, float minValue, float maxValue)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind(section, configItemName, defaultValue, new ConfigDescription(configDescription, new AcceptableValueRange<float>(minValue, maxValue)));
-        }
-
-        [Obsolete("Should use MakeGeneric instead")]
-        public static ConfigEntry<string> MakeString(ConfigFile ModConfig, string section, string configItemName, string defaultValue, string configDescription)
-        {
-            section = BepinFriendlyString(section);
-            configItemName = BepinFriendlyString(configItemName);
-
-            return ModConfig.Bind(section, configItemName, defaultValue, configDescription);
-        }
-
-        public static bool CheckForConfigName(string configName, ConfigFile ModConfig)
-        {
-            return ModConfig.Keys.Any(c => c.Key == configName);
-        }
-
-        public static void AddManagedString(ConfigEntry<string> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
-        {
-            ManagedConfig managedString = new()
-            {
-                ConfigItemName = configItem.Definition.Key,
-                configDescription = configItem.Description.Description,
-                StringValue = configItem.Value,
-                relatedConfigItem = relatedConfigItem,
-                ConfigType = 1
-            };
-
-            managedItems.Add(managedString);
-        }
-
-        public static void RemoveOrphanedEntries(ConfigFile ModConfig)
-        {
-            Loggers.LogInfo("removing orphaned entries (credits to Kittenji)");
-            PropertyInfo orphanedEntriesProp = ModConfig.GetType().GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            var orphanedEntries = (Dictionary<ConfigDefinition, string>)orphanedEntriesProp.GetValue(ModConfig, null);
-
-            orphanedEntries.Clear(); // Clear orphaned entries (Unbinded/Abandoned entries)
-            ModConfig.Save(); // Save the config file
-        }
-
-        public static void NetworkingCheck(bool NetworkConfigOption, ConfigFile ModConfig, List<ManagedConfig> managedBools)
-        {
-            Plugin.Log.LogInfo("Checking if networking is disabled...");
-
-            if (NetworkConfigOption)
-                return;
-
-            List<ConfigEntry<bool>> configBools = [];
-
-            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
-            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
-            {
-                configItems.Add(value.Definition, value);
-                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
-            }
-
-            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
-            {
-                if (pair.Value.BoxedValue.GetType() == typeof(bool))
-                {
-                    if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
+                    if (ManagedBoolGet.TryGetItemByName(managedBools, pair.Key.Key, 0, out ManagedConfig result))
                     {
-                        if (ManagedBoolGet.TryGetItemByName(managedBools, pair.Key.Key, 0, out ManagedConfig result))
-                        {
-                            if (result.ConfigType != 0)
-                                Loggers.LogDebug("ManagedItem is type 0, bool");
+                        if (result.ConfigType != 0)
+                            Loggers.LogDebug("ManagedItem is type 0, bool");
 
-                            if (result.RequiresNetworking)
-                            {
-                                configBools.Add(entry);
-                                Loggers.LogDebug($"Adding {pair.Key.Key} to bools list to check against networking");
-                            }
-                            else
-                                Loggers.LogDebug($"{pair.Key.Key} is not listed as requiring networking");
+                        if (result.RequiresNetworking)
+                        {
+                            configBools.Add(entry);
+                            Loggers.LogDebug($"Adding {pair.Key.Key} to bools list to check against networking");
                         }
                         else
-                            Loggers.LogDebug($"entry is not a managed bool");
+                            Loggers.LogDebug($"{pair.Key.Key} is not listed as requiring networking");
                     }
+                    else
+                        Loggers.LogDebug($"entry is not a managed bool");
                 }
-                else
-                    Loggers.LogDebug($"entry is not a bool");
             }
-
-            configBools.DoIf(b => b.Value == true, DisableConfigBool);
-
-            ModConfig.Save(); // Save the config file
+            else
+                Loggers.LogDebug($"entry is not a bool");
         }
 
-        private static void DisableConfigBool(ConfigEntry<bool> entry)
+        configBools.DoIf(b => b.Value == true, DisableConfigBool);
+
+        ModConfig.Save(); // Save the config file
+    }
+
+    private static void DisableConfigBool(ConfigEntry<bool> entry)
+    {
+        entry.Value = false;
+        Plugin.Log.LogWarning($"Setting {entry.Definition.Key} to false. Networking is disabled and this setting requires networking!");
+    }
+
+    public static void ReadConfigAndAssignValues(ConfigFile ModConfig, List<ManagedConfig> managedBools) //good for config reload events
+    {
+        Plugin.Log.LogInfo("attempting to read config and assign values");
+        //List<ConfigDefinition> configKeys = [.. ModConfig.Keys];
+
+        Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+        foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
         {
-            entry.Value = false;
-            Plugin.Log.LogWarning($"Setting {entry.Definition.Key} to false. Networking is disabled and this setting requires networking!");
+            configItems.Add(value.Definition, value);
+            Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
         }
 
-        public static void ReadConfigAndAssignValues(ConfigFile ModConfig, List<ManagedConfig> managedBools) //good for config reload events
+        foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
         {
-            Plugin.Log.LogInfo("attempting to read config and assign values");
-            //List<ConfigDefinition> configKeys = [.. ModConfig.Keys];
-
-            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
-            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
+            Loggers.LogDebug("checking item");
+            if (pair.Value.BoxedValue.GetType() == typeof(bool))
             {
-                configItems.Add(value.Definition, value);
-                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
+                if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
+                {
+                    Loggers.LogDebug("bool entry found");
+                    Loggers.LogDebug($"{entry.Definition.Key}");
+                    if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 0, out ManagedConfig match))
+                    {
+                        match.BoolValue = entry.Value;
+                        Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
+                    }
+                    else
+                        Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");
+                }
             }
-
-            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
+            else if ((pair.Value.BoxedValue.GetType() == typeof(string)))
             {
-                Loggers.LogDebug("checking item");
-                if (pair.Value.BoxedValue.GetType() == typeof(bool))
+                if (ModConfig.TryGetEntry<string>(pair.Key, out ConfigEntry<string> entry))
                 {
-                    if (ModConfig.TryGetEntry<bool>(pair.Key, out ConfigEntry<bool> entry))
+                    Loggers.LogDebug("string entry found");
+                    Loggers.LogDebug($"{entry.Definition.Key}");
+                    if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 1, out ManagedConfig match))
                     {
-                        Loggers.LogDebug("bool entry found");
-                        Loggers.LogDebug($"{entry.Definition.Key}");
-                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 0, out ManagedConfig match))
-                        {
-                            match.BoolValue = entry.Value;
-                            Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
-                        }
-                        else
-                            Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");
+                        match.StringValue = entry.Value;
+                        Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
                     }
+                    else
+                        Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");
                 }
-                else if ((pair.Value.BoxedValue.GetType() == typeof(string)))
-                {
-                    if (ModConfig.TryGetEntry<string>(pair.Key, out ConfigEntry<string> entry))
-                    {
-                        Loggers.LogDebug("string entry found");
-                        Loggers.LogDebug($"{entry.Definition.Key}");
-                        if (ManagedBoolGet.TryGetItemByName(managedBools, entry.Definition.Key, 1, out ManagedConfig match))
-                        {
-                            match.StringValue = entry.Value;
-                            Loggers.LogDebug($"Assigned ManagedConfig: {match.ConfigItemName} to configValue: {entry.Value}");
-                        }
-                        else
-                            Plugin.Log.LogWarning($"Could not find ManagedConfig for {pair.Key.Key}");
-                    }
-                }
-                else
-                    Plugin.Log.LogWarning($"Unable to read configItem {pair.Key.Key} and match to Managed Config Item");
             }
+            else
+                Plugin.Log.LogWarning($"Unable to read configItem {pair.Key.Key} and match to Managed Config Item");
         }
     }
 }

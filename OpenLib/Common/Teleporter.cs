@@ -4,8 +4,8 @@ namespace OpenLib.Common
 {
     public class Teleporter
     {
-        public static ShipTeleporter NormalTP;
-        public static ShipTeleporter InverseTP;
+        public static ShipTeleporter NormalTP = null!;
+        public static ShipTeleporter InverseTP = null!;
 
         public static void CheckTeleporterTypeAndAssign(ShipTeleporter instance)
         {

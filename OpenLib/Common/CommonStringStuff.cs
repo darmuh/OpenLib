@@ -6,223 +6,221 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace OpenLib.Common
+namespace OpenLib.Common;
+public class CommonStringStuff
 {
-    public class CommonStringStuff
+    public static string GetNextPage(List<string> categoryItems, string categoryTitle, int pageSize, int currentPage, out bool isNextEnabled) //used to return menus from terminalstuff
     {
-        public static string GetNextPage(List<string> categoryItems, string categoryTitle, int pageSize, int currentPage, out bool isNextEnabled) //used to return menus from terminalstuff
+        // Ensure CurrentPage is within valid range
+        currentPage = Mathf.Clamp(currentPage, 1, Mathf.CeilToInt((float)categoryItems.Count / pageSize));
+
+        // Calculate the start and end indexes for the current page
+        int startIndex = (currentPage - 1) * pageSize;
+        int endIndex = Mathf.Min(startIndex + pageSize, categoryItems.Count);
+        int totalItems = 0;
+        int emptySpace;
+        StringBuilder message = new();
+
+        message.Append($"============ All [{categoryTitle.ToUpper()}] Commands  ============");
+        message.Append("\r\n");
+
+        // Iterate through each item in the current page
+        for (int i = startIndex; i < endIndex; i++)
         {
-            // Ensure CurrentPage is within valid range
-            currentPage = Mathf.Clamp(currentPage, 1, Mathf.CeilToInt((float)categoryItems.Count / pageSize));
+            string menuItem = categoryItems[i];
+            message.Append(menuItem + "\r\n");
+            totalItems++;
+        }
 
-            // Calculate the start and end indexes for the current page
-            int startIndex = (currentPage - 1) * pageSize;
-            int endIndex = Mathf.Min(startIndex + pageSize, categoryItems.Count);
-            int totalItems = 0;
-            int emptySpace;
-            StringBuilder message = new();
+        emptySpace = pageSize - totalItems;
 
-            message.Append($"============ All [{categoryTitle.ToUpper()}] Commands  ============");
+        for (int i = 0; i < emptySpace; i++)
+        {
             message.Append("\r\n");
+            //add empty space to keep menu shape
+        }
 
-            // Iterate through each item in the current page
-            for (int i = startIndex; i < endIndex; i++)
+        message.Append("\r\n");
+        message.Append($"Page {currentPage}/{Mathf.CeilToInt((float)categoryItems.Count / pageSize)}\r\n");
+
+        if (endIndex < categoryItems.Count)
+        {
+            message.Append($"Type next to see the next page of [{categoryTitle}] commands!\r\n");
+            isNextEnabled = true;
+        }
+        else
+            isNextEnabled = false;
+
+        return message.ToString();
+    }
+
+    public static string[] GetWords() //get a word list from terminal input
+    {
+        string cleanedText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
+        string[] words = cleanedText.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+        return words;
+    }
+
+    public static string[] GetWordsAndKeyword(List<string> configItemWords, string[] words) //used with tp command in TerminalStuff
+    {
+        List<string> filteredWords = [];
+        bool keywordFound = false;
+
+        foreach (string word in words)
+        {
+            Loggers.LogInfo($"checking {word}");
+            foreach (string keyword in configItemWords)
             {
-                string menuItem = categoryItems[i];
-                message.Append(menuItem + "\r\n");
-                totalItems++;
+                if (keyword.Contains(word))
+                {
+                    filteredWords.Add(keyword);
+                    keywordFound = true;
+                    Loggers.LogInfo($"adding {keyword} to list");
+                    break;
+                }
             }
 
-            emptySpace = pageSize - totalItems;
-
-            for (int i = 0; i < emptySpace; i++)
+            if (!keywordFound)
             {
-                message.Append("\r\n");
-                //add empty space to keep menu shape
+                filteredWords.Add(word);
+                Loggers.LogInfo($"adding non-keyword, word: {word}");
             }
 
-            message.Append("\r\n");
-            message.Append($"Page {currentPage}/{Mathf.CeilToInt((float)categoryItems.Count / pageSize)}\r\n");
+        }
 
-            if (endIndex < categoryItems.Count)
+        return [.. filteredWords];
+    }
+
+    public static List<string> GetKeywordsPerConfigItem(string configItem) //config item separated by semicolon only
+    {
+        List<string> keywordsInConfig = [];
+        if (configItem.Length > 0)
+            keywordsInConfig = [.. configItem.Split(';').Select(item => item.TrimStart())];
+
+        return keywordsInConfig;
+    }
+
+    public static List<string> GetKeywordsPerConfigItem(string configItem, char separator) //config item separated by defined char
+    {
+        List<string> keywordsInConfig = [];
+        if (configItem.Length > 0)
+            keywordsInConfig = [.. configItem.Split(separator).Select(item => item.TrimStart())];
+
+        return keywordsInConfig;
+    }
+
+    public static List<int> GetNumberListFromStringList(List<string> stringList) //return list of numbers from list of strings
+    {
+        List<int> numbersList = [];
+        foreach (string item in stringList)
+        {
+            if (int.TryParse(item, out int number))
             {
-                message.Append($"Type next to see the next page of [{categoryTitle}] commands!\r\n");
-                isNextEnabled = true;
+                numbersList.Add(number);
             }
             else
-                isNextEnabled = false;
-
-            return message.ToString();
+                Loggers.WARNING($"Could not parse {item} to integer");
         }
 
-        public static string[] GetWords() //get a word list from terminal input
+        return numbersList;
+    }
+
+    public static string BepinFriendlyString(string input)
+    {
+        char[] invalidChars = ['\'', '\n', '\t', '\\', '"', '[', ']'];
+        string result = "";
+
+        input = input.Trim();
+
+        foreach (char c in input)
         {
-            string cleanedText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
-            string[] words = cleanedText.Split([' '], StringSplitOptions.RemoveEmptyEntries);
-            return words;
+            if (!invalidChars.Contains(c))
+                result += c;
+            else
+                continue;
         }
 
-        public static string[] GetWordsAndKeyword(List<string> configItemWords, string[] words) //used with tp command in TerminalStuff
-        {
-            List<string> filteredWords = [];
-            bool keywordFound = false;
+        return result;
+    }
 
-            foreach (string word in words)
+    public static bool TryGetKey(string query, out Key key)
+    {
+        if (Enum.TryParse(query, ignoreCase: true, out key))
+            return true;
+        return false;
+    }
+
+    public static List<float> GetFloatListFromStringList(List<string> stringList) //return list of floats from list of strings
+    {
+        List<float> numbersList = [];
+        foreach (string item in stringList)
+        {
+            if (item.IsNullOrWhiteSpace())
+                continue;
+
+            if (float.TryParse(item, out float number))
             {
-                Loggers.LogInfo($"checking {word}");
-                foreach (string keyword in configItemWords)
-                {
-                    if (keyword.Contains(word))
-                    {
-                        filteredWords.Add(keyword);
-                        keywordFound = true;
-                        Loggers.LogInfo($"adding {keyword} to list");
-                        break;
-                    }
-                }
-
-                if (!keywordFound)
-                {
-                    filteredWords.Add(word);
-                    Loggers.LogInfo($"adding non-keyword, word: {word}");
-                }
-
+                numbersList.Add(number);
             }
-
-            return [.. filteredWords];
+            else
+                Loggers.WARNING($"Could not parse {item} to float");
         }
 
-        public static List<string> GetKeywordsPerConfigItem(string configItem) //config item separated by semicolon only
-        {
-            List<string> keywordsInConfig = [];
-            if (configItem.Length > 0)
-                keywordsInConfig = [.. configItem.Split(';').Select(item => item.TrimStart())];
+        return numbersList;
+    }
 
-            return keywordsInConfig;
+    public static List<string> GetItemList(string rawList) //return list from raw string separated by comma
+    {
+        List<string> itemList = [];
+        if (rawList.Length > 0)
+        {
+            itemList = [.. rawList.Split(',').Select(item => item.TrimStart())];
         }
 
-        public static List<string> GetKeywordsPerConfigItem(string configItem, char separator) //config item separated by defined char
-        {
-            List<string> keywordsInConfig = [];
-            if (configItem.Length > 0)
-                keywordsInConfig = [.. configItem.Split(separator).Select(item => item.TrimStart())];
+        return itemList;
+    }
 
-            return keywordsInConfig;
+    public static List<string> GetListToLower(List<string> stringList) //remove punctuation from list<string>
+    {
+        return stringList.ConvertAll(s => s.ToLower());
+    }
+
+    public static string GetKeywordsForMenuItem(List<string> itemKeywords) //return a single string separated by commas
+    {
+        if (itemKeywords.Count == 0)
+            return "";
+
+        if (itemKeywords.Count == 1)
+            return itemKeywords[0];
+
+        StringBuilder menuItem = new();
+        foreach (string key in itemKeywords)
+        {
+            menuItem.Append($"{key}, ");
         }
+        string finalList = menuItem.ToString();
+        string listFixed = finalList[..^2];
+        return listFixed; //used for strings that return the list separated by commas
+    }
 
-        public static List<int> GetNumberListFromStringList(List<string> stringList) //return list of numbers from list of strings
+    public static string GetCleanedScreenText(Terminal __instance) //copied from vanilla game, useful to get terminal friendly output
+    {
+        string s = __instance.screenText.text[^__instance.textAdded..];
+
+        return RemovePunctuation(s);
+    }
+
+    public static string RemovePunctuation(string s) //copied from game files, same as above
+    {
+        StringBuilder stringBuilder = new();
+        foreach (char c in s)
         {
-            List<int> numbersList = [];
-            foreach (string item in stringList)
+            if (!char.IsPunctuation(c))
             {
-                if (int.TryParse(item, out int number))
-                {
-                    numbersList.Add(number);
-                }
-                else
-                    Loggers.WARNING($"Could not parse {item} to integer");
+                stringBuilder.Append(c);
             }
-
-            return numbersList;
         }
 
-        public static string BepinFriendlyString(string input)
-        {
-            char[] invalidChars = ['\'', '\n', '\t', '\\', '"', '[', ']'];
-            string result = "";
-
-            input = input.Trim();
-
-            foreach (char c in input)
-            {
-                if (!invalidChars.Contains(c))
-                    result += c;
-                else
-                    continue;
-            }
-
-            return result;
-        }
-
-        public static bool TryGetKey(string query, out Key key)
-        {
-            if (Enum.TryParse(query, ignoreCase: true, out key))
-                return true;
-            return false;
-        }
-
-        public static List<float> GetFloatListFromStringList(List<string> stringList) //return list of floats from list of strings
-        {
-            List<float> numbersList = [];
-            foreach (string item in stringList)
-            {
-                if (item.IsNullOrWhiteSpace())
-                    continue;
-
-                if (float.TryParse(item, out float number))
-                {
-                    numbersList.Add(number);
-                }
-                else
-                    Loggers.WARNING($"Could not parse {item} to float");
-            }
-
-            return numbersList;
-        }
-
-        public static List<string> GetItemList(string rawList) //return list from raw string separated by comma
-        {
-            List<string> itemList = [];
-            if (rawList.Length > 0)
-            {
-                itemList = [.. rawList.Split(',').Select(item => item.TrimStart())];
-            }
-
-            return itemList;
-        }
-
-        public static List<string> GetListToLower(List<string> stringList) //remove punctuation from list<string>
-        {
-            return stringList.ConvertAll(s => s.ToLower());
-        }
-
-        public static string GetKeywordsForMenuItem(List<string> itemKeywords) //return a single string separated by commas
-        {
-            if (itemKeywords.Count == 0)
-                return "";
-
-            if (itemKeywords.Count == 1)
-                return itemKeywords[0];
-
-            StringBuilder menuItem = new();
-            foreach (string key in itemKeywords)
-            {
-                menuItem.Append($"{key}, ");
-            }
-            string finalList = menuItem.ToString();
-            string listFixed = finalList[..^2];
-            return listFixed; //used for strings that return the list separated by commas
-        }
-
-        public static string GetCleanedScreenText(Terminal __instance) //copied from vanilla game, useful to get terminal friendly output
-        {
-            string s = __instance.screenText.text[^__instance.textAdded..];
-
-            return RemovePunctuation(s);
-        }
-
-        public static string RemovePunctuation(string s) //copied from game files, same as above
-        {
-            StringBuilder stringBuilder = new();
-            foreach (char c in s)
-            {
-                if (!char.IsPunctuation(c))
-                {
-                    stringBuilder.Append(c);
-                }
-            }
-
-            return stringBuilder.ToString().ToLower();
-        }
+        return stringBuilder.ToString().ToLower();
     }
 }

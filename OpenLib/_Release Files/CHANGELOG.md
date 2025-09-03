@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.4.0]
+ - Various BetterMenu adjustments to account for use in darmuhsTerminalStuff
+ - Added new event TerminalMenuKeyPressed for BetterMenu event handling specifically
+	- TerminalKeyPressed still exists for older menu bases and other functions (like shortcut handling)
+ - Project cleanup, now includes Config.Build.user.props, Directory.Build.props, and Directory.Build.targets files inspired by PEAKLib.
+	- Mod assemblies are loaded via nuget references, Game assemblies are gotten from user defined game data folder, etc.
+
 ## [0.3.2]
  - Added EnterAtPage method to BetterMenu for loading a different menu item at load-in
 	- for suitsTerminal config item in 1.6.2 of suitsTerminal
@@ -187,7 +194,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
  - Added RemoveCompatibleNoun method in RemoveThings.cs
  - Added new patch/event StartOfRoundChangeLevel
  - Added AssembleMainMenuText overload for when you're not using ManagedConfig stuff
- - Added Loggers.WARNING shortcut for LogWarning messages
+ - Added Plugin.WARNING shortcut for LogWarning messages
 
 ## [0.1.6]
  - Added soft compatibility method in Common.StartGame

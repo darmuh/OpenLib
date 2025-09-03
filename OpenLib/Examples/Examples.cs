@@ -15,7 +15,7 @@ namespace OpenLib.Examples
 
         public static void TestCodeEvent(TerminalAccessibleObject Code, PlayerControllerB playerOfCode)
         {
-            if (Code == null)
+            if (Code == null!)
             {
                 Loggers.WARNING("Code is NULL!");
                 return;
@@ -30,7 +30,7 @@ namespace OpenLib.Examples
 
         public static void TestCoolDownEvent(TerminalAccessibleObject Code, PlayerControllerB playerOfCode)
         {
-            if (Code == null)
+            if (Code == null!)
             {
                 Loggers.WARNING("Code is NULL!");
                 return;

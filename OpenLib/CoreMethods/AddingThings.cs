@@ -20,7 +20,7 @@ namespace OpenLib.CoreMethods
             terminalKeyword.isVerb = false;
             terminalKeyword.specialKeywordResult = existingNode;
 
-            if (existingNode.terminalOptions != null)
+            if (existingNode.terminalOptions != null!)
             {
                 existingNounList = [.. existingNode.terminalOptions];
                 Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
@@ -51,7 +51,7 @@ namespace OpenLib.CoreMethods
             terminalKeyword.isVerb = false;
             terminalKeyword.specialKeywordResult = existingNode;
 
-            if (existingNode.terminalOptions != null)
+            if (existingNode.terminalOptions != null!)
             {
                 existingNounList = [.. existingNode.terminalOptions];
                 Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
@@ -165,7 +165,7 @@ namespace OpenLib.CoreMethods
             if (!Plugin.KeywordsAdded.Contains(terminalKeyword))
                 Plugin.KeywordsAdded.Add(terminalKeyword);
 
-            if (category.ToLower() == "other" && otherNode != null)
+            if (category.ToLower() == "other" && otherNode != null!)
             {
                 AddToExistingNodeText($"{keywordDescription}", ref otherNode);
                 Loggers.LogDebug("adding node to other listing");
@@ -174,11 +174,11 @@ namespace OpenLib.CoreMethods
 
         //for use without referring to specific config items
         [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
-        public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
+        public static TerminalNode AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null!, Func<string> DenyAction = null!, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
-            TerminalNode returnNode = null;
+            TerminalNode returnNode = null!;
             List<string> keywords = [];
-            if (stringValue != null)
+            if (stringValue != null!)
                 keywords = CommonStringStuff.GetKeywordsPerConfigItem(stringValue);
 
             foreach (string keyword in keywords)
@@ -187,7 +187,7 @@ namespace OpenLib.CoreMethods
             }
 
 
-            if (returnNode == null)
+            if (returnNode == null!)
                 Loggers.WARNING("Returning NULL terminal node @AddNodeManual!!!");
 
             return returnNode!;
@@ -195,9 +195,9 @@ namespace OpenLib.CoreMethods
 
         //when you want to refer to config items for management but also want a terminalnode returned to you
         [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
-        public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
+        public static TerminalNode AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null!, Func<string> DenyAction = null!, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")
         {
-            TerminalNode returnNode = null;
+            TerminalNode returnNode = null!;
             List<string> keywords = [];
             bool isStringNull = true;
             if (stringValue != null)
@@ -211,7 +211,7 @@ namespace OpenLib.CoreMethods
                 returnNode = BaseCommandCreation(nodeName, keyword, commandAction, clearText, CommandType, yourModListing, price, ConfirmAction, DenyAction, confirmText, denyText, alwaysInStock, maxStock, storeName, reuseFunc, itemList);
             }
 
-            if (returnNode == null)
+            if (returnNode == null!)
                 Loggers.WARNING("Returning NULL terminal node @AddNodeManual!!!");
 
             if (ManagedBoolGet.CanAddToManagedBoolList(managedBools, nodeName))
@@ -219,9 +219,9 @@ namespace OpenLib.CoreMethods
                 TerminalMenuItem nodeInfo = new()
                 {
                     Category = category,
-                    itemDescription = description,
+                    ItemDescription = description,
                     ItemName = nodeName,
-                    itemKeywords = keywords,
+                    ItemKeywords = keywords,
                 };
 
                 ManagedConfig fromNode = new()
@@ -234,11 +234,11 @@ namespace OpenLib.CoreMethods
 
                 if (!isStringNull)
                 {
-                    ConfigSetup.AddManagedString(stringValue, ref managedBools, fromNode);
+                    ConfigSetup.AddManagedString(stringValue!, ref managedBools, fromNode);
                 }
             }
 
-            return returnNode;
+            return returnNode!;
         }
 
         //base level node/keyword creation
@@ -286,7 +286,7 @@ namespace OpenLib.CoreMethods
         [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void InfoText(ManagedConfig managedBool, string keyWord, TerminalKeyword infoWord, MainListing yourModListing)
         {
-            if (managedBool.InfoAction != null)
+            if (managedBool.InfoAction != null!)
             {
                 TerminalNode infoNode = BasicTerminal.CreateNewTerminalNode();
                 infoNode.name = "info_" + keyWord;
@@ -309,13 +309,13 @@ namespace OpenLib.CoreMethods
 
         public static void AddToFauxListing(FauxKeyword fauxWord, MainListing yourListing)
         {
-            if (fauxWord == null)
+            if (fauxWord == null!)
                 return;
 
-            if (fauxWord.Keyword == null)
+            if (fauxWord.Keyword == null!)
                 return;
 
-            if (fauxWord.MainPage != null)
+            if (fauxWord.MainPage != null!)
                 yourListing.fauxKeywords.Add(fauxWord);
         }
 
@@ -324,7 +324,7 @@ namespace OpenLib.CoreMethods
         {
             List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
 
-            Func<string> commandAction = managedBool.MainAction;
+            Func<string> commandAction = managedBool.MainAction!;
 
             string nodeName;
 
@@ -341,19 +341,19 @@ namespace OpenLib.CoreMethods
 
             bool clearText = managedBool.clearText;
 
-            TerminalNode terminalNode = BaseCommandCreation(nodeName, keyWord, commandAction, managedBool.clearText, managedBool.CommandType, yourModListing, managedBool.price, managedBool.ConfirmAction, managedBool.DenyAction, managedBool.confirmText, managedBool.denyText, managedBool.alwaysInStock, managedBool.maxStock, managedBool.storeName, managedBool.reuseFunc, managedBool.itemList);
+            TerminalNode terminalNode = BaseCommandCreation(nodeName, keyWord, commandAction, managedBool.clearText, managedBool.CommandType, yourModListing, managedBool.price, managedBool.ConfirmAction!, managedBool.DenyAction!, managedBool.confirmText, managedBool.denyText, managedBool.alwaysInStock, managedBool.maxStock, managedBool.storeName, managedBool.reuseFunc, managedBool.itemList);
 
-            if (terminalNode == null)
+            if (terminalNode == null!)
                 Loggers.WARNING("terminalNode is NULL at CreateNode!!!");
 
-            return terminalNode;
+            return terminalNode!;
         }
 
         [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddConfirm(string nodeName, ManagedConfig managedBool, Dictionary<TerminalNode, Func<string>> nodeListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
-            confirm = BasicTerminal.CreateCompatibleNoun(nodeName, "confirm", managedBool.confirmText, managedBool.price, managedBool.ConfirmAction, nodeListing);
-            deny = BasicTerminal.CreateCompatibleNoun(nodeName, "deny", managedBool.denyText, managedBool.price, managedBool.DenyAction, nodeListing);
+            confirm = BasicTerminal.CreateCompatibleNoun(nodeName, "confirm", managedBool.confirmText, managedBool.price, managedBool.ConfirmAction!, nodeListing);
+            deny = BasicTerminal.CreateCompatibleNoun(nodeName, "deny", managedBool.denyText, managedBool.price, managedBool.DenyAction!, nodeListing);
 
         }
 
@@ -367,15 +367,15 @@ namespace OpenLib.CoreMethods
         [Obsolete("use CommandManager class, if equivalent method does not exist will exist in the future")]
         public static void AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedConfig managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
-            if (managedBool.TerminalNode == null)
+            if (managedBool.TerminalNode == null!)
             {
                 Loggers.ERROR("node is null when adding store command!!!");
-                confirm = null;
-                deny = null;
+                confirm = null!;
+                deny = null!;
                 return;
             }
 
-            if (managedBool.ConfirmAction != null)
+            if (managedBool.ConfirmAction != null!)
             {
                 AddConfirm(nodeName, managedBool, mainListing.Listing, out confirm, out deny);
                 StoreStuff(nodeName, managedBool.storeName, ref keyword, ref managedBool.TerminalNode, managedBool.price, managedBool.alwaysInStock, managedBool.maxStock, ref confirm, ref deny);
@@ -383,8 +383,8 @@ namespace OpenLib.CoreMethods
             else
             {
                 Loggers.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
-                confirm = null;
-                deny = null;
+                confirm = null!;
+                deny = null!;
                 return;
             }
         }
@@ -393,15 +393,15 @@ namespace OpenLib.CoreMethods
         public static void AddStoreCommand(string nodeName, string storeName, ref TerminalKeyword keyword, ref TerminalNode node, int price, Func<string> ConfirmAction, Func<string> DenyAction, string confirmText, string denyText, MainListing mainListing, bool alwaysInStock, int maxStock, out CompatibleNoun confirm, out CompatibleNoun deny)
         {
 
-            if (node == null)
+            if (node == null!)
             {
                 Loggers.ERROR("node is null when adding store command!!!");
-                confirm = null;
-                deny = null;
+                confirm = null!;
+                deny = null!;
                 return;
             }
 
-            if (ConfirmAction != null)
+            if (ConfirmAction != null!)
             {
                 AddConfirm(nodeName, price, ConfirmAction, DenyAction, confirmText, denyText, mainListing.Listing, out confirm, out deny);
                 StoreStuff(nodeName, storeName, ref keyword, ref node, price, alwaysInStock, maxStock, ref confirm, ref deny);
@@ -409,8 +409,8 @@ namespace OpenLib.CoreMethods
             else
             {
                 Loggers.ERROR($"Shop nodes NEED confirmation, but confirmAction is null for {nodeName}!");
-                confirm = null;
-                deny = null;
+                confirm = null!;
+                deny = null!;
                 return;
             }
         }
@@ -580,8 +580,8 @@ namespace OpenLib.CoreMethods
             terminalKeyword.isVerb = false;
             terminalKeyword.specialKeywordResult = terminalNode;
 
-            CompatibleNoun confirm = null;
-            CompatibleNoun deny = null;
+            CompatibleNoun confirm = null!;
+            CompatibleNoun deny = null!;
 
             if (CommandType == 1) //base requires confirmation setup
             {
@@ -605,7 +605,7 @@ namespace OpenLib.CoreMethods
                 }
             }
 
-            if (confirm != null && deny != null)
+            if (confirm != null && deny != null!)
             {
                 allKeywordsList.Add(confirm.noun);
                 Plugin.KeywordsAdded.Add(confirm.noun);

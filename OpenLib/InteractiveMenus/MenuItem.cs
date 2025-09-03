@@ -33,7 +33,7 @@ namespace OpenLib.InteractiveMenus
             set => _LoadOnSelect = value;
         }
 
-        public virtual Action OnPageLoad { get; set; }
+        public virtual Action OnPageLoad { get; set; } = null!;
         public abstract CustomEvent SelectionEvent { get; set; }
         public abstract List<MenuItem> NestedMenus { get; set; }
         private MenuItem _parent = null!;
@@ -58,14 +58,11 @@ namespace OpenLib.InteractiveMenus
         }
 
         [Obsolete("Added for compatibility with older versions, please use the constructor with the bettermenubase")]
-        protected MenuItem()
-        {
-            Loggers.LogInfo("MenuItem created from obsolete constructor! Please use constructor with BetterMenuBase!");
-        }
+        protected MenuItem() => Loggers.LogInfo("MenuItem created from obsolete constructor! Please use constructor with BetterMenuBase!");
 
         protected MenuItem(BetterMenuBase betterMenu)
         {
-            if (betterMenu == null)
+            if (betterMenu == null!)
             {
                 Loggers.ERROR("Unable to assign menu item to NULL betterMenu!");
                 return;
@@ -82,7 +79,7 @@ namespace OpenLib.InteractiveMenus
 
         public virtual void SetParentMenu(MenuItem parent)
         {
-            if (parent == null)
+            if (parent == null!)
                 return;
 
             Parent = parent;
@@ -92,7 +89,7 @@ namespace OpenLib.InteractiveMenus
 
         public virtual void AddNestedItem(MenuItem parent)
         {
-            if (parent == null)
+            if (parent == null!)
                 return;
 
             if (!parent.NestedMenus.Contains(this))

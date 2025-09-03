@@ -25,7 +25,7 @@ The below documentation has been created to assist other mod developers who may 
 
 ### AddNodeManual
  - This is probably the simplest way to add a terminal command WITH additional logic
- - `AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
+ - `AddNodeManual(string nodeName, string stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, int price = 0, Func<string> ConfirmAction = null!, Func<string> DenyAction = null!, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
 	 - The return type for this method is **TerminalNode**
 		- when using this method you can return a terminalnode for use in your code & further modification
 	 - string nodeName = The name assigned to your TerminalNode element
@@ -102,7 +102,7 @@ The below documentation has been created to assist other mod developers who may 
 	- You will likely never need to call this method directly if you are using ManagedConfig to create your terminal commands.
  - `AddStoreCommand(string nodeName, ref TerminalKeyword keyword, ManagedConfig managedBool, MainListing mainListing, out CompatibleNoun confirm, out CompatibleNoun deny)`
 	- You will likely never need to call this method directly if you are using ManagedConfig to create your terminal commands.
- - `AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null, Func<string> DenyAction = null, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
+ - `AddNodeManual(string nodeName, ConfigEntry<string> stringValue, Func<string> commandAction, bool clearText, int CommandType, MainListing yourModListing, List<ManagedConfig> managedBools, string category = "", string description = "", int price = 0, Func<string> ConfirmAction = null!, Func<string> DenyAction = null!, string confirmText = "", string denyText = "", bool alwaysInStock = false, int maxStock = 1, string storeName = "", bool reuseFunc = false, string itemList = "")`
 	- This is useful for keywords you dont want to define at Terminal Awake but do have tied to config options.
 	- The stringValue config option can have multiple keywords in it separated by semi-colons ";" to assign multiple keywords to the same TerminalNode.
 	- Example from darmuhsTerminalStuff:

@@ -19,7 +19,7 @@ namespace OpenLib.CoreMethods
                 }
             }
 
-            returnNode = null;
+            returnNode = null!;
             return false;
         }
 
@@ -53,7 +53,7 @@ namespace OpenLib.CoreMethods
                 }
             }
 
-            terminalKeyword = null;
+            terminalKeyword = null!;
             return false;
         }
 
@@ -69,7 +69,7 @@ namespace OpenLib.CoreMethods
                 }
             }
 
-            itemOut = null;
+            itemOut = null!;
             return false;
         }
 
@@ -85,7 +85,7 @@ namespace OpenLib.CoreMethods
                 }
             }
 
-            itemOut = null;
+            itemOut = null!;
             return false;
         }
 
@@ -129,7 +129,7 @@ namespace OpenLib.CoreMethods
 
         public static bool IsCommandCreatedAlready(Dictionary<TerminalNode, Func<string>> MainCommandListing, string keyWord, Func<string> commandAction, List<TerminalKeyword> terminalKeywords, out TerminalKeyword outKeyword)
         {
-            outKeyword = null;
+            outKeyword = null!;
             if (MainCommandListing.Count == 0)
                 return false;
 
@@ -156,14 +156,14 @@ namespace OpenLib.CoreMethods
 
         public static bool DoesNodeExist(Dictionary<TerminalNode, Func<string>> MainCommandListing, Func<string> commandAction, out TerminalNode node)
         {
-            node = null;
+            node = null!;
 
             if (MainCommandListing.Count == 0)
                 return false;
 
             foreach (KeyValuePair<TerminalNode, Func<string>> item in MainCommandListing)
             {
-                if (item.Key == null)
+                if (item.Key == null!)
                     continue;
 
                 if (item.Value == commandAction)

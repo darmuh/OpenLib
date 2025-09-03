@@ -6,7 +6,7 @@ namespace OpenLib
 {
     public class PageBuilder
     {
-        public StringBuilder Content { get; set; }
+        public StringBuilder? Content { get; set; }
         public int PageNumber { get; set; }
     }
 

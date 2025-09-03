@@ -10,16 +10,7 @@ namespace OpenLib.InteractiveMenus
         private static int _activeIndex = 0;
         public static int StaticIndex
         {
-            get
-            {
-
-
-                return _activeIndex;
-            }
-            set
-            {
-                _activeIndex = value;
-            }
+            get => _activeIndex; set => _activeIndex = value;
         }
 
         public static bool TryGetMenu(string menuName, out BetterMenuBase item)
@@ -27,7 +18,7 @@ namespace OpenLib.InteractiveMenus
 
             item = AllMenus.FirstOrDefault(x => x.Name == menuName);
 
-            if (item == null)
+            if (item == null!)
                 return false;
             else
                 return true;

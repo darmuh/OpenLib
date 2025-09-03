@@ -8,119 +8,117 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OpenLib.CoreMethods
+namespace OpenLib.CoreMethods;
+public class BasicTerminal
 {
-    public class BasicTerminal
+    public static TerminalKeyword CreateNewTerminalKeyword(string name, string keyword, bool ReplaceExisting = false)
     {
-        public static TerminalKeyword CreateNewTerminalKeyword(string name, string keyword, bool ReplaceExisting = false)
+        if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword existing))
         {
-            if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword existing))
-            {
-                if (ReplaceExisting)
-                    CheckForAndDeleteKeyWord(keyword);
-                else
-                    return existing;
-            }
-
-            List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
-            TerminalKeyword newTerminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
-            newTerminalKeyword.name = name;
-
-            newTerminalKeyword.word = keyword;
-            newTerminalKeyword.isVerb = false;
-            newTerminalKeyword.compatibleNouns = [];
-            newTerminalKeyword.defaultVerb = null;
-            allKeywordsList.Add(newTerminalKeyword);
-
-            Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
-
-            return (newTerminalKeyword);
-        }
-
-        public static TerminalNode CreateNewTerminalNode()
-        {
-            TerminalNode newTerminalNode = ScriptableObject.CreateInstance<TerminalNode>();
-            newTerminalNode.name = "OpenLibTerminalNode";
-
-            newTerminalNode.displayText = string.Empty;
-            newTerminalNode.terminalEvent = string.Empty;
-            newTerminalNode.maxCharactersToType = 25;
-            newTerminalNode.buyItemIndex = -1;
-            newTerminalNode.buyRerouteToMoon = -1;
-            newTerminalNode.displayPlanetInfo = -1;
-            newTerminalNode.shipUnlockableID = -1;
-            newTerminalNode.creatureFileID = -1;
-            newTerminalNode.storyLogFileID = -1;
-            newTerminalNode.playSyncedClip = -1;
-            newTerminalNode.terminalOptions = [];
-
-            return (newTerminalNode);
-        }
-
-        //simpler version for NodeConfirmation class
-        public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "")
-        {
-            CompatibleNoun thisNoun = new();
-            if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
-                thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
-            else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
-                thisNoun.noun = thisWord;
+            if (ReplaceExisting)
+                CheckForAndDeleteKeyWord(keyword);
             else
-                thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
-
-
-            thisNoun.result = CreateNewTerminalNode();
-            thisNoun.result.name = nodeName + "_" + word;
-            thisNoun.result.displayText = displayText;
-            thisNoun.result.clearPreviousText = true;
-
-            thisNoun.noun.specialKeywordResult = thisNoun.result;
-            return thisNoun;
+                return existing;
         }
 
-        public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null, Dictionary<TerminalNode, Func<string>> nodeListing = null)
+        List<TerminalKeyword> allKeywordsList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+        TerminalKeyword newTerminalKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+        newTerminalKeyword.name = name;
+
+        newTerminalKeyword.word = keyword;
+        newTerminalKeyword.isVerb = false;
+        newTerminalKeyword.compatibleNouns = [];
+        newTerminalKeyword.defaultVerb = null!;
+        allKeywordsList.Add(newTerminalKeyword);
+
+        Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
+
+        return (newTerminalKeyword);
+    }
+
+    public static TerminalNode CreateNewTerminalNode()
+    {
+        TerminalNode newTerminalNode = ScriptableObject.CreateInstance<TerminalNode>();
+        newTerminalNode.name = "OpenLibTerminalNode";
+
+        newTerminalNode.displayText = string.Empty;
+        newTerminalNode.terminalEvent = string.Empty;
+        newTerminalNode.maxCharactersToType = 25;
+        newTerminalNode.buyItemIndex = -1;
+        newTerminalNode.buyRerouteToMoon = -1;
+        newTerminalNode.displayPlanetInfo = -1;
+        newTerminalNode.shipUnlockableID = -1;
+        newTerminalNode.creatureFileID = -1;
+        newTerminalNode.storyLogFileID = -1;
+        newTerminalNode.playSyncedClip = -1;
+        newTerminalNode.terminalOptions = [];
+
+        return (newTerminalNode);
+    }
+
+    //simpler version for NodeConfirmation class
+    public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "")
+    {
+        CompatibleNoun thisNoun = new();
+        if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
+            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+        else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
+            thisNoun.noun = thisWord;
+        else
+            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+
+
+        thisNoun.result = CreateNewTerminalNode();
+        thisNoun.result.name = nodeName + "_" + word;
+        thisNoun.result.displayText = displayText;
+        thisNoun.result.clearPreviousText = true;
+
+        thisNoun.noun.specialKeywordResult = thisNoun.result;
+        return thisNoun;
+    }
+
+    public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null!, Dictionary<TerminalNode, Func<string>> nodeListing = null!)
+    {
+        CompatibleNoun thisNoun = new();
+        if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
+            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+        else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
+            thisNoun.noun = thisWord;
+        else
+            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+
+
+        thisNoun.result = CreateNewTerminalNode();
+        thisNoun.result.name = nodeName + "_" + word;
+        thisNoun.result.displayText = displayText;
+        thisNoun.result.clearPreviousText = true;
+        thisNoun.result.itemCost = price;
+
+        thisNoun.noun.specialKeywordResult = thisNoun.result;
+        if (thisAction != null && nodeListing != null!)
+            nodeListing.Add(thisNoun.result, thisAction);
+
+        return thisNoun;
+    }
+
+    public static void CheckForAndDeleteKeyWord(string keyWord)
+    {
+        Loggers.LogDebug($"Checking for {keyWord}");
+        List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
+
+        for (int i = keyWordList.Count - 1; i >= 0; i--)
         {
-            CompatibleNoun thisNoun = new();
-            if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
-                thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
-            else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
-                thisNoun.noun = thisWord;
-            else
-                thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
-
-
-            thisNoun.result = CreateNewTerminalNode();
-            thisNoun.result.name = nodeName + "_" + word;
-            thisNoun.result.displayText = displayText;
-            thisNoun.result.clearPreviousText = true;
-            thisNoun.result.itemCost = price;
-
-            thisNoun.noun.specialKeywordResult = thisNoun.result;
-            if (thisAction != null && nodeListing != null)
-                nodeListing.Add(thisNoun.result, thisAction);
-
-            return thisNoun;
-        }
-
-        public static void CheckForAndDeleteKeyWord(string keyWord)
-        {
-            Loggers.LogDebug($"Checking for {keyWord}");
-            List<TerminalKeyword> keyWordList = [.. Plugin.instance.Terminal.terminalNodes.allKeywords];
-
-            for (int i = keyWordList.Count - 1; i >= 0; i--)
+            if (keyWordList[i].word.Equals(keyWord))
             {
-                if (keyWordList[i].word.Equals(keyWord))
-                {
-                    Loggers.LogDebug($"removing {keyWordList[i].word}");
-                    keyWordList.RemoveAt(i);
-                    //Loggers.LogInfo($"Keyword: [{keyWord}] removed");
-                    break;
-                }
+                Loggers.LogDebug($"removing {keyWordList[i].word}");
+                keyWordList.RemoveAt(i);
+                //Loggers.LogInfo($"Keyword: [{keyWord}] removed");
+                break;
             }
-
-            Plugin.instance.Terminal.terminalNodes.allKeywords = [.. keyWordList];
-            //Loggers.LogDebug($"keyword list adjusted");
-            return;
         }
+
+        Plugin.instance.Terminal.terminalNodes.allKeywords = [.. keyWordList];
+        //Loggers.LogDebug($"keyword list adjusted");
+        return;
     }
 }

@@ -6,122 +6,120 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 
-namespace OpenLib.Events
+namespace OpenLib.Events;
+public class Events
 {
-    public class Events
+    public class CustomEvent<T>
     {
-        public class CustomEvent<T>
+        public delegate void ParameterEvent(T param);
+        private event ParameterEvent OnParameterEvent = null!;
+        public bool HasListeners => (Listeners != 0);
+        public int Listeners { get; internal set; }
+
+        public void Invoke(T param)
         {
-            public delegate void ParameterEvent(T param);
-            private event ParameterEvent OnParameterEvent;
-            public bool HasListeners => (Listeners != 0);
-            public int Listeners { get; internal set; }
-
-            public void Invoke(T param)
-            {
-                OnParameterEvent?.Invoke(param);
-            }
-
-            public void AddListener(ParameterEvent listener)
-            {
-                OnParameterEvent += listener;
-                Listeners++;
-            }
-
-            public void RemoveListener(ParameterEvent listener)
-            {
-                OnParameterEvent -= listener;
-                Listeners--;
-            }
-
+            OnParameterEvent?.Invoke(param);
         }
 
-        public class TerminalNodeEvent
+        public void AddListener(ParameterEvent listener)
         {
-            public delegate TerminalNode Event(ref TerminalNode original);
-            private event Event OnEvent = null!;
-            public bool HasListeners => (Listeners != 0);
-            public int Listeners { get; internal set; }
-
-            public TerminalNode NodeInvoke(ref TerminalNode original)
-            {
-                TerminalNode? node = OnEvent?.Invoke(ref original);
-                return node!;
-            }
-            public void AddListener(Event listener)
-            {
-                OnEvent += listener;
-                Listeners++;
-            }
-
-            public void RemoveListener(Event listener)
-            {
-                OnEvent -= listener;
-                Listeners--;
-            }
+            OnParameterEvent += listener;
+            Listeners++;
         }
 
-        public class TerminalKeywordEvent
+        public void RemoveListener(ParameterEvent listener)
         {
-            public delegate TerminalKeyword Event(ref TerminalKeyword original);
-            private event Event OnEvent;
-            public bool HasListeners => (Listeners != 0);
-            public int Listeners { get; internal set; }
-
-            public TerminalKeyword WordInvoke(ref TerminalKeyword original)
-            {
-                TerminalKeyword word = OnEvent?.Invoke(ref original);
-                return word;
-            }
-            public void AddListener(Event listener)
-            {
-                OnEvent += listener;
-                Listeners++;
-            }
-
-            public void RemoveListener(Event listener)
-            {
-                OnEvent -= listener;
-                Listeners--;
-            }
+            OnParameterEvent -= listener;
+            Listeners--;
         }
 
-        public class CustomEvent
+    }
+
+    public class TerminalNodeEvent
+    {
+        public delegate TerminalNode Event(ref TerminalNode original);
+        private event Event OnEvent = null!;
+        public bool HasListeners => (Listeners != 0);
+        public int Listeners { get; internal set; }
+
+        public TerminalNode NodeInvoke(ref TerminalNode original)
         {
-            public delegate void Event();
-            private event Event OnEvent;
-            public bool HasListeners => (Listeners != 0);
-            public int Listeners { get; internal set; }
+            TerminalNode? node = OnEvent?.Invoke(ref original);
+            return node!;
+        }
+        public void AddListener(Event listener)
+        {
+            OnEvent += listener;
+            Listeners++;
+        }
 
-            public void Invoke()
-            {
-                if (!HasListeners)
-                    return;
+        public void RemoveListener(Event listener)
+        {
+            OnEvent -= listener;
+            Listeners--;
+        }
+    }
 
-                OnEvent?.Invoke();
-            }
+    public class TerminalKeywordEvent
+    {
+        public delegate TerminalKeyword Event(ref TerminalKeyword original);
+        private event Event OnEvent = null!;
+        public bool HasListeners => (Listeners != 0);
+        public int Listeners { get; internal set; }
 
-            public void AddListener(Event listener)
-            {
-                OnEvent += listener;
-                Listeners++;
-            }
+        public TerminalKeyword WordInvoke(ref TerminalKeyword original)
+        {
+            TerminalKeyword? word = OnEvent?.Invoke(ref original);
+            return word!;
+        }
+        public void AddListener(Event listener)
+        {
+            OnEvent += listener;
+            Listeners++;
+        }
 
-            public void RemoveListener(Event listener)
-            {
-                OnEvent -= listener;
-                Listeners--;
-            }
+        public void RemoveListener(Event listener)
+        {
+            OnEvent -= listener;
+            Listeners--;
+        }
+    }
 
-            public void RemoveAllListeners()
-            {
-                if (Listeners == 0)
-                    return;
+    public class CustomEvent
+    {
+        public delegate void Event();
+        private event Event OnEvent = null!;
+        public bool HasListeners => (Listeners != 0);
+        public int Listeners { get; internal set; }
 
-                List<Delegate> allListeners = [.. OnEvent.GetInvocationList()];
-                allListeners.Do(x => OnEvent -= (Event)x);
-                Listeners = 0;
-            }
+        public void Invoke()
+        {
+            if (!HasListeners)
+                return;
+
+            OnEvent?.Invoke();
+        }
+
+        public void AddListener(Event listener)
+        {
+            OnEvent += listener;
+            Listeners++;
+        }
+
+        public void RemoveListener(Event listener)
+        {
+            OnEvent -= listener;
+            Listeners--;
+        }
+
+        public void RemoveAllListeners()
+        {
+            if (Listeners == 0)
+                return;
+
+            List<Delegate> allListeners = [.. OnEvent.GetInvocationList()];
+            allListeners.Do(x => OnEvent -= (Event)x);
+            Listeners = 0;
         }
     }
 }

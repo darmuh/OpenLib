@@ -2,109 +2,107 @@
 using OpenLib.Common;
 using System.Collections.Generic;
 
-namespace OpenLib.ConfigManager
+namespace OpenLib.ConfigManager;
+public class ConfigHelper
 {
-    public class ConfigHelper
+
+    public static List<string> GetAcceptableValues(AcceptableValueBase acceptableValueBase)
     {
-
-        public static List<string> GetAcceptableValues(AcceptableValueBase acceptableValueBase)
+        List<string> result = [];
+        if (acceptableValueBase == null!)
+            return result;
+        else
         {
-            List<string> result = [];
-            if (acceptableValueBase == null)
-                return result;
+            string description = acceptableValueBase.ToDescriptionString();
+            //# Acceptable values: Hauntings, Intervals, Insanity, None
+            description = description.Replace("# Acceptable values:", "").Replace(" ", "");
+            result = CommonStringStuff.GetKeywordsPerConfigItem(description, ',');
+            return result;
+        }
+    }
+
+    public static List<float> GetAcceptableValueF(AcceptableValueBase acceptableValueBase)
+    {
+        List<float> result = [];
+        if (acceptableValueBase == null!)
+            return result;
+        else
+        {
+            string description = acceptableValueBase.ToDescriptionString();
+            Loggers.LogDebug(description);
+            //# Acceptable value range: From 0 to 100
+            //# Acceptable value range: From 0.1 to 10
+            description = description.Replace("# Acceptable value range: From ", "").Replace("to", "").Replace(" ", ",");
+            result = CommonStringStuff.GetFloatListFromStringList(CommonStringStuff.GetKeywordsPerConfigItem(description, ','));
+            return result;
+        }
+    }
+
+    public static void ChangeBool(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    {
+        if (newValue.Length == 0)
+            return;
+
+        if (ModConfig.TryGetEntry<bool>(configItem.Definition, out ConfigEntry<bool> entry))
+        {
+            if (newValue == "true")
+                entry.Value = true;
             else
-            {
-                string description = acceptableValueBase.ToDescriptionString();
-                //# Acceptable values: Hauntings, Intervals, Insanity, None
-                description = description.Replace("# Acceptable values:", "").Replace(" ", "");
-                result = CommonStringStuff.GetKeywordsPerConfigItem(description, ',');
-                return result;
-            }
+                entry.Value = false;
         }
+    }
 
-        public static List<float> GetAcceptableValueF(AcceptableValueBase acceptableValueBase)
+    public static void ChangeString(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    {
+        if (newValue.Length == 0)
+            return;
+
+        if (ModConfig.TryGetEntry<string>(configItem.Definition, out ConfigEntry<string> entry))
         {
-            List<float> result = [];
-            if (acceptableValueBase == null)
-                return result;
-            else
-            {
-                string description = acceptableValueBase.ToDescriptionString();
-                Loggers.LogDebug(description);
-                //# Acceptable value range: From 0 to 100
-                //# Acceptable value range: From 0.1 to 10
-                description = description.Replace("# Acceptable value range: From ", "").Replace("to", "").Replace(" ", ",");
-                result = CommonStringStuff.GetFloatListFromStringList(CommonStringStuff.GetKeywordsPerConfigItem(description, ','));
-                return result;
-            }
+            entry.Value = newValue;
         }
+    }
 
-        public static void ChangeBool(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    public static void ChangeInt(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    {
+        if (newValue.Length == 0)
+            return;
+
+        if (ModConfig.TryGetEntry<int>(configItem.Definition, out ConfigEntry<int> entry))
         {
-            if (newValue.Length == 0)
-                return;
-
-            if (ModConfig.TryGetEntry<bool>(configItem.Definition, out ConfigEntry<bool> entry))
-            {
-                if (newValue == "true")
-                    entry.Value = true;
-                else
-                    entry.Value = false;
-            }
+            entry.Value = int.Parse(newValue);
         }
+    }
 
-        public static void ChangeString(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    public static void ChangeFloat(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    {
+        if (newValue.Length == 0)
+            return;
+
+        if (ModConfig.TryGetEntry<float>(configItem.Definition, out ConfigEntry<float> entry))
         {
-            if (newValue.Length == 0)
-                return;
-
-            if (ModConfig.TryGetEntry<string>(configItem.Definition, out ConfigEntry<string> entry))
-            {
-                entry.Value = newValue;
-            }
+            entry.Value = float.Parse(newValue);
         }
+    }
 
-        public static void ChangeInt(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+    public static bool TryFindConfigItem(string query, ConfigFile ModConfig, out ConfigEntryBase configItem)
+    {
+        Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
+        foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
         {
-            if (newValue.Length == 0)
-                return;
-
-            if (ModConfig.TryGetEntry<int>(configItem.Definition, out ConfigEntry<int> entry))
-            {
-                entry.Value = int.Parse(newValue);
-            }
+            configItems.Add(value.Definition, value);
+            Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
         }
-
-        public static void ChangeFloat(ConfigFile ModConfig, ConfigEntryBase configItem, string newValue)
+        foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
         {
-            if (newValue.Length == 0)
-                return;
-
-            if (ModConfig.TryGetEntry<float>(configItem.Definition, out ConfigEntry<float> entry))
+            if (pair.Key.Key == query)
             {
-                entry.Value = float.Parse(newValue);
+                configItem = pair.Value;
+                return true;
             }
+
         }
-
-        public static bool TryFindConfigItem(string query, ConfigFile ModConfig, out ConfigEntryBase configItem)
-        {
-            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
-            foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
-            {
-                configItems.Add(value.Definition, value);
-                Loggers.LogDebug($"added {value.Definition} to list of configItems to check");
-            }
-            foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
-            {
-                if (pair.Key.Key == query)
-                {
-                    configItem = pair.Value;
-                    return true;
-                }
-
-            }
-            configItem = null!;
-            return false;
-        }
+        configItem = null!;
+        return false;
     }
 }
