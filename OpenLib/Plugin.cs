@@ -20,7 +20,7 @@ namespace OpenLib
         {
             public const string PLUGIN_GUID = "darmuh.OpenLib";
             public const string PLUGIN_NAME = "OpenLib";
-            public const string PLUGIN_VERSION = "0.3.2";
+            public const string PLUGIN_VERSION = "0.4.0";
         }
 
         internal static ManualLogSource Log = null!;
@@ -51,8 +51,8 @@ namespace OpenLib
             instance = this;
             Log = base.Logger;
             Log.LogInfo($"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
-            ConfigSetup.DefaultManaged = [];
-            CommandRegistry.InitListing(ref ConfigSetup.DefaultListing);
+            ConfigSetup.defaultManaged = [];
+            CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
             ConfigSetup.BindConfigSettings();
             Config.ConfigReloaded += OnConfigReloaded;
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
@@ -64,7 +64,7 @@ namespace OpenLib
         internal void OnConfigReloaded(object sender, EventArgs e)
         {
             Log.LogInfo("Config has been reloaded!");
-            ConfigSetup.ReadConfigAndAssignValues(Plugin.instance.Config, ConfigSetup.DefaultManaged);
+            ConfigSetup.ReadConfigAndAssignValues(Plugin.instance.Config, ConfigSetup.defaultManaged);
         }
     }
 

@@ -38,7 +38,7 @@ namespace OpenLib.ConfigManager
                 return $"<input name=\"{configName}\" type=\"number\" onkeypress=\"return /[0-9.]/i.test(event.key)\" class=\"stringInput\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" />";
             }
 
-            if (values[0].ToString().Contains(".") || values[1] <= 1)
+            if (values[0].ToString().Contains('.') || values[1] <= 1)
                 return $"<input type=\"range\" name=\"{configName}\" id=\"number_slider{sliderItem}\" value=\"{defaultValue}\" step=\"0.001\" min=\"{values[0]}\" max=\"{values[1]}\" oninput=\"number_text{sliderItem}.value = number_slider{sliderItem}.value\">\r\n" +
                     $"<input id=\"number_text{sliderItem}\" type=\"text\" class=\"numberInput\" size=\"4\" min=\"{values[0]}\" max=\"{values[1]}\" value=\"{defaultValue}\" onkeypress=\"return /[0-9.]/i.test(event.key)\" oninput=\"number_slider{sliderItem}.value = number_text{sliderItem}.value\">";
 
@@ -53,7 +53,7 @@ namespace OpenLib.ConfigManager
             List<string> lines = [];
             int colorItem = 0;
             int sliderItem = 0;
-            string configName = ModConfig.ConfigFilePath.Substring(ModConfig.ConfigFilePath.LastIndexOf('\\'));
+            string configName = ModConfig.ConfigFilePath[ModConfig.ConfigFilePath.LastIndexOf('\\')..];
             lines.Add($"<html><title>{configName.Replace("\\", "")} Generator</title><body class=\"body\">");
 
             //css style, dont bother editing this in C# just cut/paste
@@ -63,7 +63,7 @@ namespace OpenLib.ConfigManager
 
             lines.Add("<form id=\"configForm\">");
 
-            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = new Dictionary<ConfigDefinition, ConfigEntryBase>();
+            Dictionary<ConfigDefinition, ConfigEntryBase> configItems = [];
             foreach (ConfigEntryBase value in ModConfig.GetConfigEntries())
             {
                 configItems.Add(value.Definition, value);
@@ -124,7 +124,7 @@ namespace OpenLib.ConfigManager
                     else
                     {
                         string defaultValue = pair.Value.DefaultValue as string;
-                        if (defaultValue.StartsWith("#") && defaultValue.Length == 7)
+                        if (defaultValue.StartsWith('#') && defaultValue.Length == 7)
                         {
                             lines.Add($"<p><label for=\"{pair.Key.Key}\">{pair.Key.Key}</label><br><input type=\"color\" id=\"color{colorItem}\" name=\"{pair.Key.Key}\" value=\"{defaultValue}\" oninput=\"color{colorItem}_text.value = color{colorItem}.value\"> " +
                                 $"<input type=\"text\" class=\"colorText\" name=\"{pair.Key.Key}_text\" id=\"color{colorItem}_text\" value=\"{defaultValue}\" onkeypress=\"return /[0-9a-zA-Z#]/i.test(event.key)\" pattern=\"#[0-9a-fA-F]{{3}}([0-9a-fA-F]{{3}})?\" oninput=\"color{colorItem}.value = color{colorItem}_text.value\"></p>");

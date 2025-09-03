@@ -15,7 +15,7 @@ namespace OpenLib.CoreMethods
             DeleteAllNodes(ref Plugin.NodesAdded);
             DeleteAllNouns(ref Plugin.NounsAdded); //keywords follows this method
             DeleteCams();
-            ConfigSetup.DefaultListing.DeleteAll();
+            ConfigSetup.defaultListing.DeleteAll();
             DeleteAllTerminalCodes(ref Plugin.AllTerminalCodes);
         }
 

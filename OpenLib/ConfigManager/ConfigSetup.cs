@@ -12,15 +12,15 @@ namespace OpenLib.ConfigManager
 {
     public static class ConfigSetup
     {
-        public static List<ManagedConfig> DefaultManaged = [];
-        public static MainListing DefaultListing = new();
+        public static List<ManagedConfig> defaultManaged = []; //must remain lowercase or risk breaking terminalstuff
+        public static MainListing defaultListing = new(); //must remain lowercase or risk breaking terminalstuff
         public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
 
         public static void BindConfigSettings()
         {
             Plugin.Log.LogInfo("Binding configuration settings");
 
-            LogLevel = MakeGeneric<Loggers.LoggingLevel>(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.Info, "Set OpenLib logging level");
+            LogLevel = MakeGeneric(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.WarningsPlus, "Set OpenLib logging level");
             //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
         }
 

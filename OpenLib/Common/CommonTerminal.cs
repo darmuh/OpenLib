@@ -130,17 +130,17 @@ namespace OpenLib.Common
             if (query.Length == 0)
                 return false;
 
-            string[] words = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = query.Split([' '], StringSplitOptions.RemoveEmptyEntries);
 
             if (!nodeListing.Any(x => words.Contains(x.Key.ToLower())))
                 return false;
 
-            returnNode = nodeListing.FirstOrDefault(x => x.Key.ToLower() == words[0].ToLower()).Value;
+            returnNode = nodeListing.FirstOrDefault(x => Misc.CompareStringsInvariant(x.Key, words[0])).Value;
 
             if (returnNode != null)
                 return true;
 
-            returnNode = nodeListing.FirstOrDefault(t => words.Any(x => x.ToLower() == t.Key.ToLower())).Value;
+            returnNode = nodeListing.FirstOrDefault(t => words.Any(x => Misc.CompareStringsInvariant(x, t.Key))).Value;
 
             if (returnNode != null)
                 return true;

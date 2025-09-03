@@ -36,7 +36,7 @@ namespace OpenLib.Events
         {
             Plugin.instance.Terminal = instance;
             Loggers.LogInfo($"Setting Plugin.instance.Terminal");
-            CommandRegistry.GetCommandsToAdd(ConfigSetup.DefaultManaged, ConfigSetup.DefaultListing);
+            CommandRegistry.GetCommandsToAdd(ConfigSetup.defaultManaged, ConfigSetup.defaultListing);
             CommandManager.AddAllCommandsToTerminal();
         }
 
@@ -109,12 +109,12 @@ namespace OpenLib.Events
             string screenText = Plugin.instance.Terminal.screenText.text.Substring(Plugin.instance.Terminal.screenText.text.Length - Plugin.instance.Terminal.textAdded);
             if (screenText.Length > 0) //prevent errors being thrown from invalid text
             {
-                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.DefaultListing.fauxKeywords, screenText, ref node))
+                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
                 {
                     Loggers.LogInfo($"faux word detected on current node!");
                 }
 
-                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.DefaultListing.specialListString, out TerminalNode retrieveNode))
+                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
                 {
                     node = retrieveNode;
                     Loggers.LogDebug($"node found matching specialListString in text - {screenText}");
@@ -127,7 +127,7 @@ namespace OpenLib.Events
                 }
             }
 
-            if (LogicHandling.GetNewDisplayText(ConfigSetup.DefaultListing, ref node))
+            if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
             {
                 Loggers.LogInfo($"node found: {node.name}");
             }
@@ -142,7 +142,7 @@ namespace OpenLib.Events
 
         public static void OnLoadNewNode(TerminalNode node)
         {
-            Loggers.LogDebug($"listing count: {ConfigSetup.DefaultListing.Listing.Count}");
+            Loggers.LogDebug($"listing count: {ConfigSetup.defaultListing.Listing.Count}");
 
             if (node == null)
                 return;
