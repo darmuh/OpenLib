@@ -126,6 +126,8 @@ public class CommandManager
 
     public void SetupConfirmation(Func<string> confirm, Func<string> deny)
     {
+        ConfirmBase ??= new(this);
+
         if (confirm != null)
             ConfirmBase.SetConfirmAction(confirm);
 
@@ -135,6 +137,8 @@ public class CommandManager
 
     public void SetupConfirmation(string confirmText, string denyText)
     {
+        ConfirmBase ??= new(this);
+
         if (!string.IsNullOrEmpty(confirmText))
             ConfirmBase.SetConfirmText(confirmText);
 
@@ -144,6 +148,8 @@ public class CommandManager
 
     public void SetupStore(string displayName, ConfigEntry<int> priceConfig, int maxStock = 0, bool alwaysInStock = false)
     {
+        StoreBase ??= new(this);
+
         StoreBase.Name = displayName;
         StoreBase.PriceConfig = priceConfig;
         StoreBase.MaxStock = maxStock;
@@ -152,6 +158,8 @@ public class CommandManager
 
     public void SetupStore(string displayName, int manualPrice, int maxStock = 0, bool alwaysInStock = false)
     {
+        StoreBase ??= new(this);
+
         StoreBase.Name = displayName;
         StoreBase.ManualPrice = manualPrice;
         StoreBase.MaxStock = maxStock;
