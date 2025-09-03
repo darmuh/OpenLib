@@ -79,23 +79,23 @@ public class MenuBuild
         TerminalMenu thisMenu = new()
         {
             MenuName = menuName,
-            SetKeyword = keyword,
+            setKeyword = keyword,
             Categories = categoryList,
             MainMenuText = mainMenuText, //Welcome to darmuh's Terminal Upgrade!\r\n\tSee below Categories for new stuff :)
-            MenuItems = menuItems,
-            CurrentCategory = "",
-            NextCount = 1,
-            IsNextEnabled = false
+            menuItems = menuItems,
+            currentCategory = "",
+            nextCount = 1,
+            isNextEnabled = false
         };
         string displayText = AssembleMainMenuText(thisMenu);
 
         if (addToOther)
         {
-            AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.SetKeyword, displayText, false, true, "other", menuDescription);
+            AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true, "other", menuDescription);
         }
         else
         {
-            AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.SetKeyword, displayText, false, true);
+            AddingThings.AddBasicCommand($"{thisMenu.MenuName}_main", thisMenu.setKeyword, displayText, false, true);
         }
 
         allMenus.Add(thisMenu);
@@ -112,20 +112,20 @@ public class MenuBuild
 
         if (terminalNode.name.Contains(terminalMenu.MenuName))
         {
-            terminalMenu.IsActive = true;
-            terminalMenu.NextCount = 1;
-            terminalMenu.CurrentCategory = "";
+            terminalMenu.isActive = true;
+            terminalMenu.nextCount = 1;
+            terminalMenu.currentCategory = "";
             Loggers.LogDebug($"In main menu of {terminalMenu.MenuName}");
             return true;
         }
-        else if (terminalMenu.IsNextEnabled && terminalMenu.terminalNodes.Contains(terminalNode))
+        else if (terminalMenu.isNextEnabled && terminalMenu.terminalNodes.Contains(terminalNode))
         {
             Loggers.LogDebug("Still in menus but not main, next is enabled");
             return false;
         }
         else
         {
-            terminalMenu.IsActive = false;
+            terminalMenu.isActive = false;
             return false;
         }
 
@@ -169,7 +169,7 @@ public class MenuBuild
         foreach (TerminalMenuCategory category in terminalMenu.Categories)
         {
             Loggers.LogDebug("checking category in terminalMenu.categories");
-            Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.MenuItems);
+            Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
             if (!categoryLists.Contains(catListing))
                 categoryLists.Add(catListing);
             TerminalNode menuNode = AddingThings.CreateNode(terminalMenu, $"{category.CatName}", category.CatName.ToLower(), GetFirstInList, yourModListing);
@@ -180,14 +180,20 @@ public class MenuBuild
         terminalMenu.terminalNodes.Add(nextNode);
     }
 
-    public static void CreateCategoryFauxCommands(TerminalMenu terminalMenu, MainListing yourModListing, string mainWord = "more")
+    public static void CreateCategoryFauxCommands(TerminalMenu terminalMenu, MainListing yourModListing)
+    {
+        //for backwards compatibility
+        CreateCategoryFauxCommands(terminalMenu, yourModListing, "more");
+    }
+
+    public static void CreateCategoryFauxCommands(TerminalMenu terminalMenu, MainListing yourModListing, string mainWord)
     {
         List<Dictionary<string, List<string>>> categoryLists = [];
 
         foreach (TerminalMenuCategory category in terminalMenu.Categories)
         {
             Loggers.LogDebug("checking category in terminalMenu.categories");
-            Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.MenuItems);
+            Dictionary<string, List<string>> catListing = MakeCategoryList(category, terminalMenu.menuItems);
             if (!categoryLists.Contains(catListing))
                 categoryLists.Add(catListing);
             FauxKeyword menuFauxNode = new(mainWord, category.CatName, GetFirstInList)
@@ -214,7 +220,7 @@ public class MenuBuild
         foreach (TerminalMenuCategory category in myMenu.Categories)
         {
             Loggers.LogDebug("checking category in myMenu.categories");
-            Dictionary<string, List<string>> catListing = MakeCategoryList(category, myMenu.MenuItems);
+            Dictionary<string, List<string>> catListing = MakeCategoryList(category, myMenu.menuItems);
             if (!categoryLists.Contains(catListing))
                 categoryLists.Add(catListing);
         }
@@ -228,7 +234,7 @@ public class MenuBuild
         foreach (TerminalMenu terminalMenu in allMenus)
         {
             Loggers.LogDebug("2.2");
-            if (!terminalMenu.IsActive)
+            if (!terminalMenu.isActive)
                 continue;
             for (int i = 0; i < terminalMenu.Categories.Count; i++)
             {
@@ -265,9 +271,9 @@ public class MenuBuild
             Loggers.LogDebug($"checking {menuItem.ItemName}");
             if (Misc.CompareStringsInvariant(menuItem.Category, catName))
             {
-                catItems.Add($"> {GetKeywordsForMenuItem(menuItem.ItemKeywords)}\r\n{menuItem.ItemDescription}\r\n");
-                Loggers.LogDebug($"{GetKeywordsForMenuItem(menuItem.ItemKeywords)} added");
-                Loggers.LogDebug($"{menuItem.ItemDescription} added too!");
+                catItems.Add($"> {GetKeywordsForMenuItem(menuItem.itemKeywords)}\r\n{menuItem.itemDescription}\r\n");
+                Loggers.LogDebug($"{GetKeywordsForMenuItem(menuItem.itemKeywords)} added");
+                Loggers.LogDebug($"{menuItem.itemDescription} added too!");
             }
         }
         Loggers.LogDebug("setting catName list");
@@ -295,12 +301,12 @@ public class MenuBuild
                 return fail;
             }
 
-            menuName.IsActive = true;
-            menuName.NextCount = nextCount;
-            menuName.CurrentCategory = currentCategory;
+            menuName.isActive = true;
+            menuName.nextCount = nextCount;
+            menuName.currentCategory = currentCategory;
             string displayText = GetNextPage(currentList, currentCategory, 4, nextCount, out isNextEnabled);
             Loggers.LogDebug($"currentCategory:{currentCategory} nextCount: {nextCount} isNextEnabled: {isNextEnabled}");
-            menuName.IsNextEnabled = isNextEnabled;
+            menuName.isNextEnabled = isNextEnabled;
             return displayText;
         }
     }
@@ -315,12 +321,12 @@ public class MenuBuild
         //currentCategory = GetCategoryFromNode(CommonTerminal.parseNode); //grabbing the node currently being parsed
         Loggers.LogDebug("2");
         List<string> currentList = GetCategoryList(currentCategory, out TerminalMenu menuName);
-        menuName.IsActive = true;
-        menuName.NextCount = nextCount;
-        menuName.CurrentCategory = currentCategory;
+        menuName.isActive = true;
+        menuName.nextCount = nextCount;
+        menuName.currentCategory = currentCategory;
         Loggers.LogDebug("3");
         string displayText = GetNextPage(currentList, currentCategory, 4, 1, out isNextEnabled);
-        menuName.IsNextEnabled = isNextEnabled;
+        menuName.isNextEnabled = isNextEnabled;
         Loggers.LogDebug("4");
         return displayText;
     }
@@ -333,14 +339,14 @@ public class MenuBuild
             if (terminalMenu.categoryLists.Any(c => c.Any(d => Misc.CompareStringsInvariant(d.Key, input))))
             {
                 Loggers.LogDebug($"detected menu with categoryList containing string {input}!!");
-                terminalMenu.IsActive = true;
+                terminalMenu.isActive = true;
                 int dictIndex = terminalMenu.categoryLists.FindIndex(c => c.Any(d => Misc.CompareStringsInvariant(d.Key, input)));
                 return terminalMenu.categoryLists[dictIndex].First(d => Misc.CompareStringsInvariant(d.Key, input)).Key;
             }
             else
             {
                 Loggers.LogDebug($"menu does not contain string {input}");
-                terminalMenu.IsActive = false;
+                terminalMenu.isActive = false;
                 continue;
             }
         }
@@ -361,7 +367,7 @@ public class MenuBuild
             if (!terminalMenu.terminalNodePerCategory.ContainsValue(givenNode))
             {
                 Loggers.LogDebug($"menu does not contain node {givenNode.name}");
-                terminalMenu.IsActive = false;
+                terminalMenu.isActive = false;
                 continue;
             }
 
@@ -372,7 +378,7 @@ public class MenuBuild
                     if (pair.Value == givenNode)
                     {
                         Loggers.LogDebug($"FOUND NODE AND PAIR {pair.Key}");
-                        terminalMenu.IsActive = true;
+                        terminalMenu.isActive = true;
                         return pair.Key;
                     }
                 }
@@ -389,8 +395,8 @@ public class MenuBuild
         {
             TerminalMenuItem menuItem = new()
             {
-                ItemKeywords = managedBool.KeywordList,
-                ItemDescription = managedBool.configDescription,
+                itemKeywords = managedBool.KeywordList,
+                itemDescription = managedBool.configDescription,
                 ItemName = managedBool.ConfigItemName,
                 Category = managedBool.categoryText,
             };
@@ -406,8 +412,8 @@ public class MenuBuild
         {
             TerminalMenuItem menuItem = new()
             {
-                ItemKeywords = keywordList,
-                ItemDescription = configDescription,
+                itemKeywords = keywordList,
+                itemDescription = configDescription,
                 ItemName = itemName,
                 Category = categoryText,
             };

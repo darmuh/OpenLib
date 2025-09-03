@@ -105,7 +105,7 @@ public class CommonTerminal
 
         if (special != null!)
         {
-            returnNode = special.TerminalNode;
+            returnNode = special.terminalNode;
             return returnNode != null!;
         }
 
@@ -113,7 +113,7 @@ public class CommonTerminal
 
         if (normal != null!)
         {
-            returnNode = normal.TerminalNode;
+            returnNode = normal.terminalNode;
             return returnNode != null!;
         }
 

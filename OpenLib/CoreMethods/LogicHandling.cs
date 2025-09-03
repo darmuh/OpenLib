@@ -50,7 +50,7 @@ public class LogicHandling
         List<CommandManager> activeCommands = Plugin.AllCommands.FindAll(x => x.IsCreated);
 
         TerminalNode current = node;
-        CommandManager match = activeCommands.FirstOrDefault(f => f.TerminalNode == current);
+        CommandManager match = activeCommands.FirstOrDefault(f => f.terminalNode == current);
         if (match != null!)
         {
             NewDisplayTextEventInvoke(ref node);

@@ -81,7 +81,7 @@ namespace OpenLib.ConfigManager
         {
             if (menuItem != null!)
             {
-                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(menuItem.ItemKeywords) + " ]\r\n" + menuItem.ItemDescription + "\r\n\r\n";
+                string text = "[ " + CommonStringStuff.GetKeywordsForMenuItem(menuItem.itemKeywords) + " ]\r\n" + menuItem.itemDescription + "\r\n\r\n";
                 InfoText = text;
             }
         }

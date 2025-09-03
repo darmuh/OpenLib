@@ -219,9 +219,9 @@ namespace OpenLib.CoreMethods
                 TerminalMenuItem nodeInfo = new()
                 {
                     Category = category,
-                    ItemDescription = description,
+                    itemDescription = description,
                     ItemName = nodeName,
-                    ItemKeywords = keywords,
+                    itemKeywords = keywords,
                 };
 
                 ManagedConfig fromNode = new()

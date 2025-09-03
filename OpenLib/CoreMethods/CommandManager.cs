@@ -10,28 +10,28 @@ namespace OpenLib.CoreMethods
 {
     public class CommandManager
     {
-        public string Name { get; private set; } = string.Empty;
-        public ConfigWatch<bool> IsEnabled { get; private set; } = null!;
-        public bool IsCreated { get; private set; } = false;
-        public ConfigEntry<string> KeywordsConfig { get; internal set; } = null!;
+        public string Name = string.Empty;
+        public ConfigWatch<bool> IsEnabled = null!;
+        public bool IsCreated = false;
+        public ConfigEntry<string> KeywordsConfig = null!;
 
-        public List<string> KeywordList { get; internal set; } = null!;
-        public Func<string> MainAction { get; internal set; } = null!;
+        public List<string> KeywordList = null!;
+        public Func<string> MainAction = null!;
         public bool ClearText = true;
         public bool AddAtAwake = true;
         public bool AcceptAdditionalText = false;
 
         public int CommandType = 0; //0 base, 1 base confirm, 2 store node
 
-        public NodeInfo InfoBase { get; internal set; } = null!;
-        public NodeConfirmation ConfirmBase { get; internal set; } = null!;
+        public NodeInfo InfoBase = null!;
+        public NodeConfirmation ConfirmBase = null!;
         public int VerySpecialNum = -1; //for use with terminalstuff visual commands
 
         //Store Things
-        public NodeStore StoreBase { get; internal set; } = null!;
+        public NodeStore StoreBase = null!;
 
         //Terminal Things
-        public TerminalNode TerminalNode { get; internal set; } = null!;
+        public TerminalNode terminalNode = null!; //suitsTerminal public requires lowercase
         public List<TerminalKeyword> terminalKeywords = [];
 
         //should be able to call in awake
@@ -180,7 +180,7 @@ namespace OpenLib.CoreMethods
         public void TerminalDisabled()
         {
             terminalKeywords = [];
-            TerminalNode = null!;
+            terminalNode = null!;
         }
 
         //register command to terminal (should only be called after terminal exists
@@ -195,10 +195,10 @@ namespace OpenLib.CoreMethods
             if (!IsCommandEnabled())
                 return;
 
-            TerminalNode = BasicTerminal.CreateNewTerminalNode();
-            TerminalNode.name = Name;
-            TerminalNode.displayText = string.Empty;
-            TerminalNode.clearPreviousText = ClearText;
+            terminalNode = BasicTerminal.CreateNewTerminalNode();
+            terminalNode.name = Name;
+            terminalNode.displayText = string.Empty;
+            terminalNode.clearPreviousText = ClearText;
 
 
             if (KeywordList.Count == 0 && KeywordsConfig != null!)
@@ -229,10 +229,10 @@ namespace OpenLib.CoreMethods
             if (!IsCommandEnabled())
                 return;
 
-            TerminalNode = BasicTerminal.CreateNewTerminalNode();
-            TerminalNode.name = Name;
-            TerminalNode.displayText = string.Empty;
-            TerminalNode.clearPreviousText = ClearText;
+            terminalNode = BasicTerminal.CreateNewTerminalNode();
+            terminalNode.name = Name;
+            terminalNode.displayText = string.Empty;
+            terminalNode.clearPreviousText = ClearText;
 
             IsCreated = true;
         }
@@ -241,7 +241,7 @@ namespace OpenLib.CoreMethods
         {
             Loggers.LogDebug($"adding {keyword}");
             TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, replaceExistingKW);
-            terminalKeyword.specialKeywordResult = TerminalNode;
+            terminalKeyword.specialKeywordResult = terminalNode;
             terminalKeywords.Add(terminalKeyword);
         }
 

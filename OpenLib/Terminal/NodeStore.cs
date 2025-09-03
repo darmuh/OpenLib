@@ -28,23 +28,23 @@ namespace OpenLib.CoreMethods
 
             TerminalKeyword buy = CommonTerminal.BuyKeyword;
 
-            Command.TerminalNode.terminalOptions = [Command.ConfirmBase.Confirm, Command.ConfirmBase.Deny];
+            Command.terminalNode.terminalOptions = [Command.ConfirmBase.Confirm, Command.ConfirmBase.Deny];
 
-            UnlockableItem storeItem = AddUnlockable(Name, Command.TerminalNode, AlwaysInStock, MaxStock);
+            UnlockableItem storeItem = AddUnlockable(Name, Command.terminalNode, AlwaysInStock, MaxStock);
             if (!StartOfRound.Instance.unlockablesList.unlockables.Contains(storeItem))
                 StartOfRound.Instance.unlockablesList.unlockables.Add(storeItem);
             int unlockableID = StartOfRound.Instance.unlockablesList.unlockables.IndexOf(storeItem);
 
-            Command.TerminalNode.creatureName = Name; //too lazy to define this at the top level
-            Command.TerminalNode.shipUnlockableID = unlockableID;
-            Command.TerminalNode.itemCost = price;
+            Command.terminalNode.creatureName = Name; //too lazy to define this at the top level
+            Command.terminalNode.shipUnlockableID = unlockableID;
+            Command.terminalNode.itemCost = price;
             Command.ConfirmBase.Confirm.result.shipUnlockableID = unlockableID;
             Command.ConfirmBase.Confirm.result.buyUnlockable = false;
             Command.ConfirmBase.Confirm.result.itemCost = price;
 
             Command.terminalKeywords.Do(x => AddToBuyWord(ref buy, ref x, storeItem));
 
-            Plugin.ShopNodes.Add(Command.TerminalNode);
+            Plugin.ShopNodes.Add(Command.terminalNode);
             Loggers.LogDebug($"Store nodes created for {Name}");
         }
     }

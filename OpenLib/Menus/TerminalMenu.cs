@@ -1,63 +1,62 @@
 ﻿using System.Collections.Generic;
 using static OpenLib.Menus.MenuBuild;
 
-namespace OpenLib.Menus
+namespace OpenLib.Menus;
+public class TerminalMenu
 {
-    public class TerminalMenu
+    //Have to keep lowercase property names for existing mods
+    //Also can't add getter/setters for these or will mess with existing mods
+    public string MenuName = string.Empty;
+    public string MainMenuText = string.Empty;
+    public string setKeyword = string.Empty;
+    public List<TerminalMenuCategory> Categories = [];
+    public string currentCategory { get; internal set; } = string.Empty;
+    public bool isActive { get; internal set; } = false; //currently using this menu
+    public bool isNextEnabled { get; internal set; } = false; //for cycling pages
+    public int nextCount { get; internal set; } = 1; //always at least be 1
+    public List<TerminalMenuItem> menuItems = [];
+
+    //TerminalStuff
+    public Dictionary<string, TerminalNode> terminalNodePerCategory = [];
+    public List<Dictionary<string, List<string>>> categoryLists = [];
+    public List<TerminalNode> terminalNodes = [];
+
+    public void Delete()
     {
-        //Main
-        public string MenuName { get; set; } = string.Empty;
-        public string MainMenuText { get; set; } = string.Empty;
-        public string SetKeyword { get; set; } = string.Empty;
-        public List<TerminalMenuCategory> Categories = [];
-        public string CurrentCategory { get; internal set; } = string.Empty;
-        public bool IsActive { get; internal set; } = false; //currently using this menu
-        public bool IsNextEnabled { get; internal set; } = false; //for cycling pages
-        public int NextCount { get; internal set; } = 1; //always at least be 1
-        public List<TerminalMenuItem> MenuItems { get; set; } = [];
-
-        //TerminalStuff
-        public Dictionary<string, TerminalNode> terminalNodePerCategory = [];
-        public List<Dictionary<string, List<string>>> categoryLists = [];
-        public List<TerminalNode> terminalNodes = [];
-
-        public void Delete()
-        {
-            allMenus.Remove(this);
-            MenuItems.Clear();
-            categoryLists.Clear();
-            Categories.Clear();
-            terminalNodePerCategory.Clear();
-            terminalNodes.Clear();
-        }
-
+        allMenus.Remove(this);
+        menuItems.Clear();
+        categoryLists.Clear();
+        Categories.Clear();
+        terminalNodePerCategory.Clear();
+        terminalNodes.Clear();
     }
 
-    public class TerminalMenuItem
+}
+
+public class TerminalMenuItem
+{
+    //Main
+    public string ItemName = string.Empty;
+    public string Category = string.Empty;
+    public List<string> itemKeywords = null!; //must be lowercase for terminalstuff public
+    public string itemDescription = string.Empty;
+
+    public void Delete()
     {
-        //Main
-        public string ItemName { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public List<string> ItemKeywords { get; set; } = null!;
-        public string ItemDescription { get; set; } = string.Empty;
+        itemDescription = "";
 
-        public void Delete()
-        {
-            ItemDescription = "";
+        Category = "";
+        ItemName = "";
 
-            Category = "";
-            ItemName = "";
-
-            if (ItemKeywords.Count > 0)
-                ItemKeywords.Clear();
-        }
-
+        if (itemKeywords.Count > 0)
+            itemKeywords.Clear();
     }
 
-    public class TerminalMenuCategory
-    {
-        public string CatName { get; set; } = null!;
-        public string CatDescription { get; set; } = null!;
+}
 
-    }
+public class TerminalMenuCategory
+{
+    public string CatName { get; set; } = null!;
+    public string CatDescription { get; set; } = null!;
+
 }
