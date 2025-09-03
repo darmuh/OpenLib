@@ -142,6 +142,22 @@ public class CommandManager
             ConfirmBase.SetDenyText(denyText);
     }
 
+    public void SetupStore(string displayName, ConfigEntry<int> priceConfig, int maxStock = 0, bool alwaysInStock = false)
+    {
+        StoreBase.Name = displayName;
+        StoreBase.PriceConfig = priceConfig;
+        StoreBase.MaxStock = maxStock;
+        StoreBase.AlwaysInStock = alwaysInStock;
+    }
+
+    public void SetupStore(string displayName, int manualPrice, int maxStock = 0, bool alwaysInStock = false)
+    {
+        StoreBase.Name = displayName;
+        StoreBase.ManualPrice = manualPrice;
+        StoreBase.MaxStock = maxStock;
+        StoreBase.AlwaysInStock = alwaysInStock;
+    }
+
     //call this if you need to add your command to the default listing and didnt on creation for some reason
     public void AddToDefaultListing()
     {
