@@ -88,7 +88,7 @@ public class EventUsage
             anyMenu?.InputEvent.Invoke();
         }
 
-
+        CommonTerminal.TrySyncNodeOnly(Plugin.instance.Terminal.currentNode);
     }
 
     public static void OnUsingTerminal()

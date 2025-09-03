@@ -81,6 +81,14 @@ public class CommonTerminal
             Plugin.instance.Terminal.LoadNewNode(node);
     }
 
+    public static void TrySyncNodeOnly(TerminalNode node)
+    {
+        if (!Plugin.instance.TerminalStuff)
+            return;
+
+        TerminalStuffMod.NetSync(node);
+    }
+
     public static bool TryLoadKeyword(string keyword)
     {
         if (DynamicBools.TryGetKeyword(keyword, out TerminalKeyword word))

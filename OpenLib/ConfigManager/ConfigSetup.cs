@@ -11,7 +11,9 @@ using static OpenLib.Common.CommonStringStuff;
 namespace OpenLib.ConfigManager;
 public static class ConfigSetup
 {
+    [Obsolete("Please don't use this anymore...")]
     public static List<ManagedConfig> defaultManaged = []; //must remain lowercase or risk breaking terminalstuff
+    [Obsolete("Please don't use this anymore...")]
     public static MainListing defaultListing = new(); //must remain lowercase or risk breaking terminalstuff
     public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
 
@@ -23,6 +25,7 @@ public static class ConfigSetup
         //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
     }
 
+    [Obsolete("Please don't use this anymore...")]
     public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", string configString = "", Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
     {
         List<string> keywordList = CommonStringStuff.GetKeywordsPerConfigItem(configString);
@@ -44,6 +47,7 @@ public static class ConfigSetup
         }
     }
 
+    [Obsolete("Please don't use this anymore...")]
     public static ManagedConfig AddManagedBool(ConfigEntry<bool> boolEntry, List<ManagedConfig> managedItems, bool isNetworked = false, string category = "", ConfigEntry<string> configString = null!, Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
     {
         List<string> keywordList = [];
@@ -81,6 +85,7 @@ public static class ConfigSetup
         }
     }
 
+    [Obsolete("Please don't use this anymore...")]
     public static ManagedConfig NewManagedBool(ref List<ManagedConfig> managedItems, string configItemName, bool isEnabled, string configDescription, bool isNetworked = false, string category = "", List<string> keywordList = null!, Func<string> mainAction = null!, int commandType = 0, bool clearText = true, Func<string> confirmAction = null!, Func<string> denyAction = null!, string confirmText = "confirm", string denyText = "deny", string special = "", int specialNum = -1, string nodeName = "", string itemList = "", int price = 0, string storeName = "", bool alwaysInStock = true, int maxStock = 0, bool reuseFunc = false)
     {
         if (ManagedBoolGet.TryGetItemByName(managedItems, configItemName, 0, out ManagedConfig resultBool))
@@ -106,12 +111,21 @@ public static class ConfigSetup
         return ModConfig.Bind<T>(section, configItemName, defaultValue, ConfigDescription);
     }
 
-    public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, AcceptableValueList<T> acceptableValues = null!) where T : IEquatable<T>, IComparable<T>
+    public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, AcceptableValueList<T> acceptableValues = null!) where T : IEquatable<T>
     {
         section = BepinFriendlyString(section);
         configItemName = BepinFriendlyString(configItemName);
 
         return ModConfig.Bind<T>(section, configItemName, defaultValue, new ConfigDescription(description, acceptableValues));
+    }
+
+    public static ConfigEntry<T> MakeGeneric<T>(ConfigFile ModConfig, string section, string configItemName, T defaultValue, string description, T minValue, T maxValue) where T : IComparable
+    {
+        section = BepinFriendlyString(section);
+        configItemName = BepinFriendlyString(configItemName);
+        AcceptableValueRange<T> acceptableRange = new(minValue, maxValue);
+
+        return ModConfig.Bind<T>(section, configItemName, defaultValue, new ConfigDescription(description, acceptableRange));
     }
 
     [Obsolete("Should use MakeGeneric instead")]
@@ -173,6 +187,7 @@ public static class ConfigSetup
         return ModConfig.Keys.Any(c => c.Key == configName);
     }
 
+    [Obsolete("Please don't use this anymore...")]
     public static void AddManagedString(ConfigEntry<string> configItem, ref List<ManagedConfig> managedItems, ManagedConfig relatedConfigItem)
     {
         ManagedConfig managedString = new()

@@ -52,7 +52,7 @@
     -->
     <LocalReferences
       Include="$(ManagedDir)*.dll;$(ManagedDir)UnityEngine.UI*.dll"
-      Exclude="$(ManagedDir)Mono*.dll;$(ManagedDir)netstandard.dll;$(ManagedDir)System*.dll;$(ManagedDir)mscorlib.dll;$(ManagedDir)Newtonsoft*.dll"
+      Exclude="$(ManagedDir)Mono*.dll;$(ManagedDir)netstandard.dll;$(ManagedDir)System*.dll;$(ManagedDir)mscorlib.dll;$(ManagedDir)Newtonsoft*.dll;$(AssemblyName).dll"
     />
     <Reference Include="@(LocalReferences)" Private="false" />
     <!-- Publicize these assemblies so we can access their internal members -->
