@@ -108,11 +108,13 @@ public class EventUsage
         string screenText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
         if (screenText.Length > 0) //prevent errors being thrown from invalid text
         {
+            //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
             if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
             {
                 Loggers.LogInfo($"faux word detected on current node!");
             }
 
+            //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
             if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
             {
                 node = retrieveNode;
@@ -126,12 +128,13 @@ public class EventUsage
             }
         }
 
+        //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
         if (LogicHandling.GetNewDisplayText(ConfigSetup.defaultListing, ref node))
         {
             Loggers.LogInfo($"node found: {node.name}");
         }
 
-        if (LogicHandling.GetNewDisplayText2(ref node)) //update displaytext for matching node
+        if (LogicHandling.GetDisplayTextFromCommand(ref node)) //update displaytext for matching node
         {
             Loggers.LogInfo($"command found: {node.name}");
         }

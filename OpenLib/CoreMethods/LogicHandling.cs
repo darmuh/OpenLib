@@ -8,6 +8,7 @@ using UnityEngine;
 namespace OpenLib.CoreMethods;
 public class LogicHandling
 {
+    [Obsolete("This is using the OLD system, please use GetDisplayTextFromCommand")]
     public static bool GetNewDisplayText(MainListing providedListing, ref TerminalNode node)
     {
 
@@ -42,7 +43,7 @@ public class LogicHandling
         }
     }
 
-    public static bool GetNewDisplayText2(ref TerminalNode node)
+    public static bool GetDisplayTextFromCommand(ref TerminalNode node)
     {
         if (node == null || Plugin.AllCommands.Count == 0)
             return false;
@@ -50,23 +51,41 @@ public class LogicHandling
         List<CommandManager> activeCommands = Plugin.AllCommands.FindAll(x => x.IsCreated);
 
         TerminalNode current = node;
-        CommandManager match = activeCommands.FirstOrDefault(f => f.terminalNode == current);
-        if (match != null!)
+        CommandManager matchBase = activeCommands.FirstOrDefault(f => f.terminalNode == current);
+        if (matchBase != null)
         {
             NewDisplayTextEventInvoke(ref node);
-            node.displayText = match.MainAction();
+            node.displayText = matchBase.MainAction();
             return true;
         }
 
-        CommandManager info = activeCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
-        if (info != null!)
+        CommandManager matchInfo = activeCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
+        if (matchInfo != null)
         {
             NewDisplayTextEventInvoke(ref node);
-            node.displayText = info.InfoBase.InfoAction();
+            node.displayText = matchInfo.InfoBase.InfoAction();
             return true;
         }
 
-        Loggers.LogDebug("No matches in GetNewDisplayText2");
+        //A new list is needed as not all commands will have non-null ConfirmBase properties
+        List<NodeConfirmation> confirmationNodes = activeCommands.ConvertAll(x => x.ConfirmBase).FindAll(x => x != null);
+        NodeConfirmation matchConfirm = confirmationNodes.FirstOrDefault(c => c.Confirm != null && c.Confirm.result == current);
+        if (matchConfirm != null )
+        {
+            NewDisplayTextEventInvoke(ref node);
+            node.displayText = matchConfirm.ConfirmFunc();
+            return true;
+        }
+
+        NodeConfirmation matchDeny = confirmationNodes.FirstOrDefault(c => c.Deny != null && c.Deny.result == current);
+        if (matchDeny != null)
+        {
+            NewDisplayTextEventInvoke(ref node);
+            node.displayText = matchDeny.DenyFunc();
+            return true;
+        }
+
+        Loggers.LogDebug("No matches in GetDisplayTextFromCommand");
         return false;
     }
 
@@ -196,7 +215,9 @@ public class LogicHandling
         return false;
     }
 
-    public static bool TryGetFuncFromNode(List<MainListing> providedListing, ref TerminalNode node, out Func<string> returnFunc) //overload for multiple listings (terminalstuff)
+    //overload for multiple listings (terminalstuff)
+    [Obsolete("This is using the OLD managedbools and Listing system!!")]
+    public static bool TryGetFuncFromNode(List<MainListing> providedListing, ref TerminalNode node, out Func<string> returnFunc) 
     {
         if (node == null || providedListing.Count == 0)
         {

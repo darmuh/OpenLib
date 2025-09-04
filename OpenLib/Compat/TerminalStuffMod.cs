@@ -64,6 +64,16 @@ namespace OpenLib.Compat
             return true;
         }
 
+        //might not use this
+        private static bool TryGetKeywordFashtenstein(string query, out TerminalKeyword word)
+        {
+            word = null!;
 
+            if (!Plugin.instance.TerminalStuff)
+                return false;
+
+            TerminalStuff.SpecialStuff.ConflictRes.TryGetBestMatchingKeyword(query, out word);
+            return word != null;
+        }
     }
 }

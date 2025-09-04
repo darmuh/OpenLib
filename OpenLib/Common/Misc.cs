@@ -121,6 +121,13 @@ public class Misc
         return fullstring.StartsWith(str, comparison);
     }
 
+    public static bool StringContainsInvariant(string fullstring, string query, bool ignoreCase = true)
+    {
+        StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
+                                    : StringComparison.InvariantCulture;
+        return fullstring.Contains(query, comparison);
+    }
+
 
     // ----------------- Obsolete Old Methods ----------------- //
 

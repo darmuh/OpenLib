@@ -11,11 +11,12 @@ namespace OpenLib.CoreMethods;
 public class CommandManager
 {
     public string Name = string.Empty;
+    public string Category = string.Empty; //for use with grouping commands like terminalstuff more menus
     public ConfigWatch<bool> IsEnabled = null!;
     public bool IsCreated = false;
     public ConfigEntry<string> KeywordsConfig = null!;
 
-    public List<string> KeywordList = null!;
+    public List<string> KeywordList = [];
     public Func<string> MainAction = null!;
     public bool ClearText = true;
     public bool AddAtAwake = true;
@@ -61,7 +62,10 @@ public class CommandManager
         if (addToMain)
             Plugin.AllCommands.Add(this);
 
-        InfoBase = new(this); //prevents errors from command not being added
+        //prevents null errors
+        InfoBase = new(this);
+        ConfirmBase = new(this);
+        StoreBase = new(this);
     }
 
     //should be able to call in awake
@@ -91,6 +95,11 @@ public class CommandManager
 
         if (addToMain)
             Plugin.AllCommands.Add(this);
+
+        //prevents null errors
+        InfoBase = new(this);
+        ConfirmBase = new(this);
+        StoreBase = new(this);
     }
 
     public bool IsCommandEnabled()
@@ -225,7 +234,7 @@ public class CommandManager
         terminalNode.clearPreviousText = ClearText;
 
 
-        if (KeywordList.Count == 0 && KeywordsConfig != null!)
+        if (KeywordList.Count == 0 && KeywordsConfig != null)
             KeywordList = CommonStringStuff.GetKeywordsPerConfigItem(KeywordsConfig.Value);
 
         KeywordList.Do(w => AddKeyword(w, replaceExistingKW));

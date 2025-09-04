@@ -1,7 +1,6 @@
-﻿// credit to iambatby's LethalLevelLoader for these methods
+﻿// credit to iambatby's LethalLevelLoader for inspiration behind these methods
 // https://github.com/IAmBatby/LethalLevelLoader/blob/main/LethalLevelLoader/Patches/TerminalManager.cs
-// some minor modifications for use in this project
-// if you dont know what you're doing with terminalkeywords/terminalnodes I recommend using the methods i've created in AddingThings.cs
+// They have since been modified for use in this project
 
 using OpenLib.Common;
 using System;
@@ -31,6 +30,10 @@ public class BasicTerminal
         newTerminalKeyword.defaultVerb = null!;
         allKeywordsList.Add(newTerminalKeyword);
 
+        // Needed for deletion tracking
+        if (!Plugin.KeywordsAdded.Contains(newTerminalKeyword))
+            Plugin.KeywordsAdded.Add(newTerminalKeyword);
+
         Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
 
         return (newTerminalKeyword);
@@ -52,6 +55,10 @@ public class BasicTerminal
         newTerminalNode.storyLogFileID = -1;
         newTerminalNode.playSyncedClip = -1;
         newTerminalNode.terminalOptions = [];
+
+        // Needed for deletion tracking
+        if (!Plugin.NodesAdded.Contains(newTerminalNode))
+            Plugin.NodesAdded.Add(newTerminalNode);
 
         return (newTerminalNode);
     }

@@ -109,7 +109,12 @@ public class CommonTerminal
         if (words.Length == 0)
             return false;
 
-        CommandManager special = Plugin.AllCommands.FirstOrDefault(x => x.AcceptAdditionalText && x.KeywordList.Any(s => Misc.StringStartsWithInvariant(words, s)));
+        List<CommandManager> enabled = Plugin.AllCommands.FindAll(x => x.IsCommandEnabled());
+
+        // accepting input after command
+        //for this one we are expecting only a partial match of the keyword to the full string of words
+        var specialCommands = enabled.Where(x => x.AcceptAdditionalText);
+        CommandManager special = specialCommands.FirstOrDefault(x => x.terminalKeywords.Any(s => Misc.StringStartsWithInvariant(words, s.word)));
 
         if (special != null!)
         {
@@ -117,15 +122,32 @@ public class CommonTerminal
             return returnNode != null!;
         }
 
-        CommandManager normal = Plugin.AllCommands.FirstOrDefault(x => x.KeywordList.Any(s => Misc.StringStartsWithInvariant(words, s)));
+        //expects EXACT match
+        CommandManager exactMatch = enabled.FirstOrDefault(x => x.terminalKeywords.Any(s => Misc.CompareStringsInvariant(words, s.word)));
 
-        if (normal != null!)
+        if (exactMatch != null)
         {
-            returnNode = normal.terminalNode;
+            returnNode = exactMatch.terminalNode;
             return returnNode != null!;
         }
 
-        Loggers.LogDebug("No matching commands in Plugin.AllCommands");
+        if (words.Length < 3)
+        {
+            Loggers.LogDebug($"No matching commands for [ {words} ] in all enabled commands (short query)");
+            return false;
+        }
+
+        //allows for loose matching
+        //for this one we are expecting only a partial match of the provided words to the terminalKeyword
+        CommandManager looseMatch = enabled.FirstOrDefault(x => x.terminalKeywords.Any(s => Misc.StringStartsWithInvariant(s.word, words)));
+
+        if (looseMatch != null)
+        {
+            returnNode = looseMatch.terminalNode;
+            return returnNode != null;
+        }
+
+        Loggers.LogDebug($"No matching commands for [ {words} ] in all enabled commands");
         return false;
 
     }

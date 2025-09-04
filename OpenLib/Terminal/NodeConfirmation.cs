@@ -20,6 +20,9 @@ public class NodeConfirmation(CommandManager manager, Func<string> confirmAction
     {
         Confirm = BasicTerminal.CreateCompatibleNoun(Name + "_confirm", "confirm", ConfirmTxt);
         Deny = BasicTerminal.CreateCompatibleNoun(Name + "_deny", "deny", DenyTxt);
+
+        Manager.terminalNode.terminalOptions = [Confirm, Deny];
+        Manager.terminalNode.overrideOptions = true;
     }
 
     public void SetConfirmAction(Func<string> confirmAction)

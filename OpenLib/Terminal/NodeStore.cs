@@ -35,7 +35,7 @@ public class NodeStore(CommandManager cmd)
             StartOfRound.Instance.unlockablesList.unlockables.Add(storeItem);
         int unlockableID = StartOfRound.Instance.unlockablesList.unlockables.IndexOf(storeItem);
 
-        Command.terminalNode.creatureName = Name; //too lazy to define this at the top level
+        Command.terminalNode.creatureName = Name;
         Command.terminalNode.shipUnlockableID = unlockableID;
         Command.terminalNode.itemCost = price;
         Command.ConfirmBase.Confirm.result.shipUnlockableID = unlockableID;
