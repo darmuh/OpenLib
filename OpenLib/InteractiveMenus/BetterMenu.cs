@@ -22,6 +22,11 @@ public abstract class BetterMenuBase
     public abstract MenuItem MainMenu { get; set; }
     public List<MenuItem> AllMenuItemsOfType = [];
 
+    public List<T> GetMenuItemsOfType<T>() where T : MenuItem
+    {
+        return [.. AllMenuItemsOfType.OfType<T>()];
+    }
+
     public override string ToString()
     {
         return Name;
@@ -263,7 +268,6 @@ public class BetterMenu<T> : BetterMenuBase
             Loggers.WARNING("Unable to get current menu page!!");
             return "";
         }
-
 
         message.Append($"{current.Header.Invoke()}");
 

@@ -21,7 +21,7 @@ public static class ConfigSetup
     {
         Plugin.Log.LogInfo("Binding configuration settings");
 
-            LogLevel = MakeGeneric(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.WarningsPlus, "Set OpenLib logging level");
+        LogLevel = MakeGeneric(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.WarningsPlus, "Set OpenLib logging level");
         //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
     }
 

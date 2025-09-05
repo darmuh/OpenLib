@@ -20,7 +20,7 @@ public class Loggers
             return;
 
         Plugin.Log.Log(bepLevel, data);
-        
+
     }
 
     internal static void LogDebug(object data)
@@ -53,5 +53,5 @@ public class Loggers
         Log(BepInEx.Logging.LogLevel.Fatal, data);
     }
 
-    
+
 }

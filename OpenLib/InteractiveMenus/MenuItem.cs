@@ -4,8 +4,14 @@ using static OpenLib.Events.Events;
 
 namespace OpenLib.InteractiveMenus;
 
+public abstract class MenuItem<TMenu>(TMenu betterMenu) : MenuItem(betterMenu) where TMenu : BetterMenuBase
+{
+    public new TMenu BetterMenu => (TMenu)base.BetterMenu!;
+}
+
 public abstract class MenuItem
 {
+    protected BetterMenuBase? BetterMenu { get; }
     public abstract string Name { get; set; }
     public abstract bool ShowIfEmptyNest { get; set; }
     private string _prefix = string.Empty;
@@ -62,13 +68,13 @@ public abstract class MenuItem
 
     protected MenuItem(BetterMenuBase betterMenu)
     {
-        if (betterMenu == null!)
+        if (betterMenu == null)
         {
             Loggers.ERROR("Unable to assign menu item to NULL betterMenu!");
             return;
         }
 
-
+        BetterMenu = betterMenu;
         betterMenu.AllMenuItemsOfType.Add(this);
     }
 
@@ -87,12 +93,13 @@ public abstract class MenuItem
             parent.NestedMenus.Add(this);
     }
 
-    public virtual void AddNestedItem(MenuItem parent)
+    public virtual void AddNestedItem(MenuItem child)
     {
-        if (parent == null!)
+        if (child == null!)
             return;
 
-        if (!parent.NestedMenus.Contains(this))
-            parent.NestedMenus.Add(this);
+        child.Parent = this;
+        if (!NestedMenus.Contains(child))
+            NestedMenus.Add(child);
     }
 }

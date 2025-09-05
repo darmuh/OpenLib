@@ -38,6 +38,14 @@ public class Plugin : BaseUnityPlugin
     public bool MirrorDecor = false;
 
     public static List<CommandManager> AllCommands = [];
+    public static List<CommandManager> GetActiveCommands()
+    {
+        if (AllCommands.Count == 0)
+            return [];
+
+        return AllCommands.FindAll(x => x.IsCreated);
+    }
+
     public static List<TerminalKeyword> KeywordsAdded = [];
     public static List<TerminalNode> NodesAdded = [];
     public static List<CompatibleNoun> NounsAdded = [];
@@ -52,7 +60,7 @@ public class Plugin : BaseUnityPlugin
         Log = base.Logger;
         Log.LogInfo($"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
         ConfigSetup.defaultManaged = [];
-            CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
+        CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
         ConfigSetup.BindConfigSettings();
         Config.ConfigReloaded += OnConfigReloaded;
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());

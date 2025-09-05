@@ -43,12 +43,18 @@ public class LogicHandling
         }
     }
 
+    public static List<NodeConfirmation> GetConfirmationNodes()
+    {
+        List<CommandManager> activeCommands = Plugin.GetActiveCommands();
+        return activeCommands.ConvertAll(x => x.ConfirmBase).FindAll(x => x != null);
+    }
+
     public static bool GetDisplayTextFromCommand(ref TerminalNode node)
     {
         if (node == null || Plugin.AllCommands.Count == 0)
             return false;
 
-        List<CommandManager> activeCommands = Plugin.AllCommands.FindAll(x => x.IsCreated);
+        List<CommandManager> activeCommands = Plugin.GetActiveCommands();
 
         TerminalNode current = node;
         CommandManager matchBase = activeCommands.FirstOrDefault(f => f.terminalNode == current);
@@ -68,9 +74,9 @@ public class LogicHandling
         }
 
         //A new list is needed as not all commands will have non-null ConfirmBase properties
-        List<NodeConfirmation> confirmationNodes = activeCommands.ConvertAll(x => x.ConfirmBase).FindAll(x => x != null);
+        List<NodeConfirmation> confirmationNodes = GetConfirmationNodes();
         NodeConfirmation matchConfirm = confirmationNodes.FirstOrDefault(c => c.Confirm != null && c.Confirm.result == current);
-        if (matchConfirm != null )
+        if (matchConfirm != null)
         {
             NewDisplayTextEventInvoke(ref node);
             node.displayText = matchConfirm.ConfirmFunc();
@@ -97,6 +103,7 @@ public class LogicHandling
                                                                         //like terminalstuff doing dynamic cost analysis for the store node
     }
 
+    [Obsolete("Old system...")]
     public static bool GetNewDisplayText(List<MainListing> providedListing, ref TerminalNode node) //overload for multiple listings (terminalstuff)
     {
 
@@ -150,7 +157,7 @@ public class LogicHandling
             if (keyword.ResultFunc == null || keyword.Keyword == null || keyword.MainPage == null!)
                 continue;
 
-            if(keyword.thisNode != null)
+            if (keyword.thisNode != null)
                 keyword.thisNode.displayText = "";
 
             if (Misc.StringStartsWithInvariant(words, keyword.Keyword[..3]) && Plugin.instance.Terminal.currentNode == keyword.MainPage)
@@ -173,7 +180,7 @@ public class LogicHandling
 
                 if (Misc.StringStartsWithInvariant(words, 'c'))
                 {
-                    if(keyword.ConfirmFunc != null)
+                    if (keyword.ConfirmFunc != null)
                         keyword.thisNode.displayText = keyword.ConfirmFunc();
                     node = keyword.thisNode;
                     keyword.GetConfirm = false;
@@ -215,9 +222,59 @@ public class LogicHandling
         return false;
     }
 
+    public static bool TryGetFuncFromTerminalNode(ref TerminalNode node, out Func<string> returnFunc)
+    {
+        returnFunc = null!;
+        List<CommandManager> allCommands = Plugin.GetActiveCommands();
+        if (node == null || allCommands.Count == 0)
+        {
+            Loggers.WARNING("node is null or 0 custom commands have been made");
+            return false;
+        }
+
+        var query = node;
+        CommandManager match = allCommands.FirstOrDefault(x => x.terminalNode == query);
+        if (match != null)
+        {
+            returnFunc = match.MainAction;
+            return returnFunc != null!;
+        }
+
+
+        NodeConfirmation secondAttempt = GetConfirmationNodes().FirstOrDefault(x => MatchNodeToConfirm(x, query) || MatchNodeToDeny(x, query));
+
+        if (secondAttempt != null)
+        {
+            if (MatchNodeToConfirm(secondAttempt, query))
+                returnFunc = secondAttempt.ConfirmFunc;
+            else if (MatchNodeToDeny(secondAttempt, query))
+                returnFunc = secondAttempt.DenyFunc;
+        }
+
+        return returnFunc != null!;
+    }
+
+    public static bool MatchNodeToConfirm(NodeConfirmation item, TerminalNode node)
+    {
+        if (item == null) return false;
+
+        if (item.Confirm == null) return false;
+        if (item.Confirm.result == null) return false;
+        return item.Confirm.result == node;
+    }
+
+    public static bool MatchNodeToDeny(NodeConfirmation item, TerminalNode node)
+    {
+        if (item == null) return false;
+
+        if (item.Deny == null) return false;
+        if (item.Deny.result == null) return false;
+        return item.Deny.result == node;
+    }
+
     //overload for multiple listings (terminalstuff)
     [Obsolete("This is using the OLD managedbools and Listing system!!")]
-    public static bool TryGetFuncFromNode(List<MainListing> providedListing, ref TerminalNode node, out Func<string> returnFunc) 
+    public static bool TryGetFuncFromNode(List<MainListing> providedListing, ref TerminalNode node, out Func<string> returnFunc)
     {
         if (node == null || providedListing.Count == 0)
         {

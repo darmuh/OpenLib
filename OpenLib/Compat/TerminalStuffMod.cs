@@ -1,79 +1,78 @@
 ﻿
 
-namespace OpenLib.Compat
+namespace OpenLib.Compat;
+
+public class TerminalStuffMod
 {
-    public class TerminalStuffMod
+    public static void NetSync(TerminalNode node)
     {
-        public static void NetSync(TerminalNode node)
-        {
-            if (node == null!)
-                return;
+        if (node == null!)
+            return;
 
-            if (!Plugin.instance.TerminalStuff)
-                return;
+        if (!Plugin.instance.TerminalStuff)
+            return;
 
-            if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
-                return;
+        if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
+            return;
 
-            Loggers.LogDebug($"Syncing node with TerminalStuff");
-            TerminalStuff.EventSub.TerminalParse.NetSync(node);
-        }
+        Loggers.LogDebug($"Syncing node with TerminalStuff");
+        TerminalStuff.EventSub.TerminalParse.NetSync(node);
+    }
 
-        public static void LoadAndSync(TerminalNode node)
-        {
-            if (node == null!)
-                return;
+    public static void LoadAndSync(TerminalNode node)
+    {
+        if (node == null!)
+            return;
 
-            Plugin.instance.Terminal.LoadNewNode(node);
-            Loggers.LogDebug($"Loading node!");
+        Plugin.instance.Terminal.LoadNewNode(node);
+        Loggers.LogDebug($"Loading node!");
 
-            if (!Plugin.instance.TerminalStuff)
-                return;
+        if (!Plugin.instance.TerminalStuff)
+            return;
 
-            if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
-                return;
+        if (!TerminalStuff.ConfigSettings.NetworkedNodes.Value || !TerminalStuff.ConfigSettings.ModNetworking.Value)
+            return;
 
-            Loggers.LogDebug($"Syncing with TerminalStuff!");
-            TerminalStuff.EventSub.TerminalParse.NetSync(node);
-        }
+        Loggers.LogDebug($"Syncing with TerminalStuff!");
+        TerminalStuff.EventSub.TerminalParse.NetSync(node);
+    }
 
-        public static bool TryLoadHomePage()
-        {
-            if (!Plugin.instance.TerminalStuff)
-                return false;
+    public static bool TryLoadHomePage()
+    {
+        if (!Plugin.instance.TerminalStuff)
+            return false;
 
-            if (TerminalStuff.EventSub.TerminalStart.startNode == null!)
-                return false;
+        if (TerminalStuff.EventSub.TerminalStart.startNode == null!)
+            return false;
 
-            LoadAndSync(TerminalStuff.EventSub.TerminalStart.startNode);
-            return true;
-        }
+        LoadAndSync(TerminalStuff.EventSub.TerminalStart.startNode);
+        return true;
+    }
 
-        public static bool TryLoadStartPage()
-        {
-            if (!Plugin.instance.TerminalStuff)
-                return false;
+    public static bool TryLoadStartPage()
+    {
+        if (!Plugin.instance.TerminalStuff)
+            return false;
 
-            if (TerminalStuff.TerminalEvents.terminalSettings.startPageValue.Length < 1)
-                return false;
+        if (TerminalStuff.TerminalEvents.terminalSettings.startPageValue.Length < 1)
+            return false;
 
-            if (TerminalStuff.TerminalEvents.terminalSettings.startPage == null!)
-                return false;
+        if (TerminalStuff.TerminalEvents.terminalSettings.startPage == null!)
+            return false;
 
-            LoadAndSync(TerminalStuff.TerminalEvents.terminalSettings.startPage);
-            return true;
-        }
+        LoadAndSync(TerminalStuff.TerminalEvents.terminalSettings.startPage);
+        return true;
+    }
 
-        //might not use this
-        private static bool TryGetKeywordFashtenstein(string query, out TerminalKeyword word)
-        {
-            word = null!;
+    //might not use this
+    private static bool TryGetKeywordFashtenstein(string query, out TerminalKeyword word)
+    {
+        word = null!;
 
-            if (!Plugin.instance.TerminalStuff)
-                return false;
+        if (!Plugin.instance.TerminalStuff)
+            return false;
 
-            TerminalStuff.SpecialStuff.ConflictRes.TryGetBestMatchingKeyword(query, out word);
-            return word != null;
-        }
+        TerminalStuff.SpecialStuff.ConflictRes.TryGetBestMatchingKeyword(query, out word);
+        return word != null;
     }
 }

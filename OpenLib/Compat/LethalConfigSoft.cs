@@ -8,7 +8,7 @@ using static OpenLib.Common.Misc;
 namespace OpenLib.Compat;
 public class LethalConfigSoft
 {
-    public static Version LethalConfigVersion => GetPluginVersion("ainavt.lc.lethalconfig"); 
+    public static Version LethalConfigVersion => GetPluginVersion("ainavt.lc.lethalconfig");
     public static Version MinVer = new(1, 4, 3); //needed to make sure people are on the version that adds my method
 
     [Obsolete("Do not call this method from another mod. The config items will be added directly to OpenLib. Instead copy this method and use it in your own mod")]

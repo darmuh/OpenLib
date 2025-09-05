@@ -64,7 +64,7 @@ public class OpenBodyCamFuncs
                 Loggers.WARNING("Null camera @GetTexture");
                 return null!;
             }
-                
+
             else
                 return cam.targetTexture;
         }
@@ -169,7 +169,7 @@ public class OpenBodyCamFuncs
         terminalBodyCam.OnBlankedSet += CamIsBlanked;
         terminalBodyCam.ForceEnableCamera = true;
         Camera? cam = terminalBodyCam.GetCamera();
-        
+
         if (cam == null!)
         {
             Loggers.WARNING("2RadarCompat OBC: GetCamera returned NULL at creation!");
@@ -224,10 +224,10 @@ public class OpenBodyCamFuncs
     public static void TerminalMirrorStatus(bool enabled)
     {
         if (TerminalMirrorCam == null!) return;
-            var mcam = TerminalMirrorCam as BodyCamComponent;
+        var mcam = TerminalMirrorCam as BodyCamComponent;
         if (mcam == null!)
             return;
-        
+
         mcam.ForceEnableCamera = enabled;
         ToggleCamState(mcam.GetCamera()!, enabled);
         Loggers.LogInfo($"OBC - BodyCam detected and set to [{enabled}]");

@@ -73,7 +73,7 @@ public class WebHelper
         string lastSection = "";
 
         foreach (KeyValuePair<ConfigDefinition, ConfigEntryBase> pair in configItems)
-        {            
+        {
             if (pair.Key.Section != lastSection)
             {
                 if (lastSection != "")

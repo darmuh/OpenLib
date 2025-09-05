@@ -1,12 +1,14 @@
 ﻿using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static OpenLib.Common.CommonStringStuff;
 
 namespace OpenLib.Menus;
+[Obsolete("Doing away with this style of Menu...")]
 public class MenuBuild
 {
     public static bool isNextEnabled = false;

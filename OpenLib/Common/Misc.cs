@@ -53,7 +53,7 @@ public class Misc
     public static Color HexToColor(string hex)
     {
         // Convert hex color code to Color
-        if(ColorUtility.TryParseHtmlString(hex, out Color color))
+        if (ColorUtility.TryParseHtmlString(hex, out Color color))
             return color;
         else
         {
@@ -84,7 +84,7 @@ public class Misc
         StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
                                     : StringComparison.InvariantCulture;
 
-            return str1.Equals(str2, comparison);
+        return str1.Equals(str2, comparison);
     }
 
     //check if a whole list is equal to the original string

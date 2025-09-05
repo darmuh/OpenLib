@@ -14,6 +14,8 @@ public class NodeStore(CommandManager cmd)
     public string Name = cmd.Name;
     public int ManualPrice = 0;
 
+    public int ActualPrice = 0;
+
     public void AddToStore()
     {
         if (CommonTerminal.BuyKeyword == null!)
@@ -41,6 +43,7 @@ public class NodeStore(CommandManager cmd)
         Command.ConfirmBase.Confirm.result.shipUnlockableID = unlockableID;
         Command.ConfirmBase.Confirm.result.buyUnlockable = false;
         Command.ConfirmBase.Confirm.result.itemCost = price;
+        ActualPrice = price;
 
         Command.terminalKeywords.Do(x => AddToBuyWord(ref buy, ref x, storeItem));
 

@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using static OpenLib.Menus.MenuBuild;
 
 namespace OpenLib.Menus;
+[Obsolete("This style of menu will be deleted in next major update to library, once all mods are confirmed not using this")]
 public class TerminalMenu
 {
     //Have to keep lowercase property names for existing mods
     //Also can't add getter/setters for these or will mess with existing mods
+#pragma warning disable IDE1006
     public string MenuName = string.Empty;
     public string MainMenuText = string.Empty;
     public string setKeyword = string.Empty;
@@ -15,7 +18,7 @@ public class TerminalMenu
     public bool isNextEnabled { get; internal set; } = false; //for cycling pages
     public int nextCount { get; internal set; } = 1; //always at least be 1
     public List<TerminalMenuItem> menuItems = [];
-
+#pragma warning restore IDE1006
     //TerminalStuff
     public Dictionary<string, TerminalNode> terminalNodePerCategory = [];
     public List<Dictionary<string, List<string>>> categoryLists = [];
