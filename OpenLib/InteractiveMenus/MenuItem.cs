@@ -85,10 +85,12 @@ public abstract class MenuItem
 
     public virtual void SetParentMenu(MenuItem parent)
     {
+        //allow setting parent to null
+        Parent = parent;
+
         if (parent == null!)
             return;
 
-        Parent = parent;
         if (!parent.NestedMenus.Contains(this))
             parent.NestedMenus.Add(this);
     }
@@ -101,5 +103,25 @@ public abstract class MenuItem
         child.Parent = this;
         if (!NestedMenus.Contains(child))
             NestedMenus.Add(child);
+    }
+
+    public virtual void RemoveFromParent()
+    {
+        if (Parent == null)
+            return;
+
+        Parent.NestedMenus.RemoveAll(m => m == this);
+
+        Parent = null!;
+    }
+
+    public virtual void RemoveChild(MenuItem child)
+    {
+        if (child == null) return;
+
+        if (child.Parent != null)
+            child.Parent = null!;
+
+        NestedMenus.Remove(child);
     }
 }

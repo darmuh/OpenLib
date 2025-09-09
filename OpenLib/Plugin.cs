@@ -10,19 +10,11 @@ using System.Reflection;
 
 
 namespace OpenLib;
-
-[BepInPlugin("darmuh.OpenLib", "OpenLib", (PluginInfo.PLUGIN_VERSION))]
-
-public class Plugin : BaseUnityPlugin
+#pragma warning disable 0436 //Ignore warnings about other BepinAutoPlugins from references
+[BepInAutoPlugin("darmuh.OpenLib")] //Should autoset version
+public partial class Plugin : BaseUnityPlugin
 {
     public static Plugin instance = null!;
-    public static class PluginInfo
-    {
-        public const string PLUGIN_GUID = "darmuh.OpenLib";
-        public const string PLUGIN_NAME = "OpenLib";
-        public const string PLUGIN_VERSION = "0.4.0";
-    }
-
     internal static ManualLogSource Log = null!;
 
     //Compatibility
@@ -58,7 +50,7 @@ public class Plugin : BaseUnityPlugin
     {
         instance = this;
         Log = base.Logger;
-        Log.LogInfo($"{PluginInfo.PLUGIN_NAME} is loading with version {PluginInfo.PLUGIN_VERSION}!");
+        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!");
         ConfigSetup.defaultManaged = [];
         CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
         ConfigSetup.BindConfigSettings();
@@ -66,7 +58,7 @@ public class Plugin : BaseUnityPlugin
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         EventUsage.Subscribers();
         AllInteractiveMenus.AllMenus = [];
-        Log.LogInfo($"{PluginInfo.PLUGIN_NAME} load complete!");
+        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} load complete!");
     }
 
     internal void OnConfigReloaded(object sender, EventArgs e)

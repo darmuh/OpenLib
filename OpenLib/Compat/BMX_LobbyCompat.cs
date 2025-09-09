@@ -2,65 +2,66 @@
 using System;
 using System.Reflection;
 
-namespace OpenLib.Compat
+namespace OpenLib.Compat;
+
+public class BMX_LobbyCompat
 {
-    public class BMX_LobbyCompat
+    internal static void SetCompat(bool isNetworked)
     {
-        internal static void SetCompat(bool isNetworked)
+        if (!Plugin.instance.LobbyCompat)
+            return;
+
+        Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+        if (isNetworked)
         {
-            if (!Plugin.instance.LobbyCompat)
-                return;
+            PluginHelper.RegisterPlugin(MyPluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
+        }
+        else
+        {
+            PluginHelper.RegisterPlugin(MyPluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+        }
+    }
 
-            Version version = Assembly.GetExecutingAssembly().GetName().Version;
-
-            if (isNetworked)
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
-            }
-            else
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
-            }
+    [Obsolete("This should never have worked.. Need to double check no other mods are using this LMAO")]
+    public static bool SetBMXCompat(bool isNetworked) //for public use, no version necessary
+    {
+        if (!Plugin.instance.LobbyCompat)
+        {
+            return false;
         }
 
-        public static bool SetBMXCompat(bool isNetworked) //for public use, no version necessary
+        Version version = Assembly.GetCallingAssembly().GetName().Version;
+
+        if (isNetworked)
         {
-            if (!Plugin.instance.LobbyCompat)
-            {
-                return false;
-            }
+            //PluginHelper.RegisterPlugin(MyPluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
+            return true;
+        }
+        else
+        {
+            //PluginHelper.RegisterPlugin(MyPluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+            return true;
+        }
+    }
 
-            Version version = Assembly.GetCallingAssembly().GetName().Version;
-
-            if (isNetworked)
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
-                return true;
-            }
-            else
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
-                return true;
-            }
+    [Obsolete("This should never have worked.. Need to double check no other mods are using this LMAO")]
+    public static bool SetBMXCompat(bool isNetworked, Version version) //for public use
+    {
+        if (!Plugin.instance.LobbyCompat)
+        {
+            return false;
         }
 
-        public static bool SetBMXCompat(bool isNetworked, Version version) //for public use
+        if (isNetworked)
         {
-            if (!Plugin.instance.LobbyCompat)
-            {
-                return false;
-            }
-
-            if (isNetworked)
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
-                return true;
-            }
-            else
-            {
-                PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
-                return true;
-            }
+            //PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.Everyone, LobbyCompatibility.Enums.VersionStrictness.Patch);
+            return true;
+        }
+        else
+        {
+            //PluginHelper.RegisterPlugin(Plugin.PluginInfo.PLUGIN_GUID, version, LobbyCompatibility.Enums.CompatibilityLevel.ClientOnly, LobbyCompatibility.Enums.VersionStrictness.Patch);
+            return true;
         }
     }
 }

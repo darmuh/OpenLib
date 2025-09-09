@@ -60,16 +60,20 @@ public class LogicHandling
         CommandManager matchBase = activeCommands.FirstOrDefault(f => f.terminalNode == current);
         if (matchBase != null)
         {
+            CommonTerminal.parseNode = node; // set this static node for usage elsewhere
             NewDisplayTextEventInvoke(ref node);
             node.displayText = matchBase.MainAction();
+            Loggers.LogDebug($"CommandManager found for {node.name}, returning MainAction");
             return true;
         }
 
         CommandManager matchInfo = activeCommands.FirstOrDefault(i => i.InfoBase.InfoAction != null && i.InfoBase.terminalNode == current);
         if (matchInfo != null)
         {
+            CommonTerminal.parseNode = node; // set this static node for usage elsewhere
             NewDisplayTextEventInvoke(ref node);
             node.displayText = matchInfo.InfoBase.InfoAction();
+            Loggers.LogDebug($"CommandManager found for {node.name}, returning InfoAction");
             return true;
         }
 
@@ -78,16 +82,20 @@ public class LogicHandling
         NodeConfirmation matchConfirm = confirmationNodes.FirstOrDefault(c => c.Confirm != null && c.Confirm.result == current);
         if (matchConfirm != null)
         {
+            CommonTerminal.parseNode = node; // set this static node for usage elsewhere
             NewDisplayTextEventInvoke(ref node);
             node.displayText = matchConfirm.ConfirmFunc();
+            Loggers.LogDebug($"CommandManager found for {node.name}, returning ConfirmFunc");
             return true;
         }
 
         NodeConfirmation matchDeny = confirmationNodes.FirstOrDefault(c => c.Deny != null && c.Deny.result == current);
         if (matchDeny != null)
         {
+            CommonTerminal.parseNode = node; // set this static node for usage elsewhere
             NewDisplayTextEventInvoke(ref node);
             node.displayText = matchDeny.DenyFunc();
+            Loggers.LogDebug($"CommandManager found for {node.name}, returning DenyFunc");
             return true;
         }
 
@@ -148,6 +156,7 @@ public class LogicHandling
         return funcFound;
     }
 
+    [Obsolete("Old system...")]
     public static bool GetDisplayFromFaux(List<FauxKeyword> fauxWords, string words, ref TerminalNode node)
     {
         //Loggers.LogDebug($"GetDisplayFromFaux {words}");

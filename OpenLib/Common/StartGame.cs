@@ -57,7 +57,7 @@ public class StartGame
         {
             string YourPluginName = Assembly.GetCallingAssembly().GetName().Name;
             isDetected = true;
-            if (Plugin.PluginInfo.PLUGIN_NAME != YourPluginName)
+            if (MyPluginInfo.PLUGIN_NAME != YourPluginName)
                 Plugin.Log.LogInfo($"{PluginGUID} detected! Plugin: {YourPluginName} has set compatibility bool - {isDetected}");
             return isDetected;
         }

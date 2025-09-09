@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RootNamespace>OpenLib</RootNamespace>
 		<AssemblyName>OpenLib</AssemblyName>
+		<AssemblyTitle>OpenLib</AssemblyTitle>
+		<Version>0.4.0</Version>
+		<AssemblyVersion>0.4.0</AssemblyVersion>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>

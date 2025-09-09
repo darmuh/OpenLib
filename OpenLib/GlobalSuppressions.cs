@@ -4,4 +4,5 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 using System.Diagnostics.CodeAnalysis;
-[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>", Scope = "member", Target = "~M:OpenLib.CoreMethods.RadarTransform.OnDestroy")]
+[assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "cannot be a static method", Scope = "member", Target = "~M:OpenLib.CoreMethods.RadarTransform.OnDestroy")]
+[assembly: SuppressMessage("Class Declaration", "BepInEx001:Class inheriting from BaseUnityPlugin missing BepInPlugin attribute", Justification = "Using AutoPlugin", Scope = "type", Target = "~T:OpenLib.Plugin")]

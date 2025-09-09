@@ -65,25 +65,42 @@ public class CommandsMenu
             List<CommandMenuItem<CommandsMenuBase>> existing = mainMenuItem.NestedMenus.ConvertAll(x => x as CommandMenuItem<CommandsMenuBase>)!;
             foreach (CommandMenuItem<CommandsMenuBase>item in existing)
             {
-                if (!CommandList.Contains(item.Command))
-                    item.isEnabled = false;
+                //set enabled bool
+                item.isEnabled = CommandList.Contains(item.Command);
 
+                //remove from commandlist
                 CommandList.Remove(item.Command);
 
-                if (!item.isEnabled)
-                {
-                    item.CachedParent = item.Parent;
-                    item.Parent = null!;
-                }
-                else
-                {
-                    if (item.CachedParent != null && item.Parent == null)
-                        item.Parent = item.CachedParent;
-                }
+                UpdateMenuVisibility(item);
             }
 
             if(CommandList.Count > 0) //Add any commands still remaining that didn't already exist
                 MakeCommandMenuItems(menuBase, CommandList, defaultCategory, mainMenuItem);
+        }
+    }
+
+    private static void UpdateMenuVisibility(CommandMenuItem<CommandsMenuBase> item)
+    {
+        if (item.isEnabled)
+        {
+            if (item.Parent != null) // parent already set to non-null menu item
+                return;
+
+            if (item.CachedParent == null)
+            {
+                Loggers.WARNING($"Unable to update {item.Name}'s parent. CachedParent is null!");
+                return;
+            }
+
+            item.SetParentMenu(item.CachedParent);
+        }
+        else
+        {
+            if (item.Parent == null)
+                return;
+
+            item.CachedParent = item.Parent;
+            item.SetParentMenu(null!);
         }
     }
 
@@ -132,9 +149,12 @@ public class CommandsMenu
                 categories.Add(command, command.Category);
         }
 
+        // re-use categories from allcommandmenuitems listing
+        List<CommandMenuItem<CommandsMenuBase>> cats = AllCommandMenuItems.FindAll(c => c.Command == null!);
         foreach (var category in categories)
         {
-            if (commandMenuItems.FirstOrDefault(c => Common.Misc.CompareStringsInvariant(c.Name, category.Value)) is not CommandMenuItem<CommandsMenuBase> cat)
+            // check if category name already exists and create one if does not exist
+            if (cats.FirstOrDefault(c => Common.Misc.CompareStringsInvariant(c.Name, category.Value)) is not CommandMenuItem<CommandsMenuBase> cat)
             {
                 cat = new(menuBase, category.Value.ToUpperInvariant());
                 commandMenuItems.Add(cat);
