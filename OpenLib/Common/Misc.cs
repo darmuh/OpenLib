@@ -87,23 +87,22 @@ public class Misc
         return str1.Equals(str2, comparison);
     }
 
-    //check if a whole list is equal to the original string
-    public static bool CompareStringsInvariant(List<string> stringList, bool ignoreCase = true)
+    //compare if anything in the list is equal to the original string provided
+    public static bool DoesListHaveInvariant(List<string> stringList, string query, bool ignoreCase = true)
     {
-        if (stringList == null || stringList.Count < 2)
-            return true; // Empty or single-element lists are "all same"
+        if (stringList == null)
+            return false;
 
-        string first = stringList[0];
         StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
                                     : StringComparison.InvariantCulture;
 
         for (int i = 1; i < stringList.Count; i++)
         {
-            if (!string.Equals(first, stringList[i], comparison))
-                return false; // Immediate exit on mismatch
+            if (string.Equals(query, stringList[i], comparison))
+                return true; // Immediate exit on mismatch
         }
 
-        return true;
+        return false;
     }
 
     public static bool StringStartsWithInvariant(string fullstring, char ch, bool ignoreCase = true)
@@ -126,6 +125,28 @@ public class Misc
         StringComparison comparison = ignoreCase ? StringComparison.InvariantCultureIgnoreCase
                                     : StringComparison.InvariantCulture;
         return fullstring.Contains(query, comparison);
+    }
+
+    public static List<string> GetSubstrings(char start, char end, string query)
+    {
+        List<string> result = [];
+        int currentStart = -1;
+
+        for (int i = 0; i < query.Length; i++)
+        {
+            if (query[i] == start)
+            {
+                currentStart = i;
+            }
+            else if (query[i] == end && currentStart != -1)
+            {
+                int length = i - currentStart + 1;
+                result.Add(query.Substring(currentStart, length));
+                currentStart = -1;
+            }
+        }
+
+        return result;
     }
 
 

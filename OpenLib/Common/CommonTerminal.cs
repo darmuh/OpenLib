@@ -58,6 +58,19 @@ public class CommonTerminal
             }
         }
     }
+    private static TerminalNode _home = null!;
+    public static TerminalNode HomePage
+    {
+        get
+        {
+            if(_home == null)
+            {
+                _home = Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[1];
+            }
+
+            return _home;
+        }
+    }
 
     public static void ToggleScreen(bool status)
     {

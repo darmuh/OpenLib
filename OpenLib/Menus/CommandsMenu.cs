@@ -1,4 +1,5 @@
-﻿using OpenLib.CoreMethods;
+﻿using OpenLib.Common;
+using OpenLib.CoreMethods;
 using OpenLib.InteractiveMenus;
 using System;
 using System.Collections.Generic;
@@ -149,17 +150,15 @@ public class CommandsMenu
                 categories.Add(command, command.Category);
         }
 
-        // re-use categories from allcommandmenuitems listing
-        List<CommandMenuItem<CommandsMenuBase>> cats = AllCommandMenuItems.FindAll(c => c.Command == null!);
         foreach (var category in categories)
         {
             // check if category name already exists and create one if does not exist
-            if (cats.FirstOrDefault(c => Common.Misc.CompareStringsInvariant(c.Name, category.Value)) is not CommandMenuItem<CommandsMenuBase> cat)
+            if (MainMenu.NestedMenus.FirstOrDefault(c => Common.Misc.CompareStringsInvariant(c.Name, category.Value)) is not CommandMenuItem<CommandsMenuBase> cat)
             {
                 cat = new(menuBase, category.Value.ToUpperInvariant());
                 commandMenuItems.Add(cat);
                 cat.SetParentMenu(MainMenu);
-                cat.Header = () => $"======== {category.Value.ToUpperInvariant()} COMMANDS ========\n\n";
+                cat.Header = () => CommandsMenuBase.ConvertHeader(menuBase.CategoryHeader, cat.Name);
             }
 
             CreateCommandMenuItems(menuBase, cat, category.Key, ref commandMenuItems);
@@ -192,37 +191,56 @@ public class CommandsMenu
     {
         CommandMenuItem<CommandsMenuBase> CommandName = TryCreate(menuBase, command);
         commandMenuItems.Add(CommandName);
-        CommandName.Header = () => $"======== {command.Name} Info ========\n\n";
+        CommandName.Header = () => CommandsMenuBase.ConvertHeader(menuBase.CommandHeader, parent.Name, CommandName.Name);
         CommandName.SetParentMenu(parent);
 
-        CommandMenuItem<CommandsMenuBase> CommandKeywords = new(menuBase, $"{command.Name} Keywords");
-        commandMenuItems.Add(CommandKeywords);
-        CommandKeywords.Header = () => $"======== {command.Name} Keywords ========\n\n";
-        CommandKeywords.SetParentMenu(CommandName);
-
-        foreach (var word in command.KeywordList)
+        if (menuBase.AddKeywordsMenu)
         {
-            CommandMenuItem<CommandsMenuBase> keyword = new(menuBase, word);
-            commandMenuItems.Add(keyword);
-            keyword.SetParentMenu(CommandKeywords);
+            CommandMenuItem<CommandsMenuBase> CommandKeywords = new(menuBase, $"{command.Name} Keywords");
+            commandMenuItems.Add(CommandKeywords);
+            CommandKeywords.Header = () => CommandsMenuBase.ConvertHeader(menuBase.KeywordsHeader, parent.Name, CommandName.Name);
+            CommandKeywords.SetParentMenu(CommandName);
+
+            foreach (var word in command.KeywordList)
+            {
+                CommandMenuItem<CommandsMenuBase> keyword = new(menuBase, word);
+                commandMenuItems.Add(keyword);
+                keyword.SetParentMenu(CommandKeywords);
+            }
         }
 
-        if (command.IsEnabled != null)
+        if (command.IsEnabled != null && menuBase.AddInfoMenu)
         {
-            CommandMenuItem<CommandsMenuBase>GetInfo = new(menuBase, $"{command.Name} Information");
+            CommandMenuItem<CommandsMenuBase> GetInfo = new(menuBase, $"{command.Name} Information");
             commandMenuItems.Add(GetInfo);
-            GetInfo.Header = () => $"====== {command.Name} Information ======\n\n";
+            GetInfo.Header = () => CommandsMenuBase.ConvertHeader(menuBase.InfoHeader, parent.Name, CommandName.Name);
             GetInfo.SetParentMenu(CommandName);
 
-            CommandMenuItem<CommandsMenuBase>Information = new(menuBase, command.IsEnabled.ConfigItem.Description.Description);
+            CommandMenuItem<CommandsMenuBase> Information = new(menuBase, command.IsEnabled.ConfigItem.Description.Description);
             commandMenuItems.Add(Information);
             Information.SetParentMenu(GetInfo);
         }
+
+        // only do below if command runs as itself
+        if (command.AcceptAdditionalText && menuBase.AddRunCommand)
+            return;
+
+        CommandMenuItem<CommandsMenuBase> RunCommand = new(menuBase, $"Run {command.Name}");
+        commandMenuItems.Add(RunCommand);
+        RunCommand.SetParentMenu(CommandName);
+        CustomEvent commandInvoke = new();
+        commandInvoke.AddListener(() => 
+        {
+            menuBase.ExitPage = command;
+            menuBase.ExitMenu(true);
+
+        });
+        RunCommand.SelectionEvent = commandInvoke;
     }
 
-    public static CommandMenuItem<CommandsMenuBase>TryCreate(CommandsMenuBase menuBase, CommandManager command)
+    public static CommandMenuItem<CommandsMenuBase> TryCreate(CommandsMenuBase menuBase, CommandManager command)
     {
-        CommandMenuItem<CommandsMenuBase>item = AllCommandMenuItems.FirstOrDefault(c => c.Command == command);
+        CommandMenuItem<CommandsMenuBase> item = AllCommandMenuItems.FirstOrDefault(c => c.Command == command);
 
         if (item != null)
             return item;
@@ -256,8 +274,89 @@ public class CommandsMenu
     }
 }
 
-public class CommandsMenuBase(string name, Dictionary<Key, Action> MoreMenuActions = null!) : BetterMenu<CommandsMenuBase>(name, MoreMenuActions)
+public class CommandsMenuBase : BetterMenu<CommandsMenuBase>
 {
+    //Customize commands generation
+    public bool AddKeywordsMenu = true;
+    public bool AddInfoMenu = true;
+    public bool AddRunCommand = true;
+    
+    //Customize generated headers
+    public string CommandHeader = "======== {commandName} ========\n\n";
+    public string KeywordsHeader = "======== {commandName} Keywords ========\n\n";
+    public string CategoryHeader = "======== {catName>>} COMMANDS ========\n\n";
+    public string InfoHeader = "====== {commandName} Information ======\n\n";
+
+    //Use below constants to define expected variables
+    //Variables must be encapsulated by brackets like standard C# for translation
+    public const string CategoryName = "catName";
+    public const string CommandName = "commandName";
+    public const string ToUpper = ">>";
+    public const string ToLower = "<<";
+    public static readonly List<string> AcceptableVariables = [CategoryName, CommandName, ToUpper, ToLower];
+
+    //Custom Exit Action
+    public CommandManager ExitPage = null!;
+
+
+    public CommandsMenuBase(string name, Dictionary<Key, Action> MoreMenuActions = null!)
+        : base(name, MoreMenuActions)
+    {
+        ExitAction = CustomExitAction; //using custom exit action by default
+        OnEnter.AddListener(() => ExitPage = null!);
+    }
+
+    public void CustomExitAction()
+    {
+        if (ExitPage != null)
+        {
+            if(LogicHandling.GetDisplayTextFromCommand(ref ExitPage.terminalNode))
+                CommonTerminal.LoadNewNode(ExitPage.terminalNode); //this makes it run twice...
+            else
+                CommonTerminal.LoadNewNode(CommonTerminal.HomePage);
+        }      
+        else
+            CommonTerminal.LoadNewNode(CommonTerminal.HomePage);
+    }
+
+    public static string ConvertHeader(string query, string catName, string commandName = "")
+    {
+        if (string.IsNullOrEmpty(query))
+            return query;
+
+        List<string> originals = Misc.GetSubstrings('{', '}', query);
+
+        if (originals.Count == 0)
+            return query;
+
+        foreach (string value in originals)
+        {
+            //remove brackets
+            string newString = value.Replace("{", "").Replace("}", "");
+
+            //replace CategoryName
+            if(Misc.StringContainsInvariant(value, CategoryName))
+                newString = newString.Replace(CategoryName, catName);
+
+            //replace CommandName
+            if (Misc.StringContainsInvariant(value, CommandName))
+                newString = newString.Replace(CommandName, commandName);
+
+            //Convert To Uppercase
+            if (Misc.StringContainsInvariant(value, ToUpper))
+                newString = newString.Replace(ToUpper, "").ToUpperInvariant();
+
+            //Convert To Lowercase
+            if (Misc.StringContainsInvariant(value, ToLower))
+                newString = newString.Replace(ToLower, "").ToLowerInvariant();
+
+            //Update result
+            query = query.Replace(value, newString);
+        }
+
+        return query;
+    }
+
     public string Controls()
     {
         StringBuilder message = new();

@@ -73,6 +73,7 @@ public class BetterMenu<T> : BetterMenuBase
     public Action ExitAction = null!;
     //public TerminalNode ExitPage = null!;
     public CustomEvent OnExit = new();
+    public CustomEvent OnExitComplete = new();
     public CustomEvent OnEnter = new();
     public CustomEvent OnLoad = new();
     public CustomEvent LoadPage = new();
@@ -409,7 +410,7 @@ public class BetterMenu<T> : BetterMenuBase
         yield return new WaitForEndOfFrame();
 
         if (ExitAction == null!)
-            CommonTerminal.LoadNewNode(Plugin.instance.Terminal.terminalNodes.specialNodes.ToArray()[1]); //load home
+            CommonTerminal.LoadNewNode(CommonTerminal.HomePage); //load home
         else
             ExitAction.Invoke();
 
@@ -422,6 +423,7 @@ public class BetterMenu<T> : BetterMenuBase
             Plugin.instance.Terminal.screenText.interactable = true;
         }
 
+        OnExitComplete.Invoke();
         yield break;
     }
 
