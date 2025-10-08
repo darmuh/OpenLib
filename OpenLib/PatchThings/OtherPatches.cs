@@ -1,21 +1,34 @@
 ﻿using GameNetcodeStuff;
 using HarmonyLib;
+using OpenLib.Common;
 using OpenLib.Events;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace OpenLib;
 
-[HarmonyPatch(typeof(StartOfRound), "Awake")]
+
+[HarmonyPatch(typeof(GameNetworkManager), nameof(GameNetworkManager.Start))]
+public class GameStartPatch
+{
+    public static void Postfix()
+    {
+        EventManager.GameNetworkManagerStart.Invoke();
+        NetworkPrefabGenBase.RegisterNetworkPrefabs();
+    }
+}
+
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.Awake))]
 public class StartRoundAwake
 {
     public static void Postfix()
     {
         EventManager.StartOfRoundAwake.Invoke();
+        NetworkPrefabGenBase.SpawnNetworkPrefabs();
     }
 }
 
-[HarmonyPatch(typeof(StartOfRound), "Start")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.Start))]
 public class StartRoundPatch
 {
     public static void Postfix()
@@ -25,7 +38,7 @@ public class StartRoundPatch
 }
 
 //StartGame
-[HarmonyPatch(typeof(StartOfRound), "StartGame")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.StartGame))]
 public class LandingPatch
 {
     public static void Postfix()
@@ -35,7 +48,7 @@ public class LandingPatch
 
 }
 
-[HarmonyPatch(typeof(StartOfRound), "ResetShip")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.ResetShip))]
 public class ShipResetPatch
 {
     public static void Postfix()
@@ -44,26 +57,7 @@ public class ShipResetPatch
     }
 }
 
-[HarmonyPatch(typeof(RoundManager), "SetBigDoorCodes")]
-public class SetBigDoorCodes
-{
-    public static void Postfix()
-    {
-        EventManager.SetBigDoorCodes.Invoke();
-    }
-}
-
-//SpawnMapObjects
-[HarmonyPatch(typeof(RoundManager), "SpawnMapObjects")]
-public class SpawnMapObjects
-{
-    public static void Postfix()
-    {
-        EventManager.SpawnMapObjects.Invoke();
-    }
-}
-
-[HarmonyPatch(typeof(StartOfRound), "PassTimeToNextDay")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.PassTimeToNextDay))]
 public class NextDayPatch
 {
     public static void Postfix()
@@ -73,7 +67,7 @@ public class NextDayPatch
 }
 
 //OnShipLandedMiscEvents
-[HarmonyPatch(typeof(StartOfRound), "OnShipLandedMiscEvents")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnShipLandedMiscEvents))]
 public class OnShipLandedMiscPatch
 {
     public static void Postfix()
@@ -83,7 +77,7 @@ public class OnShipLandedMiscPatch
 }
 
 //ShipHasLeft
-[HarmonyPatch(typeof(StartOfRound), "ShipHasLeft")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.ShipHasLeft))]
 public class ShipLeftPatch
 {
     public static void Postfix()
@@ -92,18 +86,17 @@ public class ShipLeftPatch
     }
 }
 
-//SetNewProfitQuota
-[HarmonyPatch(typeof(TimeOfDay), "SetNewProfitQuota")]
-public class NewQuotaPatch
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
+public class OnClientConnectPatch
 {
     public static void Postfix()
     {
-        EventManager.NewQuota.Invoke();
+        EventManager.OnClientConnect.Invoke();
     }
 }
 
 //ChangeLevel
-[HarmonyPatch(typeof(StartOfRound), "ChangeLevel")]
+[HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.ChangeLevel))]
 public class RouteEvent
 {
     public static void Postfix()
@@ -113,8 +106,39 @@ public class RouteEvent
 
 }
 
+[HarmonyPatch(typeof(RoundManager), nameof(RoundManager.SetBigDoorCodes))]
+public class SetBigDoorCodes
+{
+    public static void Postfix()
+    {
+        EventManager.SetBigDoorCodes.Invoke();
+    }
+}
+
+//SpawnMapObjects
+[HarmonyPatch(typeof(RoundManager), nameof(RoundManager.SpawnMapObjects))]
+public class SpawnMapObjects
+{
+    public static void Postfix()
+    {
+        EventManager.SpawnMapObjects.Invoke();
+    }
+}
+
+
+
+//SetNewProfitQuota
+[HarmonyPatch(typeof(TimeOfDay), nameof(TimeOfDay.SetNewProfitQuota))]
+public class NewQuotaPatch
+{
+    public static void Postfix()
+    {
+        EventManager.NewQuota.Invoke();
+    }
+}
+
 //AutoParentGameObject
-[HarmonyPatch(typeof(AutoParentToShip), "Awake")]
+[HarmonyPatch(typeof(AutoParentToShip), nameof(AutoParentToShip.Awake))]
 public class AutoParentGameObjectPatch
 {
     public static void Postfix(AutoParentToShip __instance)
@@ -142,7 +166,7 @@ public class ObjectSpawnPatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerControllerB), "StartPerformingEmoteServerRpc")]
+[HarmonyPatch(typeof(PlayerControllerB), nameof(PlayerControllerB.StartPerformingEmoteServerRpc))]
 public class EmotePatch
 {
     public static void Postfix()
@@ -151,7 +175,7 @@ public class EmotePatch
     }
 }
 
-[HarmonyPatch(typeof(PlayerControllerB), "Update")]
+[HarmonyPatch(typeof(PlayerControllerB), nameof(PlayerControllerB.Update))]
 public class PlayerUpdatePatch
 {
     //InShipEvent
@@ -168,7 +192,7 @@ public class PlayerUpdatePatch
         if (StartOfRound.Instance == null!) //in case this doesnt exist yet
             return;
 
-        if (StartOfRound.Instance.localPlayerController == null!) //or this
+        if (StartOfRound.Instance.localPlayerController == null) //or this
             return;
 
         if (StartOfRound.Instance.localPlayerController != __instance) //stop from detecting other player's updates
@@ -186,7 +210,7 @@ public class PlayerUpdatePatch
             EventManager.PlayerIsDead.Invoke();
         }
 
-        if (__instance.isPlayerDead && __instance.spectatedPlayerScript != null!) //local player is dead and spectatedPlayer is not null
+        if (__instance.isPlayerDead && __instance.spectatedPlayerScript != null) //local player is dead and spectatedPlayer is not null
         {
             if (__instance.spectatedPlayerScript.isInHangarShipRoom != spectate_inShip) //spectatedPlayer IsInShip update
             {
@@ -199,7 +223,7 @@ public class PlayerUpdatePatch
 
 public class SpectateNextPatch
 {
-    [HarmonyPatch(typeof(PlayerControllerB), "SpectateNextPlayer")]
+    [HarmonyPatch(typeof(PlayerControllerB), nameof(PlayerControllerB.SpectateNextPlayer))]
     public class PlayerSpawnPatch : MonoBehaviour
     {
         static void Postfix()
@@ -211,8 +235,8 @@ public class SpectateNextPatch
 
 public class SpawnPatch
 {
-    [HarmonyPatch(typeof(PlayerControllerB), "SpawnPlayerAnimation")]
-    public class PlayerSpawnPatch : MonoBehaviour
+    [HarmonyPatch(typeof(PlayerControllerB), nameof(PlayerControllerB.SpawnPlayerAnimation))]
+    public class PlayerSpawnPatch
     {
         static void Postfix()
         {
@@ -221,31 +245,11 @@ public class SpawnPatch
     }
 }
 
-[HarmonyPatch(typeof(ShipTeleporter), "Awake")]
-public class TeleporterInit : ShipTeleporter
+[HarmonyPatch(typeof(ShipTeleporter), nameof(ShipTeleporter.Awake))]
+public class TeleporterInit
 {
     static void Postfix(ShipTeleporter __instance)
     {
         EventManager.TeleporterAwake.Invoke(__instance);
-    }
-
-
-}
-
-[HarmonyPatch(typeof(GameNetworkManager), "Start")]
-public class GameStartPatch
-{
-    public static void Postfix()
-    {
-        EventManager.GameNetworkManagerStart.Invoke();
-    }
-}
-
-[HarmonyPatch(typeof(StartOfRound), "OnClientConnect")]
-public class OnClientConnectPatch
-{
-    public static void Postfix()
-    {
-        EventManager.OnClientConnect.Invoke();
     }
 }

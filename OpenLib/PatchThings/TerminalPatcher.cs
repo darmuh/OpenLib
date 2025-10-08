@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 
 namespace OpenLib;
 
-[HarmonyPatch(typeof(Terminal), "Awake")]
-public class AwakeTermPatch : Terminal
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.Awake))]
+public class AwakeTermPatch
 {
     static void Postfix(Terminal __instance)
     {
@@ -15,9 +15,19 @@ public class AwakeTermPatch : Terminal
     }
 }
 
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.Start))]
+public class TerminalStartPatch
+{
+    static void Postfix()
+    {
+        //start event
+        EventManager.TerminalStart.Invoke();
+    }
+}
+
 //Terminal disabled, disabling ESC key listener OnDisable
-[HarmonyPatch(typeof(Terminal), "OnDisable")]
-public class DisableTermPatch : Terminal
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.OnDisable))]
+public class DisableTermPatch
 {
     static void Postfix()
     {
@@ -27,8 +37,8 @@ public class DisableTermPatch : Terminal
     }
 }
 
-[HarmonyPatch(typeof(Terminal), "QuitTerminal")]
-public class QuitTerminalPatch : Terminal
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.QuitTerminal))]
+public class QuitTerminalPatch
 {
     static void Postfix()
     {
@@ -38,8 +48,8 @@ public class QuitTerminalPatch : Terminal
 }
 
 
-[HarmonyPatch(typeof(Terminal), "LoadNewNode")]
-public class LoadNewNodePatch : Terminal
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.LoadNewNode))]
+public class LoadNewNodePatch
 {
     static void Postfix(TerminalNode node)
     {
@@ -47,17 +57,17 @@ public class LoadNewNodePatch : Terminal
     }
 }
 
-[HarmonyPatch(typeof(Terminal), "Start")]
-public class TerminalStartPatch : Terminal
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.LoadNewNodeIfAffordable))]
+public class AffordableNodePatch
 {
-    static void Postfix()
+    static void Postfix(TerminalNode node)
     {
-        //start event
-        EventManager.TerminalStart.Invoke();
+        //events
+        EventManager.TerminalLoadIfAffordable.Invoke(node);
     }
 }
 
-[HarmonyPatch(typeof(Terminal), "BeginUsingTerminal")]
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.BeginUsingTerminal))]
 public class Terminal_Begin_Patch
 {
     static void Postfix()
@@ -67,7 +77,7 @@ public class Terminal_Begin_Patch
     }
 }
 
-[HarmonyPatch(typeof(Terminal), "ParsePlayerSentence")]
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.ParsePlayerSentence))]
 public class Terminal_ParsePlayerSentence_Patch
 {
     static void Postfix(ref TerminalNode __result)
@@ -83,7 +93,7 @@ public class Terminal_ParsePlayerSentence_Patch
 }
 
 
-[HarmonyPatch(typeof(Terminal), "Update")]
+[HarmonyPatch(typeof(Terminal), nameof(Terminal.Update))]
 public class TerminalUpdatePatch
 {
     public static bool inUse = false;
@@ -141,15 +151,5 @@ public class TerminalUpdatePatch
         }
 
         return true;
-    }
-}
-
-[HarmonyPatch(typeof(Terminal), "LoadNewNodeIfAffordable")]
-public class AffordableNodePatch
-{
-    static void Postfix(TerminalNode node)
-    {
-        //events
-        EventManager.TerminalLoadIfAffordable.Invoke(node);
     }
 }
