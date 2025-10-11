@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenLib.Common;
+using System;
 using System.Collections.Generic;
 
 namespace OpenLib.CoreMethods;
@@ -29,7 +30,7 @@ public class DynamicBools
 
         foreach (TerminalKeyword keyword in keyWordList)
         {
-            if (keyword.word.ToLower().Equals(keyWord.ToLower()))
+            if (Misc.CompareStringsInvariant(keyWord, keyword.word))
             {
                 //Loggers.LogInfo($"Keyword: [{keyWord}] found!");
                 return true;
@@ -45,7 +46,7 @@ public class DynamicBools
 
         foreach (TerminalKeyword keyword in keyWordList)
         {
-            if (keyword.word.ToLower().Equals(keyWord.ToLower()))
+            if(Misc.CompareStringsInvariant(keyWord, keyword.word))
             {
                 Loggers.LogDebug($"Keyword: [{keyWord}] found!");
                 terminalKeyword = keyword;

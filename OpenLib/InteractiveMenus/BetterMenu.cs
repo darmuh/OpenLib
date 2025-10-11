@@ -69,6 +69,7 @@ public class BetterMenu<T> : BetterMenuBase
         set => _exitEvent = value;
     }
 
+    public MenuItem CurrentMenuItem = null!;
     public TerminalNode MenuNode = null!;
     public Action ExitAction = null!;
     //public TerminalNode ExitPage = null!;
@@ -82,6 +83,7 @@ public class BetterMenu<T> : BetterMenuBase
     public CustomEvent LeftMenuEvent = new();
     public CustomEvent RightMenuEvent = new();
     public CustomEvent AcceptAnyKeyEvent = new();
+    public CustomEventRef<List<MenuItem>> MenuItemList = new();
 
     //keys
     public Key upMenu = Key.UpArrow;
@@ -263,25 +265,27 @@ public class BetterMenu<T> : BetterMenuBase
     {
         StringBuilder message = new();
 
-        MenuItem current = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
-        if (current == null)
+        CurrentMenuItem = AllMenuItemsOfType.FirstOrDefault(x => x.IsActive);
+        if (CurrentMenuItem == null)
         {
             Loggers.WARNING("Unable to get current menu page!!");
             return "";
         }
 
-        message.Append($"{current.Header.Invoke()}");
+        message.Append($"{CurrentMenuItem.Header.Invoke()}");
 
-        DisplayMenuItemsOfType = AllMenuItemsOfType.FindAll(x => current.NestedMenus.Contains(x));
+        DisplayMenuItemsOfType = AllMenuItemsOfType.FindAll(x => CurrentMenuItem.NestedMenus.Contains(x));
         DisplayMenuItemsOfType.RemoveAll(x => !x.ShowIfEmptyNest && x.NestedMenus.Count == 0);
 
         if (DisplayMenuItemsOfType.Count == 0)
         {
             message.Append($"\r\n\r\nThis menu listing is currently empty :(\r\n");
-            if (current != null!)
-                message.Append($"{current.Footer.Invoke()}");
+            if (CurrentMenuItem != null!)
+                message.Append($"{CurrentMenuItem.Footer.Invoke()}");
             return message.ToString();
         }
+
+        CurrentMenuItem.AdjustNestedMenuList.Invoke(ref DisplayMenuItemsOfType);
 
         CurrentPage = Misc.CycleIndex(CurrentPage, 1, Mathf.CeilToInt((float)DisplayMenuItemsOfType.Count / PageSize));
         int startIndex = (CurrentPage - 1) * PageSize;
@@ -312,10 +316,10 @@ public class BetterMenu<T> : BetterMenuBase
                 message.Append('\n');
         }
 
-        if (current == null!)
+        if (CurrentMenuItem == null!)
             Loggers.WARNING("Unable to select current menu item!!");
         else
-            message.Append($"{current.Footer.Invoke()}");
+            message.Append($"{CurrentMenuItem.Footer.Invoke()}");
 
         return message.ToString();
     }
@@ -407,15 +411,15 @@ public class BetterMenu<T> : BetterMenuBase
         InMenu = false;
         AcceptAnything = false;
         AllMenuItemsOfType.Do(x => x.IsActive = false);
+
+        CommonTerminal.ChangeCaretColor(CommonTerminal.CaretOriginal, false);
+
         yield return new WaitForEndOfFrame();
 
         if (ExitAction == null!)
             CommonTerminal.LoadNewNode(CommonTerminal.HomePage); //load home
         else
             ExitAction.Invoke();
-
-        yield return new WaitForEndOfFrame();
-        CommonTerminal.ChangeCaretColor(CommonTerminal.CaretOriginal, false);
 
         if (enableInput)
         {

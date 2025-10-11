@@ -35,6 +35,32 @@ public class Events
 
     }
 
+    public class CustomEventRef<T>
+    {
+        public delegate void ParameterEvent(ref T param);
+        private event ParameterEvent OnParameterEvent = null!;
+        public bool HasListeners => (Listeners != 0);
+        public int Listeners { get; internal set; }
+
+        public void Invoke(ref T param)
+        {
+            OnParameterEvent?.Invoke(ref param);
+        }
+
+        public void AddListener(ParameterEvent listener)
+        {
+            OnParameterEvent += listener;
+            Listeners++;
+        }
+
+        public void RemoveListener(ParameterEvent listener)
+        {
+            OnParameterEvent -= listener;
+            Listeners--;
+        }
+
+    }
+
     public class TerminalNodeEvent
     {
         public delegate TerminalNode Event(ref TerminalNode original);

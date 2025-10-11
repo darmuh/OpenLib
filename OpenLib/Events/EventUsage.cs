@@ -144,8 +144,6 @@ public class EventUsage
 
     public static void OnLoadNewNode(TerminalNode node)
     {
-        Loggers.LogDebug($"listing count: {ConfigSetup.defaultListing.Listing.Count}");
-
         if (node == null!)
             return;
 

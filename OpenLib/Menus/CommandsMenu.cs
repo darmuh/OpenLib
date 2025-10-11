@@ -196,46 +196,70 @@ public class CommandsMenu
 
         if (menuBase.AddKeywordsMenu)
         {
-            CommandMenuItem<CommandsMenuBase> CommandKeywords = new(menuBase, $"{command.Name} Keywords");
-            commandMenuItems.Add(CommandKeywords);
+            if(!TryGetChild(CommandName, $"{command.Name} Keywords", out CommandMenuItem<CommandsMenuBase> CommandKeywords))
+            {
+                CommandKeywords = new(menuBase, $"{command.Name} Keywords");
+                commandMenuItems.Add(CommandKeywords);
+                CommandKeywords.SetParentMenu(CommandName);
+            }
+
             CommandKeywords.Header = () => CommandsMenuBase.ConvertHeader(menuBase.KeywordsHeader, parent.Name, CommandName.Name);
-            CommandKeywords.SetParentMenu(CommandName);
 
             foreach (var word in command.KeywordList)
             {
-                CommandMenuItem<CommandsMenuBase> keyword = new(menuBase, word);
-                commandMenuItems.Add(keyword);
-                keyword.SetParentMenu(CommandKeywords);
+                if(!TryGetChild(CommandKeywords, word, out CommandMenuItem<CommandsMenuBase> keyword))
+                {
+                    keyword = new(menuBase, word);
+                    commandMenuItems.Add(keyword);
+                    keyword.SetParentMenu(CommandKeywords);
+                    keyword.Header = () => CommandsMenuBase.ConvertHeader(menuBase.KeywordsHeader, parent.Name, CommandName.Name);
+                }
             }
         }
 
         if (command.IsEnabled != null && menuBase.AddInfoMenu)
         {
-            CommandMenuItem<CommandsMenuBase> GetInfo = new(menuBase, $"{command.Name} Information");
-            commandMenuItems.Add(GetInfo);
-            GetInfo.Header = () => CommandsMenuBase.ConvertHeader(menuBase.InfoHeader, parent.Name, CommandName.Name);
-            GetInfo.SetParentMenu(CommandName);
+            if (!TryGetChild(CommandName, $"{command.Name} Information", out CommandMenuItem<CommandsMenuBase> GetInfo))
+            {
+                GetInfo = new(menuBase, $"{command.Name} Information");
+                commandMenuItems.Add(GetInfo);   
+                GetInfo.SetParentMenu(CommandName);
+            }
 
-            CommandMenuItem<CommandsMenuBase> Information = new(menuBase, command.IsEnabled.ConfigItem.Description.Description);
-            commandMenuItems.Add(Information);
-            Information.SetParentMenu(GetInfo);
+            GetInfo.Header = () => CommandsMenuBase.ConvertHeader(menuBase.InfoHeader, parent.Name, CommandName.Name);
+
+            if (!TryGetChild(GetInfo, command.IsEnabled.ConfigItem.Description.Description, out CommandMenuItem<CommandsMenuBase> Information))
+            {
+                Information = new(menuBase, command.IsEnabled.ConfigItem.Description.Description);
+                commandMenuItems.Add(Information);
+                Information.SetParentMenu(GetInfo);
+            }
+
+            Information.Header = () => CommandsMenuBase.ConvertHeader(menuBase.InfoHeader, parent.Name, CommandName.Name);
         }
 
         // only do below if command runs as itself
         if (command.AcceptAdditionalText && menuBase.AddRunCommand)
             return;
 
-        CommandMenuItem<CommandsMenuBase> RunCommand = new(menuBase, $"Run {command.Name}");
-        commandMenuItems.Add(RunCommand);
-        RunCommand.SetParentMenu(CommandName);
-        CustomEvent commandInvoke = new();
-        commandInvoke.AddListener(() => 
+        if (!TryGetChild(CommandName, $"Run {command.Name}", out CommandMenuItem<CommandsMenuBase> RunCommand))
         {
-            menuBase.ExitPage = command;
-            menuBase.ExitMenu(true);
+            RunCommand = new(menuBase, $"Run {command.Name}")
+            {
+                LoadPageOnSelect = false
+            };
 
-        });
-        RunCommand.SelectionEvent = commandInvoke;
+            commandMenuItems.Add(RunCommand);
+            RunCommand.SetParentMenu(CommandName);
+            CustomEvent commandInvoke = new();
+            commandInvoke.AddListener(() =>
+            {
+                menuBase.ExitPage = command;
+                menuBase.ExitMenu(true);
+
+            });
+            RunCommand.SelectionEvent = commandInvoke;
+        }
     }
 
     public static CommandMenuItem<CommandsMenuBase> TryCreate(CommandsMenuBase menuBase, CommandManager command)
@@ -249,6 +273,12 @@ public class CommandsMenu
             {
                 Command = command,
             };
+    }
+
+    public static bool TryGetChild(CommandMenuItem<CommandsMenuBase> Parent, string expectedName, out CommandMenuItem<CommandsMenuBase> item)
+    {
+        item = AllCommandMenuItems.FirstOrDefault(c => c.Parent == Parent && c.Name == expectedName);
+        return item != null;
     }
 
     public static bool TryGetCategoryMenuItem(string categoryName, out CommandMenuItem<CommandsMenuBase>match)
@@ -311,7 +341,7 @@ public class CommandsMenuBase : BetterMenu<CommandsMenuBase>
         if (ExitPage != null)
         {
             if(LogicHandling.GetDisplayTextFromCommand(ref ExitPage.terminalNode))
-                CommonTerminal.LoadNewNode(ExitPage.terminalNode); //this makes it run twice...
+                CommonTerminal.LoadNewNode(ExitPage.terminalNode);
             else
                 CommonTerminal.LoadNewNode(CommonTerminal.HomePage);
         }      

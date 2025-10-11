@@ -41,6 +41,7 @@ public abstract class MenuItem
 
     public virtual Action OnPageLoad { get; set; } = null!;
     public abstract CustomEvent SelectionEvent { get; set; }
+    public virtual CustomEventRef<List<MenuItem>> AdjustNestedMenuList { get; set; } = new();
     public abstract List<MenuItem> NestedMenus { get; set; }
     private MenuItem _parent = null!;
     public virtual MenuItem Parent
@@ -85,6 +86,9 @@ public abstract class MenuItem
 
     public virtual void SetParentMenu(MenuItem parent)
     {
+        //remove from existing parent's list
+        Parent?.NestedMenus.RemoveAll(m => m == this);
+
         //allow setting parent to null
         Parent = parent;
 
