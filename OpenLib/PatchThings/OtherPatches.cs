@@ -2,6 +2,7 @@
 using HarmonyLib;
 using OpenLib.Common;
 using OpenLib.Events;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ public class StartRoundAwake
     public static void Postfix()
     {
         EventManager.StartOfRoundAwake.Invoke();
-        NetworkPrefabGenBase.SpawnNetworkPrefabs();
+        NetworkPrefabGenBase.SpawnNetworkPrefab();
     }
 }
 

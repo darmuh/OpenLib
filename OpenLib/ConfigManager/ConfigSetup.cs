@@ -11,29 +11,18 @@ using static OpenLib.Common.CommonStringStuff;
 namespace OpenLib.ConfigManager;
 public static class ConfigSetup
 {
-    [Flags]
-    public enum TestEnum
-    {
-        None = 0,
-        Some = 1,
-        More = 2,
-        All = 0x20
-    }
 
     [Obsolete("Please don't use this anymore...")]
     public static List<ManagedConfig> defaultManaged = []; //must remain lowercase or risk breaking terminalstuff
     [Obsolete("Please don't use this anymore...")]
     public static MainListing defaultListing = new(); //must remain lowercase or risk breaking terminalstuff
     public static ConfigEntry<Loggers.LoggingLevel> LogLevel { get; internal set; } = null!;
-    public static ConfigEntry<TestEnum> TestConfigItem { get; internal set; } = null!;
 
     public static void BindConfigSettings()
     {
         Plugin.Log.LogInfo("Binding configuration settings");
 
         LogLevel = MakeGeneric(Plugin.instance.Config, "Debug", "Logging Level", Loggers.LoggingLevel.WarningsPlus, "Set OpenLib logging level");
-        TestConfigItem = MakeGeneric(Plugin.instance.Config, "Debug", "Test Config Item", TestEnum.All, "Testing flags enum");
-        //ReadConfigAndAssignValues(Plugin.instance.Config, managedItems);
     }
 
     [Obsolete("Please don't use this anymore...")]

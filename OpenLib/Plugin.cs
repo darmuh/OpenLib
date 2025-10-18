@@ -1,12 +1,15 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using OpenLib.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 
 namespace OpenLib;
@@ -58,6 +61,14 @@ public partial class Plugin : BaseUnityPlugin
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         EventUsage.Subscribers();
         AllInteractiveMenus.AllMenus = [];
+        string bundlepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "openlib");
+        if (File.Exists(bundlepath))
+        {
+            var bundle = AssetBundle.LoadFromFile(bundlepath);
+            NetworkPrefabGenBase.Prefab = bundle.LoadAsset<GameObject>("Openlib Networker");
+        }
+        else
+            Log.LogError($"Openlib Networker asset cannot be found! Expected path: {bundlepath}");
         Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} load complete!");
     }
 

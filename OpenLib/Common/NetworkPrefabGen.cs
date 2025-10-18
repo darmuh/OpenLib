@@ -1,131 +1,104 @@
 ﻿using BepInEx.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
+using UnityEngine;
 using GameObject = UnityEngine.GameObject;
 
 namespace OpenLib.Common;
 
 public abstract class NetworkPrefabGenBase
 {
+    internal static GameObject Prefab { get; set; } = null!;
+    internal static GameObject NetObject = null!;
     internal static List<NetworkPrefabGenBase> PrefabGenBases = [];
     internal static void Register<T>(NetworkPrefabGen<T> prefabGen) where T : NetworkBehaviour
     {
         PrefabGenBases.Add(prefabGen);
     }
     internal abstract void NetworkInit();
-    public abstract GameObject GetPrefabObject();
+    public virtual ConfigEntry<bool>? Toggle { get; set; }
     //Can only be called after the object has finished spawning
-    public abstract bool TryGetNetObject(out NetworkObject result);
-    internal abstract bool TrySpawnNetworkHandler();
 
     internal static void RegisterNetworkPrefabs()
     {
+        if (Prefab == null)
+        {
+            Loggers.WARNING("Unable to RegisterNetworkPrefabs! Openlib Networker asset has not been loaded!");
+            return;
+        }
+
         if (PrefabGenBases.Count == 0)
             return;
 
         foreach (var item in PrefabGenBases)
             item.NetworkInit();
+
+        NetworkManager.Singleton.AddNetworkPrefab(Prefab);
     }
 
-    internal static void SpawnNetworkPrefabs()
+    internal static void SpawnNetworkPrefab()
     {
-        if (PrefabGenBases.Count == 0)
+        if (!ShouldSpawn())
             return;
 
-        foreach (var item in PrefabGenBases)
+        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsServer)
         {
-            if (item.TrySpawnNetworkHandler())
-                Loggers.LogMessage($"Network Prefab: {item} has been spawned! (You are the host client)");
+            NetObject = Object.Instantiate(Prefab, Vector3.zero, Quaternion.identity);
+            NetObject.GetComponent<NetworkObject>().Spawn();
+            Loggers.LogMessage($"Host client has spawned Openlib's Network Object");
+            return;
         }
+
+        Loggers.LogDebug($"Non-host client will not spawn Network Object");
     }
 
-    internal static bool IsPrefab(GameObject query)
+    //determine whether to spawn the network object for the host
+    internal static bool ShouldSpawn()
     {
+        if (PrefabGenBases.Count == 0)
+            return false;
+
         foreach (var item in PrefabGenBases)
         {
-            if (item.GetPrefabObject() == query)
+            if(item.Toggle == null)
+            {
+                Loggers.LogMessage($"{item} does not have a networking toggle. Openlib networker will be spawned for host!");
                 return true;
+            }
+
+            if(item.Toggle.Value)
+            {
+                Loggers.LogMessage($"{item}'s network toggle is enabled. Openlib networker will be spawned for host!");
+                return true;
+            }
         }
 
+        Loggers.LogMessage("Openlib networker will not be spawned. Networking is disabled.");
         return false;
     }
 }
 public class NetworkPrefabGen<T> : NetworkPrefabGenBase where T : NetworkBehaviour
 {
-    internal GameObject NetworkPrefab = null!;
-    internal NetworkObject NetObj = null!;
-    internal string ObjectName;
-    internal ConfigEntry<bool> Toggle;
+    internal string Name;
 
-    public NetworkPrefabGen(string objectName, ConfigEntry<bool> toggle = null!)
+    public NetworkPrefabGen(string name, ConfigEntry<bool> toggle = null!)
     {
-        ObjectName = objectName;
         Toggle = toggle;
-
+        Name = name;
         // Explicit registration instead of automatic base constructor
         Register(this);
     }
     public override string ToString()
     {
-        return ObjectName;
-    }
-
-    internal bool ShouldSpawn()
-    {
-        if (Toggle == null)
-            return true;
-
-        return Toggle.Value;
+        return Name;
     }
 
     internal override void NetworkInit()
     {
-        NetworkPrefab = new GameObject(ObjectName);
-        GameObject.DontDestroyOnLoad(NetworkPrefab);
-        NetworkPrefab.AddComponent<NetworkObject>();
-        NetworkPrefab.AddComponent<NetworkSpawnModifier>();
-        NetworkPrefab.AddComponent<T>();
-
-        NetworkManager.Singleton.AddNetworkPrefab(NetworkPrefab);
-        Loggers.LogMessage($"Network Prefab: {ObjectName} has been initialized!");
-    }
-
-    internal override bool TrySpawnNetworkHandler()
-    {
-        if (!ShouldSpawn())
-            return false;
-
-        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsServer)
-        {
-            NetObj = NetworkObject.InstantiateAndSpawn(NetworkPrefab, NetworkManager.Singleton);
-            //OnNetworkSpawnComplete.Invoke();
-            return true;
-        }
-
-        Loggers.LogDebug($"Non-host client will not spawn NetworkPrefab - {ObjectName}");
-        return false;
-    }
-
-    public override GameObject GetPrefabObject()
-    {
-        return NetworkPrefab;
-    }
-
-    public override bool TryGetNetObject(out NetworkObject result)
-    {
-        result = NetObj;
-        return NetObj != null;
-    }
-}
-
-internal class NetworkSpawnModifier : NetworkBehaviour
-{
-    public override void OnNetworkSpawn()
-    {
-        if (NetworkPrefabGenBase.IsPrefab(gameObject))
-            return;
-
-        Loggers.LogDebug($"{gameObject.name} is NOT a prefab");
-        base.OnNetworkSpawn();
+        //rather than created a new game object for each mod that adds networking
+        //simply re-use the same object but allow for adding more components to it (that have Rpcs)
+        Prefab.AddComponent<T>();
+        Loggers.LogMessage($"Network Class: {Name} has been initialized on Openlib's Networker!");
     }
 }
