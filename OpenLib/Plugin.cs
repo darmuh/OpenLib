@@ -65,7 +65,7 @@ public partial class Plugin : BaseUnityPlugin
         if (File.Exists(bundlepath))
         {
             var bundle = AssetBundle.LoadFromFile(bundlepath);
-            NetworkPrefabGenBase.Prefab = bundle.LoadAsset<GameObject>("Openlib Networker");
+            NetworkClassBase.Prefab = bundle.LoadAsset<GameObject>("Openlib Networker");
         }
         else
             Log.LogError($"Openlib Networker asset cannot be found! Expected path: {bundlepath}");

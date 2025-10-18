@@ -15,7 +15,7 @@ public class GameStartPatch
     public static void Postfix()
     {
         EventManager.GameNetworkManagerStart.Invoke();
-        NetworkPrefabGenBase.RegisterNetworkPrefabs();
+        NetworkClassBase.RegisterNetworkPrefabs();
     }
 }
 
@@ -25,7 +25,7 @@ public class StartRoundAwake
     public static void Postfix()
     {
         EventManager.StartOfRoundAwake.Invoke();
-        NetworkPrefabGenBase.SpawnNetworkPrefab();
+        NetworkClassBase.SpawnNetworkPrefab();
     }
 }
 

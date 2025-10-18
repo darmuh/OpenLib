@@ -7,14 +7,14 @@ using GameObject = UnityEngine.GameObject;
 
 namespace OpenLib.Common;
 
-public abstract class NetworkPrefabGenBase
+public abstract class NetworkClassBase
 {
     internal static GameObject Prefab { get; set; } = null!;
     internal static GameObject NetObject = null!;
-    internal static List<NetworkPrefabGenBase> PrefabGenBases = [];
-    internal static void Register<T>(NetworkPrefabGen<T> prefabGen) where T : NetworkBehaviour
+    internal static List<NetworkClassBase> NetworkClasses = [];
+    internal static void Register<T>(NetworkClass<T> prefabGen) where T : NetworkBehaviour
     {
-        PrefabGenBases.Add(prefabGen);
+        NetworkClasses.Add(prefabGen);
     }
     internal abstract void NetworkInit();
     public virtual ConfigEntry<bool>? Toggle { get; set; }
@@ -28,10 +28,10 @@ public abstract class NetworkPrefabGenBase
             return;
         }
 
-        if (PrefabGenBases.Count == 0)
+        if (NetworkClasses.Count == 0)
             return;
 
-        foreach (var item in PrefabGenBases)
+        foreach (var item in NetworkClasses)
             item.NetworkInit();
 
         NetworkManager.Singleton.AddNetworkPrefab(Prefab);
@@ -56,10 +56,10 @@ public abstract class NetworkPrefabGenBase
     //determine whether to spawn the network object for the host
     internal static bool ShouldSpawn()
     {
-        if (PrefabGenBases.Count == 0)
+        if (NetworkClasses.Count == 0)
             return false;
 
-        foreach (var item in PrefabGenBases)
+        foreach (var item in NetworkClasses)
         {
             if(item.Toggle == null)
             {
@@ -78,11 +78,11 @@ public abstract class NetworkPrefabGenBase
         return false;
     }
 }
-public class NetworkPrefabGen<T> : NetworkPrefabGenBase where T : NetworkBehaviour
+public class NetworkClass<T> : NetworkClassBase where T : NetworkBehaviour
 {
     internal string Name;
 
-    public NetworkPrefabGen(string name, ConfigEntry<bool> toggle = null!)
+    public NetworkClass(string name, ConfigEntry<bool> toggle = null!)
     {
         Toggle = toggle;
         Name = name;
