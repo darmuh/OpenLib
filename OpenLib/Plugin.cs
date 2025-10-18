@@ -53,7 +53,7 @@ public partial class Plugin : BaseUnityPlugin
     {
         instance = this;
         Log = base.Logger;
-        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!");
+        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!\nThis mod has been compiled for v73 of Lethal Company and may not work with earlier versions");
         ConfigSetup.defaultManaged = [];
         CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
         ConfigSetup.BindConfigSettings();
@@ -61,7 +61,7 @@ public partial class Plugin : BaseUnityPlugin
         Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
         EventUsage.Subscribers();
         AllInteractiveMenus.AllMenus = [];
-        string bundlepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "openlib");
+        string bundlepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "openlib.bundle");
         if (File.Exists(bundlepath))
         {
             var bundle = AssetBundle.LoadFromFile(bundlepath);

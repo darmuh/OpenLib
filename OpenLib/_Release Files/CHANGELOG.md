@@ -4,12 +4,15 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [0.4.0]
+## [0.4.0] *v73 update*
  - Various BetterMenu adjustments to account for use in darmuhsTerminalStuff
  - Added new event TerminalMenuKeyPressed for BetterMenu event handling specifically
 	- TerminalKeyPressed still exists for older menu bases and other functions (like shortcut handling)
  - Project cleanup, now includes Config.Build.user.props, Directory.Build.props, and Directory.Build.targets files inspired by PEAKLib.
 	- Mod assemblies are loaded via nuget references, Game assemblies are gotten from user defined game data folder, etc.
+ - Added NetworkClass to handle generic's that inherit networkbehaviour.
+	- Also added new openlib.bundle to package our Network Prefab that these classes would be attached to.
+	- If any mod enables networking, the network prefab will be spawned on the host client (making the mod required by all clients)
 
 ## [0.3.2]
  - Added EnterAtPage method to BetterMenu for loading a different menu item at load-in
