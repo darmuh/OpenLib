@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.4.1]
+ - Fixed performance issues related to LogicHandling.GetAllNodes
+	- Results are now cached and a new method called RefreshAllNodes has been created for situations where the cached list is not satisfactory
+
 ## [0.4.0] *v73 update*
  - Various BetterMenu adjustments to account for use in darmuhsTerminalStuff
  - Added new event TerminalMenuKeyPressed for BetterMenu event handling specifically

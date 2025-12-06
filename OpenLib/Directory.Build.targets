@@ -71,10 +71,10 @@
     />
     <PropertyGroup>
       <BuildArgument Condition="'$(PublishTS)' != 'true'">build</BuildArgument>
-      <BuildArgument Condition="'$(PublishTS)' == 'true'">publish</BuildArgument>
+      <BuildArgument Condition="'$(PublishTS)' == 'true'">publish --token $(TS_API_TOKEN)</BuildArgument>
     </PropertyGroup>
     <Exec Command="dotnet tool restore" />
-    <Exec Command="dotnet tcli $(BuildArgument) --package-version $(Version)" />
+    <Exec Command="tcli $(BuildArgument) --package-version $(Version)" />
   </Target>
 
 </Project>

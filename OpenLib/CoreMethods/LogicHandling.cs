@@ -344,10 +344,18 @@ public class LogicHandling
         return false;
     }
 
+    public static List<TerminalNode> RefreshAllNodes()
+    {
+        CommonTerminal.AllTerminalNodes = [];
+        return GetAllNodes();
+    }
+
     public static List<TerminalNode> GetAllNodes()
     {
-        List<TerminalNode> allPossibleNodes = [.. Resources.FindObjectsOfTypeAll<TerminalNode>()];
-        return allPossibleNodes;
+        if(CommonTerminal.AllTerminalNodes.Count == 0)
+            CommonTerminal.AllTerminalNodes = [.. Resources.FindObjectsOfTypeAll<TerminalNode>()];
+
+        return CommonTerminal.AllTerminalNodes;
     }
 
     public static void SetTerminalInput(string terminalInput)

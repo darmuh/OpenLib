@@ -11,6 +11,7 @@ public class CommonTerminal
     public static TerminalNode parseNode = null!;
     public static Color CaretOriginal;
     public static Color transparent = new(0, 0, 0, 0);
+    public static List<TerminalNode> AllTerminalNodes = [];
 
     //cached common
     public static TerminalKeyword InfoKeyword

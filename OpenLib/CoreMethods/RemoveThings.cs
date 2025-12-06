@@ -248,7 +248,7 @@ namespace OpenLib.CoreMethods
 
         public static void DeleteMatchingNode(string nodeName)
         {
-            List<TerminalNode> allNodesList = LogicHandling.GetAllNodes();
+            List<TerminalNode> allNodesList = LogicHandling.RefreshAllNodes();
 
             for (int i = allNodesList.Count - 1; i >= 0; i--)
             {
