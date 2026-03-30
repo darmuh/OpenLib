@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.4.2]
+ - Fixed compatiblenoun builder creating a standalone keyword out of the confirmation keyword. (https://github.com/darmuh/TerminalStuff/issues/49)
+ - Recompiled for v80 beta, this version will NOT be backwards compatible.
+ - Updated readme to reflect intentions of ending development on Openlib and migrating dependent mods to Dawnlib.
+
 ## [0.4.1]
  - Fixed performance issues related to LogicHandling.GetAllNodes
 	- Results are now cached and a new method called RefreshAllNodes has been created for situations where the cached list is not satisfactory

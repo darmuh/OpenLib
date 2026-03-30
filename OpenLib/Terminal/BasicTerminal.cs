@@ -67,46 +67,47 @@ public class BasicTerminal
     //simpler version for NodeConfirmation class
     public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "")
     {
-        CompatibleNoun thisNoun = new();
+        TerminalKeyword noun;
+        TerminalNode result;
         if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
-            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+            noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
         else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
-            thisNoun.noun = thisWord;
+            noun = thisWord;
         else
-            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+            noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
 
 
-        thisNoun.result = CreateNewTerminalNode();
-        thisNoun.result.name = nodeName + "_" + word;
-        thisNoun.result.displayText = displayText;
-        thisNoun.result.clearPreviousText = true;
+        result = CreateNewTerminalNode();
+        result.name = nodeName + "_" + word;
+        result.displayText = displayText;
+        result.clearPreviousText = true;
 
-        thisNoun.noun.specialKeywordResult = thisNoun.result;
-        return thisNoun;
+        return new CompatibleNoun(noun, result);
     }
 
     public static CompatibleNoun CreateCompatibleNoun(string nodeName, string word, string displayText = "", int price = 0, Func<string> thisAction = null!, Dictionary<TerminalNode, Func<string>> nodeListing = null!)
     {
-        CompatibleNoun thisNoun = new();
+        TerminalKeyword noun;
+        TerminalNode result;
         if (Misc.CompareStringsInvariant(word, "deny") || Misc.CompareStringsInvariant(word, "confirm")) //catch confirmation words from being re-used
-            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+            noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
         else if (DynamicBools.TryGetKeyword(word, out TerminalKeyword thisWord))
-            thisNoun.noun = thisWord;
+            noun = thisWord;
         else
-            thisNoun.noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
+            noun = CreateNewTerminalKeyword(nodeName + "_" + word, word);
 
 
-        thisNoun.result = CreateNewTerminalNode();
-        thisNoun.result.name = nodeName + "_" + word;
-        thisNoun.result.displayText = displayText;
-        thisNoun.result.clearPreviousText = true;
-        thisNoun.result.itemCost = price;
+        result = CreateNewTerminalNode();
+        result.name = nodeName + "_" + word;
+        result.displayText = displayText;
+        result.clearPreviousText = true;
+        result.itemCost = price;
 
-        thisNoun.noun.specialKeywordResult = thisNoun.result;
+        noun.specialKeywordResult = result;
         if (thisAction != null && nodeListing != null!)
-            nodeListing.Add(thisNoun.result, thisAction);
+            nodeListing.Add(result, thisAction);
 
-        return thisNoun;
+        return new(noun, result);
     }
 
     public static void CheckForAndDeleteKeyWord(string keyWord)

@@ -4,8 +4,8 @@
 		<RootNamespace>OpenLib</RootNamespace>
 		<AssemblyName>OpenLib</AssemblyName>
 		<AssemblyTitle>OpenLib</AssemblyTitle>
-		<Version>0.4.1</Version>
-		<AssemblyVersion>0.4.1</AssemblyVersion>
+		<Version>0.4.2</Version>
+		<AssemblyVersion>0.4.2</AssemblyVersion>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>

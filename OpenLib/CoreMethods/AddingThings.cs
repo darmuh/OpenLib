@@ -26,11 +26,7 @@ public class AddingThings
             Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
         }
 
-        CompatibleNoun noun = new() //not added to noun list as no keyword associated to it
-        {
-            noun = terminalKeyword,
-            result = existingNode
-        };
+        CompatibleNoun noun = new(terminalKeyword, existingNode); //not added to noun list as no keyword associated to it
         existingNounList.Add(noun);
         existingNode.terminalOptions = [.. existingNounList];
 
@@ -57,11 +53,7 @@ public class AddingThings
             Loggers.LogDebug($"{existingNode.name} has existing terminalOptions");
         }
 
-        CompatibleNoun noun = new() //no associated keyword, not adding to noun list
-        {
-            noun = terminalKeyword,
-            result = existingNode
-        };
+        CompatibleNoun noun = new(terminalKeyword, existingNode); //no associated keyword, not adding to noun list
         existingNounList.Add(noun);
         existingNode.terminalOptions = [.. existingNounList];
 
@@ -149,12 +141,7 @@ public class AddingThings
         terminalKeyword.word = keyWord.ToLower();
         terminalKeyword.isVerb = isVerb;
         terminalKeyword.specialKeywordResult = terminalNode;
-        _ = new
-        CompatibleNoun()
-        {
-            noun = terminalKeyword,
-            result = terminalNode
-        };
+        _ = new CompatibleNoun(terminalKeyword, terminalNode);
 
         allKeywordsList.Add(terminalKeyword);
         Plugin.instance.Terminal.terminalNodes.allKeywords = [.. allKeywordsList];
@@ -480,11 +467,7 @@ public class AddingThings
     {
         terminalKeyword.defaultVerb = buyKeyword;
         Loggers.LogDebug($"Added buy verb to {buyKeyword.word}");
-        CompatibleNoun wordIsCompatNoun = new()
-        {
-            noun = terminalKeyword,
-            result = item.shopSelectionNode
-        };
+        CompatibleNoun wordIsCompatNoun = new(terminalKeyword, item.shopSelectionNode);
         List<CompatibleNoun> buyKeywordList = [.. buyKeyword.compatibleNouns];
         buyKeywordList.Add(wordIsCompatNoun);
         Plugin.NounsAdded.Add(wordIsCompatNoun);
@@ -504,11 +487,7 @@ public class AddingThings
         newWord.defaultVerb = originalKeyword;
         Loggers.LogDebug($"Added verb {originalKeyword.word} to {newWord.word}");
 
-        CompatibleNoun wordIsCompatNoun = new()
-        {
-            noun = newWord,
-            result = newWord.specialKeywordResult
-        };
+        CompatibleNoun wordIsCompatNoun = new(newWord, newWord.specialKeywordResult);
         List<CompatibleNoun> compatibleNouns = [.. originalKeyword.compatibleNouns];
         compatibleNouns.Add(wordIsCompatNoun);
         Plugin.NounsAdded.Add(wordIsCompatNoun);
@@ -536,12 +515,7 @@ public class AddingThings
 
         if (TryGetKeyword(word, out TerminalKeyword terminalKeyword))
         {
-            CompatibleNoun newNoun = new()
-            {
-                noun = terminalKeyword,
-                result = resultNode
-            };
-
+            CompatibleNoun newNoun = new(terminalKeyword, resultNode);
             originalNouns.Add(newNoun);
             originalWord.compatibleNouns = [.. originalNouns];
             Loggers.LogDebug($"Added NOUN: {newNoun.noun.word} to WORD: {originalWord.word} compatible nouns");
