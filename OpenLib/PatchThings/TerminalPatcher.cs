@@ -54,6 +54,8 @@ public class LoadNewNodePatch
     static void Postfix(TerminalNode node)
     {
         EventManager.TerminalLoadNewNode.Invoke(node);
+        string nodeName = (node != null) ? node.name : "Null Node";
+        Loggers.LogDebug($"LoadNewNode - {nodeName}");
     }
 }
 

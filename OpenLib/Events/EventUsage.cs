@@ -96,6 +96,23 @@ public class EventUsage
         Loggers.LogInfo("Start Using Terminal Postfix");
     }
 
+    private static bool ParseFailed(TerminalNode terminalNode, Terminal self)
+    {
+        //ParserError1
+        if (terminalNode == self.terminalNodes.specialNodes[10])
+            return true;
+
+        //ParserError2
+        if (terminalNode == self.terminalNodes.specialNodes[11])
+            return true;
+
+        //ParserError3
+        if (terminalNode == self.terminalNodes.specialNodes[12])
+            return true;
+        
+        return false;
+    }
+
     public static TerminalNode OnParseSent(ref TerminalNode node)
     {
         Loggers.LogDebug("parsing sentence");
@@ -105,26 +122,30 @@ public class EventUsage
             return node!;
         }
 
-        string screenText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
-        if (screenText.Length > 0) //prevent errors being thrown from invalid text
+        // only parse if node is currently a parser error node
+        if (ParseFailed(node, Plugin.instance.Terminal))
         {
-            //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
-            if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
+            string screenText = Plugin.instance.Terminal.screenText.text[^Plugin.instance.Terminal.textAdded..];
+            if (screenText.Length > 0) //prevent errors being thrown from invalid text
             {
-                Loggers.LogInfo($"faux word detected on current node!");
-            }
+                //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
+                if (LogicHandling.GetDisplayFromFaux(ConfigSetup.defaultListing.fauxKeywords, screenText, ref node))
+                {
+                    Loggers.LogInfo($"faux word detected on current node!");
+                }
 
-            //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
-            if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
-            {
-                node = retrieveNode;
-                Loggers.LogDebug($"node found matching specialListString in text - {screenText}");
-            }
+                //staying until all mods are done with old setup, after which version will be bumped to indicate breaking change
+                if (CommonTerminal.TryGetNodeFromList(screenText, ConfigSetup.defaultListing.specialListString, out TerminalNode retrieveNode))
+                {
+                    node = retrieveNode;
+                    Loggers.LogDebug($"node found matching specialListString in text - {screenText}");
+                }
 
-            if (CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
-            {
-                node = commandNode;
-                Loggers.LogDebug($"node found matching CommandManager listing in text - {screenText}");
+                if (CommonTerminal.TryGetCommand(screenText, out TerminalNode commandNode)) //grab node matching keyword
+                {
+                    node = commandNode;
+                    Loggers.LogDebug($"node found matching CommandManager listing in text - {screenText}");
+                }
             }
         }
 

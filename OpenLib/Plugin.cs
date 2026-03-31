@@ -1,14 +1,15 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using BepInEx;
+using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using OpenLib.Common;
 using OpenLib.ConfigManager;
 using OpenLib.CoreMethods;
 using OpenLib.Events;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using UnityEngine;
 
 
@@ -31,6 +32,7 @@ public partial class Plugin : BaseUnityPlugin
     public bool ModelReplacement = false;
     public bool TooManyEmotes = false;
     public bool MirrorDecor = false;
+    public bool DawnLibPresent => Chainloader.PluginInfos.ContainsKey("com.github.teamxiaolan.dawnlib");
 
     public static List<CommandManager> AllCommands = [];
     public static List<CommandManager> GetActiveCommands()
@@ -53,7 +55,7 @@ public partial class Plugin : BaseUnityPlugin
     {
         instance = this;
         Log = base.Logger;
-        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!\nThis mod has been compiled for v73 of Lethal Company and may not work with earlier versions");
+        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!\nThis mod has been compiled for v80 of Lethal Company and may not work with earlier versions!");
         ConfigSetup.defaultManaged = [];
         CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
         ConfigSetup.BindConfigSettings();

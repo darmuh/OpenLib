@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 using HarmonyLib;
 using OpenLib.Common;
+using OpenLib.Compat;
 using OpenLib.ConfigManager;
 using System;
 using System.Collections.Generic;
@@ -275,6 +276,10 @@ public class CommandManager
         Loggers.LogDebug($"adding {keyword}");
         TerminalKeyword terminalKeyword = BasicTerminal.CreateNewTerminalKeyword(Name + "_keyword", keyword, replaceExistingKW);
         terminalKeyword.specialKeywordResult = terminalNode;
+
+        if (Plugin.instance.DawnLibPresent)
+            DawnlibCompat.SetCommandPriority(terminalKeyword);
+        
         terminalKeywords.Add(terminalKeyword);
     }
 

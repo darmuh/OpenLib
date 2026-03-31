@@ -33,7 +33,8 @@
 	<PackageReference Include="BMX-LobbyCompatibility" Version="*" Private="False" />
 	<PackageReference Include="AinaVT-LethalConfig" Version="*" Private="False" />
 	<PackageReference Include="Zaggy1024-OpenBodyCams" Version="*" Private="False" />
-	<PackageReference Include="Zaggy1024-TwoRadarMaps" Version="*" Private="False" />
+	<PackageReference Include="Zaggy1024-TwoRadarMaps" Version="*" Private="False" />		  
+	<PackageReference Include="TeamXiaolan-DawnLib" Version="*" Private="False" />
 	  
 	<!-- Local References -->
 	<Reference Include="darmuhsTerminalStuff" Publicize="true">

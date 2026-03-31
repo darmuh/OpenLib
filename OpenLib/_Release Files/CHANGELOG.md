@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.4.3]
+ - Added Dawnlib compat method to set keyword priority to same level as DawnCommand when it is present.
+	- This will fix Dawnlib assuming a higher priority for commands built by Openlib instead of vanilla commands.
+ - Fixed Openlib commands overriding other valid keyword results when an openlib command's partial keyword matched the input of an existing command (even if it was an exact match)
+	
 ## [0.4.2]
  - Fixed compatiblenoun builder creating a standalone keyword out of the confirmation keyword. (https://github.com/darmuh/TerminalStuff/issues/49)
  - Recompiled for v80 beta, this version will NOT be backwards compatible.
