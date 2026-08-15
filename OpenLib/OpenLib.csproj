@@ -2,10 +2,10 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RootNamespace>OpenLib</RootNamespace>
-		<AssemblyName>OpenLib</AssemblyName>
-		<AssemblyTitle>OpenLib</AssemblyTitle>
-		<Version>0.4.3</Version>
-		<AssemblyVersion>0.4.3</AssemblyVersion>
+		<AssemblyName>OpenLib_DawnlibExperimental_Compatibility</AssemblyName>
+		<AssemblyTitle>OpenLib_DawnlibExperimental_Compatibility</AssemblyTitle>
+		<Version>0.4.31</Version>
+		<AssemblyVersion>0.4.31</AssemblyVersion>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>

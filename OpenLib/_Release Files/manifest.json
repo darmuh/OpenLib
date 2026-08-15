@@ -1,8 +1,8 @@
 {
-  "name": "OpenLib",
-  "version_number": "0.4.2",
+  "name": "OpenLib-DawnlibExperimental-Compatibility",
+  "version_number": "0.4.33",
   "website_url": "https://github.com/darmuh/OpenLib",
-  "description": "Open-source development library for LethalCompany Mods, maintained by darmuh",
+  "description": "DawnlibExperimental Compatibility version of OpenLib",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2304"
   ]

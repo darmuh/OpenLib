@@ -1,5 +1,4 @@
-﻿
-namespace OpenLib.Compat;
+﻿namespace OpenLib.Compat;
 internal class Constants
 {
     internal const string LobbyCompat_GUID = "BMX.LobbyCompatibility";

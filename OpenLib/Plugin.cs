@@ -55,7 +55,7 @@ public partial class Plugin : BaseUnityPlugin
     {
         instance = this;
         Log = base.Logger;
-        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!\nThis mod has been compiled for v80 of Lethal Company and may not work with earlier versions!");
+        Log.LogInfo($"{MyPluginInfo.PLUGIN_NAME} is loading with version {MyPluginInfo.PLUGIN_VERSION}!\nThis mod has been compiled to be compatible with the experimental version of Dawnlib!");
         ConfigSetup.defaultManaged = [];
         CommandRegistry.InitListing(ref ConfigSetup.defaultListing);
         ConfigSetup.BindConfigSettings();

@@ -6,13 +6,13 @@ repository = "https://thunderstore.io"
 
 [package]
 namespace = "darmuh"
-name = "OpenLib"
-description = "Open-source development library for LethalCompany Mods, maintained by darmuh"
+name = "OpenLib_DawnlibExperimental_Compatibility"
+description = "DawnlibExperimental Compatibility version of OpenLib"
 websiteUrl = "https://github.com/darmuh/OpenLib" # TODO: Add a link to your mod repository here (optional)
 containsNsfwContent = false
 
 [package.dependencies]
-BepInEx-BepInExPack = "5.4.2304"
+BepInEx-BepInExPack = "5.4.2305"
 
 [build]
 icon = "/_Release Files/icon.png"
@@ -20,7 +20,7 @@ readme = "/_Release Files/README.md"
 outdir = "/artifacts/thunderstore/"
 
 [[build.copy]]
-source = "/artifacts/bin/OpenLib/release/OpenLib.dll"
+source = "/artifacts/bin/OpenLib/release/OpenLib_DawnlibExperimental_Compatibility.dll"
 target = "plugins/"
 
 [[build.copy]]

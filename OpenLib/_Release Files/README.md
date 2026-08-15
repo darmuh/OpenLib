@@ -1,8 +1,8 @@
-# OpenLib
+# OpenLib DawnlibExperimental-Compatibility Branch
 
-### IMPORTANT VERSION INFORMATION:
-- Lethal Company v80 Comaptibility: OpenLib version 0.4.2
-- Lethal Company v73 (and earlier) Compatibility: Openlib version 0.4.1
+- This mod is made to be used for compatibilty with the [Dawnlib Experimental version](https://thunderstore.io/c/lethal-company/p/TeamXiaolan/DawnLibExperimental).  
+	- Dawnlib restructured it's file format which broke compatibility with Openlib, this mod/branch will be updated until the main branch of Dawnlib is updated to includ this change.  
+
 
 ### Want to modify a Bepinex Config File via a webpage?
 - Try [OpenLib's Bepinex Config Management Webpage (v0.1.2)](https://darmuh.github.io/OpenLib/OpenLib/Website/Examples/ConfigManagement.html)
@@ -28,5 +28,5 @@ Icon Attribution:
 ---
 
 ### Last update to this page:
-March 30th, 2026 (version 0.4.2)  
+August 14th, 2026 (version 0.4.33)  
 *Changelog may have more up-to-date information than this page at times.*

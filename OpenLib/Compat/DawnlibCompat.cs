@@ -1,6 +1,4 @@
-﻿
-
-using Dawn.Utils;
+﻿using Dawn.Utils;
 
 namespace OpenLib.Compat;
 

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [0.4.33] DawnlibExperimental-Compatibility Branch
+- This mod is made to be used for compatibilty with the Dawnlib Experimental version.
+	- Dawnlib restructured it's file format which broke compatibility with Openlib, this mod/branch will be updated until the main branch of Dawnlib is updated to includ this change.
+
 ## [0.4.3]
  - Added Dawnlib compat method to set keyword priority to same level as DawnCommand when it is present.
 	- This will fix Dawnlib assuming a higher priority for commands built by Openlib instead of vanilla commands.
