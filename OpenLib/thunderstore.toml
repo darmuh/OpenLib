@@ -20,7 +20,7 @@ readme = "/_Release Files/README.md"
 outdir = "/artifacts/thunderstore/"
 
 [[build.copy]]
-source = "/artifacts/bin/OpenLib/release/OpenLib_DawnlibExperimental_Compatibility.dll"
+source = "/artifacts/bin/OpenLib/release/OpenLib.dll"
 target = "plugins/"
 
 [[build.copy]]

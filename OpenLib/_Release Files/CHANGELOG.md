@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
-## [0.4.33] DawnlibExperimental-Compatibility Branch
+## [0.4.32]
+- fixed all openlib dependent mods failing due to file name change on dll
+
+## [0.4.31] DawnlibExperimental-Compatibility Branch
 - This mod is made to be used for compatibilty with the Dawnlib Experimental version.
 	- Dawnlib restructured it's file format which broke compatibility with Openlib, this mod/branch will be updated until the main branch of Dawnlib is updated to includ this change.
 
